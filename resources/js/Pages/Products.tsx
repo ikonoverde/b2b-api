@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { usePage } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import {
     Search,
@@ -118,10 +118,13 @@ export default function Products({ products }: ProductsProps) {
                             <Download className="w-4 h-4" />
                             Exportar
                         </button>
-                        <button className="flex items-center gap-2 px-4 py-2.5 bg-[#4A5D4A] rounded-lg text-[13px] font-medium text-white font-[Outfit] hover:bg-[#3d4d3d] transition-colors">
+                        <Link
+                            href="/admin/products/create"
+                            className="flex items-center gap-2 px-4 py-2.5 bg-[#4A5D4A] rounded-lg text-[13px] font-medium text-white font-[Outfit] hover:bg-[#3d4d3d] transition-colors"
+                        >
                             <Plus className="w-4 h-4" />
                             Agregar producto
-                        </button>
+                        </Link>
                     </div>
                 </div>
 
@@ -171,6 +174,7 @@ export default function Products({ products }: ProductsProps) {
 }
 
 function ProductRow({ product }: { product: Product }) {
+    const [menuOpen, setMenuOpen] = useState(false);
     const statusConfig = {
         active: {
             label: 'Activo',
@@ -242,9 +246,25 @@ function ProductRow({ product }: { product: Product }) {
             </div>
 
             {/* Action */}
-            <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#F5F5F5] transition-colors">
-                <MoreHorizontal className="w-5 h-5 text-[#999999]" />
-            </button>
+            <div className="relative">
+                <button
+                    onClick={() => setMenuOpen(!menuOpen)}
+                    onBlur={() => setTimeout(() => setMenuOpen(false), 150)}
+                    className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#F5F5F5] transition-colors"
+                >
+                    <MoreHorizontal className="w-5 h-5 text-[#999999]" />
+                </button>
+                {menuOpen && (
+                    <div className="absolute right-0 top-full mt-1 bg-white rounded-lg border border-[#E5E5E5] shadow-lg z-10 min-w-[120px]">
+                        <Link
+                            href={`/admin/products/${product.id}/edit`}
+                            className="block px-4 py-2.5 text-sm text-[#1A1A1A] font-[Outfit] hover:bg-[#F5F3F0] transition-colors"
+                        >
+                            Editar
+                        </Link>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

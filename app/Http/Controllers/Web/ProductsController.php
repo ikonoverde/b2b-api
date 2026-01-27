@@ -3,76 +3,84 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Web\Products\StoreProductRequest;
+use App\Http\Requests\Web\Products\UpdateProductRequest;
+use App\Models\Product;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class ProductsController extends Controller
 {
+    private array $categories = [
+        'Fertilizantes',
+        'Semillas',
+        'Control plagas',
+        'Bioestimulantes',
+        'Contenedores',
+        'Riego',
+        'Herramientas',
+        'Sustratos',
+    ];
+
     public function index(): Response
     {
+        $products = Product::query()
+            ->get()
+            ->map(fn (Product $product) => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'sku' => $product->sku,
+                'category' => $product->category,
+                'price' => (float) $product->price,
+                'stock' => $product->stock,
+                'status' => $product->status,
+                'image' => $product->image,
+            ]);
+
         return Inertia::render('Products', [
-            'products' => [
-                [
-                    'id' => 1,
-                    'name' => 'Fertilizante Orgánico Premium',
-                    'sku' => 'FER-001',
-                    'category' => 'Fertilizantes',
-                    'price' => 45.00,
-                    'stock' => 256,
-                    'status' => 'active',
-                    'image' => null,
-                ],
-                [
-                    'id' => 2,
-                    'name' => 'Semillas de Tomate Híbrido',
-                    'sku' => 'SEM-042',
-                    'category' => 'VGO',
-                    'price' => 12.50,
-                    'stock' => 1420,
-                    'status' => 'active',
-                    'image' => null,
-                ],
-                [
-                    'id' => 3,
-                    'name' => 'Kit de Riego por Goteo',
-                    'sku' => 'RIE-015',
-                    'category' => 'Macrofertilizers',
-                    'price' => 89.99,
-                    'stock' => 89,
-                    'status' => 'inactive',
-                    'image' => null,
-                ],
-                [
-                    'id' => 4,
-                    'name' => 'Insecticida Natural Neem',
-                    'sku' => 'INS-003',
-                    'category' => 'Control plagas',
-                    'price' => 24.00,
-                    'stock' => 567,
-                    'status' => 'active',
-                    'image' => null,
-                ],
-                [
-                    'id' => 5,
-                    'name' => 'Sustrato Universal 50L',
-                    'sku' => 'SUS-008',
-                    'category' => 'Bioestimulz',
-                    'price' => 19.75,
-                    'stock' => 23,
-                    'status' => 'low_stock',
-                    'image' => null,
-                ],
-                [
-                    'id' => 6,
-                    'name' => 'Maceta Biodegradable 30cm',
-                    'sku' => 'MAC-021',
-                    'category' => 'Contenedores',
-                    'price' => 9.90,
-                    'stock' => 0,
-                    'status' => 'low_stock',
-                    'image' => null,
-                ],
-            ],
+            'products' => $products,
         ]);
+    }
+
+    public function create(): Response
+    {
+        return Inertia::render('Products/Create', [
+            'categories' => $this->categories,
+        ]);
+    }
+
+    public function store(StoreProductRequest $request): RedirectResponse
+    {
+        Product::create($request->validated());
+
+        return redirect()->route('products')->with('success', 'Producto creado exitosamente');
+    }
+
+    public function edit(Product $product): Response
+    {
+        return Inertia::render('Products/Edit', [
+            'product' => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'sku' => $product->sku,
+                'category' => $product->category,
+                'description' => $product->description ?? '',
+                'price' => (string) $product->price,
+                'cost' => $product->cost ? (string) $product->cost : '',
+                'stock' => (string) $product->stock,
+                'min_stock' => $product->min_stock ? (string) $product->min_stock : '',
+                'is_active' => $product->is_active,
+                'is_featured' => $product->is_featured,
+            ],
+            'categories' => $this->categories,
+        ]);
+    }
+
+    public function update(UpdateProductRequest $request, Product $product): RedirectResponse
+    {
+        $product->update($request->validated());
+
+        return redirect()->route('products')->with('success', 'Producto actualizado exitosamente');
     }
 }

@@ -117,11 +117,11 @@ export default function Sidebar({ active }: SidebarProps) {
             {/* CTA Button */}
             <div className="px-4 mb-4">
                 <Link
-                    href="/admin/orders/create"
+                    href="/admin/products/create"
                     className="flex items-center justify-center gap-3 w-full h-12 bg-[#D4A853] rounded-lg text-white font-medium text-sm font-[Outfit] hover:bg-[#c49a4a] transition-colors"
                 >
                     <Plus className="w-5 h-5" />
-                    Nuevo Pedido
+                    Nuevo Producto
                 </Link>
             </div>
 
