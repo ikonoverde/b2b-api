@@ -125,7 +125,7 @@ it('returns a token that can authenticate to /api/user', function () {
         ->getJson('/api/user');
 
     $userResponse->assertSuccessful()
-        ->assertJsonPath('email', 'john@example.com');
+        ->assertJsonPath('data.email', 'john@example.com');
 });
 
 it('returns validation error for invalid RFC format', function () {

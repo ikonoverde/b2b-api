@@ -79,13 +79,13 @@
                             </li>
                                                                         </ul>
                             </ul>
-                    <ul id="tocify-header-endpoints" class="tocify-header">
-                <li class="tocify-item level-1" data-unique="endpoints">
-                    <a href="#endpoints">Endpoints</a>
+                    <ul id="tocify-header-user" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="user">
+                    <a href="#user">User</a>
                 </li>
-                                    <ul id="tocify-subheader-endpoints" class="tocify-subheader">
-                                                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-user">
-                                <a href="#endpoints-GETapi-user">GET api/user</a>
+                                    <ul id="tocify-subheader-user" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="user-GETapi-user">
+                                <a href="#user-GETapi-user">Get Current User</a>
                             </li>
                                                                         </ul>
                             </ul>
@@ -98,7 +98,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: January 25, 2026</li>
+        <li>Last updated: January 27, 2026</li>
     </ul>
 </div>
 
@@ -569,16 +569,16 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                <h1 id="endpoints">Endpoints</h1>
+                <h1 id="user">User</h1>
 
-    
+    <p>APIs for user profile management</p>
 
-                                <h2 id="endpoints-GETapi-user">GET api/user</h2>
+                                <h2 id="user-GETapi-user">Get Current User</h2>
 
 <p>
 </p>
 
-
+<p>Retrieve the authenticated user's profile.</p>
 
 <span id="example-requests-GETapi-user">
 <blockquote>Example request:</blockquote>
@@ -610,16 +610,22 @@ fetch(url, {
 
 <span id="example-responses-GETapi-user">
             <blockquote>
-            <p>Example response (401):</p>
+            <p>Example response (200, Success):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;id&quot;: 1,
+    &quot;name&quot;: &quot;John Doe&quot;,
+    &quot;email&quot;: &quot;john@example.com&quot;,
+    &quot;rfc&quot;: &quot;ABCD123456XYZ&quot;,
+    &quot;phone&quot;: &quot;+521234567890&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401, Unauthenticated):</p>
+        </blockquote>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;message&quot;: &quot;Unauthenticated.&quot;

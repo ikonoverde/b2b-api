@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 use Knuckles\Scribe\Extracting\Strategies;
 use Knuckles\Scribe\Config\Defaults;
