@@ -9,6 +9,45 @@ endpoints:
     custom: []
     httpMethods:
       - GET
+    uri: api/products
+    metadata:
+      custom: []
+      groupName: Products
+      groupDescription: |-
+
+        APIs for product management
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get All Products'
+      description: 'Retrieve all products.'
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": [{"id": 1, "name": "Fertilizante Premium", "sku": "FER-001", "category": "Fertilizantes", "description": "High quality fertilizer", "price": 45.00, "stock": 100, "is_active": true, "is_featured": true, "image": null}]}'
+        headers: []
+        description: Success
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
     uri: api/products/featured
     metadata:
       custom: []
