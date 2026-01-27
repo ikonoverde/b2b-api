@@ -42,3 +42,14 @@ export interface Activity {
     time: string;
     type: 'success' | 'info' | 'warning' | 'error' | 'review';
 }
+
+export interface Product {
+    id: number;
+    name: string;
+    sku: string;
+    category: string;
+    price: number;
+    stock: number;
+    status: 'active' | 'inactive' | 'low_stock';
+    image: string | null;
+}
