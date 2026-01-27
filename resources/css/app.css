@@ -4,6 +4,7 @@
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
+@source '../**/*.tsx';
 
 @theme {
     --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
@@ -19,4 +20,10 @@
     --color-card: #FFFFFF;
     --color-error: #EF4444;
     --color-sidebar-muted: #A8B5A0;
+    --color-sidebar-bg: #5E7052;
+    --color-sidebar-text: #FFFFFF;
+    --color-background-muted: #FAF6F1;
+    --color-success: #22C55E;
+    --color-warning: #F59E0B;
+    --color-secondary: #8B6F47;
 }
