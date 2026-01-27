@@ -19,7 +19,7 @@ export default function Login() {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        post('/login');
+        post('/admin/login');
     };
 
     return (

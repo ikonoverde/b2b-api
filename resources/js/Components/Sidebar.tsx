@@ -28,21 +28,21 @@ interface NavItem {
 }
 
 const mainNav: NavItem[] = [
-    { name: 'Dashboard', href: '/dashboard', icon: LayoutGrid, id: 'dashboard' },
-    { name: 'Analiticas', href: '/analytics', icon: ChartBar, id: 'analytics' },
-    { name: 'Clientes', href: '/customers', icon: Users, id: 'customers' },
+    { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutGrid, id: 'dashboard' },
+    { name: 'Analiticas', href: '/admin/analytics', icon: ChartBar, id: 'analytics' },
+    { name: 'Clientes', href: '/admin/customers', icon: Users, id: 'customers' },
 ];
 
 const managementNav: NavItem[] = [
-    { name: 'Pedidos', href: '/orders', icon: ShoppingCart, id: 'orders', badge: 12 },
-    { name: 'Productos', href: '/products', icon: Package, id: 'products' },
-    { name: 'Envios', href: '/shipments', icon: Truck, id: 'shipments' },
-    { name: 'Facturas', href: '/invoices', icon: FileText, id: 'invoices' },
+    { name: 'Pedidos', href: '/admin/orders', icon: ShoppingCart, id: 'orders', badge: 12 },
+    { name: 'Productos', href: '/admin/products', icon: Package, id: 'products' },
+    { name: 'Envios', href: '/admin/shipments', icon: Truck, id: 'shipments' },
+    { name: 'Facturas', href: '/admin/invoices', icon: FileText, id: 'invoices' },
 ];
 
 const systemNav: NavItem[] = [
-    { name: 'Configuracion', href: '/settings', icon: Settings, id: 'settings' },
-    { name: 'Ayuda', href: '/help', icon: LifeBuoy, id: 'help' },
+    { name: 'Configuracion', href: '/admin/settings', icon: Settings, id: 'settings' },
+    { name: 'Ayuda', href: '/admin/help', icon: LifeBuoy, id: 'help' },
 ];
 
 export default function Sidebar({ active }: SidebarProps) {
@@ -50,7 +50,7 @@ export default function Sidebar({ active }: SidebarProps) {
     const user = auth.user;
     const { post, processing } = useForm({});
 
-    const handleLogout = () => post('/logout');
+    const handleLogout = () => post('/admin/logout');
 
     return (
         <aside className="w-[280px] min-h-screen bg-[#F5F3F0] flex flex-col py-6">
@@ -117,7 +117,7 @@ export default function Sidebar({ active }: SidebarProps) {
             {/* CTA Button */}
             <div className="px-4 mb-4">
                 <Link
-                    href="/orders/create"
+                    href="/admin/orders/create"
                     className="flex items-center justify-center gap-3 w-full h-12 bg-[#D4A853] rounded-lg text-white font-medium text-sm font-[Outfit] hover:bg-[#c49a4a] transition-colors"
                 >
                     <Plus className="w-5 h-5" />
