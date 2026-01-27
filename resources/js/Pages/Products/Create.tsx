@@ -1,7 +1,7 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useRef, DragEvent, ChangeEvent } from 'react';
 import { Link, useForm } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
-import { Save, ImagePlus, ChevronDown } from 'lucide-react';
+import { Save, ImagePlus, ChevronDown, X } from 'lucide-react';
 import type { PageProps } from '@/types';
 
 interface ProductForm {
@@ -15,6 +15,7 @@ interface ProductForm {
     min_stock: string;
     is_active: boolean;
     is_featured: boolean;
+    image: File | null;
 }
 
 interface CreateProductProps extends PageProps {
@@ -23,6 +24,9 @@ interface CreateProductProps extends PageProps {
 
 export default function Create({ categories }: CreateProductProps) {
     const [categoryOpen, setCategoryOpen] = useState(false);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [isDragging, setIsDragging] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const { data, setData, post, processing, errors } = useForm<ProductForm>({
         name: '',
@@ -35,11 +39,65 @@ export default function Create({ categories }: CreateProductProps) {
         min_stock: '',
         is_active: true,
         is_featured: false,
+        image: null,
     });
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         post('/admin/products');
+    };
+
+    const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            handleFile(file);
+        }
+    };
+
+    const handleFile = (file: File) => {
+        if (file.size > 5 * 1024 * 1024) {
+            alert('El archivo debe ser menor a 5MB');
+            return;
+        }
+
+        if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
+            alert('Solo se permiten archivos PNG, JPG o WEBP');
+            return;
+        }
+
+        setData('image', file);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            setImagePreview(e.target?.result as string);
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        setIsDragging(false);
+    };
+
+    const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        setIsDragging(false);
+        const file = e.dataTransfer.files[0];
+        if (file) {
+            handleFile(file);
+        }
+    };
+
+    const removeImage = () => {
+        setData('image', null);
+        setImagePreview(null);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
     };
 
     return (
@@ -285,17 +343,49 @@ export default function Create({ categories }: CreateProductProps) {
                                 </h2>
                             </div>
                             <div className="p-6 flex flex-col gap-4">
-                                <div className="flex flex-col items-center justify-center gap-3 h-[200px] bg-[#FBF9F7] rounded-xl border-2 border-dashed border-[#E5E5E5] cursor-pointer hover:border-[#4A5D4A] transition-colors">
-                                    <div className="w-14 h-14 bg-[#E8EDE8] rounded-full flex items-center justify-center">
-                                        <ImagePlus className="w-6 h-6 text-[#4A5D4A]" />
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept="image/png,image/jpeg,image/webp"
+                                    onChange={handleFileSelect}
+                                    className="hidden"
+                                />
+                                {imagePreview ? (
+                                    <div className="relative h-[200px] bg-[#FBF9F7] rounded-xl border-2 border-[#E5E5E5] overflow-hidden">
+                                        <img
+                                            src={imagePreview}
+                                            alt="Preview"
+                                            className="w-full h-full object-cover"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={removeImage}
+                                            className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
+                                        >
+                                            <X className="w-4 h-4 text-[#666666]" />
+                                        </button>
                                     </div>
-                                    <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                        Arrastra imágenes aquí
-                                    </span>
-                                    <span className="text-[13px] text-[#999999] font-[Outfit]">
-                                        o haz clic para seleccionar
-                                    </span>
-                                </div>
+                                ) : (
+                                    <div
+                                        onClick={() => fileInputRef.current?.click()}
+                                        onDragOver={handleDragOver}
+                                        onDragLeave={handleDragLeave}
+                                        onDrop={handleDrop}
+                                        className={`flex flex-col items-center justify-center gap-3 h-[200px] bg-[#FBF9F7] rounded-xl border-2 border-dashed ${
+                                            isDragging ? 'border-[#4A5D4A] bg-[#E8EDE8]' : 'border-[#E5E5E5]'
+                                        } cursor-pointer hover:border-[#4A5D4A] transition-colors`}
+                                    >
+                                        <div className="w-14 h-14 bg-[#E8EDE8] rounded-full flex items-center justify-center">
+                                            <ImagePlus className="w-6 h-6 text-[#4A5D4A]" />
+                                        </div>
+                                        <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                                            Arrastra imágenes aquí
+                                        </span>
+                                        <span className="text-[13px] text-[#999999] font-[Outfit]">
+                                            o haz clic para seleccionar
+                                        </span>
+                                    </div>
+                                )}
                                 <span className="text-xs text-[#999999] font-[Outfit]">
                                     PNG, JPG o WEBP. Máximo 5MB por imagen.
                                 </span>
