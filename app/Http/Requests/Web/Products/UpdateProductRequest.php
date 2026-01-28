@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Web\Products;
 
+use App\Rules\NonOverlappingPricingTiers;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProductRequest extends FormRequest
@@ -32,6 +33,13 @@ class UpdateProductRequest extends FormRequest
             'min_stock' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['boolean'],
             'is_featured' => ['boolean'],
+            'image' => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:5120'],
+            'pricing_tiers' => ['nullable', 'array', new NonOverlappingPricingTiers],
+            'pricing_tiers.*.min_qty' => ['required', 'integer', 'min:1'],
+            'pricing_tiers.*.max_qty' => ['nullable', 'integer', 'min:1', 'gte:pricing_tiers.*.min_qty'],
+            'pricing_tiers.*.price' => ['required', 'numeric', 'min:0'],
+            'pricing_tiers.*.discount' => ['required', 'numeric', 'min:0', 'max:100'],
+            'pricing_tiers.*.label' => ['required', 'string', 'max:100'],
         ];
     }
 }

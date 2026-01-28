@@ -1,8 +1,16 @@
 import { FormEvent, useState, useRef, DragEvent, ChangeEvent } from 'react';
 import { Link, useForm } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
-import { Save, ImagePlus, ChevronDown, X } from 'lucide-react';
+import { Save, ImagePlus, ChevronDown, X, Plus, Trash2 } from 'lucide-react';
 import type { PageProps } from '@/types';
+
+interface PricingTier {
+    min_qty: string;
+    max_qty: string;
+    price: string;
+    discount: string;
+    label: string;
+}
 
 interface ProductForm {
     name: string;
@@ -16,10 +24,12 @@ interface ProductForm {
     is_active: boolean;
     is_featured: boolean;
     image?: File | null;
+    pricing_tiers: PricingTier[];
 }
 
 interface ProductData extends ProductForm {
     id: number;
+    image_url?: string | null;
 }
 
 interface EditProductProps extends PageProps {
@@ -29,11 +39,11 @@ interface EditProductProps extends PageProps {
 
 export default function Edit({ product, categories }: EditProductProps) {
     const [categoryOpen, setCategoryOpen] = useState(false);
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(product.image_url ?? null);
     const [isDragging, setIsDragging] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const { data, setData, put, processing, errors } = useForm<ProductForm>({
+    const { data, setData, post, processing, errors } = useForm<ProductForm & { _method: string }>({
         name: product.name,
         sku: product.sku,
         category: product.category,
@@ -45,11 +55,13 @@ export default function Edit({ product, categories }: EditProductProps) {
         is_active: product.is_active,
         is_featured: product.is_featured,
         image: null,
+        pricing_tiers: product.pricing_tiers || [],
+        _method: 'put',
     });
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        put(`/admin/products/${product.id}`);
+        post(`/admin/products/${product.id}`);
     };
 
     const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
@@ -103,6 +115,35 @@ export default function Edit({ product, categories }: EditProductProps) {
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
         }
+    };
+
+    const addPricingTier = () => {
+        const lastTier = data.pricing_tiers[data.pricing_tiers.length - 1];
+        const suggestedMinQty = lastTier && lastTier.max_qty ? String(parseInt(lastTier.max_qty) + 1) : '1';
+
+        setData('pricing_tiers', [
+            ...data.pricing_tiers,
+            {
+                min_qty: suggestedMinQty,
+                max_qty: '',
+                price: '',
+                discount: '',
+                label: '',
+            },
+        ]);
+    };
+
+    const removePricingTier = (index: number) => {
+        setData(
+            'pricing_tiers',
+            data.pricing_tiers.filter((_, i) => i !== index)
+        );
+    };
+
+    const updatePricingTier = (index: number, field: keyof PricingTier, value: string) => {
+        const updatedTiers = [...data.pricing_tiers];
+        updatedTiers[index] = { ...updatedTiers[index], [field]: value };
+        setData('pricing_tiers', updatedTiers);
     };
 
     return (
@@ -334,6 +375,165 @@ export default function Edit({ product, categories }: EditProductProps) {
                                         )}
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        {/* Pricing Tiers Card */}
+                        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
+                            <div className="px-6 py-5 border-b border-[#E5E5E5] flex items-center justify-between">
+                                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+                                    Niveles de Precios
+                                </h2>
+                                <button
+                                    type="button"
+                                    onClick={addPricingTier}
+                                    className="flex items-center gap-1.5 px-3 py-1.5 bg-[#E8EDE8] rounded-lg text-sm font-medium text-[#4A5D4A] font-[Outfit] hover:bg-[#d9e2d9] transition-colors"
+                                >
+                                    <Plus className="w-4 h-4" />
+                                    Agregar
+                                </button>
+                            </div>
+                            <div className="p-6 flex flex-col gap-4">
+                                {errors.pricing_tiers && (
+                                    <div className="p-3 bg-red-50 rounded-lg border border-red-200">
+                                        <span className="text-xs text-red-600 font-[Outfit]">{errors.pricing_tiers}</span>
+                                    </div>
+                                )}
+
+                                {data.pricing_tiers.length === 0 ? (
+                                    <div className="flex flex-col items-center justify-center py-8 text-center">
+                                        <span className="text-sm text-[#999999] font-[Outfit]">
+                                            No hay niveles de precios configurados.
+                                        </span>
+                                        <span className="text-xs text-[#BBBBBB] font-[Outfit] mt-1">
+                                            Los niveles permiten ofrecer descuentos por volumen.
+                                        </span>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col gap-4">
+                                        {data.pricing_tiers.map((tier, index) => (
+                                            <div
+                                                key={index}
+                                                className="p-4 bg-[#FBF9F7] rounded-xl border border-[#E5E5E5]"
+                                            >
+                                                <div className="flex items-center justify-between mb-3">
+                                                    <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                                                        Nivel {index + 1}
+                                                    </span>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removePricingTier(index)}
+                                                        className="p-1.5 text-[#999999] hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+
+                                                <div className="grid grid-cols-2 gap-3">
+                                                    <div className="flex flex-col gap-1.5">
+                                                        <label className="text-xs font-medium text-[#666666] font-[Outfit]">
+                                                            Cant. Mínima
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            value={tier.min_qty}
+                                                            onChange={(e) => updatePricingTier(index, 'min_qty', e.target.value)}
+                                                            placeholder="1"
+                                                            className="h-9 px-3 bg-white rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
+                                                        />
+                                                        {errors[`pricing_tiers.${index}.min_qty`] && (
+                                                            <span className="text-xs text-red-500 font-[Outfit]">
+                                                                {errors[`pricing_tiers.${index}.min_qty`]}
+                                                            </span>
+                                                        )}
+                                                    </div>
+
+                                                    <div className="flex flex-col gap-1.5">
+                                                        <label className="text-xs font-medium text-[#666666] font-[Outfit]">
+                                                            Cant. Máxima
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            value={tier.max_qty}
+                                                            onChange={(e) => updatePricingTier(index, 'max_qty', e.target.value)}
+                                                            placeholder="Sin límite"
+                                                            className="h-9 px-3 bg-white rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
+                                                        />
+                                                        {errors[`pricing_tiers.${index}.max_qty`] && (
+                                                            <span className="text-xs text-red-500 font-[Outfit]">
+                                                                {errors[`pricing_tiers.${index}.max_qty`]}
+                                                            </span>
+                                                        )}
+                                                    </div>
+
+                                                    <div className="flex flex-col gap-1.5">
+                                                        <label className="text-xs font-medium text-[#666666] font-[Outfit]">
+                                                            Precio
+                                                        </label>
+                                                        <div className="flex h-9 bg-white rounded-lg border border-[#E5E5E5] overflow-hidden focus-within:border-[#4A5D4A] transition-colors">
+                                                            <div className="flex items-center px-2 bg-[#F5F3F0] border-r border-[#E5E5E5]">
+                                                                <span className="text-xs text-[#666666] font-[Outfit]">$</span>
+                                                            </div>
+                                                            <input
+                                                                type="text"
+                                                                value={tier.price}
+                                                                onChange={(e) => updatePricingTier(index, 'price', e.target.value)}
+                                                                placeholder="0.00"
+                                                                className="flex-1 px-2 bg-transparent text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none"
+                                                            />
+                                                        </div>
+                                                        {errors[`pricing_tiers.${index}.price`] && (
+                                                            <span className="text-xs text-red-500 font-[Outfit]">
+                                                                {errors[`pricing_tiers.${index}.price`]}
+                                                            </span>
+                                                        )}
+                                                    </div>
+
+                                                    <div className="flex flex-col gap-1.5">
+                                                        <label className="text-xs font-medium text-[#666666] font-[Outfit]">
+                                                            Descuento
+                                                        </label>
+                                                        <div className="flex h-9 bg-white rounded-lg border border-[#E5E5E5] overflow-hidden focus-within:border-[#4A5D4A] transition-colors">
+                                                            <input
+                                                                type="text"
+                                                                value={tier.discount}
+                                                                onChange={(e) => updatePricingTier(index, 'discount', e.target.value)}
+                                                                placeholder="0"
+                                                                className="flex-1 px-2 bg-transparent text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none"
+                                                            />
+                                                            <div className="flex items-center px-2 bg-[#F5F3F0] border-l border-[#E5E5E5]">
+                                                                <span className="text-xs text-[#666666] font-[Outfit]">%</span>
+                                                            </div>
+                                                        </div>
+                                                        {errors[`pricing_tiers.${index}.discount`] && (
+                                                            <span className="text-xs text-red-500 font-[Outfit]">
+                                                                {errors[`pricing_tiers.${index}.discount`]}
+                                                            </span>
+                                                        )}
+                                                    </div>
+
+                                                    <div className="col-span-2 flex flex-col gap-1.5">
+                                                        <label className="text-xs font-medium text-[#666666] font-[Outfit]">
+                                                            Etiqueta
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            value={tier.label}
+                                                            onChange={(e) => updatePricingTier(index, 'label', e.target.value)}
+                                                            placeholder="Ej: Mayorista, Distribuidor"
+                                                            className="h-9 px-3 bg-white rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
+                                                        />
+                                                        {errors[`pricing_tiers.${index}.label`] && (
+                                                            <span className="text-xs text-red-500 font-[Outfit]">
+                                                                {errors[`pricing_tiers.${index}.label`]}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -49,5 +51,18 @@ class Product extends Model
         }
 
         return 'active';
+    }
+
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->image ? Storage::disk('public')->url($this->image) : null;
+    }
+
+    /**
+     * @return HasMany<PricingTier, $this>
+     */
+    public function pricingTiers(): HasMany
+    {
+        return $this->hasMany(PricingTier::class)->orderBy('min_qty');
     }
 }

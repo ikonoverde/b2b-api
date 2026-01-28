@@ -2,6 +2,8 @@
 
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 test('authenticated user can view edit product page', function () {
     $user = User::factory()->create();
@@ -116,4 +118,103 @@ test('sku unique validation rejects duplicate from other product', function () {
     ]);
 
     $response->assertSessionHasErrors(['sku']);
+});
+
+test('authenticated user can update a product with an image', function () {
+    Storage::fake('public');
+
+    $user = User::factory()->create();
+    $product = Product::factory()->create([
+        'name' => 'Old Name',
+        'sku' => 'IMG-001',
+    ]);
+
+    $image = UploadedFile::fake()->create('product.jpg', 100, 'image/jpeg');
+
+    $response = $this->actingAs($user)->put("/admin/products/{$product->id}", [
+        'name' => 'Updated with Image',
+        'sku' => 'IMG-001',
+        'category' => 'Fertilizantes',
+        'price' => 29.99,
+        'stock' => 100,
+        'image' => $image,
+    ]);
+
+    $response->assertRedirect(route('products'));
+    $response->assertSessionHas('success', 'Producto actualizado exitosamente');
+
+    $product->refresh();
+    expect($product->image)->not->toBeNull();
+    Storage::disk('public')->assertExists($product->image);
+});
+
+test('updating product replaces old image', function () {
+    Storage::fake('public');
+
+    $user = User::factory()->create();
+    $oldImage = UploadedFile::fake()->create('old.jpg', 50, 'image/jpeg');
+    $oldImagePath = $oldImage->store('products', 'public');
+
+    $product = Product::factory()->create([
+        'sku' => 'REPLACE-001',
+        'image' => $oldImagePath,
+    ]);
+
+    $newImage = UploadedFile::fake()->create('new.jpg', 100, 'image/jpeg');
+
+    $response = $this->actingAs($user)->put("/admin/products/{$product->id}", [
+        'name' => 'Product with New Image',
+        'sku' => 'REPLACE-001',
+        'category' => 'Fertilizantes',
+        'price' => 29.99,
+        'stock' => 100,
+        'image' => $newImage,
+    ]);
+
+    $response->assertRedirect(route('products'));
+
+    $product->refresh();
+    expect($product->image)->not->toBe($oldImagePath);
+    Storage::disk('public')->assertMissing($oldImagePath);
+    Storage::disk('public')->assertExists($product->image);
+});
+
+test('image validation rejects invalid file types', function () {
+    Storage::fake('public');
+
+    $user = User::factory()->create();
+    $product = Product::factory()->create(['sku' => 'INVALID-001']);
+
+    $file = UploadedFile::fake()->create('document.pdf', 100, 'application/pdf');
+
+    $response = $this->actingAs($user)->put("/admin/products/{$product->id}", [
+        'name' => 'Product',
+        'sku' => 'INVALID-001',
+        'category' => 'Fertilizantes',
+        'price' => 29.99,
+        'stock' => 100,
+        'image' => $file,
+    ]);
+
+    $response->assertSessionHasErrors(['image']);
+});
+
+test('image validation rejects files over 5MB', function () {
+    Storage::fake('public');
+
+    $user = User::factory()->create();
+    $product = Product::factory()->create(['sku' => 'BIG-001']);
+
+    $file = UploadedFile::fake()->create('large.jpg', 6000, 'image/jpeg'); // 6MB
+
+    $response = $this->actingAs($user)->put("/admin/products/{$product->id}", [
+        'name' => 'Product',
+        'sku' => 'BIG-001',
+        'category' => 'Fertilizantes',
+        'price' => 29.99,
+        'stock' => 100,
+        'image' => $file,
+    ]);
+
+    $response->assertSessionHasErrors(['image']);
 });
