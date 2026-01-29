@@ -1,0 +1,326 @@
+name: Cart
+description: |-
+
+  APIs for cart management
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/cart
+    metadata:
+      custom: []
+      groupName: Cart
+      groupDescription: |-
+
+        APIs for cart management
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Cart'
+      description: "Retrieve the current user's cart with all items."
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"id": 1, "status": "active", "items": [{"id": 1, "product_id": 1, "product_name": "Fertilizante Premium", "quantity": 2, "unit_price": 45.00, "subtotal": 90.00}], "totals": {"subtotal": 90.00, "item_count": 1, "total_quantity": 2}}}'
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"id": 1, "status": "active", "items": [], "totals": {"subtotal": 0, "item_count": 0, "total_quantity": 0}}}'
+        headers: []
+        description: 'Empty cart'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/cart/items
+    metadata:
+      custom: []
+      groupName: Cart
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Add Item to Cart'
+      description: "Add a product to the user's cart. Creates cart if it doesn't exist."
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      product_id:
+        custom: []
+        name: product_id
+        description: 'The ID of the product to add to the cart. The <code>id</code> of an existing record in the products table.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      quantity:
+        custom: []
+        name: quantity
+        description: 'The quantity of the product to add. Must be at least 1.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      product_id: 1
+      quantity: 2
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: '{"data": {"id": 1, "status": "active", "items": [{"id": 1, "product_id": 1, "product_name": "Fertilizante Premium", "quantity": 2, "unit_price": 45.00, "subtotal": 90.00}], "totals": {"subtotal": 90.00, "item_count": 1, "total_quantity": 2}}}'
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 422
+        content: '{"message": "Not enough stock available", "errors": {"quantity": ["Only 5 items available in stock"]}}'
+        headers: []
+        description: 'Insufficient stock'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: 'api/cart/items/{item_id}'
+    metadata:
+      custom: []
+      groupName: Cart
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update Cart Item'
+      description: 'Update the quantity of a cart item.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      item_id:
+        custom: []
+        name: item_id
+        description: 'The ID of the item.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      item:
+        custom: []
+        name: item
+        description: 'The ID of the cart item.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      item_id: 16
+      item: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      quantity:
+        custom: []
+        name: quantity
+        description: 'The new quantity for the cart item. Must be at least 1.'
+        required: true
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      quantity: 5
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"id": 1, "status": "active", "items": [{"id": 1, "product_id": 1, "product_name": "Fertilizante Premium", "quantity": 5, "unit_price": 45.00, "subtotal": 225.00}], "totals": {"subtotal": 225.00, "item_count": 1, "total_quantity": 5}}}'
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 403
+        content: '{"message": "This item does not belong to your cart"}'
+        headers: []
+        description: "Not user's item"
+      -
+        custom: []
+        status: 422
+        content: '{"message": "Not enough stock available", "errors": {"quantity": ["Only 5 items available in stock"]}}'
+        headers: []
+        description: 'Insufficient stock'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/cart/items/{item_id}'
+    metadata:
+      custom: []
+      groupName: Cart
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Remove Cart Item'
+      description: 'Remove an item from the cart.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      item_id:
+        custom: []
+        name: item_id
+        description: 'The ID of the item.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      item:
+        custom: []
+        name: item
+        description: 'The ID of the cart item.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      item_id: 16
+      item: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"id": 1, "status": "active", "items": [], "totals": {"subtotal": 0, "item_count": 0, "total_quantity": 0}}}'
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 403
+        content: '{"message": "This item does not belong to your cart"}'
+        headers: []
+        description: "Not user's item"
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: api/cart
+    metadata:
+      custom: []
+      groupName: Cart
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Clear Cart'
+      description: 'Remove all items from the cart.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"id": 1, "status": "active", "items": [], "totals": {"subtotal": 0, "item_count": 0, "total_quantity": 0}}}'
+        headers: []
+        description: Success
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

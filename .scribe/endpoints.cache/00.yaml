@@ -33,9 +33,9 @@ endpoints:
       name:
         custom: []
         name: name
-        description: 'Must not be greater than 255 characters.'
+        description: 'The full name of the user. Must not be greater than 255 characters.'
         required: false
-        example: b
+        example: 'John Doe'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -44,9 +44,9 @@ endpoints:
       rfc:
         custom: []
         name: rfc
-        description: 'Must match the regex /^[A-Z&Ñ]{3,4}[0-9]{6}[A-Z0-9]{3}$/. Must be 13 characters.'
+        description: 'The RFC (Registro Federal de Contribuyentes) - Mexican tax ID. Must match the regex /^[A-Z&Ñ]{3,4}[0-9]{6}[A-Z0-9]{3}$/. Must be 13 characters.'
         required: false
-        example: ngzmiyvdljnik
+        example: XAXX010101000
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -55,9 +55,9 @@ endpoints:
       email:
         custom: []
         name: email
-        description: 'Must be a valid email address. Must not be greater than 255 characters.'
+        description: 'The email address of the user. Must be a valid email address. Must not be greater than 255 characters.'
         required: true
-        example: aschuster@example.com
+        example: user@example.com
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -66,9 +66,9 @@ endpoints:
       phone:
         custom: []
         name: phone
-        description: 'Must not be greater than 20 characters.'
+        description: 'The phone number of the user. Must not be greater than 20 characters.'
         required: true
-        example: kcmyuwpwlvqwrsit
+        example: '+521234567890'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -77,9 +77,9 @@ endpoints:
       password:
         custom: []
         name: password
-        description: 'Must be at least 8 characters.'
+        description: 'The password for the account (minimum 8 characters). Must be at least 8 characters.'
         required: true
-        example: "NG5a:x&S$hSn7L'ff2"
+        example: password123
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -88,7 +88,7 @@ endpoints:
       terms_accepted:
         custom: []
         name: terms_accepted
-        description: 'Must be accepted.'
+        description: 'Whether the user has accepted the terms and conditions. Must be accepted.'
         required: true
         example: true
         type: boolean
@@ -99,22 +99,22 @@ endpoints:
       device_name:
         custom: []
         name: device_name
-        description: 'Must not be greater than 255 characters.'
+        description: 'Name of the device requesting the token. Must not be greater than 255 characters.'
         required: true
-        example: j
+        example: 'My iPhone'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      name: b
-      rfc: ngzmiyvdljnik
-      email: aschuster@example.com
-      phone: kcmyuwpwlvqwrsit
-      password: "NG5a:x&S$hSn7L'ff2"
+      name: 'John Doe'
+      rfc: XAXX010101000
+      email: user@example.com
+      phone: '+521234567890'
+      password: password123
       terms_accepted: true
-      device_name: j
+      device_name: 'My iPhone'
     fileParameters: []
     responses:
       -
@@ -162,9 +162,9 @@ endpoints:
       email:
         custom: []
         name: email
-        description: 'Must be a valid email address.'
+        description: 'The email address of the user. Must be a valid email address.'
         required: true
-        example: gbailey@example.net
+        example: user@example.com
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -173,9 +173,9 @@ endpoints:
       password:
         custom: []
         name: password
-        description: ''
+        description: 'The password for the account.'
         required: true
-        example: '|]|{+-'
+        example: password123
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -184,18 +184,18 @@ endpoints:
       device_name:
         custom: []
         name: device_name
-        description: 'Must not be greater than 255 characters.'
+        description: 'Name of the device requesting the token. Must not be greater than 255 characters.'
         required: true
-        example: v
+        example: 'My iPhone'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      email: gbailey@example.net
-      password: '|]|{+-'
-      device_name: v
+      email: user@example.com
+      password: password123
+      device_name: 'My iPhone'
     fileParameters: []
     responses:
       -

@@ -40,4 +40,47 @@ class RegisterRequest extends FormRequest
             'terms_accepted.accepted' => 'Debes aceptar los términos y condiciones.',
         ];
     }
+
+    /**
+     * Get the body parameters for the request.
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    public function bodyParameters(): array
+    {
+        return [
+            'name' => [
+                'description' => 'The full name of the user',
+                'example' => 'John Doe',
+            ],
+            'rfc' => [
+                'description' => 'The RFC (Registro Federal de Contribuyentes) - Mexican tax ID',
+                'example' => 'XAXX010101000',
+            ],
+            'email' => [
+                'description' => 'The email address of the user',
+                'example' => 'user@example.com',
+            ],
+            'phone' => [
+                'description' => 'The phone number of the user',
+                'example' => '+521234567890',
+            ],
+            'password' => [
+                'description' => 'The password for the account (minimum 8 characters)',
+                'example' => 'password123',
+            ],
+            'password_confirmation' => [
+                'description' => 'Confirmation of the password (must match password)',
+                'example' => 'password123',
+            ],
+            'terms_accepted' => [
+                'description' => 'Whether the user has accepted the terms and conditions',
+                'example' => 'true',
+            ],
+            'device_name' => [
+                'description' => 'Name of the device requesting the token',
+                'example' => 'My iPhone',
+            ],
+        ];
+    }
 }

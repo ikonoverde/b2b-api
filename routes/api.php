@@ -2,6 +2,11 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Cart\AddCartItemController;
+use App\Http\Controllers\Cart\ClearCartController;
+use App\Http\Controllers\Cart\GetCartController;
+use App\Http\Controllers\Cart\RemoveCartItemController;
+use App\Http\Controllers\Cart\UpdateCartItemController;
 use App\Http\Controllers\FeaturedProductsController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\ProductsController;
@@ -16,3 +21,11 @@ Route::get('/user', UserController::class)->middleware('auth:sanctum');
 Route::get('/products', ProductsController::class);
 Route::get('/products/featured', FeaturedProductsController::class);
 Route::get('/products/{product}', ProductDetailController::class);
+
+Route::prefix('cart')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', GetCartController::class);
+    Route::post('/items', AddCartItemController::class);
+    Route::put('/items/{item}', UpdateCartItemController::class);
+    Route::delete('/items/{item}', RemoveCartItemController::class);
+    Route::delete('/', ClearCartController::class);
+});

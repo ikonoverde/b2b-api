@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Cart;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class AddCartItemRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
-            'device_name' => ['required', 'string', 'max:255'],
+            'product_id' => ['required', 'integer', 'exists:products,id'],
+            'quantity' => ['required', 'integer', 'min:1'],
         ];
     }
 
@@ -36,17 +35,13 @@ class LoginRequest extends FormRequest
     public function bodyParameters(): array
     {
         return [
-            'email' => [
-                'description' => 'The email address of the user',
-                'example' => 'user@example.com',
+            'product_id' => [
+                'description' => 'The ID of the product to add to the cart',
+                'example' => 1,
             ],
-            'password' => [
-                'description' => 'The password for the account',
-                'example' => 'password123',
-            ],
-            'device_name' => [
-                'description' => 'Name of the device requesting the token',
-                'example' => 'My iPhone',
+            'quantity' => [
+                'description' => 'The quantity of the product to add',
+                'example' => 2,
             ],
         ];
     }

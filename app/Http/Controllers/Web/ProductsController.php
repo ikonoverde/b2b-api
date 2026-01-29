@@ -15,14 +15,9 @@ use Inertia\Response;
 class ProductsController extends Controller
 {
     private array $categories = [
-        'Fertilizantes',
-        'Semillas',
-        'Control plagas',
-        'Bioestimulantes',
-        'Contenedores',
-        'Riego',
-        'Herramientas',
-        'Sustratos',
+        'Aceites para masaje',
+        'Aromaterapia',
+        'Cremas y lociones',
     ];
 
     public function index(): Response

@@ -19,6 +19,8 @@ class UserController extends Controller
      *
      * @response 200 scenario="Success" {"id": 1, "name": "John Doe", "email": "john@example.com", "rfc": "ABCD123456XYZ", "phone": "+521234567890"}
      * @response 401 scenario="Unauthenticated" {"message": "Unauthenticated."}
+     *
+     * @authenticated
      */
     public function __invoke(Request $request)
     {

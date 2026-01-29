@@ -18,9 +18,10 @@ endpoints:
       subgroupDescription: ''
       title: 'Get Current User'
       description: "Retrieve the authenticated user's profile."
-      authenticated: false
+      authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -44,7 +45,10 @@ endpoints:
         headers: []
         description: Unauthenticated
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
