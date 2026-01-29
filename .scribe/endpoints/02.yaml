@@ -81,3 +81,60 @@ endpoints:
     controller: null
     method: null
     route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/products/{product_id}'
+    metadata:
+      custom: []
+      groupName: Products
+      groupDescription: |-
+
+        APIs for product management
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Product Details'
+      description: 'Retrieve a single product with its pricing tiers.'
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      product_id:
+        custom: []
+        name: product_id
+        description: 'The ID of the product.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      product_id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"id": 1, "name": "Fertilizante Premium", "sku": "FER-001", "category": "Fertilizantes", "description": "High quality fertilizer", "price": 45.00, "stock": 100, "is_active": true, "is_featured": true, "image": null, "pricing_tiers": [{"id": 1, "min_qty": 10, "max_qty": 50, "price": 40.00, "discount": 11.11, "label": "Mayorista"}]}}'
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 404
+        content: '{"message": "No query results for model [App\\Models\\Product] 999"}'
+        headers: []
+        description: 'Not Found'
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

@@ -24,7 +24,7 @@ class ProductDetailResource extends JsonResource
             'stock' => $this->stock,
             'is_active' => $this->is_active,
             'is_featured' => $this->is_featured,
-            'image' => $this->image,
+            'image' => $this->image_url,
             'pricing_tiers' => PricingTierResource::collection($this->whenLoaded('pricingTiers')),
         ];
     }
