@@ -1,0 +1,216 @@
+name: Checkout
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/checkout
+    metadata:
+      custom: []
+      groupName: Checkout
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create Checkout Session'
+      description: "Creates an order from the user's cart and generates a Stripe PaymentIntent."
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      shipping_address:
+        custom: []
+        name: shipping_address
+        description: 'The shipping address for the order.'
+        required: true
+        example:
+          street: '123 Main St'
+          city: Springfield
+          state: IL
+          zip: '62701'
+          country: USA
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      shipping_address.street:
+        custom: []
+        name: shipping_address.street
+        description: 'Street address. Must not be greater than 255 characters.'
+        required: true
+        example: '123 Main St'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      shipping_address.city:
+        custom: []
+        name: shipping_address.city
+        description: 'City name. Must not be greater than 255 characters.'
+        required: true
+        example: Springfield
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      shipping_address.state:
+        custom: []
+        name: shipping_address.state
+        description: 'State or province. Must not be greater than 255 characters.'
+        required: true
+        example: IL
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      shipping_address.zip:
+        custom: []
+        name: shipping_address.zip
+        description: 'ZIP or postal code. Must not be greater than 20 characters.'
+        required: true
+        example: '62701'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      shipping_address.country:
+        custom: []
+        name: shipping_address.country
+        description: 'Country name. Must not be greater than 255 characters.'
+        required: true
+        example: USA
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      shipping_address:
+        street: '123 Main St'
+        city: Springfield
+        state: IL
+        zip: '62701'
+        country: USA
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: '{"data": {"id": 1, "user_id": 1, "status": "pending", "payment_status": "pending", "total_amount": 150.00, "shipping_cost": 10.00, "shipping_address": {"street": "123 Main St", "city": "Springfield", "state": "IL", "zip": "62701", "country": "USA"}, "items": [{"id": 1, "product_id": 1, "product_name": "Fertilizante Premium", "quantity": 2, "unit_price": 45.00, "subtotal": 90.00, "image": "products/fertilizer.jpg"}], "created_at": "2024-01-15T10:30:00Z"}, "client_secret": "pi_123_secret_456", "publishable_key": "pk_test_123"}'
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 400
+        content: '{"message": "Cart is empty"}'
+        headers: []
+        description: 'Empty cart'
+      -
+        custom: []
+        status: 422
+        content: '{"message": "The shipping address field is required.", "errors": {"shipping_address": ["The shipping address field is required."]}}'
+        headers: []
+        description: 'Validation error'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/checkout/confirm
+    metadata:
+      custom: []
+      groupName: Checkout
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Confirm Payment'
+      description: 'Confirms the Stripe payment, updates the order status, and clears the cart.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      order_id:
+        custom: []
+        name: order_id
+        description: 'The ID of the order to confirm payment for. The <code>id</code> of an existing record in the orders table.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      payment_intent_id:
+        custom: []
+        name: payment_intent_id
+        description: 'The Stripe PaymentIntent ID.'
+        required: true
+        example: pi_1234567890
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      order_id: 1
+      payment_intent_id: pi_1234567890
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"id": 1, "user_id": 1, "status": "pending", "payment_status": "completed", "total_amount": 150.00, "shipping_cost": 10.00, "shipping_address": {"street": "123 Main St", "city": "Springfield", "state": "IL", "zip": "62701", "country": "USA"}, "items": [{"id": 1, "product_id": 1, "product_name": "Fertilizante Premium", "quantity": 2, "unit_price": 45.00, "subtotal": 90.00, "image": "products/fertilizer.jpg"}], "created_at": "2024-01-15T10:30:00Z"}}'
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 400
+        content: '{"message": "Payment failed", "error": "Payment intent requires confirmation"}'
+        headers: []
+        description: 'Payment failed'
+      -
+        custom: []
+        status: 404
+        content: '{"message": "Order not found"}'
+        headers: []
+        description: 'Order not found'
+      -
+        custom: []
+        status: 422
+        content: '{"message": "The order id field is required.", "errors": {"order_id": ["The order id field is required."]}}'
+        headers: []
+        description: 'Validation error'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

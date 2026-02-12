@@ -26,7 +26,7 @@
             </style>
 
     <script>
-        var tryItOutBaseUrl = "http://192.168.0.193:8001";
+        var tryItOutBaseUrl = "http://192.168.0.193:8000";
         var useCsrf = Boolean();
         var csrfUrl = "/sanctum/csrf-cookie";
     </script>
@@ -101,6 +101,32 @@
                             </li>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-checkout" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="checkout">
+                    <a href="#checkout">Checkout</a>
+                </li>
+                                    <ul id="tocify-subheader-checkout" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="checkout-POSTapi-checkout">
+                                <a href="#checkout-POSTapi-checkout">Create Checkout Session</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="checkout-POSTapi-checkout-confirm">
+                                <a href="#checkout-POSTapi-checkout-confirm">Confirm Payment</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
+                    <ul id="tocify-header-orders" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="orders">
+                    <a href="#orders">Orders</a>
+                </li>
+                                    <ul id="tocify-subheader-orders" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="orders-GETapi-orders">
+                                <a href="#orders-GETapi-orders">Get Orders</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="orders-GETapi-orders--order_id-">
+                                <a href="#orders-GETapi-orders--order_id-">Get Order</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
                     <ul id="tocify-header-products" class="tocify-header">
                 <li class="tocify-item level-1" data-unique="products">
                     <a href="#products">Products</a>
@@ -136,7 +162,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: January 29, 2026</li>
+        <li>Last updated: February 1, 2026</li>
     </ul>
 </div>
 
@@ -145,7 +171,7 @@
     <div class="content">
         <h1 id="introduction">Introduction</h1>
 <aside>
-    <strong>Base URL</strong>: <code>http://192.168.0.193:8001</code>
+    <strong>Base URL</strong>: <code>http://192.168.0.193:8000</code>
 </aside>
 <pre><code>This documentation aims to provide all the information you need to work with our API.
 
@@ -174,7 +200,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://192.168.0.193:8001/api/register" \
+    "http://192.168.0.193:8000/api/register" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -191,7 +217,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8001/api/register"
+    "http://192.168.0.193:8000/api/register"
 );
 
 const headers = {
@@ -430,7 +456,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://192.168.0.193:8001/api/login" \
+    "http://192.168.0.193:8000/api/login" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -443,7 +469,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8001/api/login"
+    "http://192.168.0.193:8000/api/login"
 );
 
 const headers = {
@@ -625,7 +651,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://192.168.0.193:8001/api/cart" \
+    --get "http://192.168.0.193:8000/api/cart" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -633,7 +659,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8001/api/cart"
+    "http://192.168.0.193:8000/api/cart"
 );
 
 const headers = {
@@ -795,7 +821,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://192.168.0.193:8001/api/cart/items" \
+    "http://192.168.0.193:8000/api/cart/items" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -808,7 +834,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8001/api/cart/items"
+    "http://192.168.0.193:8000/api/cart/items"
 );
 
 const headers = {
@@ -997,7 +1023,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://192.168.0.193:8001/api/cart/items/16" \
+    "http://192.168.0.193:8000/api/cart/items/4" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -1009,7 +1035,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8001/api/cart/items/16"
+    "http://192.168.0.193:8000/api/cart/items/4"
 );
 
 const headers = {
@@ -1173,10 +1199,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="item_id"                data-endpoint="PUTapi-cart-items--item_id-"
-               value="16"
+               value="4"
                data-component="url">
     <br>
-<p>The ID of the item. Example: <code>16</code></p>
+<p>The ID of the item. Example: <code>4</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>item</code></b>&nbsp;&nbsp;
@@ -1219,7 +1245,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://192.168.0.193:8001/api/cart/items/16" \
+    "http://192.168.0.193:8000/api/cart/items/4" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1227,7 +1253,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8001/api/cart/items/16"
+    "http://192.168.0.193:8000/api/cart/items/4"
 );
 
 const headers = {
@@ -1363,10 +1389,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="item_id"                data-endpoint="DELETEapi-cart-items--item_id-"
-               value="16"
+               value="4"
                data-component="url">
     <br>
-<p>The ID of the item. Example: <code>16</code></p>
+<p>The ID of the item. Example: <code>4</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>item</code></b>&nbsp;&nbsp;
@@ -1396,7 +1422,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://192.168.0.193:8001/api/cart" \
+    "http://192.168.0.193:8000/api/cart" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1404,7 +1430,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8001/api/cart"
+    "http://192.168.0.193:8000/api/cart"
 );
 
 const headers = {
@@ -1525,6 +1551,896 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
+                <h1 id="checkout">Checkout</h1>
+
+    
+
+                                <h2 id="checkout-POSTapi-checkout">Create Checkout Session</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Creates an order from the user's cart and generates a Stripe PaymentIntent.</p>
+
+<span id="example-requests-POSTapi-checkout">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://192.168.0.193:8000/api/checkout" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"shipping_address\": {
+        \"street\": \"123 Main St\",
+        \"city\": \"Springfield\",
+        \"state\": \"IL\",
+        \"zip\": \"62701\",
+        \"country\": \"USA\"
+    }
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://192.168.0.193:8000/api/checkout"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "shipping_address": {
+        "street": "123 Main St",
+        "city": "Springfield",
+        "state": "IL",
+        "zip": "62701",
+        "country": "USA"
+    }
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-checkout">
+            <blockquote>
+            <p>Example response (201, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;user_id&quot;: 1,
+        &quot;status&quot;: &quot;pending&quot;,
+        &quot;payment_status&quot;: &quot;pending&quot;,
+        &quot;total_amount&quot;: 150,
+        &quot;shipping_cost&quot;: 10,
+        &quot;shipping_address&quot;: {
+            &quot;street&quot;: &quot;123 Main St&quot;,
+            &quot;city&quot;: &quot;Springfield&quot;,
+            &quot;state&quot;: &quot;IL&quot;,
+            &quot;zip&quot;: &quot;62701&quot;,
+            &quot;country&quot;: &quot;USA&quot;
+        },
+        &quot;items&quot;: [
+            {
+                &quot;id&quot;: 1,
+                &quot;product_id&quot;: 1,
+                &quot;product_name&quot;: &quot;Fertilizante Premium&quot;,
+                &quot;quantity&quot;: 2,
+                &quot;unit_price&quot;: 45,
+                &quot;subtotal&quot;: 90,
+                &quot;image&quot;: &quot;products/fertilizer.jpg&quot;
+            }
+        ],
+        &quot;created_at&quot;: &quot;2024-01-15T10:30:00Z&quot;
+    },
+    &quot;client_secret&quot;: &quot;pi_123_secret_456&quot;,
+    &quot;publishable_key&quot;: &quot;pk_test_123&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Empty cart):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Cart is empty&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422, Validation error):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The shipping address field is required.&quot;,
+    &quot;errors&quot;: {
+        &quot;shipping_address&quot;: [
+            &quot;The shipping address field is required.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-checkout" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-checkout"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-checkout"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-checkout" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-checkout">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-checkout" data-method="POST"
+      data-path="api/checkout"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-checkout', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-checkout"
+                    onclick="tryItOut('POSTapi-checkout');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-checkout"
+                    onclick="cancelTryOut('POSTapi-checkout');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-checkout"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/checkout</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-checkout"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-checkout"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-checkout"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+        <details>
+            <summary style="padding-bottom: 10px;">
+                <b style="line-height: 2;"><code>shipping_address</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+ &nbsp;
+ &nbsp;
+<br>
+<p>The shipping address for the order.</p>
+            </summary>
+                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>street</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="shipping_address.street"                data-endpoint="POSTapi-checkout"
+               value="123 Main St"
+               data-component="body">
+    <br>
+<p>Street address. Must not be greater than 255 characters. Example: <code>123 Main St</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>city</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="shipping_address.city"                data-endpoint="POSTapi-checkout"
+               value="Springfield"
+               data-component="body">
+    <br>
+<p>City name. Must not be greater than 255 characters. Example: <code>Springfield</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>state</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="shipping_address.state"                data-endpoint="POSTapi-checkout"
+               value="IL"
+               data-component="body">
+    <br>
+<p>State or province. Must not be greater than 255 characters. Example: <code>IL</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>zip</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="shipping_address.zip"                data-endpoint="POSTapi-checkout"
+               value="62701"
+               data-component="body">
+    <br>
+<p>ZIP or postal code. Must not be greater than 20 characters. Example: <code>62701</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>country</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="shipping_address.country"                data-endpoint="POSTapi-checkout"
+               value="USA"
+               data-component="body">
+    <br>
+<p>Country name. Must not be greater than 255 characters. Example: <code>USA</code></p>
+                    </div>
+                                    </details>
+        </div>
+        </form>
+
+                    <h2 id="checkout-POSTapi-checkout-confirm">Confirm Payment</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Confirms the Stripe payment, updates the order status, and clears the cart.</p>
+
+<span id="example-requests-POSTapi-checkout-confirm">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://192.168.0.193:8000/api/checkout/confirm" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"order_id\": 1,
+    \"payment_intent_id\": \"pi_1234567890\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://192.168.0.193:8000/api/checkout/confirm"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "order_id": 1,
+    "payment_intent_id": "pi_1234567890"
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-checkout-confirm">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;user_id&quot;: 1,
+        &quot;status&quot;: &quot;pending&quot;,
+        &quot;payment_status&quot;: &quot;completed&quot;,
+        &quot;total_amount&quot;: 150,
+        &quot;shipping_cost&quot;: 10,
+        &quot;shipping_address&quot;: {
+            &quot;street&quot;: &quot;123 Main St&quot;,
+            &quot;city&quot;: &quot;Springfield&quot;,
+            &quot;state&quot;: &quot;IL&quot;,
+            &quot;zip&quot;: &quot;62701&quot;,
+            &quot;country&quot;: &quot;USA&quot;
+        },
+        &quot;items&quot;: [
+            {
+                &quot;id&quot;: 1,
+                &quot;product_id&quot;: 1,
+                &quot;product_name&quot;: &quot;Fertilizante Premium&quot;,
+                &quot;quantity&quot;: 2,
+                &quot;unit_price&quot;: 45,
+                &quot;subtotal&quot;: 90,
+                &quot;image&quot;: &quot;products/fertilizer.jpg&quot;
+            }
+        ],
+        &quot;created_at&quot;: &quot;2024-01-15T10:30:00Z&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Payment failed):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Payment failed&quot;,
+    &quot;error&quot;: &quot;Payment intent requires confirmation&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404, Order not found):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Order not found&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422, Validation error):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The order id field is required.&quot;,
+    &quot;errors&quot;: {
+        &quot;order_id&quot;: [
+            &quot;The order id field is required.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-checkout-confirm" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-checkout-confirm"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-checkout-confirm"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-checkout-confirm" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-checkout-confirm">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-checkout-confirm" data-method="POST"
+      data-path="api/checkout/confirm"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-checkout-confirm', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-checkout-confirm"
+                    onclick="tryItOut('POSTapi-checkout-confirm');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-checkout-confirm"
+                    onclick="cancelTryOut('POSTapi-checkout-confirm');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-checkout-confirm"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/checkout/confirm</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-checkout-confirm"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-checkout-confirm"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-checkout-confirm"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>order_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="order_id"                data-endpoint="POSTapi-checkout-confirm"
+               value="1"
+               data-component="body">
+    <br>
+<p>The ID of the order to confirm payment for. The <code>id</code> of an existing record in the orders table. Example: <code>1</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>payment_intent_id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="payment_intent_id"                data-endpoint="POSTapi-checkout-confirm"
+               value="pi_1234567890"
+               data-component="body">
+    <br>
+<p>The Stripe PaymentIntent ID. Example: <code>pi_1234567890</code></p>
+        </div>
+        </form>
+
+                <h1 id="orders">Orders</h1>
+
+    <p>APIs for order management</p>
+
+                                <h2 id="orders-GETapi-orders">Get Orders</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Retrieve all orders for the authenticated user.</p>
+
+<span id="example-requests-GETapi-orders">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://192.168.0.193:8000/api/orders" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://192.168.0.193:8000/api/orders"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-orders">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;user_id&quot;: 1,
+            &quot;status&quot;: &quot;pending&quot;,
+            &quot;payment_status&quot;: &quot;completed&quot;,
+            &quot;total_amount&quot;: 150,
+            &quot;shipping_cost&quot;: 10,
+            &quot;shipping_address&quot;: {
+                &quot;street&quot;: &quot;123 Main St&quot;,
+                &quot;city&quot;: &quot;Springfield&quot;,
+                &quot;state&quot;: &quot;IL&quot;,
+                &quot;zip&quot;: &quot;62701&quot;,
+                &quot;country&quot;: &quot;USA&quot;
+            },
+            &quot;items&quot;: [
+                {
+                    &quot;id&quot;: 1,
+                    &quot;product_id&quot;: 1,
+                    &quot;product_name&quot;: &quot;Fertilizante Premium&quot;,
+                    &quot;quantity&quot;: 2,
+                    &quot;unit_price&quot;: 45,
+                    &quot;subtotal&quot;: 90,
+                    &quot;image&quot;: &quot;products/fertilizer.jpg&quot;
+                }
+            ],
+            &quot;created_at&quot;: &quot;2024-01-15T10:30:00Z&quot;
+        }
+    ]
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (200, No orders):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: []
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-orders" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-orders"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-orders"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-orders" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-orders">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-orders" data-method="GET"
+      data-path="api/orders"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-orders', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-orders"
+                    onclick="tryItOut('GETapi-orders');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-orders"
+                    onclick="cancelTryOut('GETapi-orders');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-orders"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/orders</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-orders"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-orders"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-orders"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+                    <h2 id="orders-GETapi-orders--order_id-">Get Order</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Retrieve a specific order by ID for the authenticated user.</p>
+
+<span id="example-requests-GETapi-orders--order_id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://192.168.0.193:8000/api/orders/16" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://192.168.0.193:8000/api/orders/16"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-orders--order_id-">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;user_id&quot;: 1,
+        &quot;status&quot;: &quot;pending&quot;,
+        &quot;payment_status&quot;: &quot;completed&quot;,
+        &quot;total_amount&quot;: 150,
+        &quot;shipping_cost&quot;: 10,
+        &quot;shipping_address&quot;: {
+            &quot;street&quot;: &quot;123 Main St&quot;,
+            &quot;city&quot;: &quot;Springfield&quot;,
+            &quot;state&quot;: &quot;IL&quot;,
+            &quot;zip&quot;: &quot;62701&quot;,
+            &quot;country&quot;: &quot;USA&quot;
+        },
+        &quot;items&quot;: [
+            {
+                &quot;id&quot;: 1,
+                &quot;product_id&quot;: 1,
+                &quot;product_name&quot;: &quot;Fertilizante Premium&quot;,
+                &quot;quantity&quot;: 2,
+                &quot;unit_price&quot;: 45,
+                &quot;subtotal&quot;: 90,
+                &quot;image&quot;: &quot;products/fertilizer.jpg&quot;
+            }
+        ],
+        &quot;created_at&quot;: &quot;2024-01-15T10:30:00Z&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403, Order belongs to different user):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Forbidden&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404, Order not found):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Order not found&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-orders--order_id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-orders--order_id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-orders--order_id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-orders--order_id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-orders--order_id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-orders--order_id-" data-method="GET"
+      data-path="api/orders/{order_id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-orders--order_id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-orders--order_id-"
+                    onclick="tryItOut('GETapi-orders--order_id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-orders--order_id-"
+                    onclick="cancelTryOut('GETapi-orders--order_id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-orders--order_id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/orders/{order_id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-orders--order_id-"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-orders--order_id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-orders--order_id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>order_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="order_id"                data-endpoint="GETapi-orders--order_id-"
+               value="16"
+               data-component="url">
+    <br>
+<p>The ID of the order. Example: <code>16</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="GETapi-orders--order_id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the order. Example: <code>1</code></p>
+            </div>
+                    </form>
+
                 <h1 id="products">Products</h1>
 
     <p>APIs for product management</p>
@@ -1542,14 +2458,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://192.168.0.193:8001/api/products" \
+    --get "http://192.168.0.193:8000/api/products" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8001/api/products"
+    "http://192.168.0.193:8000/api/products"
 );
 
 const headers = {
@@ -1674,14 +2590,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://192.168.0.193:8001/api/products/featured" \
+    --get "http://192.168.0.193:8000/api/products/featured" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8001/api/products/featured"
+    "http://192.168.0.193:8000/api/products/featured"
 );
 
 const headers = {
@@ -1806,14 +2722,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://192.168.0.193:8001/api/products/1" \
+    --get "http://192.168.0.193:8000/api/products/1" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8001/api/products/1"
+    "http://192.168.0.193:8000/api/products/1"
 );
 
 const headers = {
@@ -1973,7 +2889,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://192.168.0.193:8001/api/user" \
+    --get "http://192.168.0.193:8000/api/user" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1981,7 +2897,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8001/api/user"
+    "http://192.168.0.193:8000/api/user"
 );
 
 const headers = {
