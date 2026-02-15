@@ -80,3 +80,21 @@ it('returns a token that can authenticate to /api/user', function () {
     $userResponse->assertSuccessful()
         ->assertJsonPath('data.email', 'john@example.com');
 });
+
+it('prevents deactivated user from logging in via api', function () {
+    $user = User::factory()->create([
+        'email' => 'john@example.com',
+        'password' => 'password123',
+        'is_active' => false,
+    ]);
+
+    $response = $this->postJson('/api/login', [
+        'email' => 'john@example.com',
+        'password' => 'password123',
+        'device_name' => 'iPhone 15',
+    ]);
+
+    $response->assertUnprocessable()
+        ->assertJsonValidationErrors(['email'])
+        ->assertJsonPath('errors.email.0', 'Your account has been deactivated. Please contact the administrator.');
+});

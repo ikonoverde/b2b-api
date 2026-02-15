@@ -23,6 +23,7 @@ class LoginController extends Controller
      * Authenticate a user and receive an API token.
      *
      * @unauthenticated
+     *
      * @response 200 scenario="Success" {"user": {"id": 1, "name": "John Doe", "email": "john@example.com", "rfc": "ABCD123456XYZ", "phone": "+521234567890"}, "token": "1|abc123def456..."}
      * @response 422 scenario="Invalid credentials" {"message": "The provided credentials are incorrect.", "errors": {"email": ["The provided credentials are incorrect."]}}
      */
@@ -33,6 +34,13 @@ class LoginController extends Controller
         if (! $user || ! Hash::check($request->validated('password'), $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+
+        // Check if user is active
+        if (! $user->is_active) {
+            throw ValidationException::withMessages([
+                'email' => ['Your account has been deactivated. Please contact the administrator.'],
             ]);
         }
 

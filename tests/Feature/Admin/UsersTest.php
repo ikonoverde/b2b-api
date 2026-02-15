@@ -282,3 +282,100 @@ test('role update requires role field', function () {
 
     $response->assertSessionHasErrors(['role']);
 });
+
+test('admin can deactivate user account', function () {
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->create(['is_active' => true]);
+
+    $response = $this->actingAs($admin)->patch("/admin/users/{$user->id}/toggle-active", [
+        'is_active' => false,
+    ]);
+
+    $response->assertSuccessful();
+    $response->assertInertia(fn ($page) => $page
+        ->where('user.is_active', false)
+        ->where('flash.success', 'Usuario desactivado exitosamente. El usuario ya no podrá iniciar sesión.')
+    );
+
+    $this->assertDatabaseHas('users', [
+        'id' => $user->id,
+        'is_active' => false,
+    ]);
+});
+
+test('admin can activate user account', function () {
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->inactive()->create(['is_active' => false]);
+
+    $response = $this->actingAs($admin)->patch("/admin/users/{$user->id}/toggle-active", [
+        'is_active' => true,
+    ]);
+
+    $response->assertSuccessful();
+    $response->assertInertia(fn ($page) => $page
+        ->where('user.is_active', true)
+        ->where('flash.success', 'Usuario activado exitosamente. El usuario podrá iniciar sesión nuevamente.')
+    );
+
+    $this->assertDatabaseHas('users', [
+        'id' => $user->id,
+        'is_active' => true,
+    ]);
+});
+
+test('super_admin can deactivate user account', function () {
+    $superAdmin = User::factory()->superAdmin()->create();
+    $user = User::factory()->create(['is_active' => true]);
+
+    $response = $this->actingAs($superAdmin)->patch("/admin/users/{$user->id}/toggle-active", [
+        'is_active' => false,
+    ]);
+
+    $response->assertSuccessful();
+});
+
+test('user cannot deactivate their own account', function () {
+    $admin = User::factory()->admin()->create(['is_active' => true]);
+
+    $response = $this->actingAs($admin)->patch("/admin/users/{$admin->id}/toggle-active", [
+        'is_active' => false,
+    ]);
+
+    $response->assertForbidden();
+
+    $this->assertDatabaseHas('users', [
+        'id' => $admin->id,
+        'is_active' => true,
+    ]);
+});
+
+test('customer cannot access toggle active endpoint', function () {
+    $customer = User::factory()->create();
+    $user = User::factory()->create(['is_active' => true]);
+
+    $response = $this->actingAs($customer)->patch("/admin/users/{$user->id}/toggle-active", [
+        'is_active' => false,
+    ]);
+
+    $response->assertForbidden();
+});
+
+test('toggle active requires is_active field', function () {
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($admin)->patch("/admin/users/{$user->id}/toggle-active", []);
+
+    $response->assertSessionHasErrors(['is_active']);
+});
+
+test('toggle active requires boolean is_active value', function () {
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($admin)->patch("/admin/users/{$user->id}/toggle-active", [
+        'is_active' => 'invalid',
+    ]);
+
+    $response->assertSessionHasErrors(['is_active']);
+});

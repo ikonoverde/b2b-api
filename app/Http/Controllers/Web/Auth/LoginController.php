@@ -28,6 +28,16 @@ class LoginController extends Controller
                 ->withErrors(['email' => 'The provided credentials are incorrect.']);
         }
 
+        // Check if user is active
+        $user = Auth::user();
+        if (! $user->is_active) {
+            Auth::logout();
+
+            return back()
+                ->withInput($request->only('email', 'remember'))
+                ->withErrors(['email' => 'Tu cuenta ha sido desactivada. Por favor, contacta al administrador.']);
+        }
+
         $request->session()->regenerate();
 
         return redirect()->intended(route('dashboard'));

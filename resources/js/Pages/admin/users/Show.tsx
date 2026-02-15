@@ -15,6 +15,8 @@ import {
     UserCog,
     X,
     Check,
+    Power,
+    AlertTriangle,
 } from 'lucide-react';
 import { useState, FormEvent } from 'react';
 import type { PageProps } from '@/types';
@@ -75,9 +77,15 @@ export default function UserShow() {
     const { user, orders, activity, auth } = usePage<Props>().props;
     const [showRoleModal, setShowRoleModal] = useState(false);
     const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
+    const [showStatusModal, setShowStatusModal] = useState(false);
+    const [pendingStatus, setPendingStatus] = useState<boolean | null>(null);
 
     const { data, setData, patch, processing, errors } = useForm({
         role: user.role,
+    });
+
+    const { setData: setStatusData, patch: patchStatus, processing: statusProcessing } = useForm({
+        is_active: user.is_active,
     });
 
     const canAssignAdminRoles = auth.user?.role === 'super_admin';
@@ -96,6 +104,24 @@ export default function UserShow() {
         setData('role', user.role);
         setRoleDropdownOpen(false);
         setShowRoleModal(true);
+    };
+
+    const openStatusModal = (newStatus: boolean) => {
+        setPendingStatus(newStatus);
+        setStatusData('is_active', newStatus);
+        setShowStatusModal(true);
+    };
+
+    const handleStatusSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        if (pendingStatus !== null) {
+            patchStatus(`/admin/users/${user.id}/toggle-active`, {
+                onSuccess: () => {
+                    setShowStatusModal(false);
+                    setPendingStatus(null);
+                },
+            });
+        }
     };
 
     const formatDate = (dateString: string) => {
@@ -285,6 +311,50 @@ export default function UserShow() {
                                             Solo los Super Admin pueden cambiar roles de administradores.
                                         </p>
                                     )}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Account Status Management Card */}
+                        {!isSelf && (
+                            <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
+                                <div className="px-6 py-5 border-b border-[#E5E5E5]">
+                                    <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+                                        Estado de la Cuenta
+                                    </h2>
+                                </div>
+                                <div className="p-6 flex flex-col gap-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                                            user.is_active ? 'bg-green-100' : 'bg-red-100'
+                                        }`}>
+                                            <Power className={`w-5 h-5 ${
+                                                user.is_active ? 'text-green-600' : 'text-red-600'
+                                            }`} />
+                                        </div>
+                                        <div className="flex-1">
+                                            <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                                                Cuenta {user.is_active ? 'Activa' : 'Inactiva'}
+                                            </span>
+                                            <p className="text-xs text-[#666666] font-[Outfit]">
+                                                {user.is_active 
+                                                    ? 'El usuario puede iniciar sesión y acceder al sistema.'
+                                                    : 'El usuario no puede iniciar sesión ni acceder al sistema.'
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        onClick={() => openStatusModal(!user.is_active)}
+                                        className={`w-full px-4 py-2.5 rounded-lg text-sm font-medium font-[Outfit] transition-colors ${
+                                            user.is_active
+                                                ? 'bg-red-600 text-white hover:bg-red-700'
+                                                : 'bg-green-600 text-white hover:bg-green-700'
+                                        }`}
+                                    >
+                                        {user.is_active ? 'Desactivar Cuenta' : 'Activar Cuenta'}
+                                    </button>
                                 </div>
                             </div>
                         )}
@@ -596,6 +666,73 @@ export default function UserShow() {
                                         <>
                                             <Check className="w-4 h-4" />
                                             <span>Confirmar Cambio</span>
+                                        </>
+                                    )}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Account Status Confirmation Modal */}
+            {showStatusModal && pendingStatus !== null && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+                    <div className="bg-white rounded-2xl shadow-xl w-full max-w-md">
+                        <div className="px-6 py-5 border-b border-[#E5E5E5] flex items-center justify-between">
+                            <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+                                {pendingStatus ? 'Activar Cuenta' : 'Desactivar Cuenta'}
+                            </h2>
+                            <button
+                                onClick={() => setShowStatusModal(false)}
+                                className="p-1.5 text-[#999999] hover:text-[#666666] hover:bg-gray-100 rounded-lg transition-colors"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleStatusSubmit} className="p-6 flex flex-col gap-5">
+                            <div className={`flex items-start gap-3 p-4 rounded-xl border ${
+                                pendingStatus 
+                                    ? 'bg-green-50 border-green-200' 
+                                    : 'bg-red-50 border-red-200'
+                            }`}>
+                                <AlertTriangle className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
+                                    pendingStatus ? 'text-green-600' : 'text-red-600'
+                                }`} />
+                                <p className={`text-sm font-[Outfit] ${
+                                    pendingStatus ? 'text-green-800' : 'text-red-800'
+                                }`}>
+                                    {pendingStatus 
+                                        ? `¿Estás seguro de que deseas activar la cuenta de ${user.name}? El usuario podrá iniciar sesión y acceder al sistema inmediatamente.`
+                                        : `¿Estás seguro de que deseas desactivar la cuenta de ${user.name}? El usuario no podrá iniciar sesión ni acceder al sistema.`
+                                    }
+                                </p>
+                            </div>
+
+                            <div className="flex items-center justify-end gap-3 pt-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setShowStatusModal(false)}
+                                    className="px-5 py-2.5 rounded-lg border border-[#E5E5E5] text-sm font-medium text-[#1A1A1A] font-[Outfit] hover:bg-gray-50 transition-colors"
+                                >
+                                    Cancelar
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={statusProcessing}
+                                    className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium text-white font-[Outfit] transition-colors disabled:opacity-50 ${
+                                        pendingStatus 
+                                            ? 'bg-green-600 hover:bg-green-700' 
+                                            : 'bg-red-600 hover:bg-red-700'
+                                    }`}
+                                >
+                                    {statusProcessing ? (
+                                        <span>Procesando...</span>
+                                    ) : (
+                                        <>
+                                            <Check className="w-4 h-4" />
+                                            <span>{pendingStatus ? 'Confirmar Activación' : 'Confirmar Desactivación'}</span>
                                         </>
                                     )}
                                 </button>
