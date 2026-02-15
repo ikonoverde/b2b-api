@@ -5,6 +5,47 @@ export interface User {
     initials: string;
 }
 
+export interface DetailedUser {
+    id: number;
+    name: string;
+    email: string;
+    rfc: string | null;
+    phone: string | null;
+    role: string;
+    is_active: boolean;
+    email_verified_at: string | null;
+    created_at: string;
+    updated_at: string;
+    pm_type: string | null;
+    pm_last_four: string | null;
+}
+
+export interface UserOrder {
+    id: number;
+    status: string;
+    payment_status: string;
+    total_amount: number;
+    shipping_cost: number;
+    created_at: string;
+    items: OrderItem[];
+}
+
+export interface OrderItem {
+    id: number;
+    product_id: number;
+    product_name: string;
+    quantity: number;
+    unit_price: number;
+    subtotal: number;
+}
+
+export interface UserActivity {
+    total_orders: number;
+    total_spent: number;
+    last_order_date: string | null;
+    account_age_days: number;
+}
+
 export interface PageProps {
     auth: {
         user: User | null;

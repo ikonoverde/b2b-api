@@ -141,7 +141,12 @@ export default function UsersIndex() {
                                     className="border-b border-[#E5E5E5] hover:bg-gray-50"
                                 >
                                     <td className="px-6 py-4">
-                                        <span className="text-sm text-[#1A1A1A]">{user.name}</span>
+                                        <Link 
+                                            href={`/admin/users/${user.id}`}
+                                            className="text-sm text-[#1A1A1A] hover:underline"
+                                        >
+                                            {user.name}
+                                        </Link>
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className="text-sm text-[#1A1A1A]">{user.email}</span>

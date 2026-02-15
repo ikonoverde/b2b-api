@@ -83,3 +83,76 @@ test('inactive users are visible in list', function () {
         ->where('users.data', fn ($data) => collect($data)->contains('id', $inactiveUser->id))
     );
 });
+
+test('admin can view user details page', function () {
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($admin)->get("/admin/users/{$user->id}");
+
+    $response->assertSuccessful();
+    $response->assertInertia(fn ($page) => $page
+        ->component('admin/users/Show')
+        ->where('user.id', $user->id)
+        ->where('user.name', $user->name)
+        ->where('user.email', $user->email)
+    );
+});
+
+test('super_admin can view user details page', function () {
+    $superAdmin = User::factory()->superAdmin()->create();
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($superAdmin)->get("/admin/users/{$user->id}");
+
+    $response->assertSuccessful();
+});
+
+test('customer cannot access user details page', function () {
+    $customer = User::factory()->create();
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($customer)->get("/admin/users/{$user->id}");
+
+    $response->assertForbidden();
+});
+
+test('unauthenticated user is redirected to login when accessing user details', function () {
+    $user = User::factory()->create();
+
+    $response = $this->get("/admin/users/{$user->id}");
+
+    $response->assertRedirect('/admin/login');
+});
+
+test('user details returns 404 for non-existent user', function () {
+    $admin = User::factory()->admin()->create();
+
+    $response = $this->actingAs($admin)->get('/admin/users/99999');
+
+    $response->assertNotFound();
+});
+
+test('user details includes activity summary', function () {
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($admin)->get("/admin/users/{$user->id}");
+
+    $response->assertInertia(fn ($page) => $page
+        ->has('activity')
+        ->where('activity.total_orders', 0)
+        ->where('activity.total_spent', 0)
+    );
+});
+
+test('user details includes orders', function () {
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($admin)->get("/admin/users/{$user->id}");
+
+    $response->assertInertia(fn ($page) => $page
+        ->has('orders')
+    );
+});
