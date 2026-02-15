@@ -1,4 +1,4 @@
-import { Link, usePage } from '@inertiajs/react';
+import { Link, usePage, useForm } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import {
     ChevronLeft,
@@ -11,9 +11,14 @@ import {
     Package,
     TrendingUp,
     Clock,
+    Shield,
+    UserCog,
+    X,
+    Check,
 } from 'lucide-react';
+import { useState, FormEvent } from 'react';
 import type { PageProps } from '@/types';
-import type { DetailedUser, UserOrder, UserActivity } from '@/types';
+import type { DetailedUser, UserOrder, UserActivity, User } from '@/types';
 
 interface OrderData {
     data: UserOrder[];
@@ -29,6 +34,9 @@ interface Props extends PageProps {
     user: DetailedUser;
     orders: OrderData;
     activity: UserActivity;
+    auth: {
+        user: User;
+    };
 }
 
 const roleLabels: Record<string, string> = {
@@ -36,6 +44,12 @@ const roleLabels: Record<string, string> = {
     admin: 'Administrador',
     super_admin: 'Super Admin',
 };
+
+const availableRoles = [
+    { value: 'customer', label: 'Cliente', description: 'Acceso básico al catálogo y compras' },
+    { value: 'admin', label: 'Administrador', description: 'Gestión de productos, usuarios y pedidos' },
+    { value: 'super_admin', label: 'Super Admin', description: 'Control total del sistema y gestión de roles' },
+];
 
 const paymentMethodLabels: Record<string, string> = {
     card: 'Tarjeta',
@@ -58,7 +72,31 @@ const paymentStatusLabels: Record<string, string> = {
 };
 
 export default function UserShow() {
-    const { user, orders, activity } = usePage<Props>().props;
+    const { user, orders, activity, auth } = usePage<Props>().props;
+    const [showRoleModal, setShowRoleModal] = useState(false);
+    const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
+
+    const { data, setData, patch, processing, errors } = useForm({
+        role: user.role,
+    });
+
+    const canAssignAdminRoles = auth.user?.role === 'super_admin';
+    const isSelf = auth.user?.id === user.id;
+
+    const handleRoleSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        patch(`/admin/users/${user.id}/role`, {
+            onSuccess: () => {
+                setShowRoleModal(false);
+            },
+        });
+    };
+
+    const openRoleModal = () => {
+        setData('role', user.role);
+        setRoleDropdownOpen(false);
+        setShowRoleModal(true);
+    };
 
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString('es-MX', {
@@ -210,6 +248,46 @@ export default function UserShow() {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Role Management Card */}
+                        {!isSelf && (
+                            <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
+                                <div className="px-6 py-5 border-b border-[#E5E5E5]">
+                                    <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+                                        Gestión de Rol
+                                    </h2>
+                                </div>
+                                <div className="p-6 flex flex-col gap-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+                                            <UserCog className="w-5 h-5 text-indigo-600" />
+                                        </div>
+                                        <div className="flex-1">
+                                            <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                                                Rol Actual
+                                            </span>
+                                            <p className="text-xs text-[#666666] font-[Outfit]">
+                                                {roleLabels[user.role] || user.role}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        onClick={openRoleModal}
+                                        disabled={!canAssignAdminRoles && (user.role === 'admin' || user.role === 'super_admin')}
+                                        className="w-full px-4 py-2.5 bg-[#4A5D4A] rounded-lg text-sm font-medium text-white font-[Outfit] hover:bg-[#3d4d3d] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        Cambiar Rol
+                                    </button>
+
+                                    {!canAssignAdminRoles && (user.role === 'admin' || user.role === 'super_admin') && (
+                                        <p className="text-xs text-[#999999] font-[Outfit]">
+                                            Solo los Super Admin pueden cambiar roles de administradores.
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        )}
 
                         {/* Payment Method Card */}
                         {(user.pm_type || user.pm_last_four) && (
@@ -413,6 +491,119 @@ export default function UserShow() {
                     </div>
                 </div>
             </div>
+
+            {/* Role Change Confirmation Modal */}
+            {showRoleModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+                    <div className="bg-white rounded-2xl shadow-xl w-full max-w-md max-h-[500px] flex flex-col">
+                        <div className="px-6 py-5 border-b border-[#E5E5E5] flex items-center justify-between flex-shrink-0">
+                            <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+                                Cambiar Rol de Usuario
+                            </h2>
+                            <button
+                                onClick={() => setShowRoleModal(false)}
+                                className="p-1.5 text-[#999999] hover:text-[#666666] hover:bg-gray-100 rounded-lg transition-colors"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleRoleSubmit} className="p-6 flex flex-col gap-5">
+                            <div className="flex items-start gap-3 p-4 bg-amber-50 rounded-xl border border-amber-200">
+                                <Shield className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                                <p className="text-sm text-amber-800 font-[Outfit]">
+                                    El cambio de rol tomará efecto en el próximo inicio de sesión del usuario.
+                                </p>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                                    Seleccionar Nuevo Rol
+                                </label>
+                                <div className="relative">
+                                    <button
+                                        type="button"
+                                        onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
+                                        className="w-full h-11 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors flex items-center justify-between"
+                                    >
+                                        <span className={data.role ? 'text-[#1A1A1A]' : 'text-[#999999]'}>
+                                            {availableRoles.find(r => r.value === data.role)?.label || 'Seleccionar rol'}
+                                        </span>
+                                        <ChevronLeft className={`w-4 h-4 text-[#999999] transition-transform ${roleDropdownOpen ? 'rotate-90' : '-rotate-90'}`} />
+                                    </button>
+
+                                    {roleDropdownOpen && (
+                                        <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg border border-[#E5E5E5] shadow-lg z-10 max-h-64 overflow-y-auto">
+                                            {availableRoles.map((role) => {
+                                                const isDisabled = !canAssignAdminRoles && (role.value === 'admin' || role.value === 'super_admin');
+                                                return (
+                                                    <button
+                                                        key={role.value}
+                                                        type="button"
+                                                        onClick={() => {
+                                                            if (!isDisabled) {
+                                                                setData('role', role.value);
+                                                                setRoleDropdownOpen(false);
+                                                            }
+                                                        }}
+                                                        disabled={isDisabled}
+                                                        className={`w-full px-4 py-3 text-left transition-colors ${
+                                                            isDisabled
+                                                                ? 'opacity-50 cursor-not-allowed bg-gray-50'
+                                                                : 'hover:bg-[#F5F3F0]'
+                                                        }`}
+                                                    >
+                                                        <div className="flex flex-col gap-0.5">
+                                                            <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                                                                {role.label}
+                                                                {isDisabled && (
+                                                                    <span className="ml-2 text-xs text-[#999999]">
+                                                                        (Requiere Super Admin)
+                                                                    </span>
+                                                                )}
+                                                            </span>
+                                                            <span className="text-xs text-[#666666] font-[Outfit]">
+                                                                {role.description}
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+                                </div>
+                                {errors.role && (
+                                    <span className="text-xs text-red-500 font-[Outfit]">{errors.role}</span>
+                                )}
+                            </div>
+
+                            <div className="flex items-center justify-end gap-3 pt-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setShowRoleModal(false)}
+                                    className="px-5 py-2.5 rounded-lg border border-[#E5E5E5] text-sm font-medium text-[#1A1A1A] font-[Outfit] hover:bg-gray-50 transition-colors"
+                                >
+                                    Cancelar
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={processing || data.role === user.role}
+                                    className="flex items-center gap-2 px-5 py-2.5 bg-[#4A5D4A] rounded-lg text-sm font-medium text-white font-[Outfit] hover:bg-[#3d4d3d] transition-colors disabled:opacity-50"
+                                >
+                                    {processing ? (
+                                        <span>Actualizando...</span>
+                                    ) : (
+                                        <>
+                                            <Check className="w-4 h-4" />
+                                            <span>Confirmar Cambio</span>
+                                        </>
+                                    )}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </AppLayout>
     );
 }

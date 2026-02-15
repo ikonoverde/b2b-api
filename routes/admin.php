@@ -23,5 +23,6 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin,super_admin')->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('users');
         Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+        Route::patch('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.update-role');
     });
 });

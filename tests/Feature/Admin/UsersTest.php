@@ -156,3 +156,129 @@ test('user details includes orders', function () {
         ->has('orders')
     );
 });
+
+test('super_admin can update user role to admin', function () {
+    $superAdmin = User::factory()->superAdmin()->create();
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($superAdmin)->patch("/admin/users/{$user->id}/role", [
+        'role' => 'admin',
+    ]);
+
+    $response->assertSuccessful();
+    $response->assertInertia(fn ($page) => $page
+        ->where('user.role', 'admin')
+        ->where('flash.success', 'Rol actualizado exitosamente. El cambio de permisos tomará efecto en el próximo inicio de sesión.')
+    );
+
+    $this->assertDatabaseHas('users', [
+        'id' => $user->id,
+        'role' => 'admin',
+    ]);
+});
+
+test('super_admin can update user role to super_admin', function () {
+    $superAdmin = User::factory()->superAdmin()->create();
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($superAdmin)->patch("/admin/users/{$user->id}/role", [
+        'role' => 'super_admin',
+    ]);
+
+    $response->assertSuccessful();
+    $response->assertInertia(fn ($page) => $page
+        ->where('user.role', 'super_admin')
+    );
+
+    $this->assertDatabaseHas('users', [
+        'id' => $user->id,
+        'role' => 'super_admin',
+    ]);
+});
+
+test('admin can update user role to customer', function () {
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->create(['role' => 'admin']);
+
+    $response = $this->actingAs($admin)->patch("/admin/users/{$user->id}/role", [
+        'role' => 'customer',
+    ]);
+
+    $response->assertSuccessful();
+    $response->assertInertia(fn ($page) => $page
+        ->where('user.role', 'customer')
+    );
+
+    $this->assertDatabaseHas('users', [
+        'id' => $user->id,
+        'role' => 'customer',
+    ]);
+});
+
+test('admin cannot promote user to admin role', function () {
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($admin)->patch("/admin/users/{$user->id}/role", [
+        'role' => 'admin',
+    ]);
+
+    $response->assertForbidden();
+
+    $this->assertDatabaseHas('users', [
+        'id' => $user->id,
+        'role' => 'customer',
+    ]);
+});
+
+test('admin cannot promote user to super_admin role', function () {
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($admin)->patch("/admin/users/{$user->id}/role", [
+        'role' => 'super_admin',
+    ]);
+
+    $response->assertForbidden();
+});
+
+test('user cannot update their own role', function () {
+    $admin = User::factory()->admin()->create();
+
+    $response = $this->actingAs($admin)->patch("/admin/users/{$admin->id}/role", [
+        'role' => 'super_admin',
+    ]);
+
+    $response->assertForbidden();
+});
+
+test('customer cannot access role update endpoint', function () {
+    $customer = User::factory()->create();
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($customer)->patch("/admin/users/{$user->id}/role", [
+        'role' => 'admin',
+    ]);
+
+    $response->assertForbidden();
+});
+
+test('role update requires valid role value', function () {
+    $superAdmin = User::factory()->superAdmin()->create();
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($superAdmin)->patch("/admin/users/{$user->id}/role", [
+        'role' => 'invalid_role',
+    ]);
+
+    $response->assertSessionHasErrors(['role']);
+});
+
+test('role update requires role field', function () {
+    $superAdmin = User::factory()->superAdmin()->create();
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($superAdmin)->patch("/admin/users/{$user->id}/role", []);
+
+    $response->assertSessionHasErrors(['role']);
+});
