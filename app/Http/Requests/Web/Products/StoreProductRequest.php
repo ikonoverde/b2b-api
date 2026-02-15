@@ -33,6 +33,8 @@ class StoreProductRequest extends FormRequest
             'min_stock' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['boolean'],
             'is_featured' => ['boolean'],
+            'images' => ['nullable', 'array', 'max:4'],
+            'images.*' => ['image', 'mimes:png,jpg,jpeg,webp', 'max:5120'],
             'pricing_tiers' => ['nullable', 'array', new NonOverlappingPricingTiers],
             'pricing_tiers.*.min_qty' => ['required', 'integer', 'min:1'],
             'pricing_tiers.*.max_qty' => ['nullable', 'integer', 'min:1', 'gte:pricing_tiers.*.min_qty'],

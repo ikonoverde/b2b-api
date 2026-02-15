@@ -193,10 +193,10 @@ test('image validation rejects invalid file types', function () {
         'category' => 'Fertilizantes',
         'price' => 29.99,
         'stock' => 100,
-        'image' => $file,
+        'images' => [$file],
     ]);
 
-    $response->assertSessionHasErrors(['image']);
+    $response->assertSessionHasErrors(['images.0']);
 });
 
 test('image validation rejects files over 5MB', function () {
@@ -213,8 +213,8 @@ test('image validation rejects files over 5MB', function () {
         'category' => 'Fertilizantes',
         'price' => 29.99,
         'stock' => 100,
-        'image' => $file,
+        'images' => [$file],
     ]);
 
-    $response->assertSessionHasErrors(['image']);
+    $response->assertSessionHasErrors(['images.0']);
 });

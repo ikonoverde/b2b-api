@@ -65,4 +65,12 @@ class Product extends Model
     {
         return $this->hasMany(PricingTier::class)->orderBy('min_qty');
     }
+
+    /**
+     * @return HasMany<ProductImage, $this>
+     */
+    public function images(): HasMany
+    {
+        return $this->hasMany(ProductImage::class)->orderBy('position');
+    }
 }

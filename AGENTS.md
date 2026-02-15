@@ -48,6 +48,9 @@ This application is a Laravel application and its main Laravel ecosystems packag
 ## Issue Tracking
 - Use the GitHub project https://github.com/orgs/ikonoverde/projects/3 to manage all issues and tickets.
 
+## Development Login
+- Local dev user: moeric@gmail.com / 42ekwN8tGIMv
+
 === boost rules ===
 
 ## Laravel Boost

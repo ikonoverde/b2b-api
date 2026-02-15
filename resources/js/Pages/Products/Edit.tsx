@@ -12,7 +12,13 @@ interface PricingTier {
     label: string;
 }
 
-interface ProductForm {
+interface ExistingImage {
+    id: number;
+    image_url: string;
+    position: number;
+}
+
+interface ProductFormData {
     name: string;
     sku: string;
     category: string;
@@ -23,13 +29,26 @@ interface ProductForm {
     min_stock: string;
     is_active: boolean;
     is_featured: boolean;
-    image?: File | null;
+    images: File[];
+    delete_images: number[];
     pricing_tiers: PricingTier[];
 }
 
-interface ProductData extends ProductForm {
+interface ProductData {
     id: number;
+    name: string;
+    sku: string;
+    category: string;
+    description: string;
+    price: string;
+    cost: string;
+    stock: string;
+    min_stock: string;
+    is_active: boolean;
+    is_featured: boolean;
     image_url?: string | null;
+    images: ExistingImage[];
+    pricing_tiers: PricingTier[];
 }
 
 interface EditProductProps extends PageProps {
@@ -39,11 +58,12 @@ interface EditProductProps extends PageProps {
 
 export default function Edit({ product, categories }: EditProductProps) {
     const [categoryOpen, setCategoryOpen] = useState(false);
-    const [imagePreview, setImagePreview] = useState<string | null>(product.image_url ?? null);
+    const [existingImages, setExistingImages] = useState<ExistingImage[]>(product.images || []);
+    const [newImagePreviews, setNewImagePreviews] = useState<string[]>([]);
     const [isDragging, setIsDragging] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const { data, setData, post, processing, errors } = useForm<ProductForm & { _method: string }>({
+    const { data, setData, post, processing, errors } = useForm<ProductFormData & { _method: string }>({
         name: product.name,
         sku: product.sku,
         category: product.category,
@@ -54,10 +74,14 @@ export default function Edit({ product, categories }: EditProductProps) {
         min_stock: product.min_stock,
         is_active: product.is_active,
         is_featured: product.is_featured,
-        image: null,
+        images: [],
+        delete_images: [],
         pricing_tiers: product.pricing_tiers || [],
         _method: 'put',
     });
+
+    const totalImages = existingImages.length + newImagePreviews.length;
+    const canAddMore = totalImages < 4;
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
@@ -65,56 +89,66 @@ export default function Edit({ product, categories }: EditProductProps) {
     };
 
     const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            handleFile(file);
+        const files = e.target.files;
+        if (files) {
+            handleFiles(Array.from(files));
         }
     };
 
-    const handleFile = (file: File) => {
-        if (file.size > 5 * 1024 * 1024) {
-            alert('El archivo debe ser menor a 5MB');
-            return;
-        }
+    const handleFiles = (files: File[]) => {
+        const remainingSlots = 4 - (existingImages.length + newImagePreviews.length);
+        const filesToAdd = files.slice(0, remainingSlots);
 
-        if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
-            alert('Solo se permiten archivos PNG, JPG o WEBP');
-            return;
-        }
+        for (const file of filesToAdd) {
+            if (file.size > 5 * 1024 * 1024) {
+                alert('El archivo debe ser menor a 5MB');
+                continue;
+            }
 
-        setData('image', file);
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            setImagePreview(e.target?.result as string);
-        };
-        reader.readAsDataURL(file);
+            if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
+                alert('Solo se permiten archivos PNG, JPG o WEBP');
+                continue;
+            }
+
+            setData('images', [...data.images, file]);
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setNewImagePreviews((prev) => [...prev, e.target?.result as string]);
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
-    const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+    const handleDragOver = (e: DragEvent<HTMLElement>) => {
         e.preventDefault();
         setIsDragging(true);
     };
 
-    const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
+    const handleDragLeave = (e: DragEvent<HTMLElement>) => {
         e.preventDefault();
         setIsDragging(false);
     };
 
-    const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+    const handleDrop = (e: DragEvent<HTMLElement>) => {
         e.preventDefault();
         setIsDragging(false);
-        const file = e.dataTransfer.files[0];
-        if (file) {
-            handleFile(file);
+        const files = Array.from(e.dataTransfer.files);
+        if (files.length > 0) {
+            handleFiles(files);
         }
     };
 
-    const removeImage = () => {
-        setData('image', null);
-        setImagePreview(null);
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
+    const removeExistingImage = (id: number) => {
+        setExistingImages(existingImages.filter((img) => img.id !== id));
+        setData('delete_images', [...data.delete_images, id]);
+    };
+
+    const removeNewImage = (index: number) => {
+        const newPreviews = newImagePreviews.filter((_, i) => i !== index);
+        setNewImagePreviews(newPreviews);
+        const newFiles = data.images.filter((_, i) => i !== index);
+        setData('images', newFiles);
     };
 
     const addPricingTier = () => {
@@ -553,46 +587,62 @@ export default function Edit({ product, categories }: EditProductProps) {
                                     type="file"
                                     accept="image/png,image/jpeg,image/webp"
                                     onChange={handleFileSelect}
+                                    multiple
                                     className="hidden"
                                 />
-                                {imagePreview ? (
-                                    <div className="relative h-[200px] bg-[#FBF9F7] rounded-xl border-2 border-[#E5E5E5] overflow-hidden">
-                                        <img
-                                            src={imagePreview}
-                                            alt="Preview"
-                                            className="w-full h-full object-cover"
-                                        />
+                                <div className="grid grid-cols-2 gap-3">
+                                    {existingImages.map((img) => (
+                                        <div key={img.id} className="relative h-[120px] bg-[#FBF9F7] rounded-xl border-2 border-[#E5E5E5] overflow-hidden">
+                                            <img
+                                                src={img.image_url}
+                                                alt="Product image"
+                                                className="w-full h-full object-cover"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => removeExistingImage(img.id)}
+                                                className="absolute top-1 right-1 w-6 h-6 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
+                                            >
+                                                <X className="w-3 h-3 text-[#666666]" />
+                                            </button>
+                                        </div>
+                                    ))}
+                                    {newImagePreviews.map((preview, index) => (
+                                        <div key={`new-${index}`} className="relative h-[120px] bg-[#FBF9F7] rounded-xl border-2 border-[#E5E5E5] overflow-hidden">
+                                            <img
+                                                src={preview}
+                                                alt="New product image"
+                                                className="w-full h-full object-cover"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => removeNewImage(index)}
+                                                className="absolute top-1 right-1 w-6 h-6 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
+                                            >
+                                                <X className="w-3 h-3 text-[#666666]" />
+                                            </button>
+                                        </div>
+                                    ))}
+                                    {canAddMore && (
                                         <button
                                             type="button"
-                                            onClick={removeImage}
-                                            className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
+                                            onClick={() => fileInputRef.current?.click()}
+                                            onDragOver={handleDragOver}
+                                            onDragLeave={handleDragLeave}
+                                            onDrop={handleDrop}
+                                            className={`flex flex-col items-center justify-center gap-2 h-[120px] w-full bg-[#FBF9F7] rounded-xl border-2 border-dashed ${
+                                                isDragging ? 'border-[#4A5D4A] bg-[#E8EDE8]' : 'border-[#E5E5E5]'
+                                            } hover:border-[#4A5D4A] transition-colors`}
                                         >
-                                            <X className="w-4 h-4 text-[#666666]" />
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <div
-                                        onClick={() => fileInputRef.current?.click()}
-                                        onDragOver={handleDragOver}
-                                        onDragLeave={handleDragLeave}
-                                        onDrop={handleDrop}
-                                        className={`flex flex-col items-center justify-center gap-3 h-[200px] bg-[#FBF9F7] rounded-xl border-2 border-dashed ${
-                                            isDragging ? 'border-[#4A5D4A] bg-[#E8EDE8]' : 'border-[#E5E5E5]'
-                                        } cursor-pointer hover:border-[#4A5D4A] transition-colors`}
-                                    >
-                                        <div className="w-14 h-14 bg-[#E8EDE8] rounded-full flex items-center justify-center">
                                             <ImagePlus className="w-6 h-6 text-[#4A5D4A]" />
-                                        </div>
-                                        <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                            Arrastra imágenes aquí
-                                        </span>
-                                        <span className="text-[13px] text-[#999999] font-[Outfit]">
-                                            o haz clic para seleccionar
-                                        </span>
-                                    </div>
-                                )}
+                                            <span className="text-xs text-[#999999] font-[Outfit]">
+                                                Agregar
+                                            </span>
+                                        </button>
+                                    )}
+                                </div>
                                 <span className="text-xs text-[#999999] font-[Outfit]">
-                                    PNG, JPG o WEBP. Máximo 5MB por imagen.
+                                    PNG, JPG o WEBP. Máximo 5MB por imagen. Hasta 4 imágenes.
                                 </span>
                             </div>
                         </div>

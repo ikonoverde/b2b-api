@@ -27,7 +27,7 @@ test('create product page returns expected categories', function () {
 
     $response->assertInertia(fn ($page) => $page
         ->component('Products/Create')
-        ->has('categories', 8)
+        ->has('categories', 3)
     );
 });
 

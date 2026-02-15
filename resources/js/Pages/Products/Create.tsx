@@ -12,7 +12,7 @@ interface PricingTier {
     label: string;
 }
 
-interface ProductForm {
+interface ProductFormData {
     name: string;
     sku: string;
     category: string;
@@ -23,7 +23,7 @@ interface ProductForm {
     min_stock: string;
     is_active: boolean;
     is_featured: boolean;
-    image: File | null;
+    images: File[];
     pricing_tiers: PricingTier[];
 }
 
@@ -33,11 +33,11 @@ interface CreateProductProps extends PageProps {
 
 export default function Create({ categories }: CreateProductProps) {
     const [categoryOpen, setCategoryOpen] = useState(false);
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imagePreviews, setImagePreviews] = useState<string[]>([]);
     const [isDragging, setIsDragging] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const { data, setData, post, processing, errors } = useForm<ProductForm>({
+    const { data, setData, post, processing, errors } = useForm<ProductFormData>({
         name: '',
         sku: '',
         category: '',
@@ -48,9 +48,11 @@ export default function Create({ categories }: CreateProductProps) {
         min_stock: '',
         is_active: true,
         is_featured: false,
-        image: null,
+        images: [],
         pricing_tiers: [],
     });
+
+    const canAddMore = imagePreviews.length < 4;
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
@@ -58,29 +60,35 @@ export default function Create({ categories }: CreateProductProps) {
     };
 
     const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            handleFile(file);
+        const files = e.target.files;
+        if (files) {
+            handleFiles(Array.from(files));
         }
     };
 
-    const handleFile = (file: File) => {
-        if (file.size > 5 * 1024 * 1024) {
-            alert('El archivo debe ser menor a 5MB');
-            return;
-        }
+    const handleFiles = (files: File[]) => {
+        const remainingSlots = 4 - imagePreviews.length;
+        const filesToAdd = files.slice(0, remainingSlots);
 
-        if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
-            alert('Solo se permiten archivos PNG, JPG o WEBP');
-            return;
-        }
+        for (const file of filesToAdd) {
+            if (file.size > 5 * 1024 * 1024) {
+                alert('El archivo debe ser menor a 5MB');
+                continue;
+            }
 
-        setData('image', file);
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            setImagePreview(e.target?.result as string);
-        };
-        reader.readAsDataURL(file);
+            if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
+                alert('Solo se permiten archivos PNG, JPG o WEBP');
+                continue;
+            }
+
+            setData('images', [...data.images, file]);
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setImagePreviews((prev) => [...prev, e.target?.result as string]);
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
@@ -96,18 +104,17 @@ export default function Create({ categories }: CreateProductProps) {
     const handleDrop = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setIsDragging(false);
-        const file = e.dataTransfer.files[0];
-        if (file) {
-            handleFile(file);
+        const files = Array.from(e.dataTransfer.files);
+        if (files.length > 0) {
+            handleFiles(files);
         }
     };
 
-    const removeImage = () => {
-        setData('image', null);
-        setImagePreview(null);
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
+    const removeImage = (index: number) => {
+        const newPreviews = imagePreviews.filter((_, i) => i !== index);
+        setImagePreviews(newPreviews);
+        const newFiles = data.images.filter((_, i) => i !== index);
+        setData('images', newFiles);
     };
 
     const addPricingTier = () => {
@@ -546,46 +553,45 @@ export default function Create({ categories }: CreateProductProps) {
                                     type="file"
                                     accept="image/png,image/jpeg,image/webp"
                                     onChange={handleFileSelect}
+                                    multiple
                                     className="hidden"
                                 />
-                                {imagePreview ? (
-                                    <div className="relative h-[200px] bg-[#FBF9F7] rounded-xl border-2 border-[#E5E5E5] overflow-hidden">
-                                        <img
-                                            src={imagePreview}
-                                            alt="Preview"
-                                            className="w-full h-full object-cover"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={removeImage}
-                                            className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
-                                        >
-                                            <X className="w-4 h-4 text-[#666666]" />
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <div
-                                        onClick={() => fileInputRef.current?.click()}
-                                        onDragOver={handleDragOver}
-                                        onDragLeave={handleDragLeave}
-                                        onDrop={handleDrop}
-                                        className={`flex flex-col items-center justify-center gap-3 h-[200px] bg-[#FBF9F7] rounded-xl border-2 border-dashed ${
-                                            isDragging ? 'border-[#4A5D4A] bg-[#E8EDE8]' : 'border-[#E5E5E5]'
-                                        } cursor-pointer hover:border-[#4A5D4A] transition-colors`}
-                                    >
-                                        <div className="w-14 h-14 bg-[#E8EDE8] rounded-full flex items-center justify-center">
-                                            <ImagePlus className="w-6 h-6 text-[#4A5D4A]" />
+                                <div className="grid grid-cols-2 gap-3">
+                                    {imagePreviews.map((preview, index) => (
+                                        <div key={`new-${index}`} className="relative h-[120px] bg-[#FBF9F7] rounded-xl border-2 border-[#E5E5E5] overflow-hidden">
+                                            <img
+                                                src={preview}
+                                                alt="New product image"
+                                                className="w-full h-full object-cover"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => removeImage(index)}
+                                                className="absolute top-1 right-1 w-6 h-6 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
+                                            >
+                                                <X className="w-3 h-3 text-[#666666]" />
+                                            </button>
                                         </div>
-                                        <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                            Arrastra imágenes aquí
-                                        </span>
-                                        <span className="text-[13px] text-[#999999] font-[Outfit]">
-                                            o haz clic para seleccionar
-                                        </span>
-                                    </div>
-                                )}
+                                    ))}
+                                    {canAddMore && (
+                                        <div
+                                            onClick={() => fileInputRef.current?.click()}
+                                            onDragOver={handleDragOver}
+                                            onDragLeave={handleDragLeave}
+                                            onDrop={handleDrop}
+                                            className={`flex flex-col items-center justify-center gap-2 h-[120px] bg-[#FBF9F7] rounded-xl border-2 border-dashed ${
+                                                isDragging ? 'border-[#4A5D4A] bg-[#E8EDE8]' : 'border-[#E5E5E5]'
+                                            } cursor-pointer hover:border-[#4A5D4A] transition-colors`}
+                                        >
+                                            <ImagePlus className="w-6 h-6 text-[#4A5D4A]" />
+                                            <span className="text-xs text-[#999999] font-[Outfit]">
+                                                Agregar
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
                                 <span className="text-xs text-[#999999] font-[Outfit]">
-                                    PNG, JPG o WEBP. Máximo 5MB por imagen.
+                                    PNG, JPG o WEBP. Máximo 5MB por imagen. Hasta 4 imágenes.
                                 </span>
                             </div>
                         </div>
