@@ -26,6 +26,8 @@ class User extends Authenticatable
         'phone',
         'terms_accepted_at',
         'password',
+        'role',
+        'is_active',
     ];
 
     /**
@@ -49,6 +51,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'terms_accepted_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
     }
 }

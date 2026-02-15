@@ -45,6 +45,9 @@ This application is a Laravel application and its main Laravel ecosystems packag
 ## Documentation Files
 - You must only create documentation files if explicitly requested by the user.
 
+## Issue Tracking
+- Use the GitHub project https://github.com/orgs/ikonoverde/projects/3 to manage all issues and tickets.
+
 === boost rules ===
 
 ## Laravel Boost

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\Auth\LoginController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\ProductsController;
@@ -18,4 +19,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/products', [ProductsController::class, 'store'])->name('products.store');
     Route::get('/products/{product}/edit', [ProductsController::class, 'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductsController::class, 'update'])->name('products.update');
+
+    Route::middleware('role:admin,super_admin')->group(function () {
+        Route::get('/users', [UserController::class, 'index'])->name('users');
+    });
 });
