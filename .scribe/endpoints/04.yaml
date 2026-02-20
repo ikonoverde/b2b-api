@@ -28,8 +28,8 @@ endpoints:
       shipping_address:
         custom: []
         name: shipping_address
-        description: 'The shipping address for the order.'
-        required: true
+        description: 'The shipping address for the order (optional - can be collected by Stripe Elements on frontend).'
+        required: false
         example:
           street: '123 Main St'
           city: Springfield
@@ -44,8 +44,8 @@ endpoints:
       shipping_address.street:
         custom: []
         name: shipping_address.street
-        description: 'Street address. Must not be greater than 255 characters.'
-        required: true
+        description: 'Street address. This field is required when <code>shipping_address</code> is present. Must not be greater than 255 characters.'
+        required: false
         example: '123 Main St'
         type: string
         enumValues: []
@@ -55,8 +55,8 @@ endpoints:
       shipping_address.city:
         custom: []
         name: shipping_address.city
-        description: 'City name. Must not be greater than 255 characters.'
-        required: true
+        description: 'City name. This field is required when <code>shipping_address</code> is present. Must not be greater than 255 characters.'
+        required: false
         example: Springfield
         type: string
         enumValues: []
@@ -66,8 +66,8 @@ endpoints:
       shipping_address.state:
         custom: []
         name: shipping_address.state
-        description: 'State or province. Must not be greater than 255 characters.'
-        required: true
+        description: 'State or province. This field is required when <code>shipping_address</code> is present. Must not be greater than 255 characters.'
+        required: false
         example: IL
         type: string
         enumValues: []
@@ -77,8 +77,8 @@ endpoints:
       shipping_address.zip:
         custom: []
         name: shipping_address.zip
-        description: 'ZIP or postal code. Must not be greater than 20 characters.'
-        required: true
+        description: 'ZIP or postal code. This field is required when <code>shipping_address</code> is present. Must not be greater than 20 characters.'
+        required: false
         example: '62701'
         type: string
         enumValues: []
@@ -88,8 +88,8 @@ endpoints:
       shipping_address.country:
         custom: []
         name: shipping_address.country
-        description: 'Country name. Must not be greater than 255 characters.'
-        required: true
+        description: 'Country name. This field is required when <code>shipping_address</code> is present. Must not be greater than 255 characters.'
+        required: false
         example: USA
         type: string
         enumValues: []
@@ -177,9 +177,86 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      shipping_address:
+        custom: []
+        name: shipping_address
+        description: 'The shipping address collected by Stripe Elements (optional).'
+        required: false
+        example:
+          street: '123 Main St'
+          city: Springfield
+          state: IL
+          zip: '62701'
+          country: USA
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      shipping_address.street:
+        custom: []
+        name: shipping_address.street
+        description: 'This field is required when <code>shipping_address</code> is present. Must not be greater than 255 characters.'
+        required: false
+        example: '123 Main St'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      shipping_address.city:
+        custom: []
+        name: shipping_address.city
+        description: 'This field is required when <code>shipping_address</code> is present. Must not be greater than 255 characters.'
+        required: false
+        example: Springfield
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      shipping_address.state:
+        custom: []
+        name: shipping_address.state
+        description: 'This field is required when <code>shipping_address</code> is present. Must not be greater than 255 characters.'
+        required: false
+        example: IL
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      shipping_address.zip:
+        custom: []
+        name: shipping_address.zip
+        description: 'This field is required when <code>shipping_address</code> is present. Must not be greater than 20 characters.'
+        required: false
+        example: '62701'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      shipping_address.country:
+        custom: []
+        name: shipping_address.country
+        description: 'This field is required when <code>shipping_address</code> is present. Must not be greater than 255 characters.'
+        required: false
+        example: USA
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
     cleanBodyParameters:
       order_id: 1
       payment_intent_id: pi_1234567890
+      shipping_address:
+        street: '123 Main St'
+        city: Springfield
+        state: IL
+        zip: '62701'
+        country: USA
     fileParameters: []
     responses:
       -

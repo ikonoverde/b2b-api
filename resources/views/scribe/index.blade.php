@@ -162,7 +162,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: February 1, 2026</li>
+        <li>Last updated: February 19, 2026</li>
     </ul>
 </div>
 
@@ -1023,7 +1023,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://192.168.0.193:8000/api/cart/items/4" \
+    "http://192.168.0.193:8000/api/cart/items/7" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -1035,7 +1035,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8000/api/cart/items/4"
+    "http://192.168.0.193:8000/api/cart/items/7"
 );
 
 const headers = {
@@ -1199,10 +1199,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="item_id"                data-endpoint="PUTapi-cart-items--item_id-"
-               value="4"
+               value="7"
                data-component="url">
     <br>
-<p>The ID of the item. Example: <code>4</code></p>
+<p>The ID of the item. Example: <code>7</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>item</code></b>&nbsp;&nbsp;
@@ -1245,7 +1245,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://192.168.0.193:8000/api/cart/items/4" \
+    "http://192.168.0.193:8000/api/cart/items/7" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1253,7 +1253,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8000/api/cart/items/4"
+    "http://192.168.0.193:8000/api/cart/items/7"
 );
 
 const headers = {
@@ -1389,10 +1389,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="item_id"                data-endpoint="DELETEapi-cart-items--item_id-"
-               value="4"
+               value="7"
                data-component="url">
     <br>
-<p>The ID of the item. Example: <code>4</code></p>
+<p>The ID of the item. Example: <code>7</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>item</code></b>&nbsp;&nbsp;
@@ -1765,70 +1765,70 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <summary style="padding-bottom: 10px;">
                 <b style="line-height: 2;"><code>shipping_address</code></b>&nbsp;&nbsp;
 <small>object</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
  &nbsp;
 <br>
-<p>The shipping address for the order.</p>
+<p>The shipping address for the order (optional - can be collected by Stripe Elements on frontend).</p>
             </summary>
                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>street</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
                               name="shipping_address.street"                data-endpoint="POSTapi-checkout"
                value="123 Main St"
                data-component="body">
     <br>
-<p>Street address. Must not be greater than 255 characters. Example: <code>123 Main St</code></p>
+<p>Street address. This field is required when <code>shipping_address</code> is present. Must not be greater than 255 characters. Example: <code>123 Main St</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>city</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
                               name="shipping_address.city"                data-endpoint="POSTapi-checkout"
                value="Springfield"
                data-component="body">
     <br>
-<p>City name. Must not be greater than 255 characters. Example: <code>Springfield</code></p>
+<p>City name. This field is required when <code>shipping_address</code> is present. Must not be greater than 255 characters. Example: <code>Springfield</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>state</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
                               name="shipping_address.state"                data-endpoint="POSTapi-checkout"
                value="IL"
                data-component="body">
     <br>
-<p>State or province. Must not be greater than 255 characters. Example: <code>IL</code></p>
+<p>State or province. This field is required when <code>shipping_address</code> is present. Must not be greater than 255 characters. Example: <code>IL</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>zip</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
                               name="shipping_address.zip"                data-endpoint="POSTapi-checkout"
                value="62701"
                data-component="body">
     <br>
-<p>ZIP or postal code. Must not be greater than 20 characters. Example: <code>62701</code></p>
+<p>ZIP or postal code. This field is required when <code>shipping_address</code> is present. Must not be greater than 20 characters. Example: <code>62701</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>country</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
                               name="shipping_address.country"                data-endpoint="POSTapi-checkout"
                value="USA"
                data-component="body">
     <br>
-<p>Country name. Must not be greater than 255 characters. Example: <code>USA</code></p>
+<p>Country name. This field is required when <code>shipping_address</code> is present. Must not be greater than 255 characters. Example: <code>USA</code></p>
                     </div>
                                     </details>
         </div>
@@ -1854,7 +1854,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"order_id\": 1,
-    \"payment_intent_id\": \"pi_1234567890\"
+    \"payment_intent_id\": \"pi_1234567890\",
+    \"shipping_address\": {
+        \"street\": \"123 Main St\",
+        \"city\": \"Springfield\",
+        \"state\": \"IL\",
+        \"zip\": \"62701\",
+        \"country\": \"USA\"
+    }
 }"
 </code></pre></div>
 
@@ -1872,7 +1879,14 @@ const headers = {
 
 let body = {
     "order_id": 1,
-    "payment_intent_id": "pi_1234567890"
+    "payment_intent_id": "pi_1234567890",
+    "shipping_address": {
+        "street": "123 Main St",
+        "city": "Springfield",
+        "state": "IL",
+        "zip": "62701",
+        "country": "USA"
+    }
 };
 
 fetch(url, {
@@ -2060,6 +2074,78 @@ You can check the Dev Tools console for debugging information.</code></pre>
                data-component="body">
     <br>
 <p>The Stripe PaymentIntent ID. Example: <code>pi_1234567890</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+        <details>
+            <summary style="padding-bottom: 10px;">
+                <b style="line-height: 2;"><code>shipping_address</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+<br>
+<p>The shipping address collected by Stripe Elements (optional).</p>
+            </summary>
+                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>street</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="shipping_address.street"                data-endpoint="POSTapi-checkout-confirm"
+               value="123 Main St"
+               data-component="body">
+    <br>
+<p>This field is required when <code>shipping_address</code> is present. Must not be greater than 255 characters. Example: <code>123 Main St</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>city</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="shipping_address.city"                data-endpoint="POSTapi-checkout-confirm"
+               value="Springfield"
+               data-component="body">
+    <br>
+<p>This field is required when <code>shipping_address</code> is present. Must not be greater than 255 characters. Example: <code>Springfield</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>state</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="shipping_address.state"                data-endpoint="POSTapi-checkout-confirm"
+               value="IL"
+               data-component="body">
+    <br>
+<p>This field is required when <code>shipping_address</code> is present. Must not be greater than 255 characters. Example: <code>IL</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>zip</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="shipping_address.zip"                data-endpoint="POSTapi-checkout-confirm"
+               value="62701"
+               data-component="body">
+    <br>
+<p>This field is required when <code>shipping_address</code> is present. Must not be greater than 20 characters. Example: <code>62701</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>country</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="shipping_address.country"                data-endpoint="POSTapi-checkout-confirm"
+               value="USA"
+               data-component="body">
+    <br>
+<p>This field is required when <code>shipping_address</code> is present. Must not be greater than 255 characters. Example: <code>USA</code></p>
+                    </div>
+                                    </details>
         </div>
         </form>
 
@@ -2252,7 +2338,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://192.168.0.193:8000/api/orders/16" \
+    --get "http://192.168.0.193:8000/api/orders/1" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -2260,7 +2346,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8000/api/orders/16"
+    "http://192.168.0.193:8000/api/orders/1"
 );
 
 const headers = {
@@ -2422,10 +2508,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="order_id"                data-endpoint="GETapi-orders--order_id-"
-               value="16"
+               value="1"
                data-component="url">
     <br>
-<p>The ID of the order. Example: <code>16</code></p>
+<p>The ID of the order. Example: <code>1</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;

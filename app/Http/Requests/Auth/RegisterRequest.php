@@ -26,7 +26,7 @@ class RegisterRequest extends FormRequest
             'rfc' => ['string', 'size:13', 'regex:/^[A-Z&Ñ]{3,4}[0-9]{6}[A-Z0-9]{3}$/'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => ['required', 'string', 'max:20'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8'],
             'terms_accepted' => ['required', 'accepted'],
             'device_name' => ['required', 'string', 'max:255'],
         ];
@@ -67,10 +67,6 @@ class RegisterRequest extends FormRequest
             ],
             'password' => [
                 'description' => 'The password for the account (minimum 8 characters)',
-                'example' => 'password123',
-            ],
-            'password_confirmation' => [
-                'description' => 'Confirmation of the password (must match password)',
                 'example' => 'password123',
             ],
             'terms_accepted' => [
