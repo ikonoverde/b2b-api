@@ -38,7 +38,6 @@ class ProductFactory extends Factory
             'min_stock' => fake()->optional()->numberBetween(5, 50),
             'is_active' => true,
             'is_featured' => false,
-            'image' => null,
         ];
     }
 

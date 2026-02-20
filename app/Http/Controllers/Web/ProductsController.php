@@ -34,7 +34,7 @@ class ProductsController extends Controller
                 'price' => (float) $product->price,
                 'stock' => $product->stock,
                 'status' => $product->status,
-                'image' => $product->images->first()?->image_url ?? $product->image_url,
+                'image' => $product->images->first()?->image_url,
             ]);
 
         return Inertia::render('Products', [
@@ -94,14 +94,11 @@ class ProductsController extends Controller
                 'min_stock' => $product->min_stock ? (string) $product->min_stock : '',
                 'is_active' => $product->is_active,
                 'is_featured' => $product->is_featured,
-                'image_url' => $product->image_url,
-                'images' => $product->images->isEmpty() && $product->image_url
-                    ? [['id' => -1, 'image_url' => $product->image_url, 'position' => 0]]
-                    : $product->images->map(fn ($img) => [
-                        'id' => $img->id,
-                        'image_url' => $img->image_url,
-                        'position' => $img->position,
-                    ])->values()->all(),
+                'images' => $product->images->map(fn ($img) => [
+                    'id' => $img->id,
+                    'image_url' => $img->image_url,
+                    'position' => $img->position,
+                ])->values()->all(),
                 'pricing_tiers' => $product->pricingTiers->map(fn ($tier) => [
                     'min_qty' => (string) $tier->min_qty,
                     'max_qty' => $tier->max_qty ? (string) $tier->max_qty : '',
@@ -122,16 +119,6 @@ class ProductsController extends Controller
             $images = $validated['images'] ?? [];
             $deleteImages = $validated['delete_images'] ?? [];
             unset($validated['pricing_tiers'], $validated['images'], $validated['delete_images']);
-
-            // Handle legacy single image
-            if ($request->hasFile('image')) {
-                if ($product->image) {
-                    Storage::disk('public')->delete($product->image);
-                }
-                $validated['image'] = $request->file('image')->store('products', 'public');
-            } else {
-                unset($validated['image']);
-            }
 
             $product->update($validated);
 

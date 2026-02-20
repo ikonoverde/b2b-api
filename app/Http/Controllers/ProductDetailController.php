@@ -22,7 +22,7 @@ class ProductDetailController extends Controller
      */
     public function __invoke(Product $product): ProductDetailResource
     {
-        $product->load('pricingTiers');
+        $product->load(['pricingTiers', 'images']);
 
         return new ProductDetailResource($product);
     }

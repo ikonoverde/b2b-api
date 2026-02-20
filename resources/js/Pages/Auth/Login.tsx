@@ -1,6 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { Head, useForm } from '@inertiajs/react';
-import { Eye, EyeOff, Leaf } from 'lucide-react';
+import { Eye, EyeOff, Leaf, Mail, Lock } from 'lucide-react';
 
 interface LoginForm {
     email: string;
@@ -24,35 +24,61 @@ export default function Login() {
 
     return (
         <>
-            <Head title="Login" />
-            <div className="flex min-h-screen">
-                {/* Left Panel - Brand */}
-                <div className="hidden lg:flex lg:w-1/2 bg-[#4A5D4A] flex-col items-center justify-center p-16">
-                    <div className="flex flex-col items-center gap-6 max-w-[400px]">
-                        <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
-                                <Leaf className="w-6 h-6 text-[#4A5D4A]" />
-                            </div>
-                            <span className="text-[32px] font-bold text-white font-[Outfit]">
-                                Ikonoverde
+            <Head title="Iniciar Sesión" />
+            <div className="flex min-h-screen flex-col lg:flex-row">
+                {/* Mobile Header */}
+                <div className="lg:hidden bg-[#5E7052] px-6 py-4">
+                    <div className="flex items-center justify-center gap-3">
+                        <div className="flex flex-col items-center">
+                            <span className="text-white font-[Outfit] font-bold text-lg tracking-wider">
+                                IKONO VERDE
+                            </span>
+                            <span className="text-[#A8B5A0] font-[Outfit] text-[10px] tracking-widest uppercase">
+                                PROFESIONAL
                             </span>
                         </div>
+                    </div>
+                </div>
+
+                {/* Left Panel - Brand (Desktop) */}
+                <div className="hidden lg:flex lg:w-1/2 bg-[#5E7052] flex-col items-center justify-center p-16 relative overflow-hidden">
+                    {/* Decorative leaf elements */}
+                    <div className="absolute top-12 left-12 opacity-10">
+                        <Leaf className="w-32 h-32 text-white rotate-[-30deg]" />
+                    </div>
+                    <div className="absolute bottom-16 right-16 opacity-10">
+                        <Leaf className="w-24 h-24 text-white rotate-[45deg]" />
+                    </div>
+                    <div className="absolute top-1/3 right-12 opacity-[0.06]">
+                        <Leaf className="w-16 h-16 text-white rotate-[120deg]" />
+                    </div>
+
+                    <div className="flex flex-col items-center gap-6 max-w-[400px] relative z-10">
+                        <div className="flex flex-col items-center gap-1">
+                            <span className="text-[36px] font-bold text-white font-[Outfit] tracking-wider">
+                                IKONO VERDE
+                            </span>
+                            <span className="text-[#A8B5A0] font-[Outfit] text-sm tracking-[0.25em] uppercase">
+                                PROFESIONAL
+                            </span>
+                        </div>
+                        <div className="w-16 h-px bg-white/20"></div>
                         <p className="text-lg text-[#A8B5A0] text-center leading-relaxed font-[Outfit]">
-                            Optimiza las operaciones de tu negocio con nuestra plataforma integral de gestion B2B.
+                            Portal B2B para Profesionales
                         </p>
                     </div>
                 </div>
 
                 {/* Right Panel - Login Form */}
-                <div className="w-full lg:w-[560px] flex items-center justify-center p-8 lg:p-16 bg-white">
+                <div className="flex-1 lg:w-[560px] flex items-center justify-center p-8 lg:p-16 bg-[#FAF6F1]">
                     <div className="w-full max-w-[400px] flex flex-col gap-8">
                         {/* Header */}
                         <div className="flex flex-col gap-2">
                             <h1 className="text-[32px] font-semibold text-[#1A1A1A] font-[Outfit]">
-                                Bienvenido
+                                Iniciar Sesión
                             </h1>
                             <p className="text-base text-[#666666] font-[Outfit]">
-                                Ingresa tus credenciales para acceder a tu cuenta
+                                Ingresa tus credenciales para acceder
                             </p>
                         </div>
 
@@ -69,19 +95,24 @@ export default function Login() {
                                 >
                                     Email
                                 </label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={data.email}
-                                    onChange={(e) =>
-                                        setData('email', e.target.value)
-                                    }
-                                    placeholder="Ingresa tu email"
-                                    className="h-12 px-4 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#4A5D4A] focus:border-transparent font-[Outfit]"
-                                    required
-                                    autoFocus
-                                />
+                                <div className="relative">
+                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999999]">
+                                        <Mail className="w-5 h-5" />
+                                    </div>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        value={data.email}
+                                        onChange={(e) =>
+                                            setData('email', e.target.value)
+                                        }
+                                        placeholder="Ingresa tu email"
+                                        className="w-full h-12 pl-12 pr-4 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:border-transparent font-[Outfit]"
+                                        required
+                                        autoFocus
+                                    />
+                                </div>
                                 {errors.email && (
                                     <span className="text-sm text-red-500 font-[Outfit]">
                                         {errors.email}
@@ -95,9 +126,12 @@ export default function Login() {
                                     htmlFor="password"
                                     className="text-sm font-medium text-[#1A1A1A] font-[Outfit]"
                                 >
-                                    Password
+                                    Contraseña
                                 </label>
                                 <div className="relative">
+                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999999]">
+                                        <Lock className="w-5 h-5" />
+                                    </div>
                                     <input
                                         type={
                                             showPassword ? 'text' : 'password'
@@ -108,8 +142,8 @@ export default function Login() {
                                         onChange={(e) =>
                                             setData('password', e.target.value)
                                         }
-                                        placeholder="Ingresa tu password"
-                                        className="w-full h-12 px-4 pr-12 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#4A5D4A] focus:border-transparent font-[Outfit]"
+                                        placeholder="Ingresa tu contraseña"
+                                        className="w-full h-12 pl-12 pr-12 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:border-transparent font-[Outfit]"
                                         required
                                     />
                                     <button
@@ -143,7 +177,7 @@ export default function Login() {
                                         onChange={(e) =>
                                             setData('remember', e.target.checked)
                                         }
-                                        className="w-5 h-5 rounded border-[#E5E5E5] text-[#4A5D4A] focus:ring-[#4A5D4A]"
+                                        className="w-5 h-5 rounded border-[#E5E5E5] text-[#5E7052] focus:ring-[#5E7052]"
                                     />
                                     <span className="text-sm text-[#1A1A1A] font-[Outfit]">
                                         Recordarme
@@ -151,9 +185,9 @@ export default function Login() {
                                 </label>
                                 <a
                                     href="#"
-                                    className="text-sm font-medium text-[#4A5D4A] hover:underline font-[Outfit]"
+                                    className="text-sm font-medium text-[#5E7052] hover:underline font-[Outfit]"
                                 >
-                                    Olvidaste tu password?
+                                    ¿Olvidaste tu contraseña?
                                 </a>
                             </div>
 
@@ -163,7 +197,7 @@ export default function Login() {
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="h-12 bg-[#4A5D4A] text-white font-semibold rounded-lg hover:bg-[#3d4d3d] focus:outline-none focus:ring-2 focus:ring-[#4A5D4A] focus:ring-offset-2 transition-colors disabled:opacity-50 font-[Outfit]"
+                                    className="h-12 bg-[#5E7052] text-white font-semibold rounded-lg hover:bg-[#4d5e43] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:ring-offset-2 transition-colors disabled:opacity-50 font-[Outfit]"
                                 >
                                     {processing ? 'Ingresando...' : 'Ingresar'}
                                 </button>
@@ -172,7 +206,7 @@ export default function Login() {
                                 <div className="flex items-center gap-4">
                                     <div className="flex-1 h-px bg-[#E5E5E5]"></div>
                                     <span className="text-sm text-[#999999] font-[Outfit]">
-                                        o
+                                        o continúa con
                                     </span>
                                     <div className="flex-1 h-px bg-[#E5E5E5]"></div>
                                 </div>
@@ -180,7 +214,7 @@ export default function Login() {
                                 {/* Google Button */}
                                 <button
                                     type="button"
-                                    className="h-12 flex items-center justify-center gap-3 bg-white border border-[#E5E5E5] rounded-lg font-medium text-[#1A1A1A] hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4A5D4A] focus:ring-offset-2 transition-colors font-[Outfit]"
+                                    className="h-12 flex items-center justify-center gap-3 bg-white border border-[#E5E5E5] rounded-lg font-medium text-[#1A1A1A] hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:ring-offset-2 transition-colors font-[Outfit]"
                                 >
                                     <svg
                                         className="w-5 h-5"
@@ -211,13 +245,13 @@ export default function Login() {
                         {/* Sign Up Link */}
                         <div className="flex items-center justify-center gap-1">
                             <span className="text-sm text-[#666666] font-[Outfit]">
-                                No tienes una cuenta?
+                                ¿No tienes cuenta?
                             </span>
                             <a
                                 href="#"
-                                className="text-sm font-semibold text-[#4A5D4A] hover:underline font-[Outfit]"
+                                className="text-sm font-semibold text-[#8B6F47] hover:underline font-[Outfit]"
                             >
-                                Registrate
+                                Regístrate aquí
                             </a>
                         </div>
                     </div>

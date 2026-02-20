@@ -12,6 +12,7 @@ class HomeController extends Controller
     public function index(): Response
     {
         $featuredProducts = Product::query()
+            ->with(['images' => fn ($query) => $query->orderBy('position')->limit(1)])
             ->where('is_active', true)
             ->orderByDesc('is_featured')
             ->latest()
@@ -21,7 +22,7 @@ class HomeController extends Controller
                 'id' => $product->id,
                 'name' => $product->name,
                 'category' => $product->category,
-                'image_url' => $product->image_url,
+                'image_url' => $product->images->first()?->image_url,
             ]);
 
         return Inertia::render('Home', [

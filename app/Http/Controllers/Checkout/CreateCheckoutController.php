@@ -33,7 +33,7 @@ class CreateCheckoutController extends Controller
     {
         $validated = $request->validated();
 
-        $cart = Cart::with(['items.product'])
+        $cart = Cart::with(['items.product.images' => fn ($query) => $query->orderBy('position')->limit(1)])
             ->where('user_id', auth()->id())
             ->where('status', 'active')
             ->first();
@@ -68,7 +68,7 @@ class CreateCheckoutController extends Controller
                     'quantity' => $cartItem->quantity,
                     'unit_price' => $cartItem->unit_price,
                     'subtotal' => $cartItem->subtotal,
-                    'image' => $product->image,
+                    'image' => $product->images->first()?->image_path,
                 ]);
             }
 

@@ -120,7 +120,7 @@ test('sku unique validation rejects duplicate from other product', function () {
     $response->assertSessionHasErrors(['sku']);
 });
 
-test('authenticated user can update a product with an image', function () {
+test('authenticated user can update a product with images', function () {
     Storage::fake('public');
 
     $user = User::factory()->create();
@@ -137,18 +137,20 @@ test('authenticated user can update a product with an image', function () {
         'category' => 'Fertilizantes',
         'price' => 29.99,
         'stock' => 100,
-        'image' => $image,
+        'images' => [$image],
     ]);
 
     $response->assertRedirect(route('products'));
     $response->assertSessionHas('success', 'Producto actualizado exitosamente');
 
-    $product->refresh();
-    expect($product->image)->not->toBeNull();
-    Storage::disk('public')->assertExists($product->image);
+    $this->assertDatabaseHas('product_images', [
+        'product_id' => $product->id,
+    ]);
+    $productImage = $product->images()->first();
+    Storage::disk('public')->assertExists($productImage->image_path);
 });
 
-test('updating product replaces old image', function () {
+test('updating product can delete old images and add new ones', function () {
     Storage::fake('public');
 
     $user = User::factory()->create();
@@ -157,7 +159,11 @@ test('updating product replaces old image', function () {
 
     $product = Product::factory()->create([
         'sku' => 'REPLACE-001',
-        'image' => $oldImagePath,
+    ]);
+
+    $existingImage = $product->images()->create([
+        'image_path' => $oldImagePath,
+        'position' => 0,
     ]);
 
     $newImage = UploadedFile::fake()->create('new.jpg', 100, 'image/jpeg');
@@ -168,15 +174,18 @@ test('updating product replaces old image', function () {
         'category' => 'Fertilizantes',
         'price' => 29.99,
         'stock' => 100,
-        'image' => $newImage,
+        'delete_images' => [$existingImage->id],
+        'images' => [$newImage],
     ]);
 
     $response->assertRedirect(route('products'));
 
-    $product->refresh();
-    expect($product->image)->not->toBe($oldImagePath);
     Storage::disk('public')->assertMissing($oldImagePath);
-    Storage::disk('public')->assertExists($product->image);
+    $this->assertDatabaseMissing('product_images', ['id' => $existingImage->id]);
+
+    $newProductImage = $product->images()->first();
+    expect($newProductImage)->not->toBeNull();
+    Storage::disk('public')->assertExists($newProductImage->image_path);
 });
 
 test('image validation rejects invalid file types', function () {

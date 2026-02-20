@@ -23,6 +23,7 @@ class FeaturedProductsController extends Controller
     public function __invoke(): AnonymousResourceCollection
     {
         $products = Product::query()
+            ->with(['images' => fn ($query) => $query->orderBy('position')->limit(1)])
             ->where('is_featured', true)
             ->where('is_active', true)
             ->get();

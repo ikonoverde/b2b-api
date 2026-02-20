@@ -22,7 +22,9 @@ class ProductsController extends Controller
      */
     public function __invoke(): AnonymousResourceCollection
     {
-        $products = Product::query()->get();
+        $products = Product::query()
+            ->with(['images' => fn ($query) => $query->orderBy('position')->limit(1)])
+            ->get();
 
         return ProductResource::collection($products);
     }
