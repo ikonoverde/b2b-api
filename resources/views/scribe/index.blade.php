@@ -162,7 +162,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: February 19, 2026</li>
+        <li>Last updated: February 22, 2026</li>
     </ul>
 </div>
 
@@ -1023,7 +1023,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://192.168.0.193:8000/api/cart/items/7" \
+    "http://192.168.0.193:8000/api/cart/items/11" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -1035,7 +1035,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8000/api/cart/items/7"
+    "http://192.168.0.193:8000/api/cart/items/11"
 );
 
 const headers = {
@@ -1199,10 +1199,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="item_id"                data-endpoint="PUTapi-cart-items--item_id-"
-               value="7"
+               value="11"
                data-component="url">
     <br>
-<p>The ID of the item. Example: <code>7</code></p>
+<p>The ID of the item. Example: <code>11</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>item</code></b>&nbsp;&nbsp;
@@ -1245,7 +1245,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://192.168.0.193:8000/api/cart/items/7" \
+    "http://192.168.0.193:8000/api/cart/items/11" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1253,7 +1253,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8000/api/cart/items/7"
+    "http://192.168.0.193:8000/api/cart/items/11"
 );
 
 const headers = {
@@ -1389,10 +1389,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="item_id"                data-endpoint="DELETEapi-cart-items--item_id-"
-               value="7"
+               value="11"
                data-component="url">
     <br>
-<p>The ID of the item. Example: <code>7</code></p>
+<p>The ID of the item. Example: <code>11</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>item</code></b>&nbsp;&nbsp;
@@ -2159,7 +2159,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <small class="badge badge-darkred">requires authentication</small>
 </p>
 
-<p>Retrieve all orders for the authenticated user.</p>
+<p>Retrieve paginated orders for the authenticated user.</p>
 
 <span id="example-requests-GETapi-orders">
 <blockquote>Example request:</blockquote>
@@ -2167,7 +2167,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://192.168.0.193:8000/api/orders" \
+    --get "http://192.168.0.193:8000/api/orders?page=1&amp;per_page=15" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -2177,6 +2177,13 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <pre><code class="language-javascript">const url = new URL(
     "http://192.168.0.193:8000/api/orders"
 );
+
+const params = {
+    "page": "1",
+    "per_page": "15",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
@@ -2226,7 +2233,19 @@ fetch(url, {
             ],
             &quot;created_at&quot;: &quot;2024-01-15T10:30:00Z&quot;
         }
-    ]
+    ],
+    &quot;links&quot;: {
+        &quot;first&quot;: &quot;/api/orders?page=1&quot;,
+        &quot;last&quot;: &quot;/api/orders?page=5&quot;,
+        &quot;prev&quot;: null,
+        &quot;next&quot;: &quot;/api/orders?page=2&quot;
+    },
+    &quot;meta&quot;: {
+        &quot;current_page&quot;: 1,
+        &quot;last_page&quot;: 5,
+        &quot;per_page&quot;: 15,
+        &quot;total&quot;: 73
+    }
 }</code>
  </pre>
             <blockquote>
@@ -2235,7 +2254,19 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;data&quot;: []
+    &quot;data&quot;: [],
+    &quot;links&quot;: {
+        &quot;first&quot;: &quot;/api/orders?page=1&quot;,
+        &quot;last&quot;: &quot;/api/orders?page=1&quot;,
+        &quot;prev&quot;: null,
+        &quot;next&quot;: null
+    },
+    &quot;meta&quot;: {
+        &quot;current_page&quot;: 1,
+        &quot;last_page&quot;: 1,
+        &quot;per_page&quot;: 15,
+        &quot;total&quot;: 0
+    }
 }</code>
  </pre>
     </span>
@@ -2322,7 +2353,32 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>Example: <code>application/json</code></p>
             </div>
-                        </form>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="page"                data-endpoint="GETapi-orders"
+               value="1"
+               data-component="query">
+    <br>
+<p>The page number. Example: <code>1</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="per_page"                data-endpoint="GETapi-orders"
+               value="15"
+               data-component="query">
+    <br>
+<p>Items per page (max 100). Example: <code>15</code></p>
+            </div>
+                </form>
 
                     <h2 id="orders-GETapi-orders--order_id-">Get Order</h2>
 

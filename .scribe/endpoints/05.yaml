@@ -17,7 +17,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Get Orders'
-      description: 'Retrieve all orders for the authenticated user.'
+      description: 'Retrieve paginated orders for the authenticated user.'
       authenticated: true
       deprecated: false
     headers:
@@ -26,8 +26,32 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
+    queryParameters:
+      page:
+        custom: []
+        name: page
+        description: 'The page number.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      per_page:
+        custom: []
+        name: per_page
+        description: 'Items per page (max 100).'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      page: 1
+      per_page: 15
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -35,13 +59,13 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"data": [{"id": 1, "user_id": 1, "status": "pending", "payment_status": "completed", "total_amount": 150.00, "shipping_cost": 10.00, "shipping_address": {"street": "123 Main St", "city": "Springfield", "state": "IL", "zip": "62701", "country": "USA"}, "items": [{"id": 1, "product_id": 1, "product_name": "Fertilizante Premium", "quantity": 2, "unit_price": 45.00, "subtotal": 90.00, "image": "products/fertilizer.jpg"}], "created_at": "2024-01-15T10:30:00Z"}]}'
+        content: '{"data": [{"id": 1, "user_id": 1, "status": "pending", "payment_status": "completed", "total_amount": 150.00, "shipping_cost": 10.00, "shipping_address": {"street": "123 Main St", "city": "Springfield", "state": "IL", "zip": "62701", "country": "USA"}, "items": [{"id": 1, "product_id": 1, "product_name": "Fertilizante Premium", "quantity": 2, "unit_price": 45.00, "subtotal": 90.00, "image": "products/fertilizer.jpg"}], "created_at": "2024-01-15T10:30:00Z"}], "links": {"first": "/api/orders?page=1", "last": "/api/orders?page=5", "prev": null, "next": "/api/orders?page=2"}, "meta": {"current_page": 1, "last_page": 5, "per_page": 15, "total": 73}}'
         headers: []
         description: Success
       -
         custom: []
         status: 200
-        content: '{"data": []}'
+        content: '{"data": [], "links": {"first": "/api/orders?page=1", "last": "/api/orders?page=1", "prev": null, "next": null}, "meta": {"current_page": 1, "last_page": 1, "per_page": 15, "total": 0}}'
         headers: []
         description: 'No orders'
     responseFields: []

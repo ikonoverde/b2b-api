@@ -150,7 +150,7 @@ endpoints:
         name: item_id
         description: 'The ID of the item.'
         required: true
-        example: 7
+        example: 11
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -168,7 +168,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      item_id: 7
+      item_id: 11
       item: '1'
     queryParameters: []
     cleanQueryParameters: []
@@ -239,7 +239,7 @@ endpoints:
         name: item_id
         description: 'The ID of the item.'
         required: true
-        example: 7
+        example: 11
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -257,7 +257,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      item_id: 7
+      item_id: 11
       item: '1'
     queryParameters: []
     cleanQueryParameters: []
