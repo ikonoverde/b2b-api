@@ -42,7 +42,10 @@ class HandleInertiaRequests extends Middleware
                 ] : null,
             ],
             'cartItemCount' => fn () => $user
-                ? Cart::where('user_id', $user->id)->where('status', 'active')->withCount('items')->first()?->items_count ?? 0
+                ? Cart::where('user_id', $user->id)
+                    ->where('status', 'active')
+                    ->withCount('items')
+                    ->first()?->items_count ?? 0
                 : 0,
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),

@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('users');
         Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
         Route::patch('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.update-role');
-        Route::patch('/users/{user}/toggle-active', [UserController::class, 'toggleActive'])->name('users.toggle-active');
+        Route::patch('/users/{user}/toggle-active', [UserController::class, 'toggleActive'])
+            ->name('users.toggle-active');
     });
 });

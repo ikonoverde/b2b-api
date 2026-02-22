@@ -12,9 +12,11 @@ use Inertia\Response;
 
 class LoginController extends Controller
 {
+    private const ADMIN_PATH_PATTERN = 'admin/*';
+
     public function create(): Response
     {
-        $isAdmin = request()->is('admin/*');
+        $isAdmin = request()->is(self::ADMIN_PATH_PATTERN);
 
         return Inertia::render('Auth/Login', [
             'postUrl' => $isAdmin ? '/admin/login' : '/login',
@@ -45,7 +47,7 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        $isAdmin = $request->is('admin/*');
+        $isAdmin = $request->is(self::ADMIN_PATH_PATTERN);
 
         if ($isAdmin) {
             return redirect()->intended(route('admin.dashboard'));
@@ -56,7 +58,7 @@ class LoginController extends Controller
 
     public function destroy(Request $request): RedirectResponse
     {
-        $isAdmin = $request->is('admin/*');
+        $isAdmin = $request->is(self::ADMIN_PATH_PATTERN);
 
         Auth::logout();
 

@@ -21,6 +21,7 @@ class RegisterController extends Controller
      * Create a new user account and receive an API token.
      *
      * @unauthenticated
+     *
      * @response 201 scenario="Success" {"user": {"id": 1, "name": "John Doe", "email": "john@example.com", "rfc": "ABCD123456XYZ", "phone": "+521234567890"}, "token": "1|abc123def456..."}
      * @response 422 scenario="Validation error" {"message": "The email has already been taken.", "errors": {"email": ["The email has already been taken."]}}
      */
