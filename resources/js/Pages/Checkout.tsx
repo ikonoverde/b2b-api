@@ -2,6 +2,7 @@ import { useForm } from '@inertiajs/react';
 import { Loader2, MapPin, Phone, User } from 'lucide-react';
 import type { FormEvent } from 'react';
 import CustomerLayout from '@/Layouts/CustomerLayout';
+import TextInput from '@/Components/TextInput';
 import type { Cart } from '@/types';
 
 interface CheckoutProps {
@@ -38,138 +39,82 @@ export default function Checkout({ cart }: CheckoutProps) {
                     <form onSubmit={submit} className="lg:col-span-2 flex flex-col gap-4">
                         <h2 className="text-sm font-bold text-[#1A1A1A] font-[Outfit]">Dirección de Envío</h2>
 
-                        {/* Name */}
-                        <div className="flex flex-col gap-1.5">
-                            <label htmlFor="name" className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                Nombre de contacto
-                            </label>
-                            <div className="relative">
-                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999999]">
-                                    <User className="w-5 h-5" />
-                                </div>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    value={form.data.name}
-                                    onChange={(e) => form.setData('name', e.target.value)}
-                                    placeholder="Nombre completo"
-                                    className="w-full h-12 pl-12 pr-4 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:border-transparent font-[Outfit]"
-                                    disabled={form.processing}
-                                />
-                            </div>
-                            {form.errors.name && <span className="text-sm text-red-500 font-[Outfit]">{form.errors.name}</span>}
-                        </div>
+                        <TextInput
+                            id="name"
+                            label="Nombre de contacto"
+                            value={form.data.name}
+                            onChange={(e) => form.setData('name', e.target.value)}
+                            placeholder="Nombre completo"
+                            icon={User}
+                            disabled={form.processing}
+                            error={form.errors.name}
+                        />
 
-                        {/* Address Line 1 */}
-                        <div className="flex flex-col gap-1.5">
-                            <label htmlFor="address_line_1" className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                Dirección
-                            </label>
-                            <div className="relative">
-                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999999]">
-                                    <MapPin className="w-5 h-5" />
-                                </div>
-                                <input
-                                    type="text"
-                                    id="address_line_1"
-                                    value={form.data.address_line_1}
-                                    onChange={(e) => form.setData('address_line_1', e.target.value)}
-                                    placeholder="Calle y número"
-                                    className="w-full h-12 pl-12 pr-4 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:border-transparent font-[Outfit]"
-                                    disabled={form.processing}
-                                />
-                            </div>
-                            {form.errors.address_line_1 && <span className="text-sm text-red-500 font-[Outfit]">{form.errors.address_line_1}</span>}
-                        </div>
+                        <TextInput
+                            id="address_line_1"
+                            label="Dirección"
+                            value={form.data.address_line_1}
+                            onChange={(e) => form.setData('address_line_1', e.target.value)}
+                            placeholder="Calle y número"
+                            icon={MapPin}
+                            disabled={form.processing}
+                            error={form.errors.address_line_1}
+                        />
 
-                        {/* Address Line 2 */}
-                        <div className="flex flex-col gap-1.5">
-                            <label htmlFor="address_line_2" className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                Dirección línea 2 (opcional)
-                            </label>
-                            <input
-                                type="text"
-                                id="address_line_2"
-                                value={form.data.address_line_2}
-                                onChange={(e) => form.setData('address_line_2', e.target.value)}
-                                placeholder="Interior, colonia, etc."
-                                className="w-full h-12 px-4 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:border-transparent font-[Outfit]"
-                                disabled={form.processing}
-                            />
-                            {form.errors.address_line_2 && <span className="text-sm text-red-500 font-[Outfit]">{form.errors.address_line_2}</span>}
-                        </div>
+                        <TextInput
+                            id="address_line_2"
+                            label="Dirección línea 2 (opcional)"
+                            value={form.data.address_line_2}
+                            onChange={(e) => form.setData('address_line_2', e.target.value)}
+                            placeholder="Interior, colonia, etc."
+                            disabled={form.processing}
+                            error={form.errors.address_line_2}
+                        />
 
                         {/* City & State */}
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="flex flex-col gap-1.5">
-                                <label htmlFor="city" className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                    Ciudad
-                                </label>
-                                <input
-                                    type="text"
-                                    id="city"
-                                    value={form.data.city}
-                                    onChange={(e) => form.setData('city', e.target.value)}
-                                    placeholder="Ciudad"
-                                    className="w-full h-12 px-4 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:border-transparent font-[Outfit]"
-                                    disabled={form.processing}
-                                />
-                                {form.errors.city && <span className="text-sm text-red-500 font-[Outfit]">{form.errors.city}</span>}
-                            </div>
-                            <div className="flex flex-col gap-1.5">
-                                <label htmlFor="state" className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                    Estado
-                                </label>
-                                <input
-                                    type="text"
-                                    id="state"
-                                    value={form.data.state}
-                                    onChange={(e) => form.setData('state', e.target.value)}
-                                    placeholder="Estado"
-                                    className="w-full h-12 px-4 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:border-transparent font-[Outfit]"
-                                    disabled={form.processing}
-                                />
-                                {form.errors.state && <span className="text-sm text-red-500 font-[Outfit]">{form.errors.state}</span>}
-                            </div>
+                            <TextInput
+                                id="city"
+                                label="Ciudad"
+                                value={form.data.city}
+                                onChange={(e) => form.setData('city', e.target.value)}
+                                placeholder="Ciudad"
+                                disabled={form.processing}
+                                error={form.errors.city}
+                            />
+                            <TextInput
+                                id="state"
+                                label="Estado"
+                                value={form.data.state}
+                                onChange={(e) => form.setData('state', e.target.value)}
+                                placeholder="Estado"
+                                disabled={form.processing}
+                                error={form.errors.state}
+                            />
                         </div>
 
                         {/* Postal Code & Phone */}
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="flex flex-col gap-1.5">
-                                <label htmlFor="postal_code" className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                    Código Postal
-                                </label>
-                                <input
-                                    type="text"
-                                    id="postal_code"
-                                    value={form.data.postal_code}
-                                    onChange={(e) => form.setData('postal_code', e.target.value)}
-                                    placeholder="00000"
-                                    className="w-full h-12 px-4 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:border-transparent font-[Outfit]"
-                                    disabled={form.processing}
-                                />
-                                {form.errors.postal_code && <span className="text-sm text-red-500 font-[Outfit]">{form.errors.postal_code}</span>}
-                            </div>
-                            <div className="flex flex-col gap-1.5">
-                                <label htmlFor="phone" className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                    Teléfono
-                                </label>
-                                <div className="relative">
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999999]">
-                                        <Phone className="w-5 h-5" />
-                                    </div>
-                                    <input
-                                        type="tel"
-                                        id="phone"
-                                        value={form.data.phone}
-                                        onChange={(e) => form.setData('phone', e.target.value)}
-                                        placeholder="10 dígitos"
-                                        className="w-full h-12 pl-12 pr-4 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:border-transparent font-[Outfit]"
-                                        disabled={form.processing}
-                                    />
-                                </div>
-                                {form.errors.phone && <span className="text-sm text-red-500 font-[Outfit]">{form.errors.phone}</span>}
-                            </div>
+                            <TextInput
+                                id="postal_code"
+                                label="Código Postal"
+                                value={form.data.postal_code}
+                                onChange={(e) => form.setData('postal_code', e.target.value)}
+                                placeholder="00000"
+                                disabled={form.processing}
+                                error={form.errors.postal_code}
+                            />
+                            <TextInput
+                                id="phone"
+                                label="Teléfono"
+                                type="tel"
+                                value={form.data.phone}
+                                onChange={(e) => form.setData('phone', e.target.value)}
+                                placeholder="10 dígitos"
+                                icon={Phone}
+                                disabled={form.processing}
+                                error={form.errors.phone}
+                            />
                         </div>
 
                         <button

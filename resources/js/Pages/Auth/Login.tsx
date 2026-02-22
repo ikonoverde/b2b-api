@@ -1,6 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Eye, EyeOff, Leaf, Mail, Lock } from 'lucide-react';
+import TextInput from '@/Components/TextInput';
 
 interface LoginForm {
     email: string;
@@ -92,70 +93,33 @@ export default function Login({ postUrl = '/login', registerUrl = '/register' }:
                             onSubmit={handleSubmit}
                             className="flex flex-col gap-5"
                         >
-                            {/* Email Field */}
-                            <div className="flex flex-col gap-2">
-                                <label
-                                    htmlFor="email"
-                                    className="text-sm font-medium text-[#1A1A1A] font-[Outfit]"
-                                >
-                                    Email
-                                </label>
-                                <div className="relative">
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999999]">
-                                        <Mail className="w-5 h-5" />
-                                    </div>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        value={data.email}
-                                        onChange={(e) =>
-                                            setData('email', e.target.value)
-                                        }
-                                        placeholder="Ingresa tu email"
-                                        className="w-full h-12 pl-12 pr-4 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:border-transparent font-[Outfit]"
-                                        required
-                                        autoFocus
-                                    />
-                                </div>
-                                {errors.email && (
-                                    <span className="text-sm text-red-500 font-[Outfit]">
-                                        {errors.email}
-                                    </span>
-                                )}
-                            </div>
+                            <TextInput
+                                id="email"
+                                label="Email"
+                                type="email"
+                                value={data.email}
+                                onChange={(e) => setData('email', e.target.value)}
+                                placeholder="Ingresa tu email"
+                                icon={Mail}
+                                error={errors.email}
+                                required
+                                autoFocus
+                            />
 
-                            {/* Password Field */}
-                            <div className="flex flex-col gap-2">
-                                <label
-                                    htmlFor="password"
-                                    className="text-sm font-medium text-[#1A1A1A] font-[Outfit]"
-                                >
-                                    Contraseña
-                                </label>
-                                <div className="relative">
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999999]">
-                                        <Lock className="w-5 h-5" />
-                                    </div>
-                                    <input
-                                        type={
-                                            showPassword ? 'text' : 'password'
-                                        }
-                                        id="password"
-                                        name="password"
-                                        value={data.password}
-                                        onChange={(e) =>
-                                            setData('password', e.target.value)
-                                        }
-                                        placeholder="Ingresa tu contraseña"
-                                        className="w-full h-12 pl-12 pr-12 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:border-transparent font-[Outfit]"
-                                        required
-                                    />
+                            <TextInput
+                                id="password"
+                                label="Contraseña"
+                                type={showPassword ? 'text' : 'password'}
+                                value={data.password}
+                                onChange={(e) => setData('password', e.target.value)}
+                                placeholder="Ingresa tu contraseña"
+                                icon={Lock}
+                                error={errors.password}
+                                required
+                                suffix={
                                     <button
                                         type="button"
-                                        onClick={() =>
-                                            setShowPassword(!showPassword)
-                                        }
+                                        onClick={() => setShowPassword(!showPassword)}
                                         className="absolute right-4 top-1/2 -translate-y-1/2 text-[#999999] hover:text-[#666666]"
                                     >
                                         {showPassword ? (
@@ -164,13 +128,8 @@ export default function Login({ postUrl = '/login', registerUrl = '/register' }:
                                             <Eye className="w-5 h-5" />
                                         )}
                                     </button>
-                                </div>
-                                {errors.password && (
-                                    <span className="text-sm text-red-500 font-[Outfit]">
-                                        {errors.password}
-                                    </span>
-                                )}
-                            </div>
+                                }
+                            />
 
                             {/* Options Row */}
                             <div className="flex items-center justify-between">

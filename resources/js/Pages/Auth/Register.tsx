@@ -1,6 +1,7 @@
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Briefcase, Eye, EyeOff, FileText, Leaf, Lock, Loader2, Mail, Phone } from 'lucide-react';
 import { useState, type FormEvent } from 'react';
+import TextInput from '@/Components/TextInput';
 
 export default function Register() {
     const [showPassword, setShowPassword] = useState(false);
@@ -77,112 +78,64 @@ export default function Register() {
 
                         {/* Form */}
                         <form onSubmit={submit} className="flex flex-col gap-4">
-                            {/* Business Name */}
-                            <div className="flex flex-col gap-1.5">
-                                <label htmlFor="name" className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                    Nombre del Negocio
-                                </label>
-                                <div className="relative">
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999999]">
-                                        <Briefcase className="w-5 h-5" />
-                                    </div>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        value={form.data.name}
-                                        onChange={(e) => form.setData('name', e.target.value)}
-                                        placeholder="Mi Spa & Bienestar"
-                                        className="w-full h-12 pl-12 pr-4 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:border-transparent font-[Outfit]"
-                                        disabled={form.processing}
-                                    />
-                                </div>
-                                {form.errors.name && <span className="text-sm text-red-500 font-[Outfit]">{form.errors.name}</span>}
-                            </div>
+                            <TextInput
+                                id="name"
+                                label="Nombre del Negocio"
+                                value={form.data.name}
+                                onChange={(e) => form.setData('name', e.target.value)}
+                                placeholder="Mi Spa & Bienestar"
+                                icon={Briefcase}
+                                disabled={form.processing}
+                                error={form.errors.name}
+                            />
 
-                            {/* RFC */}
-                            <div className="flex flex-col gap-1.5">
-                                <label htmlFor="rfc" className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                    RFC de la Empresa
-                                </label>
-                                <div className="relative">
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999999]">
-                                        <FileText className="w-5 h-5" />
-                                    </div>
-                                    <input
-                                        type="text"
-                                        id="rfc"
-                                        value={form.data.rfc}
-                                        onChange={(e) => form.setData('rfc', e.target.value.toUpperCase())}
-                                        placeholder="XAXX010101000"
-                                        className="w-full h-12 pl-12 pr-4 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:border-transparent font-[Outfit] uppercase"
-                                        disabled={form.processing}
-                                    />
-                                </div>
-                                {form.errors.rfc && <span className="text-sm text-red-500 font-[Outfit]">{form.errors.rfc}</span>}
-                            </div>
+                            <TextInput
+                                id="rfc"
+                                label="RFC de la Empresa"
+                                value={form.data.rfc}
+                                onChange={(e) => form.setData('rfc', e.target.value.toUpperCase())}
+                                placeholder="XAXX010101000"
+                                icon={FileText}
+                                className="uppercase"
+                                disabled={form.processing}
+                                error={form.errors.rfc}
+                            />
 
-                            {/* Email */}
-                            <div className="flex flex-col gap-1.5">
-                                <label htmlFor="email" className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                    Correo Electrónico
-                                </label>
-                                <div className="relative">
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999999]">
-                                        <Mail className="w-5 h-5" />
-                                    </div>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        value={form.data.email}
-                                        onChange={(e) => form.setData('email', e.target.value)}
-                                        placeholder="tu@email.com"
-                                        className="w-full h-12 pl-12 pr-4 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:border-transparent font-[Outfit]"
-                                        disabled={form.processing}
-                                    />
-                                </div>
-                                {form.errors.email && <span className="text-sm text-red-500 font-[Outfit]">{form.errors.email}</span>}
-                            </div>
+                            <TextInput
+                                id="email"
+                                label="Correo Electrónico"
+                                type="email"
+                                value={form.data.email}
+                                onChange={(e) => form.setData('email', e.target.value)}
+                                placeholder="tu@email.com"
+                                icon={Mail}
+                                disabled={form.processing}
+                                error={form.errors.email}
+                            />
 
-                            {/* Phone */}
-                            <div className="flex flex-col gap-1.5">
-                                <label htmlFor="phone" className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                    Teléfono de Contacto
-                                </label>
-                                <div className="relative">
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999999]">
-                                        <Phone className="w-5 h-5" />
-                                    </div>
-                                    <input
-                                        type="tel"
-                                        id="phone"
-                                        value={form.data.phone}
-                                        onChange={(e) => form.setData('phone', e.target.value)}
-                                        placeholder="+52 55 1234 5678"
-                                        className="w-full h-12 pl-12 pr-4 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:border-transparent font-[Outfit]"
-                                        disabled={form.processing}
-                                    />
-                                </div>
-                                {form.errors.phone && <span className="text-sm text-red-500 font-[Outfit]">{form.errors.phone}</span>}
-                            </div>
+                            <TextInput
+                                id="phone"
+                                label="Teléfono de Contacto"
+                                type="tel"
+                                value={form.data.phone}
+                                onChange={(e) => form.setData('phone', e.target.value)}
+                                placeholder="+52 55 1234 5678"
+                                icon={Phone}
+                                disabled={form.processing}
+                                error={form.errors.phone}
+                            />
 
-                            {/* Password */}
-                            <div className="flex flex-col gap-1.5">
-                                <label htmlFor="password" className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                    Contraseña
-                                </label>
-                                <div className="relative">
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999999]">
-                                        <Lock className="w-5 h-5" />
-                                    </div>
-                                    <input
-                                        type={showPassword ? 'text' : 'password'}
-                                        id="password"
-                                        value={form.data.password}
-                                        onChange={(e) => form.setData('password', e.target.value)}
-                                        placeholder="Mínimo 8 caracteres"
-                                        className="w-full h-12 pl-12 pr-12 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:border-transparent font-[Outfit]"
-                                        disabled={form.processing}
-                                    />
+                            <TextInput
+                                id="password"
+                                label="Contraseña"
+                                type={showPassword ? 'text' : 'password'}
+                                value={form.data.password}
+                                onChange={(e) => form.setData('password', e.target.value)}
+                                placeholder="Mínimo 8 caracteres"
+                                icon={Lock}
+                                disabled={form.processing}
+                                error={form.errors.password}
+                                suffix={
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
@@ -191,9 +144,8 @@ export default function Register() {
                                     >
                                         {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                                     </button>
-                                </div>
-                                {form.errors.password && <span className="text-sm text-red-500 font-[Outfit]">{form.errors.password}</span>}
-                            </div>
+                                }
+                            />
 
                             {/* Terms */}
                             <label className="flex items-start gap-3 cursor-pointer mt-1">
