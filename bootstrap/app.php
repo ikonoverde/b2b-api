@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         then: function () {
             Route::middleware('web')
                 ->prefix('admin')
+                ->name('admin.')
                 ->group(base_path('routes/admin.php'));
         },
     )
@@ -47,6 +48,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 return response()->json([
                     'message' => 'Unauthenticated.',
                 ], 401);
+            }
+
+            if ($request->is('admin/*')) {
+                return redirect()->guest(route('admin.login'));
             }
         });
     })->create();

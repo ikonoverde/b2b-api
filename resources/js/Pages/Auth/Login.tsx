@@ -1,5 +1,5 @@
 import { useState, FormEvent } from 'react';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { Eye, EyeOff, Leaf, Mail, Lock } from 'lucide-react';
 
 interface LoginForm {
@@ -8,7 +8,12 @@ interface LoginForm {
     remember: boolean;
 }
 
-export default function Login() {
+interface LoginProps {
+    postUrl?: string;
+    registerUrl?: string | null;
+}
+
+export default function Login({ postUrl = '/login', registerUrl = '/register' }: LoginProps) {
     const [showPassword, setShowPassword] = useState(false);
 
     const { data, setData, post, processing, errors } = useForm<LoginForm>({
@@ -19,7 +24,7 @@ export default function Login() {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        post('/admin/login');
+        post(postUrl);
     };
 
     return (
@@ -243,17 +248,19 @@ export default function Login() {
                         </form>
 
                         {/* Sign Up Link */}
-                        <div className="flex items-center justify-center gap-1">
-                            <span className="text-sm text-[#666666] font-[Outfit]">
-                                ¿No tienes cuenta?
-                            </span>
-                            <a
-                                href="#"
-                                className="text-sm font-semibold text-[#8B6F47] hover:underline font-[Outfit]"
-                            >
-                                Regístrate aquí
-                            </a>
-                        </div>
+                        {registerUrl && (
+                            <div className="flex items-center justify-center gap-1">
+                                <span className="text-sm text-[#666666] font-[Outfit]">
+                                    ¿No tienes cuenta?
+                                </span>
+                                <Link
+                                    href={registerUrl}
+                                    className="text-sm font-semibold text-[#8B6F47] hover:underline font-[Outfit]"
+                                >
+                                    Regístrate aquí
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

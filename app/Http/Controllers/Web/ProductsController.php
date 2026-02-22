@@ -74,7 +74,7 @@ class ProductsController extends Controller
             }
         });
 
-        return redirect()->route('products')->with('success', 'Producto creado exitosamente');
+        return redirect()->route('admin.products')->with('success', 'Producto creado exitosamente');
     }
 
     public function edit(Product $product): Response
@@ -153,6 +153,6 @@ class ProductsController extends Controller
             }
         });
 
-        return redirect()->route('products')->with('success', 'Producto actualizado exitosamente');
+        return redirect()->route('admin.products')->with('success', 'Producto actualizado exitosamente');
     }
 }

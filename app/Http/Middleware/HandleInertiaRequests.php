@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Cart;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -40,6 +41,9 @@ class HandleInertiaRequests extends Middleware
                     'initials' => $this->getInitials($user->name),
                 ] : null,
             ],
+            'cartItemCount' => fn () => $user
+                ? Cart::where('user_id', $user->id)->where('status', 'active')->withCount('items')->first()?->items_count ?? 0
+                : 0,
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),

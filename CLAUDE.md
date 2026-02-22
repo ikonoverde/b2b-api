@@ -447,3 +447,6 @@ export default () => (
 | decoration-slice | box-decoration-slice |
 | decoration-clone | box-decoration-clone |
 </laravel-boost-guidelines>
+
+## API Documentation
+- When making changes to API routes or controllers (anything under `routes/api.php` or `app/Http/Controllers/Cart/`, `app/Http/Controllers/Checkout/`, `app/Http/Controllers/Orders/`, etc.), regenerate the API documentation by running `php artisan scribe:generate`.

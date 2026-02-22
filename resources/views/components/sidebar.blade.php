@@ -10,7 +10,7 @@
 
         <!-- Navigation -->
         <nav class="flex flex-col gap-1 pt-8">
-            <a href="{{ route('dashboard') }}"
+            <a href="{{ route('admin.dashboard') }}"
                class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors {{ $active === 'dashboard' ? 'bg-white/20 text-sidebar-text font-medium' : 'text-sidebar-muted hover:bg-white/10 hover:text-sidebar-text' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>

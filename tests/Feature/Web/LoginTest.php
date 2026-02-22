@@ -27,7 +27,7 @@ it('logs in a user with valid credentials', function () {
         'password' => 'password123',
     ]);
 
-    $response->assertRedirect(route('dashboard'));
+    $response->assertRedirect(route('admin.dashboard'));
     $this->assertAuthenticatedAs($user);
 });
 

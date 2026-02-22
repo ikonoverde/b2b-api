@@ -1,12 +1,39 @@
 <?php
 
+use App\Http\Controllers\Web\AccountController;
 use App\Http\Controllers\Web\Auth\LoginController;
+use App\Http\Controllers\Web\Auth\LogoutController;
+use App\Http\Controllers\Web\Auth\RegisterController;
+use App\Http\Controllers\Web\CartController;
+use App\Http\Controllers\Web\CatalogController;
+use App\Http\Controllers\Web\CheckoutController;
+use App\Http\Controllers\Web\CustomerDashboardController;
 use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\OrderController;
+use App\Http\Controllers\Web\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/catalog', CatalogController::class)->name('catalog');
 
 Route::middleware('guest')->group(function () {
+    Route::get('/register', [RegisterController::class, 'create'])->name('register');
+    Route::post('/register', [RegisterController::class, 'store']);
     Route::get('/login', [LoginController::class, 'create'])->name('login');
     Route::post('/login', [LoginController::class, 'store']);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', LogoutController::class)->name('logout');
+    Route::get('/dashboard', CustomerDashboardController::class)->name('dashboard');
+    Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart');
+    Route::post('/cart/items', [CartController::class, 'addItem'])->name('cart.addItem');
+    Route::post('/cart/items/{cartItem}', [CartController::class, 'updateItem'])->name('cart.updateItem');
+    Route::delete('/cart/items/{cartItem}', [CartController::class, 'removeItem'])->name('cart.removeItem');
+    Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
+    Route::get('/checkout', [CheckoutController::class, 'create'])->name('checkout');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/account', AccountController::class)->name('account');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders');
 });

@@ -51,11 +51,64 @@ export interface PageProps {
     auth: {
         user: User | null;
     };
+    cartItemCount: number;
     flash: {
         success?: string;
         error?: string;
     };
     [key: string]: unknown;
+}
+
+export interface CartItem {
+    id: number;
+    product_id: number;
+    name: string;
+    image: string | null;
+    price: number;
+    quantity: number;
+    subtotal: number;
+}
+
+export interface CartTotals {
+    subtotal: number;
+    shipping: number;
+    total: number;
+}
+
+export interface Cart {
+    items: CartItem[];
+    totals: CartTotals;
+}
+
+export interface ProductImage {
+    id: number;
+    url: string;
+}
+
+export interface PricingTier {
+    min_qty: number;
+    max_qty: number | null;
+    price: number;
+    discount: number;
+    label: string | null;
+}
+
+export interface ProductDetail {
+    id: number;
+    name: string;
+    sku: string;
+    category: string;
+    description: string | null;
+    price: number;
+    size: string | null;
+    images: ProductImage[];
+    pricing_tiers: PricingTier[];
+}
+
+export interface CustomerProfile {
+    orders_count: number;
+    total_spent: number;
+    discount_percentage?: number;
 }
 
 export interface Stat {

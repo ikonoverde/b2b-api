@@ -14,7 +14,12 @@ class LoginController extends Controller
 {
     public function create(): Response
     {
-        return Inertia::render('Auth/Login');
+        $isAdmin = request()->is('admin/*');
+
+        return Inertia::render('Auth/Login', [
+            'postUrl' => $isAdmin ? '/admin/login' : '/login',
+            'registerUrl' => $isAdmin ? null : '/register',
+        ]);
     }
 
     public function store(LoginRequest $request): RedirectResponse
@@ -40,15 +45,27 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
+        $isAdmin = $request->is('admin/*');
+
+        if ($isAdmin) {
+            return redirect()->intended(route('admin.dashboard'));
+        }
+
         return redirect()->intended(route('dashboard'));
     }
 
     public function destroy(Request $request): RedirectResponse
     {
+        $isAdmin = $request->is('admin/*');
+
         Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        if ($isAdmin) {
+            return redirect()->route('admin.login');
+        }
 
         return redirect()->route('login');
     }

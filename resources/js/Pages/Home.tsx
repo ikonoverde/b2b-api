@@ -36,7 +36,7 @@ export default function Home({ auth, featuredProducts }: HomeProps) {
                         <div className="flex items-center gap-3">
                             {auth.user ? (
                                 <Link
-                                    href="/admin"
+                                    href="/dashboard"
                                     className="flex items-center gap-2 bg-white text-[#5E7052] px-5 py-2 rounded-lg font-[Outfit] font-semibold text-sm hover:bg-white/90 transition-colors"
                                 >
                                     Mi Panel
@@ -44,13 +44,13 @@ export default function Home({ auth, featuredProducts }: HomeProps) {
                             ) : (
                                 <>
                                     <Link
-                                        href="/admin/login"
+                                        href="/login"
                                         className="border border-white text-white px-5 py-2 rounded-lg font-[Outfit] font-medium text-sm hover:bg-white/10 transition-colors"
                                     >
                                         Ingresar
                                     </Link>
                                     <Link
-                                        href="/admin/login"
+                                        href="/register"
                                         className="bg-white text-[#5E7052] px-5 py-2 rounded-lg font-[Outfit] font-semibold text-sm hover:bg-white/90 transition-colors"
                                     >
                                         Registrarse
@@ -77,14 +77,14 @@ export default function Home({ auth, featuredProducts }: HomeProps) {
                         {/* CTA Buttons */}
                         <div className="flex items-center justify-center gap-4 pt-2">
                             <Link
-                                href="/admin/login"
+                                href="/register"
                                 className="flex items-center gap-2 bg-[#5E7052] text-white px-8 py-3.5 rounded-xl font-[Outfit] font-semibold text-base hover:bg-[#4d5e43] transition-colors"
                             >
                                 <UserPlus className="w-5 h-5" />
                                 Crear Cuenta
                             </Link>
                             <Link
-                                href="/admin/login"
+                                href="/catalog"
                                 className="flex items-center gap-2 border-2 border-[#5E7052] text-[#5E7052] px-8 py-3.5 rounded-xl font-[Outfit] font-semibold text-base hover:bg-[#5E7052]/10 transition-colors"
                             >
                                 <LayoutGrid className="w-5 h-5" />
@@ -144,7 +144,7 @@ export default function Home({ auth, featuredProducts }: HomeProps) {
                             © {new Date().getFullYear()} Ikono Verde. Todos los derechos reservados.
                         </span>
                         <Link
-                            href="/admin/login"
+                            href="/login"
                             className="text-[#5E7052] font-[Outfit] text-sm font-medium hover:underline"
                         >
                             Acceso Profesional

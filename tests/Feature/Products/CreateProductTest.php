@@ -47,7 +47,7 @@ test('authenticated user can store a product', function () {
         'is_featured' => false,
     ]);
 
-    $response->assertRedirect(route('products'));
+    $response->assertRedirect(route('admin.products'));
     $response->assertSessionHas('success', 'Producto creado exitosamente');
 
     $this->assertDatabaseHas('products', [

@@ -66,7 +66,7 @@ test('authenticated user can update a product', function () {
         'is_featured' => true,
     ]);
 
-    $response->assertRedirect(route('products'));
+    $response->assertRedirect(route('admin.products'));
     $response->assertSessionHas('success', 'Producto actualizado exitosamente');
 
     $this->assertDatabaseHas('products', [
@@ -101,7 +101,7 @@ test('sku unique validation allows same product sku', function () {
     ]);
 
     $response->assertSessionDoesntHaveErrors(['sku']);
-    $response->assertRedirect(route('products'));
+    $response->assertRedirect(route('admin.products'));
 });
 
 test('sku unique validation rejects duplicate from other product', function () {
@@ -140,7 +140,7 @@ test('authenticated user can update a product with images', function () {
         'images' => [$image],
     ]);
 
-    $response->assertRedirect(route('products'));
+    $response->assertRedirect(route('admin.products'));
     $response->assertSessionHas('success', 'Producto actualizado exitosamente');
 
     $this->assertDatabaseHas('product_images', [
@@ -178,7 +178,7 @@ test('updating product can delete old images and add new ones', function () {
         'images' => [$newImage],
     ]);
 
-    $response->assertRedirect(route('products'));
+    $response->assertRedirect(route('admin.products'));
 
     Storage::disk('public')->assertMissing($oldImagePath);
     $this->assertDatabaseMissing('product_images', ['id' => $existingImage->id]);
