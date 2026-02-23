@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/catalog', CatalogController::class)->name('catalog');
 
+Route::get('/checkout/success', fn () => view('checkout.success'))->name('checkout.success');
+Route::get('/checkout/cancel', fn () => view('checkout.cancel'))->name('checkout.cancel');
+
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'create'])->name('register');
     Route::post('/register', [RegisterController::class, 'store']);
