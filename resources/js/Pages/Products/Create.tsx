@@ -1,8 +1,45 @@
-import { FormEvent, useState, useRef, DragEvent, ChangeEvent } from 'react';
+import { FormEvent, useState, useRef, DragEvent } from 'react';
 import { Link, useForm } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import { Save, ImagePlus, ChevronDown, X, Plus, Trash2 } from 'lucide-react';
 import type { PageProps } from '@/types';
+
+const ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const MAX_IMAGES = 4;
+
+function processImageFiles(
+    files: File[],
+    remainingSlots: number,
+    onValidFile: (file: File) => void,
+    onPreviewReady: (preview: string) => void,
+): void {
+    const filesToAdd = files.slice(0, remainingSlots);
+
+    for (const file of filesToAdd) {
+        if (file.size > MAX_FILE_SIZE) {
+            alert('El archivo debe ser menor a 5MB');
+            continue;
+        }
+
+        if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+            alert('Solo se permiten archivos PNG, JPG o WEBP');
+            continue;
+        }
+
+        onValidFile(file);
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            onPreviewReady(e.target?.result as string);
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function removeAtIndex<T>(arr: T[], index: number): T[] {
+    return arr.filter((_, i) => i !== index);
+}
 
 interface PricingTier {
     min_qty: string;
@@ -31,11 +68,636 @@ interface CreateProductProps extends PageProps {
     categories: string[];
 }
 
-export default function Create({ categories }: CreateProductProps) {
-    const [categoryOpen, setCategoryOpen] = useState(false);
+function CategoryDropdown({
+    category,
+    categories,
+    isOpen,
+    onToggle,
+    onSelect,
+    error,
+}: {
+    category: string;
+    categories: string[];
+    isOpen: boolean;
+    onToggle: () => void;
+    onSelect: (cat: string) => void;
+    error?: string;
+}) {
+    return (
+        <div className="flex-1 flex flex-col gap-2 relative">
+            <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                Categor&iacute;a
+            </label>
+            <button
+                type="button"
+                onClick={onToggle}
+                className="h-11 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors flex items-center justify-between"
+            >
+                <span className={category ? 'text-[#1A1A1A]' : 'text-[#999999]'}>
+                    {category || 'Seleccionar categor\u00eda'}
+                </span>
+                <ChevronDown className="w-[18px] h-[18px] text-[#999999]" />
+            </button>
+            {isOpen && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg border border-[#E5E5E5] shadow-lg z-10 max-h-48 overflow-y-auto">
+                    {categories.map((cat) => (
+                        <button
+                            key={cat}
+                            type="button"
+                            onClick={() => onSelect(cat)}
+                            className="w-full px-4 py-2.5 text-left text-sm text-[#1A1A1A] font-[Outfit] hover:bg-[#F5F3F0] transition-colors"
+                        >
+                            {cat}
+                        </button>
+                    ))}
+                </div>
+            )}
+            {error && (
+                <span className="text-xs text-red-500 font-[Outfit]">{error}</span>
+            )}
+        </div>
+    );
+}
+
+function PricingTierRow({
+    tier,
+    index,
+    errors,
+    onUpdate,
+    onRemove,
+}: {
+    tier: PricingTier;
+    index: number;
+    errors: Partial<Record<string, string>>;
+    onUpdate: (index: number, field: keyof PricingTier, value: string) => void;
+    onRemove: (index: number) => void;
+}) {
+    return (
+        <div className="p-4 bg-[#FBF9F7] rounded-xl border border-[#E5E5E5]">
+            <div className="flex items-center justify-between mb-3">
+                <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                    Nivel {index + 1}
+                </span>
+                <button
+                    type="button"
+                    onClick={() => onRemove(index)}
+                    className="p-1.5 text-[#999999] hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                >
+                    <Trash2 className="w-4 h-4" />
+                </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+                <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-medium text-[#666666] font-[Outfit]">
+                        Cant. M&iacute;nima
+                    </label>
+                    <input
+                        type="text"
+                        value={tier.min_qty}
+                        onChange={(e) => onUpdate(index, 'min_qty', e.target.value)}
+                        placeholder="1"
+                        className="h-9 px-3 bg-white rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
+                    />
+                    {errors[`pricing_tiers.${index}.min_qty`] && (
+                        <span className="text-xs text-red-500 font-[Outfit]">
+                            {errors[`pricing_tiers.${index}.min_qty`]}
+                        </span>
+                    )}
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-medium text-[#666666] font-[Outfit]">
+                        Cant. M&aacute;xima
+                    </label>
+                    <input
+                        type="text"
+                        value={tier.max_qty}
+                        onChange={(e) => onUpdate(index, 'max_qty', e.target.value)}
+                        placeholder="Sin l&iacute;mite"
+                        className="h-9 px-3 bg-white rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
+                    />
+                    {errors[`pricing_tiers.${index}.max_qty`] && (
+                        <span className="text-xs text-red-500 font-[Outfit]">
+                            {errors[`pricing_tiers.${index}.max_qty`]}
+                        </span>
+                    )}
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-medium text-[#666666] font-[Outfit]">
+                        Precio
+                    </label>
+                    <div className="flex h-9 bg-white rounded-lg border border-[#E5E5E5] overflow-hidden focus-within:border-[#4A5D4A] transition-colors">
+                        <div className="flex items-center px-2 bg-[#F5F3F0] border-r border-[#E5E5E5]">
+                            <span className="text-xs text-[#666666] font-[Outfit]">$</span>
+                        </div>
+                        <input
+                            type="text"
+                            value={tier.price}
+                            onChange={(e) => onUpdate(index, 'price', e.target.value)}
+                            placeholder="0.00"
+                            className="flex-1 px-2 bg-transparent text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none"
+                        />
+                    </div>
+                    {errors[`pricing_tiers.${index}.price`] && (
+                        <span className="text-xs text-red-500 font-[Outfit]">
+                            {errors[`pricing_tiers.${index}.price`]}
+                        </span>
+                    )}
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-medium text-[#666666] font-[Outfit]">
+                        Descuento
+                    </label>
+                    <div className="flex h-9 bg-white rounded-lg border border-[#E5E5E5] overflow-hidden focus-within:border-[#4A5D4A] transition-colors">
+                        <input
+                            type="text"
+                            value={tier.discount}
+                            onChange={(e) => onUpdate(index, 'discount', e.target.value)}
+                            placeholder="0"
+                            className="flex-1 px-2 bg-transparent text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none"
+                        />
+                        <div className="flex items-center px-2 bg-[#F5F3F0] border-l border-[#E5E5E5]">
+                            <span className="text-xs text-[#666666] font-[Outfit]">%</span>
+                        </div>
+                    </div>
+                    {errors[`pricing_tiers.${index}.discount`] && (
+                        <span className="text-xs text-red-500 font-[Outfit]">
+                            {errors[`pricing_tiers.${index}.discount`]}
+                        </span>
+                    )}
+                </div>
+
+                <div className="col-span-2 flex flex-col gap-1.5">
+                    <label className="text-xs font-medium text-[#666666] font-[Outfit]">
+                        Etiqueta
+                    </label>
+                    <input
+                        type="text"
+                        value={tier.label}
+                        onChange={(e) => onUpdate(index, 'label', e.target.value)}
+                        placeholder="Ej: Mayorista, Distribuidor"
+                        className="h-9 px-3 bg-white rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
+                    />
+                    {errors[`pricing_tiers.${index}.label`] && (
+                        <span className="text-xs text-red-500 font-[Outfit]">
+                            {errors[`pricing_tiers.${index}.label`]}
+                        </span>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function ImagePreview({
+    src,
+    alt,
+    onRemove,
+}: {
+    src: string;
+    alt: string;
+    onRemove: () => void;
+}) {
+    return (
+        <div className="relative h-[120px] bg-[#FBF9F7] rounded-xl border-2 border-[#E5E5E5] overflow-hidden">
+            <img
+                src={src}
+                alt={alt}
+                className="w-full h-full object-cover"
+            />
+            <button
+                type="button"
+                onClick={onRemove}
+                className="absolute top-1 right-1 w-6 h-6 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
+            >
+                <X className="w-3 h-3 text-[#666666]" />
+            </button>
+        </div>
+    );
+}
+
+function ImageDropZone({
+    isDragging,
+    onDragOver,
+    onDragLeave,
+    onDrop,
+    onClick,
+}: {
+    isDragging: boolean;
+    onDragOver: (e: DragEvent<HTMLDivElement>) => void;
+    onDragLeave: (e: DragEvent<HTMLDivElement>) => void;
+    onDrop: (e: DragEvent<HTMLDivElement>) => void;
+    onClick: () => void;
+}) {
+    return (
+        <div
+            onClick={onClick}
+            onDragOver={onDragOver}
+            onDragLeave={onDragLeave}
+            onDrop={onDrop}
+            className={`flex flex-col items-center justify-center gap-2 h-[120px] bg-[#FBF9F7] rounded-xl border-2 border-dashed ${
+                isDragging ? 'border-[#4A5D4A] bg-[#E8EDE8]' : 'border-[#E5E5E5]'
+            } cursor-pointer hover:border-[#4A5D4A] transition-colors`}
+        >
+            <ImagePlus className="w-6 h-6 text-[#4A5D4A]" />
+            <span className="text-xs text-[#999999] font-[Outfit]">
+                Agregar
+            </span>
+        </div>
+    );
+}
+
+function ToggleSwitch({
+    enabled,
+    onToggle,
+    label,
+    description,
+}: {
+    enabled: boolean;
+    onToggle: () => void;
+    label: string;
+    description: string;
+}) {
+    return (
+        <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-1">
+                <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                    {label}
+                </span>
+                <span className="text-[13px] text-[#999999] font-[Outfit]">
+                    {description}
+                </span>
+            </div>
+            <button
+                type="button"
+                onClick={onToggle}
+                className={`w-11 h-6 rounded-full p-0.5 transition-colors ${
+                    enabled ? 'bg-[#4A5D4A]' : 'bg-[#F5F3F0] border border-[#E5E5E5]'
+                }`}
+            >
+                <div
+                    className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${
+                        enabled ? 'translate-x-5' : 'translate-x-0'
+                    } ${!enabled ? 'border border-[#E5E5E5]' : ''}`}
+                />
+            </button>
+        </div>
+    );
+}
+
+function BasicInfoCard({
+    data,
+    setData,
+    errors,
+    categories,
+    categoryOpen,
+    setCategoryOpen,
+}: {
+    data: ProductFormData;
+    setData: (key: keyof ProductFormData, value: string) => void;
+    errors: Partial<Record<string, string>>;
+    categories: string[];
+    categoryOpen: boolean;
+    setCategoryOpen: (open: boolean) => void;
+}) {
+    return (
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
+            <div className="px-6 py-5 border-b border-[#E5E5E5]">
+                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+                    Informaci&oacute;n B&aacute;sica
+                </h2>
+            </div>
+            <div className="p-6 flex flex-col gap-5">
+                {/* Name Field */}
+                <div className="flex flex-col gap-2">
+                    <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                        Nombre del Producto
+                    </label>
+                    <input
+                        type="text"
+                        value={data.name}
+                        onChange={(e) => setData('name', e.target.value)}
+                        placeholder="Ej: Camiseta B&aacute;sica Algod&oacute;n"
+                        className="h-11 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
+                    />
+                    {errors.name && (
+                        <span className="text-xs text-red-500 font-[Outfit]">{errors.name}</span>
+                    )}
+                </div>
+
+                {/* SKU and Category Row */}
+                <div className="flex gap-5">
+                    <div className="flex-1 flex flex-col gap-2">
+                        <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                            SKU / C&oacute;digo
+                        </label>
+                        <input
+                            type="text"
+                            value={data.sku}
+                            onChange={(e) => setData('sku', e.target.value)}
+                            placeholder="Ej: CAM-BAS-001"
+                            className="h-11 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
+                        />
+                        {errors.sku && (
+                            <span className="text-xs text-red-500 font-[Outfit]">{errors.sku}</span>
+                        )}
+                    </div>
+
+                    <CategoryDropdown
+                        category={data.category}
+                        categories={categories}
+                        isOpen={categoryOpen}
+                        onToggle={() => setCategoryOpen(!categoryOpen)}
+                        onSelect={(cat) => {
+                            setData('category', cat);
+                            setCategoryOpen(false);
+                        }}
+                        error={errors.category}
+                    />
+                </div>
+
+                {/* Description Field */}
+                <div className="flex flex-col gap-2">
+                    <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                        Descripci&oacute;n
+                    </label>
+                    <textarea
+                        value={data.description}
+                        onChange={(e) => setData('description', e.target.value)}
+                        placeholder="Describe las caracter&iacute;sticas del producto..."
+                        rows={4}
+                        className="p-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors resize-none leading-relaxed"
+                    />
+                    {errors.description && (
+                        <span className="text-xs text-red-500 font-[Outfit]">{errors.description}</span>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function PricingInventoryCard({
+    data,
+    setData,
+    errors,
+}: {
+    data: ProductFormData;
+    setData: (key: keyof ProductFormData, value: string) => void;
+    errors: Partial<Record<string, string>>;
+}) {
+    return (
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
+            <div className="px-6 py-5 border-b border-[#E5E5E5]">
+                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+                    Precios e Inventario
+                </h2>
+            </div>
+            <div className="p-6 flex flex-col gap-5">
+                {/* Price Row */}
+                <div className="flex gap-5">
+                    <div className="flex-1 flex flex-col gap-2">
+                        <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                            Precio de Venta
+                        </label>
+                        <div className="flex h-11 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] overflow-hidden focus-within:border-[#4A5D4A] transition-colors">
+                            <div className="flex items-center px-3 bg-[#F5F3F0] border-r border-[#E5E5E5]">
+                                <span className="text-sm text-[#666666] font-[Outfit]">$</span>
+                            </div>
+                            <input
+                                type="text"
+                                value={data.price}
+                                onChange={(e) => setData('price', e.target.value)}
+                                placeholder="0.00"
+                                className="flex-1 px-3 bg-transparent text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none"
+                            />
+                        </div>
+                        {errors.price && (
+                            <span className="text-xs text-red-500 font-[Outfit]">{errors.price}</span>
+                        )}
+                    </div>
+
+                    <div className="flex-1 flex flex-col gap-2">
+                        <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                            Precio de Costo
+                        </label>
+                        <div className="flex h-11 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] overflow-hidden focus-within:border-[#4A5D4A] transition-colors">
+                            <div className="flex items-center px-3 bg-[#F5F3F0] border-r border-[#E5E5E5]">
+                                <span className="text-sm text-[#666666] font-[Outfit]">$</span>
+                            </div>
+                            <input
+                                type="text"
+                                value={data.cost}
+                                onChange={(e) => setData('cost', e.target.value)}
+                                placeholder="0.00"
+                                className="flex-1 px-3 bg-transparent text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none"
+                            />
+                        </div>
+                        {errors.cost && (
+                            <span className="text-xs text-red-500 font-[Outfit]">{errors.cost}</span>
+                        )}
+                    </div>
+                </div>
+
+                {/* Stock Row */}
+                <div className="flex gap-5">
+                    <div className="flex-1 flex flex-col gap-2">
+                        <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                            Stock Disponible
+                        </label>
+                        <input
+                            type="text"
+                            value={data.stock}
+                            onChange={(e) => setData('stock', e.target.value)}
+                            placeholder="0"
+                            className="h-11 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
+                        />
+                        {errors.stock && (
+                            <span className="text-xs text-red-500 font-[Outfit]">{errors.stock}</span>
+                        )}
+                    </div>
+
+                    <div className="flex-1 flex flex-col gap-2">
+                        <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                            Stock M&iacute;nimo
+                        </label>
+                        <input
+                            type="text"
+                            value={data.min_stock}
+                            onChange={(e) => setData('min_stock', e.target.value)}
+                            placeholder="0"
+                            className="h-11 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
+                        />
+                        {errors.min_stock && (
+                            <span className="text-xs text-red-500 font-[Outfit]">{errors.min_stock}</span>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function PricingTiersSection({
+    tiers,
+    errors,
+    onTiersChange,
+}: {
+    tiers: PricingTier[];
+    errors: Partial<Record<string, string>>;
+    onTiersChange: (tiers: PricingTier[]) => void;
+}) {
+    const addPricingTier = () => {
+        const lastTier = tiers[tiers.length - 1];
+        const suggestedMinQty = lastTier && lastTier.max_qty ? String(parseInt(lastTier.max_qty) + 1) : '1';
+
+        onTiersChange([
+            ...tiers,
+            {
+                min_qty: suggestedMinQty,
+                max_qty: '',
+                price: '',
+                discount: '',
+                label: '',
+            },
+        ]);
+    };
+
+    const removePricingTier = (index: number) => {
+        onTiersChange(tiers.filter((_, i) => i !== index));
+    };
+
+    const updatePricingTier = (index: number, field: keyof PricingTier, value: string) => {
+        const updatedTiers = [...tiers];
+        updatedTiers[index] = { ...updatedTiers[index], [field]: value };
+        onTiersChange(updatedTiers);
+    };
+
+    return (
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
+            <div className="px-6 py-5 border-b border-[#E5E5E5] flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+                    Niveles de Precios
+                </h2>
+                <button
+                    type="button"
+                    onClick={addPricingTier}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-[#E8EDE8] rounded-lg text-sm font-medium text-[#4A5D4A] font-[Outfit] hover:bg-[#d9e2d9] transition-colors"
+                >
+                    <Plus className="w-4 h-4" />
+                    Agregar
+                </button>
+            </div>
+            <div className="p-6 flex flex-col gap-4">
+                {errors.pricing_tiers && (
+                    <div className="p-3 bg-red-50 rounded-lg border border-red-200">
+                        <span className="text-xs text-red-600 font-[Outfit]">{errors.pricing_tiers}</span>
+                    </div>
+                )}
+
+                {tiers.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-8 text-center">
+                        <span className="text-sm text-[#999999] font-[Outfit]">
+                            No hay niveles de precios configurados.
+                        </span>
+                        <span className="text-xs text-[#BBBBBB] font-[Outfit] mt-1">
+                            Los niveles permiten ofrecer descuentos por volumen.
+                        </span>
+                    </div>
+                ) : (
+                    <div className="flex flex-col gap-4">
+                        {tiers.map((tier, index) => (
+                            <PricingTierRow
+                                key={index}
+                                tier={tier}
+                                index={index}
+                                errors={errors}
+                                onUpdate={updatePricingTier}
+                                onRemove={removePricingTier}
+                            />
+                        ))}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+function ImageSection({
+    images,
+    onImagesChange,
+}: {
+    images: File[];
+    onImagesChange: (images: File[]) => void;
+}) {
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
     const [isDragging, setIsDragging] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const canAddMore = imagePreviews.length < MAX_IMAGES;
+
+    const addFiles = (files: File[]) => {
+        processImageFiles(
+            files,
+            MAX_IMAGES - imagePreviews.length,
+            (file) => onImagesChange([...images, file]),
+            (preview) => setImagePreviews((prev) => [...prev, preview]),
+        );
+    };
+
+    const removeImage = (index: number) => {
+        setImagePreviews(removeAtIndex(imagePreviews, index));
+        onImagesChange(removeAtIndex(images, index));
+    };
+
+    return (
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
+            <div className="px-6 py-5 border-b border-[#E5E5E5]">
+                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+                    Im&aacute;genes del Producto
+                </h2>
+            </div>
+            <div className="p-6 flex flex-col gap-4">
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                    onChange={(e) => { if (e.target.files) { addFiles(Array.from(e.target.files)); } }}
+                    multiple
+                    className="hidden"
+                />
+                <div className="grid grid-cols-2 gap-3">
+                    {imagePreviews.map((preview, index) => (
+                        <ImagePreview
+                            key={`new-${index}`}
+                            src={preview}
+                            alt="New product image"
+                            onRemove={() => removeImage(index)}
+                        />
+                    ))}
+                    {canAddMore && (
+                        <ImageDropZone
+                            isDragging={isDragging}
+                            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                            onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
+                            onDrop={(e) => { e.preventDefault(); setIsDragging(false); addFiles(Array.from(e.dataTransfer.files)); }}
+                            onClick={() => fileInputRef.current?.click()}
+                        />
+                    )}
+                </div>
+                <span className="text-xs text-[#999999] font-[Outfit]">
+                    PNG, JPG o WEBP. M&aacute;ximo 5MB por imagen. Hasta 4 im&aacute;genes.
+                </span>
+            </div>
+        </div>
+    );
+}
+
+export default function Create({ categories }: CreateProductProps) {
+    const [categoryOpen, setCategoryOpen] = useState(false);
 
     const { data, setData, post, processing, errors } = useForm<ProductFormData>({
         name: '',
@@ -52,98 +714,9 @@ export default function Create({ categories }: CreateProductProps) {
         pricing_tiers: [],
     });
 
-    const canAddMore = imagePreviews.length < 4;
-
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         post('/admin/products');
-    };
-
-    const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if (files) {
-            handleFiles(Array.from(files));
-        }
-    };
-
-    const handleFiles = (files: File[]) => {
-        const remainingSlots = 4 - imagePreviews.length;
-        const filesToAdd = files.slice(0, remainingSlots);
-
-        for (const file of filesToAdd) {
-            if (file.size > 5 * 1024 * 1024) {
-                alert('El archivo debe ser menor a 5MB');
-                continue;
-            }
-
-            if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
-                alert('Solo se permiten archivos PNG, JPG o WEBP');
-                continue;
-            }
-
-            setData('images', [...data.images, file]);
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                setImagePreviews((prev) => [...prev, e.target?.result as string]);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        setIsDragging(true);
-    };
-
-    const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        setIsDragging(false);
-    };
-
-    const handleDrop = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        setIsDragging(false);
-        const files = Array.from(e.dataTransfer.files);
-        if (files.length > 0) {
-            handleFiles(files);
-        }
-    };
-
-    const removeImage = (index: number) => {
-        const newPreviews = imagePreviews.filter((_, i) => i !== index);
-        setImagePreviews(newPreviews);
-        const newFiles = data.images.filter((_, i) => i !== index);
-        setData('images', newFiles);
-    };
-
-    const addPricingTier = () => {
-        const lastTier = data.pricing_tiers[data.pricing_tiers.length - 1];
-        const suggestedMinQty = lastTier && lastTier.max_qty ? String(parseInt(lastTier.max_qty) + 1) : '1';
-
-        setData('pricing_tiers', [
-            ...data.pricing_tiers,
-            {
-                min_qty: suggestedMinQty,
-                max_qty: '',
-                price: '',
-                discount: '',
-                label: '',
-            },
-        ]);
-    };
-
-    const removePricingTier = (index: number) => {
-        setData(
-            'pricing_tiers',
-            data.pricing_tiers.filter((_, i) => i !== index)
-        );
-    };
-
-    const updatePricingTier = (index: number, field: keyof PricingTier, value: string) => {
-        const updatedTiers = [...data.pricing_tiers];
-        updatedTiers[index] = { ...updatedTiers[index], [field]: value };
-        setData('pricing_tiers', updatedTiers);
     };
 
     return (
@@ -189,412 +762,34 @@ export default function Create({ categories }: CreateProductProps) {
                 <div className="flex gap-8">
                     {/* Left Column */}
                     <div className="flex-1 flex flex-col gap-6">
-                        {/* Basic Info Card */}
-                        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-                            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
-                                    Información Básica
-                                </h2>
-                            </div>
-                            <div className="p-6 flex flex-col gap-5">
-                                {/* Name Field */}
-                                <div className="flex flex-col gap-2">
-                                    <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                        Nombre del Producto
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={data.name}
-                                        onChange={(e) => setData('name', e.target.value)}
-                                        placeholder="Ej: Camiseta Básica Algodón"
-                                        className="h-11 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
-                                    />
-                                    {errors.name && (
-                                        <span className="text-xs text-red-500 font-[Outfit]">{errors.name}</span>
-                                    )}
-                                </div>
+                        <BasicInfoCard
+                            data={data}
+                            setData={setData}
+                            errors={errors}
+                            categories={categories}
+                            categoryOpen={categoryOpen}
+                            setCategoryOpen={setCategoryOpen}
+                        />
 
-                                {/* SKU and Category Row */}
-                                <div className="flex gap-5">
-                                    <div className="flex-1 flex flex-col gap-2">
-                                        <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                            SKU / Código
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={data.sku}
-                                            onChange={(e) => setData('sku', e.target.value)}
-                                            placeholder="Ej: CAM-BAS-001"
-                                            className="h-11 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
-                                        />
-                                        {errors.sku && (
-                                            <span className="text-xs text-red-500 font-[Outfit]">{errors.sku}</span>
-                                        )}
-                                    </div>
+                        <PricingInventoryCard
+                            data={data}
+                            setData={setData}
+                            errors={errors}
+                        />
 
-                                    <div className="flex-1 flex flex-col gap-2 relative">
-                                        <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                            Categoría
-                                        </label>
-                                        <button
-                                            type="button"
-                                            onClick={() => setCategoryOpen(!categoryOpen)}
-                                            className="h-11 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors flex items-center justify-between"
-                                        >
-                                            <span className={data.category ? 'text-[#1A1A1A]' : 'text-[#999999]'}>
-                                                {data.category || 'Seleccionar categoría'}
-                                            </span>
-                                            <ChevronDown className="w-[18px] h-[18px] text-[#999999]" />
-                                        </button>
-                                        {categoryOpen && (
-                                            <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg border border-[#E5E5E5] shadow-lg z-10 max-h-48 overflow-y-auto">
-                                                {categories.map((cat) => (
-                                                    <button
-                                                        key={cat}
-                                                        type="button"
-                                                        onClick={() => {
-                                                            setData('category', cat);
-                                                            setCategoryOpen(false);
-                                                        }}
-                                                        className="w-full px-4 py-2.5 text-left text-sm text-[#1A1A1A] font-[Outfit] hover:bg-[#F5F3F0] transition-colors"
-                                                    >
-                                                        {cat}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        )}
-                                        {errors.category && (
-                                            <span className="text-xs text-red-500 font-[Outfit]">{errors.category}</span>
-                                        )}
-                                    </div>
-                                </div>
-
-                                {/* Description Field */}
-                                <div className="flex flex-col gap-2">
-                                    <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                        Descripción
-                                    </label>
-                                    <textarea
-                                        value={data.description}
-                                        onChange={(e) => setData('description', e.target.value)}
-                                        placeholder="Describe las características del producto..."
-                                        rows={4}
-                                        className="p-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors resize-none leading-relaxed"
-                                    />
-                                    {errors.description && (
-                                        <span className="text-xs text-red-500 font-[Outfit]">{errors.description}</span>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Pricing Card */}
-                        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-                            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
-                                    Precios e Inventario
-                                </h2>
-                            </div>
-                            <div className="p-6 flex flex-col gap-5">
-                                {/* Price Row */}
-                                <div className="flex gap-5">
-                                    <div className="flex-1 flex flex-col gap-2">
-                                        <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                            Precio de Venta
-                                        </label>
-                                        <div className="flex h-11 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] overflow-hidden focus-within:border-[#4A5D4A] transition-colors">
-                                            <div className="flex items-center px-3 bg-[#F5F3F0] border-r border-[#E5E5E5]">
-                                                <span className="text-sm text-[#666666] font-[Outfit]">$</span>
-                                            </div>
-                                            <input
-                                                type="text"
-                                                value={data.price}
-                                                onChange={(e) => setData('price', e.target.value)}
-                                                placeholder="0.00"
-                                                className="flex-1 px-3 bg-transparent text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none"
-                                            />
-                                        </div>
-                                        {errors.price && (
-                                            <span className="text-xs text-red-500 font-[Outfit]">{errors.price}</span>
-                                        )}
-                                    </div>
-
-                                    <div className="flex-1 flex flex-col gap-2">
-                                        <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                            Precio de Costo
-                                        </label>
-                                        <div className="flex h-11 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] overflow-hidden focus-within:border-[#4A5D4A] transition-colors">
-                                            <div className="flex items-center px-3 bg-[#F5F3F0] border-r border-[#E5E5E5]">
-                                                <span className="text-sm text-[#666666] font-[Outfit]">$</span>
-                                            </div>
-                                            <input
-                                                type="text"
-                                                value={data.cost}
-                                                onChange={(e) => setData('cost', e.target.value)}
-                                                placeholder="0.00"
-                                                className="flex-1 px-3 bg-transparent text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none"
-                                            />
-                                        </div>
-                                        {errors.cost && (
-                                            <span className="text-xs text-red-500 font-[Outfit]">{errors.cost}</span>
-                                        )}
-                                    </div>
-                                </div>
-
-                                {/* Stock Row */}
-                                <div className="flex gap-5">
-                                    <div className="flex-1 flex flex-col gap-2">
-                                        <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                            Stock Disponible
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={data.stock}
-                                            onChange={(e) => setData('stock', e.target.value)}
-                                            placeholder="0"
-                                            className="h-11 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
-                                        />
-                                        {errors.stock && (
-                                            <span className="text-xs text-red-500 font-[Outfit]">{errors.stock}</span>
-                                        )}
-                                    </div>
-
-                                    <div className="flex-1 flex flex-col gap-2">
-                                        <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                            Stock Mínimo
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={data.min_stock}
-                                            onChange={(e) => setData('min_stock', e.target.value)}
-                                            placeholder="0"
-                                            className="h-11 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
-                                        />
-                                        {errors.min_stock && (
-                                            <span className="text-xs text-red-500 font-[Outfit]">{errors.min_stock}</span>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Pricing Tiers Card */}
-                        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-                            <div className="px-6 py-5 border-b border-[#E5E5E5] flex items-center justify-between">
-                                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
-                                    Niveles de Precios
-                                </h2>
-                                <button
-                                    type="button"
-                                    onClick={addPricingTier}
-                                    className="flex items-center gap-1.5 px-3 py-1.5 bg-[#E8EDE8] rounded-lg text-sm font-medium text-[#4A5D4A] font-[Outfit] hover:bg-[#d9e2d9] transition-colors"
-                                >
-                                    <Plus className="w-4 h-4" />
-                                    Agregar
-                                </button>
-                            </div>
-                            <div className="p-6 flex flex-col gap-4">
-                                {errors.pricing_tiers && (
-                                    <div className="p-3 bg-red-50 rounded-lg border border-red-200">
-                                        <span className="text-xs text-red-600 font-[Outfit]">{errors.pricing_tiers}</span>
-                                    </div>
-                                )}
-
-                                {data.pricing_tiers.length === 0 ? (
-                                    <div className="flex flex-col items-center justify-center py-8 text-center">
-                                        <span className="text-sm text-[#999999] font-[Outfit]">
-                                            No hay niveles de precios configurados.
-                                        </span>
-                                        <span className="text-xs text-[#BBBBBB] font-[Outfit] mt-1">
-                                            Los niveles permiten ofrecer descuentos por volumen.
-                                        </span>
-                                    </div>
-                                ) : (
-                                    <div className="flex flex-col gap-4">
-                                        {data.pricing_tiers.map((tier, index) => (
-                                            <div
-                                                key={index}
-                                                className="p-4 bg-[#FBF9F7] rounded-xl border border-[#E5E5E5]"
-                                            >
-                                                <div className="flex items-center justify-between mb-3">
-                                                    <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                                        Nivel {index + 1}
-                                                    </span>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => removePricingTier(index)}
-                                                        className="p-1.5 text-[#999999] hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                                    >
-                                                        <Trash2 className="w-4 h-4" />
-                                                    </button>
-                                                </div>
-
-                                                <div className="grid grid-cols-2 gap-3">
-                                                    <div className="flex flex-col gap-1.5">
-                                                        <label className="text-xs font-medium text-[#666666] font-[Outfit]">
-                                                            Cant. Mínima
-                                                        </label>
-                                                        <input
-                                                            type="text"
-                                                            value={tier.min_qty}
-                                                            onChange={(e) => updatePricingTier(index, 'min_qty', e.target.value)}
-                                                            placeholder="1"
-                                                            className="h-9 px-3 bg-white rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
-                                                        />
-                                                        {errors[`pricing_tiers.${index}.min_qty`] && (
-                                                            <span className="text-xs text-red-500 font-[Outfit]">
-                                                                {errors[`pricing_tiers.${index}.min_qty`]}
-                                                            </span>
-                                                        )}
-                                                    </div>
-
-                                                    <div className="flex flex-col gap-1.5">
-                                                        <label className="text-xs font-medium text-[#666666] font-[Outfit]">
-                                                            Cant. Máxima
-                                                        </label>
-                                                        <input
-                                                            type="text"
-                                                            value={tier.max_qty}
-                                                            onChange={(e) => updatePricingTier(index, 'max_qty', e.target.value)}
-                                                            placeholder="Sin límite"
-                                                            className="h-9 px-3 bg-white rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
-                                                        />
-                                                        {errors[`pricing_tiers.${index}.max_qty`] && (
-                                                            <span className="text-xs text-red-500 font-[Outfit]">
-                                                                {errors[`pricing_tiers.${index}.max_qty`]}
-                                                            </span>
-                                                        )}
-                                                    </div>
-
-                                                    <div className="flex flex-col gap-1.5">
-                                                        <label className="text-xs font-medium text-[#666666] font-[Outfit]">
-                                                            Precio
-                                                        </label>
-                                                        <div className="flex h-9 bg-white rounded-lg border border-[#E5E5E5] overflow-hidden focus-within:border-[#4A5D4A] transition-colors">
-                                                            <div className="flex items-center px-2 bg-[#F5F3F0] border-r border-[#E5E5E5]">
-                                                                <span className="text-xs text-[#666666] font-[Outfit]">$</span>
-                                                            </div>
-                                                            <input
-                                                                type="text"
-                                                                value={tier.price}
-                                                                onChange={(e) => updatePricingTier(index, 'price', e.target.value)}
-                                                                placeholder="0.00"
-                                                                className="flex-1 px-2 bg-transparent text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none"
-                                                            />
-                                                        </div>
-                                                        {errors[`pricing_tiers.${index}.price`] && (
-                                                            <span className="text-xs text-red-500 font-[Outfit]">
-                                                                {errors[`pricing_tiers.${index}.price`]}
-                                                            </span>
-                                                        )}
-                                                    </div>
-
-                                                    <div className="flex flex-col gap-1.5">
-                                                        <label className="text-xs font-medium text-[#666666] font-[Outfit]">
-                                                            Descuento
-                                                        </label>
-                                                        <div className="flex h-9 bg-white rounded-lg border border-[#E5E5E5] overflow-hidden focus-within:border-[#4A5D4A] transition-colors">
-                                                            <input
-                                                                type="text"
-                                                                value={tier.discount}
-                                                                onChange={(e) => updatePricingTier(index, 'discount', e.target.value)}
-                                                                placeholder="0"
-                                                                className="flex-1 px-2 bg-transparent text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none"
-                                                            />
-                                                            <div className="flex items-center px-2 bg-[#F5F3F0] border-l border-[#E5E5E5]">
-                                                                <span className="text-xs text-[#666666] font-[Outfit]">%</span>
-                                                            </div>
-                                                        </div>
-                                                        {errors[`pricing_tiers.${index}.discount`] && (
-                                                            <span className="text-xs text-red-500 font-[Outfit]">
-                                                                {errors[`pricing_tiers.${index}.discount`]}
-                                                            </span>
-                                                        )}
-                                                    </div>
-
-                                                    <div className="col-span-2 flex flex-col gap-1.5">
-                                                        <label className="text-xs font-medium text-[#666666] font-[Outfit]">
-                                                            Etiqueta
-                                                        </label>
-                                                        <input
-                                                            type="text"
-                                                            value={tier.label}
-                                                            onChange={(e) => updatePricingTier(index, 'label', e.target.value)}
-                                                            placeholder="Ej: Mayorista, Distribuidor"
-                                                            className="h-9 px-3 bg-white rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
-                                                        />
-                                                        {errors[`pricing_tiers.${index}.label`] && (
-                                                            <span className="text-xs text-red-500 font-[Outfit]">
-                                                                {errors[`pricing_tiers.${index}.label`]}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        </div>
+                        <PricingTiersSection
+                            tiers={data.pricing_tiers}
+                            errors={errors}
+                            onTiersChange={(tiers) => setData('pricing_tiers', tiers)}
+                        />
                     </div>
 
                     {/* Right Column */}
                     <div className="w-[400px] flex flex-col gap-6">
-                        {/* Image Card */}
-                        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-                            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
-                                    Imágenes del Producto
-                                </h2>
-                            </div>
-                            <div className="p-6 flex flex-col gap-4">
-                                <input
-                                    ref={fileInputRef}
-                                    type="file"
-                                    accept="image/png,image/jpeg,image/webp"
-                                    onChange={handleFileSelect}
-                                    multiple
-                                    className="hidden"
-                                />
-                                <div className="grid grid-cols-2 gap-3">
-                                    {imagePreviews.map((preview, index) => (
-                                        <div key={`new-${index}`} className="relative h-[120px] bg-[#FBF9F7] rounded-xl border-2 border-[#E5E5E5] overflow-hidden">
-                                            <img
-                                                src={preview}
-                                                alt="New product image"
-                                                className="w-full h-full object-cover"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={() => removeImage(index)}
-                                                className="absolute top-1 right-1 w-6 h-6 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
-                                            >
-                                                <X className="w-3 h-3 text-[#666666]" />
-                                            </button>
-                                        </div>
-                                    ))}
-                                    {canAddMore && (
-                                        <div
-                                            onClick={() => fileInputRef.current?.click()}
-                                            onDragOver={handleDragOver}
-                                            onDragLeave={handleDragLeave}
-                                            onDrop={handleDrop}
-                                            className={`flex flex-col items-center justify-center gap-2 h-[120px] bg-[#FBF9F7] rounded-xl border-2 border-dashed ${
-                                                isDragging ? 'border-[#4A5D4A] bg-[#E8EDE8]' : 'border-[#E5E5E5]'
-                                            } cursor-pointer hover:border-[#4A5D4A] transition-colors`}
-                                        >
-                                            <ImagePlus className="w-6 h-6 text-[#4A5D4A]" />
-                                            <span className="text-xs text-[#999999] font-[Outfit]">
-                                                Agregar
-                                            </span>
-                                        </div>
-                                    )}
-                                </div>
-                                <span className="text-xs text-[#999999] font-[Outfit]">
-                                    PNG, JPG o WEBP. Máximo 5MB por imagen. Hasta 4 imágenes.
-                                </span>
-                            </div>
-                        </div>
+                        <ImageSection
+                            images={data.images}
+                            onImagesChange={(images) => setData('images', images)}
+                        />
 
                         {/* Status Card */}
                         <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
@@ -604,55 +799,18 @@ export default function Create({ categories }: CreateProductProps) {
                                 </h2>
                             </div>
                             <div className="p-6 flex flex-col gap-5">
-                                {/* Active Toggle */}
-                                <div className="flex items-center justify-between">
-                                    <div className="flex flex-col gap-1">
-                                        <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                            Producto Activo
-                                        </span>
-                                        <span className="text-[13px] text-[#999999] font-[Outfit]">
-                                            Visible en el catálogo
-                                        </span>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        onClick={() => setData('is_active', !data.is_active)}
-                                        className={`w-11 h-6 rounded-full p-0.5 transition-colors ${
-                                            data.is_active ? 'bg-[#4A5D4A]' : 'bg-[#F5F3F0] border border-[#E5E5E5]'
-                                        }`}
-                                    >
-                                        <div
-                                            className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${
-                                                data.is_active ? 'translate-x-5' : 'translate-x-0'
-                                            } ${!data.is_active ? 'border border-[#E5E5E5]' : ''}`}
-                                        />
-                                    </button>
-                                </div>
-
-                                {/* Featured Toggle */}
-                                <div className="flex items-center justify-between">
-                                    <div className="flex flex-col gap-1">
-                                        <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                                            Producto Destacado
-                                        </span>
-                                        <span className="text-[13px] text-[#999999] font-[Outfit]">
-                                            Mostrar en página principal
-                                        </span>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        onClick={() => setData('is_featured', !data.is_featured)}
-                                        className={`w-11 h-6 rounded-full p-0.5 transition-colors ${
-                                            data.is_featured ? 'bg-[#4A5D4A]' : 'bg-[#F5F3F0] border border-[#E5E5E5]'
-                                        }`}
-                                    >
-                                        <div
-                                            className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${
-                                                data.is_featured ? 'translate-x-5' : 'translate-x-0'
-                                            } ${!data.is_featured ? 'border border-[#E5E5E5]' : ''}`}
-                                        />
-                                    </button>
-                                </div>
+                                <ToggleSwitch
+                                    enabled={data.is_active}
+                                    onToggle={() => setData('is_active', !data.is_active)}
+                                    label="Producto Activo"
+                                    description="Visible en el cat&aacute;logo"
+                                />
+                                <ToggleSwitch
+                                    enabled={data.is_featured}
+                                    onToggle={() => setData('is_featured', !data.is_featured)}
+                                    label="Producto Destacado"
+                                    description="Mostrar en p&aacute;gina principal"
+                                />
                             </div>
                         </div>
                     </div>

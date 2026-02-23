@@ -59,19 +59,8 @@ class ProductsController extends Controller
 
             $product = Product::create($validated);
 
-            if (! empty($pricingTiers)) {
-                $product->pricingTiers()->createMany($pricingTiers);
-            }
-
-            if (! empty($images)) {
-                foreach ($images as $index => $image) {
-                    $path = $image->store('products', 'public');
-                    $product->images()->create([
-                        'image_path' => $path,
-                        'position' => $index,
-                    ]);
-                }
-            }
+            $this->syncPricingTiers($product, $pricingTiers);
+            $this->storeNewImages($product, $images);
         });
 
         return redirect()->route('admin.products')->with('success', 'Producto creado exitosamente');
@@ -122,37 +111,60 @@ class ProductsController extends Controller
 
             $product->update($validated);
 
-            // Delete marked images
-            if (! empty($deleteImages)) {
-                $imagesToDelete = ProductImage::whereIn('id', $deleteImages)->where('product_id', $product->id)->get();
-                foreach ($imagesToDelete as $img) {
-                    Storage::disk('public')->delete($img->image_path);
-                }
-                ProductImage::whereIn('id', $deleteImages)->where('product_id', $product->id)->delete();
-            }
-
-            // Add new images
-            if (! empty($images)) {
-                $currentCount = $product->images()->count();
-                foreach ($images as $index => $image) {
-                    if ($currentCount + $index < 4) {
-                        $path = $image->store('products', 'public');
-                        $product->images()->create([
-                            'image_path' => $path,
-                            'position' => $currentCount + $index,
-                        ]);
-                    }
-                }
-            }
-
-            // Delete existing tiers and recreate
-            $product->pricingTiers()->delete();
-
-            if (! empty($pricingTiers)) {
-                $product->pricingTiers()->createMany($pricingTiers);
-            }
+            $this->deleteProductImages($product, $deleteImages);
+            $this->storeNewImages($product, $images);
+            $this->syncPricingTiers($product, $pricingTiers);
         });
 
         return redirect()->route('admin.products')->with('success', 'Producto actualizado exitosamente');
+    }
+
+    private function deleteProductImages(Product $product, array $imageIds): void
+    {
+        if (empty($imageIds)) {
+            return;
+        }
+
+        $imagesToDelete = ProductImage::whereIn('id', $imageIds)
+            ->where('product_id', $product->id)
+            ->get();
+
+        foreach ($imagesToDelete as $img) {
+            Storage::disk('public')->delete($img->image_path);
+        }
+
+        ProductImage::whereIn('id', $imageIds)
+            ->where('product_id', $product->id)
+            ->delete();
+    }
+
+    private function storeNewImages(Product $product, array $images): void
+    {
+        if (empty($images)) {
+            return;
+        }
+
+        $currentCount = $product->images()->count();
+
+        foreach ($images as $index => $image) {
+            if ($currentCount + $index >= 4) {
+                break;
+            }
+
+            $path = $image->store('products', 'public');
+            $product->images()->create([
+                'image_path' => $path,
+                'position' => $currentCount + $index,
+            ]);
+        }
+    }
+
+    private function syncPricingTiers(Product $product, array $pricingTiers): void
+    {
+        $product->pricingTiers()->delete();
+
+        if (! empty($pricingTiers)) {
+            $product->pricingTiers()->createMany($pricingTiers);
+        }
     }
 }

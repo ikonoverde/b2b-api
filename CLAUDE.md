@@ -455,3 +455,12 @@ export default () => (
 ## Code quality
 - Before committing, ALWAYS run auto-formatting with `qlty fmt`
 - Before finishing, ALWAYS run `qlty check --fix --level=low` and fix any lint errors
+- Before finishing, ALWAYS run `qlty smells` and fix any issues
+- Before finishing, ALWAYS run `qlty metrics --sort complexity --limit=5 app/`
+  - Max accepted cyclo: 10
+  - Max accepted cognitive/complex: 15
+  - Refactor anything above those limits to lower the complexity
+- Before finishing, ALWAYS run `qlty metrics --sort complexity --limit=5 resources/`
+    - Max accepted cyclo: 15
+    - Max accepted cognitive/complex: 20
+    - Refactor anything above those limits to lower the complexity

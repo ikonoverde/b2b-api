@@ -1,3 +1,4 @@
+import React from 'react';
 import { usePage } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import {
@@ -143,111 +144,56 @@ export default function Dashboard({ stats, recentActivity }: DashboardProps) {
     );
 }
 
+const statIconMap: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
+    cart: ShoppingCart,
+    users: Users,
+    star: Star,
+};
+
+function StatIcon({ icon, iconColor, isFeatured }: { icon: string; iconColor: string; isFeatured: boolean }) {
+    if (icon === '$') {
+        return (
+            <span
+                className={`text-2xl font-semibold font-[Outfit] ${isFeatured ? 'text-[#4A5D4A]' : ''}`}
+                style={!isFeatured ? { color: iconColor } : undefined}
+            >
+                $
+            </span>
+        );
+    }
+
+    const Icon = statIconMap[icon] || Star;
+    return <Icon className="w-6 h-6" style={{ color: iconColor }} />;
+}
+
 function StatCard({ stat }: { stat: Stat }) {
-    const isFeatured = stat.featured;
+    const f = !!stat.featured;
 
     return (
-        <div
-            className={`h-[200px] rounded-2xl p-6 flex flex-col gap-4 ${
-                isFeatured
-                    ? 'bg-[#4A5D4A]'
-                    : 'bg-white border border-[#E5E5E5]'
-            }`}
-        >
-            {/* Header */}
+        <div className={`h-[200px] rounded-2xl p-6 flex flex-col gap-4 ${f ? 'bg-[#4A5D4A]' : 'bg-white border border-[#E5E5E5]'}`}>
             <div className="flex items-center justify-between">
                 <div
-                    className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                        isFeatured ? 'bg-white' : ''
-                    }`}
-                    style={
-                        !isFeatured
-                            ? { backgroundColor: stat.iconBg }
-                            : undefined
-                    }
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center ${f ? 'bg-white' : ''}`}
+                    style={!f ? { backgroundColor: stat.iconBg } : undefined}
                 >
-                    {stat.icon === '$' ? (
-                        <span
-                            className={`text-2xl font-semibold font-[Outfit] ${
-                                isFeatured
-                                    ? 'text-[#4A5D4A]'
-                                    : ''
-                            }`}
-                            style={
-                                !isFeatured
-                                    ? { color: stat.iconColor }
-                                    : undefined
-                            }
-                        >
-                            $
-                        </span>
-                    ) : stat.icon === 'cart' ? (
-                        <ShoppingCart
-                            className="w-6 h-6"
-                            style={{ color: stat.iconColor }}
-                        />
-                    ) : stat.icon === 'users' ? (
-                        <Users
-                            className="w-6 h-6"
-                            style={{ color: stat.iconColor }}
-                        />
-                    ) : (
-                        <Star
-                            className="w-6 h-6"
-                            style={{ color: stat.iconColor }}
-                        />
-                    )}
+                    <StatIcon icon={stat.icon} iconColor={stat.iconColor} isFeatured={f} />
                 </div>
-
-                {/* Badge */}
-                <div
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-2xl ${
-                        isFeatured
-                            ? 'bg-white/20'
-                            : 'bg-[#E8F5E9]'
-                    }`}
-                >
-                    <TrendingUp
-                        className={`w-3.5 h-3.5 ${
-                            isFeatured ? 'text-white' : 'text-[#4CAF50]'
-                        }`}
-                    />
-                    <span
-                        className={`text-xs font-medium font-[Outfit] ${
-                            isFeatured ? 'text-white' : 'text-[#4CAF50]'
-                        }`}
-                    >
+                <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-2xl ${f ? 'bg-white/20' : 'bg-[#E8F5E9]'}`}>
+                    <TrendingUp className={`w-3.5 h-3.5 ${f ? 'text-white' : 'text-[#4CAF50]'}`} />
+                    <span className={`text-xs font-medium font-[Outfit] ${f ? 'text-white' : 'text-[#4CAF50]'}`}>
                         {stat.change}
                     </span>
                 </div>
             </div>
-
-            {/* Content */}
             <div className="flex flex-col gap-1">
-                <span
-                    className={`text-sm font-[Outfit] ${
-                        isFeatured
-                            ? 'text-white/70'
-                            : 'text-[#666666]'
-                    }`}
-                >
+                <span className={`text-sm font-[Outfit] ${f ? 'text-white/70' : 'text-[#666666]'}`}>
                     {stat.label}
                 </span>
-                <span
-                    className={`text-[40px] font-semibold font-[Inter] leading-tight ${
-                        isFeatured ? 'text-white' : 'text-[#1A1A1A]'
-                    }`}
-                >
+                <span className={`text-[40px] font-semibold font-[Inter] leading-tight ${f ? 'text-white' : 'text-[#1A1A1A]'}`}>
                     {stat.value}
                 </span>
             </div>
-
-            {/* Footer */}
-            <span
-                className={`text-xs font-[Outfit] ${
-                    isFeatured ? 'text-white/50' : 'text-[#999999]'
-                }`}
-            >
+            <span className={`text-xs font-[Outfit] ${f ? 'text-white/50' : 'text-[#999999]'}`}>
                 {stat.footer}
             </span>
         </div>

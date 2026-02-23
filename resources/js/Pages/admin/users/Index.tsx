@@ -36,44 +36,134 @@ const roleLabels: Record<string, string> = {
     super_admin: 'Super Admin',
 };
 
+function formatDate(dateString: string): string {
+    return new Date(dateString).toLocaleDateString('es-MX', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+    });
+}
+
+function getSortIcon(field: string): React.ReactNode {
+    const currentSortBy = new URLSearchParams(window.location.search).get('sort_by') || 'created_at';
+    const currentSortOrder = new URLSearchParams(window.location.search).get('sort_order') || 'desc';
+
+    if (currentSortBy !== field) {
+        return <ArrowUpDown className="w-4 h-4 text-gray-400" />;
+    }
+
+    return currentSortOrder === 'asc'
+        ? <ArrowUpDown className="w-4 h-4 text-[#1A1A1A]" />
+        : <ArrowUpDown className="w-4 h-4 text-[#1A1A1A] rotate-180" />;
+}
+
+function handleSort(field: string): void {
+    const params = new URLSearchParams(window.location.search);
+    const currentSortBy = params.get('sort_by') || 'created_at';
+    const currentSortOrder = params.get('sort_order') || 'desc';
+
+    if (currentSortBy === field) {
+        params.set('sort_order', currentSortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+        params.set('sort_by', field);
+        params.set('sort_order', 'desc');
+    }
+
+    window.location.href = `${window.location.pathname}?${params.toString()}`;
+}
+
+function SortableHeader({ field, label }: { field: string; label: string }) {
+    return (
+        <th
+            className="text-left px-6 py-4 cursor-pointer hover:bg-gray-50"
+            onClick={() => handleSort(field)}
+        >
+            <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-[#666666]">{label}</span>
+                {getSortIcon(field)}
+            </div>
+        </th>
+    );
+}
+
+function UserRow({ user }: { user: User }) {
+    return (
+        <tr
+            className="border-b border-[#E5E5E5] hover:bg-gray-50"
+        >
+            <td className="px-6 py-4">
+                <Link
+                    href={`/admin/users/${user.id}`}
+                    className="text-sm text-[#1A1A1A] hover:underline"
+                >
+                    {user.name}
+                </Link>
+            </td>
+            <td className="px-6 py-4">
+                <span className="text-sm text-[#1A1A1A]">{user.email}</span>
+            </td>
+            <td className="px-6 py-4">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                    {roleLabels[user.role] || user.role}
+                </span>
+            </td>
+            <td className="px-6 py-4">
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    user.is_active
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-red-100 text-red-800'
+                }`}>
+                    {user.is_active ? 'Activo' : 'Inactivo'}
+                </span>
+            </td>
+            <td className="px-6 py-4">
+                <span className="text-sm text-[#666666]">
+                    {formatDate(user.created_at)}
+                </span>
+            </td>
+        </tr>
+    );
+}
+
+function Pagination({ users }: { users: UsersData }) {
+    return (
+        <div className="flex items-center justify-between px-6 py-4 border-t border-[#E5E5E5]">
+            <span className="text-sm text-[#666666]">
+                Mostrando {users.from} a {users.to} de {users.total} usuarios
+            </span>
+            <div className="flex items-center gap-2">
+                <Link
+                    href={`?page=${users.current_page - 1}`}
+                    className={`p-2 rounded-lg border border-[#E5E5E5] ${
+                        users.current_page === 1
+                            ? 'opacity-50 cursor-not-allowed pointer-events-none'
+                            : 'hover:bg-gray-50'
+                    }`}
+                    preserveScroll
+                >
+                    <ChevronLeft className="w-4 h-4 text-[#666666]" />
+                </Link>
+                <span className="text-sm text-[#1A1A1A]">
+                    {users.current_page} / {users.last_page}
+                </span>
+                <Link
+                    href={`?page=${users.current_page + 1}`}
+                    className={`p-2 rounded-lg border border-[#E5E5E5] ${
+                        users.current_page === users.last_page
+                            ? 'opacity-50 cursor-not-allowed pointer-events-none'
+                            : 'hover:bg-gray-50'
+                    }`}
+                    preserveScroll
+                >
+                    <ChevronRight className="w-4 h-4 text-[#666666]" />
+                </Link>
+            </div>
+        </div>
+    );
+}
+
 export default function UsersIndex() {
     const { users } = usePage<Props>().props;
-
-    const getSortIcon = (field: string) => {
-        const currentSortBy = new URLSearchParams(window.location.search).get('sort_by') || 'created_at';
-        const currentSortOrder = new URLSearchParams(window.location.search).get('sort_order') || 'desc';
-        
-        if (currentSortBy !== field) {
-            return <ArrowUpDown className="w-4 h-4 text-gray-400" />;
-        }
-        
-        return currentSortOrder === 'asc' 
-            ? <ArrowUpDown className="w-4 h-4 text-[#1A1A1A]" />
-            : <ArrowUpDown className="w-4 h-4 text-[#1A1A1A] rotate-180" />;
-    };
-
-    const handleSort = (field: string) => {
-        const params = new URLSearchParams(window.location.search);
-        const currentSortBy = params.get('sort_by') || 'created_at';
-        const currentSortOrder = params.get('sort_order') || 'desc';
-        
-        if (currentSortBy === field) {
-            params.set('sort_order', currentSortOrder === 'asc' ? 'desc' : 'asc');
-        } else {
-            params.set('sort_by', field);
-            params.set('sort_order', 'desc');
-        }
-        
-        window.location.href = `${window.location.pathname}?${params.toString()}`;
-    };
-
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('es-MX', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-        });
-    };
 
     return (
         <AppLayout title="Usuarios" active="users">
@@ -93,84 +183,18 @@ export default function UsersIndex() {
                     <table className="w-full">
                         <thead>
                             <tr className="border-b border-[#E5E5E5]">
-                                <th 
-                                    className="text-left px-6 py-4 cursor-pointer hover:bg-gray-50"
-                                    onClick={() => handleSort('name')}
-                                >
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-sm font-medium text-[#666666]">Nombre</span>
-                                        {getSortIcon('name')}
-                                    </div>
-                                </th>
-                                <th 
-                                    className="text-left px-6 py-4 cursor-pointer hover:bg-gray-50"
-                                    onClick={() => handleSort('email')}
-                                >
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-sm font-medium text-[#666666]">Email</span>
-                                        {getSortIcon('email')}
-                                    </div>
-                                </th>
-                                <th 
-                                    className="text-left px-6 py-4 cursor-pointer hover:bg-gray-50"
-                                    onClick={() => handleSort('role')}
-                                >
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-sm font-medium text-[#666666]">Rol</span>
-                                        {getSortIcon('role')}
-                                    </div>
-                                </th>
+                                <SortableHeader field="name" label="Nombre" />
+                                <SortableHeader field="email" label="Email" />
+                                <SortableHeader field="role" label="Rol" />
                                 <th className="text-left px-6 py-4">
                                     <span className="text-sm font-medium text-[#666666]">Estado</span>
                                 </th>
-                                <th 
-                                    className="text-left px-6 py-4 cursor-pointer hover:bg-gray-50"
-                                    onClick={() => handleSort('created_at')}
-                                >
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-sm font-medium text-[#666666]">Registrado</span>
-                                        {getSortIcon('created_at')}
-                                    </div>
-                                </th>
+                                <SortableHeader field="created_at" label="Registrado" />
                             </tr>
                         </thead>
                         <tbody>
                             {users.data.map((user) => (
-                                <tr 
-                                    key={user.id} 
-                                    className="border-b border-[#E5E5E5] hover:bg-gray-50"
-                                >
-                                    <td className="px-6 py-4">
-                                        <Link 
-                                            href={`/admin/users/${user.id}`}
-                                            className="text-sm text-[#1A1A1A] hover:underline"
-                                        >
-                                            {user.name}
-                                        </Link>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <span className="text-sm text-[#1A1A1A]">{user.email}</span>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                            {roleLabels[user.role] || user.role}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                            user.is_active 
-                                                ? 'bg-green-100 text-green-800'
-                                                : 'bg-red-100 text-red-800'
-                                        }`}>
-                                            {user.is_active ? 'Activo' : 'Inactivo'}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <span className="text-sm text-[#666666]">
-                                            {formatDate(user.created_at)}
-                                        </span>
-                                    </td>
-                                </tr>
+                                <UserRow key={user.id} user={user} />
                             ))}
                         </tbody>
                     </table>
@@ -182,38 +206,7 @@ export default function UsersIndex() {
                     )}
 
                     {users.last_page > 1 && (
-                        <div className="flex items-center justify-between px-6 py-4 border-t border-[#E5E5E5]">
-                            <span className="text-sm text-[#666666]">
-                                Mostrando {users.from} a {users.to} de {users.total} usuarios
-                            </span>
-                            <div className="flex items-center gap-2">
-                                <Link
-                                    href={`?page=${users.current_page - 1}`}
-                                    className={`p-2 rounded-lg border border-[#E5E5E5] ${
-                                        users.current_page === 1 
-                                            ? 'opacity-50 cursor-not-allowed pointer-events-none'
-                                            : 'hover:bg-gray-50'
-                                    }`}
-                                    preserveScroll
-                                >
-                                    <ChevronLeft className="w-4 h-4 text-[#666666]" />
-                                </Link>
-                                <span className="text-sm text-[#1A1A1A]">
-                                    {users.current_page} / {users.last_page}
-                                </span>
-                                <Link
-                                    href={`?page=${users.current_page + 1}`}
-                                    className={`p-2 rounded-lg border border-[#E5E5E5] ${
-                                        users.current_page === users.last_page
-                                            ? 'opacity-50 cursor-not-allowed pointer-events-none'
-                                            : 'hover:bg-gray-50'
-                                    }`}
-                                    preserveScroll
-                                >
-                                    <ChevronRight className="w-4 h-4 text-[#666666]" />
-                                </Link>
-                            </div>
-                        </div>
+                        <Pagination users={users} />
                     )}
                 </div>
             </div>
