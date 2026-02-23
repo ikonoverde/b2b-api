@@ -22,8 +22,8 @@ class CreateCheckoutRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'success_url' => ['required', 'string', 'url'],
-            'cancel_url' => ['required', 'string', 'url'],
+            'success_url' => ['required', 'string', 'regex:/^https?:\/\//'],
+            'cancel_url' => ['required', 'string', 'regex:/^https?:\/\//'],
             'shipping_address' => ['sometimes', 'array'],
             'shipping_address.street' => ['required_with:shipping_address', 'string', 'max:255'],
             'shipping_address.city' => ['required_with:shipping_address', 'string', 'max:255'],
