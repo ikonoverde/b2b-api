@@ -9,6 +9,7 @@ use App\Http\Controllers\Cart\RemoveCartItemController;
 use App\Http\Controllers\Cart\UpdateCartItemController;
 use App\Http\Controllers\Checkout\ConfirmPaymentController;
 use App\Http\Controllers\Checkout\CreateCheckoutController;
+use App\Http\Controllers\Checkout\VerifyCheckoutController;
 use App\Http\Controllers\FeaturedProductsController;
 use App\Http\Controllers\Orders\GetOrderController;
 use App\Http\Controllers\Orders\GetOrdersController;
@@ -36,6 +37,7 @@ Route::prefix('cart')->middleware('auth:sanctum')->group(function () {
 
 Route::prefix('checkout')->middleware('auth:sanctum')->group(function () {
     Route::post('/', CreateCheckoutController::class);
+    Route::get('/verify', VerifyCheckoutController::class);
     Route::post('/confirm', ConfirmPaymentController::class);
 });
 

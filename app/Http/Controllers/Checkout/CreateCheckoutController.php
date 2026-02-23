@@ -21,11 +21,20 @@ class CreateCheckoutController extends Controller
     /**
      * Create Checkout Session
      *
-     * Creates an order from the user's cart and generates a Stripe PaymentIntent.
+     * Creates an order from the user's cart and generates a Stripe Checkout Session.
+     * The client should redirect the user to the returned `checkout_url` to complete payment.
      *
-     * @response 201 scenario="Success" {"data": {"id": 1, "user_id": 1, "status": "pending", "payment_status": "pending", "total_amount": 150.00, "shipping_cost": 10.00, "shipping_address": {"street": "123 Main St", "city": "Springfield", "state": "IL", "zip": "62701", "country": "USA"}, "items": [{"id": 1, "product_id": 1, "product_name": "Fertilizante Premium", "quantity": 2, "unit_price": 45.00, "subtotal": 90.00, "image": "products/fertilizer.jpg"}], "created_at": "2024-01-15T10:30:00Z"}, "client_secret": "pi_123_secret_456", "publishable_key": "pk_test_123"}
+     * @response 201 scenario="Success" {
+     *   "checkout_url": "https://checkout.stripe.com/c/pay/cs_test_123",
+     *   "data": {"id": 1, "user_id": 1, "status": "pending",
+     *     "payment_status": "pending", "total_amount": 150.00,
+     *     "shipping_cost": 10.00, "items": [], "created_at": "2024-01-15T10:30:00Z"}
+     * }
      * @response 400 scenario="Empty cart" {"message": "Cart is empty"}
-     * @response 422 scenario="Validation error" {"message": "The shipping address field is required.", "errors": {"shipping_address": ["The shipping address field is required."]}}
+     * @response 422 scenario="Validation error" {
+     *   "message": "The success url field is required.",
+     *   "errors": {"success_url": ["The success url field is required."]}
+     * }
      *
      * @authenticated
      */
@@ -77,22 +86,56 @@ class CreateCheckoutController extends Controller
             return $order;
         });
 
-        $stripe = Cashier::stripe();
-        $paymentIntent = $stripe->paymentIntents->create([
-            'amount' => (int) ($totalAmount * 100),
-            'currency' => 'usd',
+        $lineItems = $this->buildLineItems($cart, $shippingCost);
+
+        $session = Cashier::stripe()->checkout->sessions->create([
+            'mode' => 'payment',
+            'line_items' => $lineItems,
+            'success_url' => $validated['success_url'],
+            'cancel_url' => $validated['cancel_url'],
             'metadata' => [
                 'order_id' => $order->id,
                 'user_id' => auth()->id(),
             ],
         ]);
 
-        $order->update(['payment_intent_id' => $paymentIntent->id]);
+        $order->update(['checkout_session_id' => $session->id]);
 
         return response()->json([
+            'checkout_url' => $session->url,
             'data' => (new OrderResource($order))->resolve(),
-            'client_secret' => $paymentIntent->client_secret,
-            'publishable_key' => config('cashier.key'),
         ], Response::HTTP_CREATED);
+    }
+
+    /**
+     * Build Stripe line_items from cart items and shipping cost.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private function buildLineItems(Cart $cart, float $shippingCost): array
+    {
+        $lineItems = [];
+
+        foreach ($cart->items as $cartItem) {
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => ['name' => $cartItem->product->name],
+                    'unit_amount' => (int) ($cartItem->unit_price * 100),
+                ],
+                'quantity' => $cartItem->quantity,
+            ];
+        }
+
+        $lineItems[] = [
+            'price_data' => [
+                'currency' => 'usd',
+                'product_data' => ['name' => 'Shipping'],
+                'unit_amount' => (int) ($shippingCost * 100),
+            ],
+            'quantity' => 1,
+        ];
+
+        return $lineItems;
     }
 }

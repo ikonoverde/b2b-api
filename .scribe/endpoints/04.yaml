@@ -13,7 +13,9 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Create Checkout Session'
-      description: "Creates an order from the user's cart and generates a Stripe PaymentIntent."
+      description: |-
+        Creates an order from the user's cart and generates a Stripe Checkout Session.
+        The client should redirect the user to the returned `checkout_url` to complete payment.
       authenticated: true
       deprecated: false
     headers:
@@ -25,10 +27,32 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
+      success_url:
+        custom: []
+        name: success_url
+        description: 'The URL to redirect to after successful payment. Must be a valid URL.'
+        required: true
+        example: 'https://example.com/checkout/success?session_id={CHECKOUT_SESSION_ID}'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      cancel_url:
+        custom: []
+        name: cancel_url
+        description: 'The URL to redirect to if the user cancels payment. Must be a valid URL.'
+        required: true
+        example: 'https://example.com/checkout/cancel'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
       shipping_address:
         custom: []
         name: shipping_address
-        description: 'The shipping address for the order (optional - can be collected by Stripe Elements on frontend).'
+        description: 'The shipping address for the order (optional).'
         required: false
         example:
           street: '123 Main St'
@@ -97,6 +121,8 @@ endpoints:
         nullable: false
         deprecated: false
     cleanBodyParameters:
+      success_url: 'https://example.com/checkout/success?session_id={CHECKOUT_SESSION_ID}'
+      cancel_url: 'https://example.com/checkout/cancel'
       shipping_address:
         street: '123 Main St'
         city: Springfield
@@ -108,7 +134,13 @@ endpoints:
       -
         custom: []
         status: 201
-        content: '{"data": {"id": 1, "user_id": 1, "status": "pending", "payment_status": "pending", "total_amount": 150.00, "shipping_cost": 10.00, "shipping_address": {"street": "123 Main St", "city": "Springfield", "state": "IL", "zip": "62701", "country": "USA"}, "items": [{"id": 1, "product_id": 1, "product_name": "Fertilizante Premium", "quantity": 2, "unit_price": 45.00, "subtotal": 90.00, "image": "products/fertilizer.jpg"}], "created_at": "2024-01-15T10:30:00Z"}, "client_secret": "pi_123_secret_456", "publishable_key": "pk_test_123"}'
+        content: |-
+          {
+            "checkout_url": "https://checkout.stripe.com/c/pay/cs_test_123",
+            "data": {"id": 1, "user_id": 1, "status": "pending",
+              "payment_status": "pending", "total_amount": 150.00,
+              "shipping_cost": 10.00, "items": [], "created_at": "2024-01-15T10:30:00Z"}
+          }
         headers: []
         description: Success
       -
@@ -120,7 +152,103 @@ endpoints:
       -
         custom: []
         status: 422
-        content: '{"message": "The shipping address field is required.", "errors": {"shipping_address": ["The shipping address field is required."]}}'
+        content: |-
+          {
+            "message": "The success url field is required.",
+            "errors": {"success_url": ["The success url field is required."]}
+          }
+        headers: []
+        description: 'Validation error'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/checkout/verify
+    metadata:
+      custom: []
+      groupName: Checkout
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Verify Checkout Session'
+      description: |-
+        Verifies the payment status of a Stripe Checkout Session and updates the order accordingly.
+        If the payment is complete, the order status is updated and the user's cart is cleared.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      session_id:
+        custom: []
+        name: session_id
+        description: 'The Stripe Checkout Session ID.'
+        required: true
+        example: cs_test_abc123
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      session_id: cs_test_abc123
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "status": "paid",
+            "data": {"id": 1, "user_id": 1, "status": "pending",
+              "payment_status": "completed", "total_amount": 150.00,
+              "shipping_cost": 10.00, "items": [],
+              "created_at": "2024-01-15T10:30:00Z"}
+          }
+        headers: []
+        description: Paid
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "status": "pending",
+            "data": {"id": 1, "payment_status": "pending",
+              "total_amount": 150.00, "items": []}
+          }
+        headers: []
+        description: Pending
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Order not found for this checkout session"
+          }
+        headers: []
+        description: 'Order not found'
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The session id field is required.",
+            "errors": {"session_id": ["The session id field is required."]}
+          }
         headers: []
         description: 'Validation error'
     responseFields: []
@@ -145,7 +273,7 @@ endpoints:
       title: 'Confirm Payment'
       description: 'Confirms the Stripe payment, updates the order status, and clears the cart.'
       authenticated: true
-      deprecated: false
+      deprecated: 'Use GET /api/checkout/verify with a Checkout Session ID instead.'
     headers:
       Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
       Content-Type: application/json

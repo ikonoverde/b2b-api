@@ -22,6 +22,7 @@ class OrderFactory extends Factory
             'status' => 'pending',
             'payment_status' => 'pending',
             'payment_intent_id' => null,
+            'checkout_session_id' => null,
             'total_amount' => $this->faker->randomFloat(2, 10, 500),
             'shipping_cost' => 10.00,
             'shipping_address' => [

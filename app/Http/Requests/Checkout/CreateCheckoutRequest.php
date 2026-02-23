@@ -22,6 +22,8 @@ class CreateCheckoutRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'success_url' => ['required', 'string', 'url'],
+            'cancel_url' => ['required', 'string', 'url'],
             'shipping_address' => ['sometimes', 'array'],
             'shipping_address.street' => ['required_with:shipping_address', 'string', 'max:255'],
             'shipping_address.city' => ['required_with:shipping_address', 'string', 'max:255'],
@@ -39,8 +41,16 @@ class CreateCheckoutRequest extends FormRequest
     public function bodyParameters(): array
     {
         return [
+            'success_url' => [
+                'description' => 'The URL to redirect to after successful payment',
+                'example' => 'https://example.com/checkout/success?session_id={CHECKOUT_SESSION_ID}',
+            ],
+            'cancel_url' => [
+                'description' => 'The URL to redirect to if the user cancels payment',
+                'example' => 'https://example.com/checkout/cancel',
+            ],
             'shipping_address' => [
-                'description' => 'The shipping address for the order (optional - can be collected by Stripe Elements on frontend)',
+                'description' => 'The shipping address for the order (optional)',
                 'type' => 'object',
                 'example' => [
                     'street' => '123 Main St',

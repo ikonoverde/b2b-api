@@ -17,6 +17,7 @@ class Order extends Model
         'status',
         'payment_status',
         'payment_intent_id',
+        'checkout_session_id',
         'total_amount',
         'shipping_cost',
         'shipping_address',

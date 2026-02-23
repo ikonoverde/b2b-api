@@ -109,6 +109,9 @@
                                                     <li class="tocify-item level-2" data-unique="checkout-POSTapi-checkout">
                                 <a href="#checkout-POSTapi-checkout">Create Checkout Session</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="checkout-GETapi-checkout-verify">
+                                <a href="#checkout-GETapi-checkout-verify">Verify Checkout Session</a>
+                            </li>
                                                                                 <li class="tocify-item level-2" data-unique="checkout-POSTapi-checkout-confirm">
                                 <a href="#checkout-POSTapi-checkout-confirm">Confirm Payment</a>
                             </li>
@@ -162,7 +165,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: February 22, 2026</li>
+        <li>Last updated: February 23, 2026</li>
     </ul>
 </div>
 
@@ -1561,7 +1564,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <small class="badge badge-darkred">requires authentication</small>
 </p>
 
-<p>Creates an order from the user's cart and generates a Stripe PaymentIntent.</p>
+<p>Creates an order from the user's cart and generates a Stripe Checkout Session.
+The client should redirect the user to the returned <code>checkout_url</code> to complete payment.</p>
 
 <span id="example-requests-POSTapi-checkout">
 <blockquote>Example request:</blockquote>
@@ -1574,6 +1578,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
+    \"success_url\": \"https:\\/\\/example.com\\/checkout\\/success?session_id={CHECKOUT_SESSION_ID}\",
+    \"cancel_url\": \"https:\\/\\/example.com\\/checkout\\/cancel\",
     \"shipping_address\": {
         \"street\": \"123 Main St\",
         \"city\": \"Springfield\",
@@ -1597,6 +1603,8 @@ const headers = {
 };
 
 let body = {
+    "success_url": "https:\/\/example.com\/checkout\/success?session_id={CHECKOUT_SESSION_ID}",
+    "cancel_url": "https:\/\/example.com\/checkout\/cancel",
     "shipping_address": {
         "street": "123 Main St",
         "city": "Springfield",
@@ -1621,6 +1629,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
+    &quot;checkout_url&quot;: &quot;https://checkout.stripe.com/c/pay/cs_test_123&quot;,
     &quot;data&quot;: {
         &quot;id&quot;: 1,
         &quot;user_id&quot;: 1,
@@ -1628,28 +1637,9 @@ fetch(url, {
         &quot;payment_status&quot;: &quot;pending&quot;,
         &quot;total_amount&quot;: 150,
         &quot;shipping_cost&quot;: 10,
-        &quot;shipping_address&quot;: {
-            &quot;street&quot;: &quot;123 Main St&quot;,
-            &quot;city&quot;: &quot;Springfield&quot;,
-            &quot;state&quot;: &quot;IL&quot;,
-            &quot;zip&quot;: &quot;62701&quot;,
-            &quot;country&quot;: &quot;USA&quot;
-        },
-        &quot;items&quot;: [
-            {
-                &quot;id&quot;: 1,
-                &quot;product_id&quot;: 1,
-                &quot;product_name&quot;: &quot;Fertilizante Premium&quot;,
-                &quot;quantity&quot;: 2,
-                &quot;unit_price&quot;: 45,
-                &quot;subtotal&quot;: 90,
-                &quot;image&quot;: &quot;products/fertilizer.jpg&quot;
-            }
-        ],
+        &quot;items&quot;: [],
         &quot;created_at&quot;: &quot;2024-01-15T10:30:00Z&quot;
-    },
-    &quot;client_secret&quot;: &quot;pi_123_secret_456&quot;,
-    &quot;publishable_key&quot;: &quot;pk_test_123&quot;
+    }
 }</code>
  </pre>
             <blockquote>
@@ -1667,10 +1657,10 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The shipping address field is required.&quot;,
+    &quot;message&quot;: &quot;The success url field is required.&quot;,
     &quot;errors&quot;: {
-        &quot;shipping_address&quot;: [
-            &quot;The shipping address field is required.&quot;
+        &quot;success_url&quot;: [
+            &quot;The success url field is required.&quot;
         ]
     }
 }</code>
@@ -1761,6 +1751,30 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                                 <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>success_url</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="success_url"                data-endpoint="POSTapi-checkout"
+               value="https://example.com/checkout/success?session_id={CHECKOUT_SESSION_ID}"
+               data-component="body">
+    <br>
+<p>The URL to redirect to after successful payment. Must be a valid URL. Example: <code>https://example.com/checkout/success?session_id={CHECKOUT_SESSION_ID}</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>cancel_url</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="cancel_url"                data-endpoint="POSTapi-checkout"
+               value="https://example.com/checkout/cancel"
+               data-component="body">
+    <br>
+<p>The URL to redirect to if the user cancels payment. Must be a valid URL. Example: <code>https://example.com/checkout/cancel</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
         <details>
             <summary style="padding-bottom: 10px;">
                 <b style="line-height: 2;"><code>shipping_address</code></b>&nbsp;&nbsp;
@@ -1768,7 +1782,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
 <br>
-<p>The shipping address for the order (optional - can be collected by Stripe Elements on frontend).</p>
+<p>The shipping address for the order (optional).</p>
             </summary>
                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>street</code></b>&nbsp;&nbsp;
@@ -1834,10 +1848,213 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
+                    <h2 id="checkout-GETapi-checkout-verify">Verify Checkout Session</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Verifies the payment status of a Stripe Checkout Session and updates the order accordingly.
+If the payment is complete, the order status is updated and the user's cart is cleared.</p>
+
+<span id="example-requests-GETapi-checkout-verify">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://192.168.0.193:8000/api/checkout/verify?session_id=cs_test_abc123" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://192.168.0.193:8000/api/checkout/verify"
+);
+
+const params = {
+    "session_id": "cs_test_abc123",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-checkout-verify">
+            <blockquote>
+            <p>Example response (200, Paid):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;status&quot;: &quot;paid&quot;,
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;user_id&quot;: 1,
+        &quot;status&quot;: &quot;pending&quot;,
+        &quot;payment_status&quot;: &quot;completed&quot;,
+        &quot;total_amount&quot;: 150,
+        &quot;shipping_cost&quot;: 10,
+        &quot;items&quot;: [],
+        &quot;created_at&quot;: &quot;2024-01-15T10:30:00Z&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (200, Pending):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;status&quot;: &quot;pending&quot;,
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;payment_status&quot;: &quot;pending&quot;,
+        &quot;total_amount&quot;: 150,
+        &quot;items&quot;: []
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404, Order not found):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Order not found for this checkout session&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422, Validation error):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The session id field is required.&quot;,
+    &quot;errors&quot;: {
+        &quot;session_id&quot;: [
+            &quot;The session id field is required.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-checkout-verify" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-checkout-verify"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-checkout-verify"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-checkout-verify" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-checkout-verify">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-checkout-verify" data-method="GET"
+      data-path="api/checkout/verify"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-checkout-verify', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-checkout-verify"
+                    onclick="tryItOut('GETapi-checkout-verify');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-checkout-verify"
+                    onclick="cancelTryOut('GETapi-checkout-verify');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-checkout-verify"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/checkout/verify</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-checkout-verify"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-checkout-verify"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-checkout-verify"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>session_id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="session_id"                data-endpoint="GETapi-checkout-verify"
+               value="cs_test_abc123"
+               data-component="query">
+    <br>
+<p>The Stripe Checkout Session ID. Example: <code>cs_test_abc123</code></p>
+            </div>
+                </form>
+
                     <h2 id="checkout-POSTapi-checkout-confirm">Confirm Payment</h2>
 
 <p>
 <small class="badge badge-darkred">requires authentication</small>
+<small class="badge badge-darkgoldenrod">deprecated:Use GET /api/checkout/verify with a Checkout Session ID instead.</small>
 </p>
 
 <p>Confirms the Stripe payment, updates the order status, and clears the cart.</p>

@@ -22,6 +22,8 @@ class ConfirmPaymentController extends Controller
      *
      * Confirms the Stripe payment, updates the order status, and clears the cart.
      *
+     * @deprecated Use GET /api/checkout/verify with a Checkout Session ID instead.
+     *
      * @response 200 scenario="Success" {"data": {"id": 1, "user_id": 1, "status": "pending", "payment_status": "completed", "total_amount": 150.00, "shipping_cost": 10.00, "shipping_address": {"street": "123 Main St", "city": "Springfield", "state": "IL", "zip": "62701", "country": "USA"}, "items": [{"id": 1, "product_id": 1, "product_name": "Fertilizante Premium", "quantity": 2, "unit_price": 45.00, "subtotal": 90.00, "image": "products/fertilizer.jpg"}], "created_at": "2024-01-15T10:30:00Z"}}
      * @response 404 scenario="Order not found" {"message": "Order not found"}
      * @response 400 scenario="Payment failed" {"message": "Payment failed", "error": "Payment intent requires confirmation"}
