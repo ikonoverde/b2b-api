@@ -32,7 +32,7 @@ endpoints:
       success_url:
         custom: []
         name: success_url
-        description: 'The URL to redirect to after successful payment. Must be a valid URL.'
+        description: 'The URL to redirect to after successful payment. Must match the regex /^https?:\/\//.'
         required: true
         example: 'https://example.com/checkout/success?session_id={CHECKOUT_SESSION_ID}'
         type: string
@@ -43,7 +43,7 @@ endpoints:
       cancel_url:
         custom: []
         name: cancel_url
-        description: 'The URL to redirect to if the user cancels payment. Must be a valid URL.'
+        description: 'The URL to redirect to if the user cancels payment. Must match the regex /^https?:\/\//.'
         required: true
         example: 'https://example.com/checkout/cancel'
         type: string
