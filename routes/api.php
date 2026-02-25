@@ -20,6 +20,7 @@ use App\Http\Controllers\Orders\GetOrderController;
 use App\Http\Controllers\Orders\GetOrdersController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\UpdateUserController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,7 @@ Route::post('/login', LoginController::class);
 Route::post('/forgot-password', ForgotPasswordController::class);
 
 Route::get('/user', UserController::class)->middleware('auth:sanctum');
+Route::put('/user', UpdateUserController::class)->middleware('auth:sanctum');
 
 Route::get('/products', ProductsController::class);
 Route::get('/products/featured', FeaturedProductsController::class);
