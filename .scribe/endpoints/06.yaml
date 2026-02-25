@@ -272,7 +272,7 @@ endpoints:
         name: address_id
         description: 'The ID of the address.'
         required: true
-        example: 16
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -290,7 +290,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      address_id: 16
+      address_id: 1
       address: 1
     queryParameters: []
     cleanQueryParameters: []
@@ -475,7 +475,7 @@ endpoints:
         name: address_id
         description: 'The ID of the address.'
         required: true
-        example: 16
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -493,7 +493,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      address_id: 16
+      address_id: 1
       address: 1
     queryParameters: []
     cleanQueryParameters: []

@@ -691,7 +691,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://192.168.0.193:8000/api/addresses/16" \
+    "http://192.168.0.193:8000/api/addresses/1" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -710,7 +710,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8000/api/addresses/16"
+    "http://192.168.0.193:8000/api/addresses/1"
 );
 
 const headers = {
@@ -872,10 +872,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="address_id"                data-endpoint="PUTapi-addresses--address_id-"
-               value="16"
+               value="1"
                data-component="url">
     <br>
-<p>The ID of the address. Example: <code>16</code></p>
+<p>The ID of the address. Example: <code>1</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>address</code></b>&nbsp;&nbsp;
@@ -1025,7 +1025,7 @@ the most recently created remaining address becomes the new default.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://192.168.0.193:8000/api/addresses/16" \
+    "http://192.168.0.193:8000/api/addresses/1" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1033,7 +1033,7 @@ the most recently created remaining address becomes the new default.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8000/api/addresses/16"
+    "http://192.168.0.193:8000/api/addresses/1"
 );
 
 const headers = {
@@ -1166,10 +1166,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="address_id"                data-endpoint="DELETEapi-addresses--address_id-"
-               value="16"
+               value="1"
                data-component="url">
     <br>
-<p>The ID of the address. Example: <code>16</code></p>
+<p>The ID of the address. Example: <code>1</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>address</code></b>&nbsp;&nbsp;

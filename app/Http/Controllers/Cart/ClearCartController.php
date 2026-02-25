@@ -23,7 +23,7 @@ class ClearCartController extends Controller
      */
     public function __invoke(): JsonResponse
     {
-        $cart = Cart::where('user_id', auth()->id())->first();
+        $cart = Cart::where('user_id', auth()->id())->where('status', 'active')->first();
 
         if ($cart) {
             $cart->items()->delete();

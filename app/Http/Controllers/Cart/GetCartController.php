@@ -28,8 +28,7 @@ class GetCartController extends Controller
     {
         $cart = Cart::with(['items.product'])
             ->firstOrCreate(
-                ['user_id' => auth()->id()],
-                ['status' => 'active']
+                ['user_id' => auth()->id(), 'status' => 'active'],
             );
 
         return response()->json(['data' => (new CartResource($cart))->resolve()]);

@@ -30,7 +30,7 @@ class UpdateCartItemController extends Controller
      */
     public function __invoke(UpdateCartItemRequest $request, CartItem $item): JsonResponse
     {
-        $cart = Cart::where('user_id', auth()->id())->first();
+        $cart = Cart::where('user_id', auth()->id())->where('status', 'active')->first();
 
         if (! $cart || $item->cart_id !== $cart->id) {
             return response()->json([

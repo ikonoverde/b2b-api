@@ -42,8 +42,7 @@ class AddCartItemController extends Controller
         }
 
         $cart = Cart::firstOrCreate(
-            ['user_id' => auth()->id()],
-            ['status' => 'active']
+            ['user_id' => auth()->id(), 'status' => 'active'],
         );
 
         $cartItem = CartItem::updateOrCreate(
