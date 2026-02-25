@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Addresses\DestroyAddressController;
+use App\Http\Controllers\Addresses\GetAddressesController;
+use App\Http\Controllers\Addresses\StoreAddressController;
+use App\Http\Controllers\Addresses\UpdateAddressController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -46,4 +50,11 @@ Route::prefix('checkout')->middleware('auth:sanctum')->group(function () {
 Route::prefix('orders')->middleware('auth:sanctum')->group(function () {
     Route::get('/', GetOrdersController::class);
     Route::get('/{order}', GetOrderController::class);
+});
+
+Route::prefix('addresses')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', GetAddressesController::class);
+    Route::post('/', StoreAddressController::class);
+    Route::put('/{address}', UpdateAddressController::class);
+    Route::delete('/{address}', DestroyAddressController::class);
 });
