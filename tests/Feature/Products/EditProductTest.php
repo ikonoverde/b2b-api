@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
@@ -29,10 +30,11 @@ test('unauthenticated user is redirected to login', function () {
 
 test('edit page shows product data', function () {
     $user = User::factory()->create();
+    $category = Category::factory()->create(['name' => 'Fertilizantes']);
     $product = Product::factory()->create([
         'name' => 'Fertilizante Premium',
         'sku' => 'FERT-001',
-        'category' => 'Fertilizantes',
+        'category_id' => $category->id,
         'price' => 49.99,
     ]);
 
@@ -42,12 +44,13 @@ test('edit page shows product data', function () {
         ->component('Products/Edit')
         ->where('product.name', 'Fertilizante Premium')
         ->where('product.sku', 'FERT-001')
-        ->where('product.category', 'Fertilizantes')
+        ->where('product.category_id', $category->id)
     );
 });
 
 test('authenticated user can update a product', function () {
     $user = User::factory()->create();
+    $category = Category::factory()->create();
     $product = Product::factory()->create([
         'name' => 'Old Name',
         'sku' => 'OLD-001',
@@ -56,7 +59,7 @@ test('authenticated user can update a product', function () {
     $response = $this->actingAs($user)->put("/admin/products/{$product->id}", [
         'name' => 'Updated Name',
         'sku' => 'UPD-001',
-        'category' => 'Semillas',
+        'category_id' => $category->id,
         'description' => 'Updated description',
         'price' => 59.99,
         'cost' => 30.00,
@@ -73,7 +76,7 @@ test('authenticated user can update a product', function () {
         'id' => $product->id,
         'name' => 'Updated Name',
         'sku' => 'UPD-001',
-        'category' => 'Semillas',
+        'category_id' => $category->id,
     ]);
 });
 
@@ -83,11 +86,12 @@ test('validation fails with missing required fields', function () {
 
     $response = $this->actingAs($user)->put("/admin/products/{$product->id}", []);
 
-    $response->assertSessionHasErrors(['name', 'sku', 'category', 'price', 'stock']);
+    $response->assertSessionHasErrors(['name', 'sku', 'category_id', 'price', 'stock']);
 });
 
 test('sku unique validation allows same product sku', function () {
     $user = User::factory()->create();
+    $category = Category::factory()->create();
     $product = Product::factory()->create([
         'sku' => 'SAME-001',
     ]);
@@ -95,7 +99,7 @@ test('sku unique validation allows same product sku', function () {
     $response = $this->actingAs($user)->put("/admin/products/{$product->id}", [
         'name' => 'Updated Name',
         'sku' => 'SAME-001',
-        'category' => 'Fertilizantes',
+        'category_id' => $category->id,
         'price' => 29.99,
         'stock' => 100,
     ]);
@@ -112,7 +116,7 @@ test('sku unique validation rejects duplicate from other product', function () {
     $response = $this->actingAs($user)->put("/admin/products/{$product->id}", [
         'name' => 'Updated Name',
         'sku' => 'EXISTING-001',
-        'category' => 'Fertilizantes',
+        'category_id' => Category::factory()->create()->id,
         'price' => 29.99,
         'stock' => 100,
     ]);
@@ -134,7 +138,7 @@ test('authenticated user can update a product with images', function () {
     $response = $this->actingAs($user)->put("/admin/products/{$product->id}", [
         'name' => 'Updated with Image',
         'sku' => 'IMG-001',
-        'category' => 'Fertilizantes',
+        'category_id' => Category::factory()->create()->id,
         'price' => 29.99,
         'stock' => 100,
         'images' => [$image],
@@ -171,7 +175,7 @@ test('updating product can delete old images and add new ones', function () {
     $response = $this->actingAs($user)->put("/admin/products/{$product->id}", [
         'name' => 'Product with New Image',
         'sku' => 'REPLACE-001',
-        'category' => 'Fertilizantes',
+        'category_id' => Category::factory()->create()->id,
         'price' => 29.99,
         'stock' => 100,
         'delete_images' => [$existingImage->id],
@@ -199,7 +203,7 @@ test('image validation rejects invalid file types', function () {
     $response = $this->actingAs($user)->put("/admin/products/{$product->id}", [
         'name' => 'Product',
         'sku' => 'INVALID-001',
-        'category' => 'Fertilizantes',
+        'category_id' => Category::factory()->create()->id,
         'price' => 29.99,
         'stock' => 100,
         'images' => [$file],
@@ -219,7 +223,7 @@ test('image validation rejects files over 5MB', function () {
     $response = $this->actingAs($user)->put("/admin/products/{$product->id}", [
         'name' => 'Product',
         'sku' => 'BIG-001',
-        'category' => 'Fertilizantes',
+        'category_id' => Category::factory()->create()->id,
         'price' => 29.99,
         'stock' => 100,
         'images' => [$file],

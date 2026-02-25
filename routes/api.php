@@ -12,6 +12,7 @@ use App\Http\Controllers\Cart\ClearCartController;
 use App\Http\Controllers\Cart\GetCartController;
 use App\Http\Controllers\Cart\RemoveCartItemController;
 use App\Http\Controllers\Cart\UpdateCartItemController;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\Checkout\ConfirmPaymentController;
 use App\Http\Controllers\Checkout\CreateCheckoutController;
 use App\Http\Controllers\Checkout\VerifyCheckoutController;
@@ -30,6 +31,8 @@ Route::post('/forgot-password', ForgotPasswordController::class);
 
 Route::get('/user', UserController::class)->middleware('auth:sanctum');
 Route::put('/user', UpdateUserController::class)->middleware('auth:sanctum');
+
+Route::get('/categories', CategoriesController::class);
 
 Route::get('/products', ProductsController::class);
 Route::get('/products/featured', FeaturedProductsController::class);

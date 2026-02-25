@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\Products\StoreProductRequest;
 use App\Http\Requests\Web\Products\UpdateProductRequest;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\RedirectResponse;
@@ -15,22 +16,16 @@ use Inertia\Response;
 
 class ProductsController extends Controller
 {
-    private array $categories = [
-        'Aceites para masaje',
-        'Aromaterapia',
-        'Cremas y lociones',
-    ];
-
     public function index(): Response
     {
         $products = Product::query()
-            ->with(['images' => fn ($query) => $query->orderBy('position')->limit(1)])
+            ->with(['category', 'images' => fn ($query) => $query->orderBy('position')->limit(1)])
             ->get()
             ->map(fn (Product $product) => [
                 'id' => $product->id,
                 'name' => $product->name,
                 'sku' => $product->sku,
-                'category' => $product->category,
+                'category' => $product->category?->name,
                 'price' => (float) $product->price,
                 'stock' => $product->stock,
                 'status' => $product->status,
@@ -44,8 +39,10 @@ class ProductsController extends Controller
 
     public function create(): Response
     {
+        $categories = Category::query()->where('is_active', true)->orderBy('name')->get(['id', 'name']);
+
         return Inertia::render('Products/Create', [
-            'categories' => $this->categories,
+            'categories' => $categories,
         ]);
     }
 
@@ -68,14 +65,15 @@ class ProductsController extends Controller
 
     public function edit(Product $product): Response
     {
-        $product->load(['pricingTiers', 'images']);
+        $product->load(['category', 'pricingTiers', 'images']);
+        $categories = Category::query()->where('is_active', true)->orderBy('name')->get(['id', 'name']);
 
         return Inertia::render('Products/Edit', [
             'product' => [
                 'id' => $product->id,
                 'name' => $product->name,
                 'sku' => $product->sku,
-                'category' => $product->category,
+                'category_id' => $product->category_id,
                 'description' => $product->description ?? '',
                 'price' => (string) $product->price,
                 'cost' => $product->cost ? (string) $product->cost : '',
@@ -96,7 +94,7 @@ class ProductsController extends Controller
                     'label' => $tier->label,
                 ])->values()->all(),
             ],
-            'categories' => $this->categories,
+            'categories' => $categories,
         ]);
     }
 

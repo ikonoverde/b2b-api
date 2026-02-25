@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use App\Models\User;
 
 test('authenticated user can view create product page', function () {
@@ -20,8 +21,9 @@ test('unauthenticated user is redirected to login', function () {
     $response->assertRedirect('/admin/login');
 });
 
-test('create product page returns expected categories', function () {
+test('create product page returns categories from database', function () {
     $user = User::factory()->create();
+    Category::factory(3)->create();
 
     $response = $this->actingAs($user)->get('/admin/products/create');
 
@@ -33,11 +35,12 @@ test('create product page returns expected categories', function () {
 
 test('authenticated user can store a product', function () {
     $user = User::factory()->create();
+    $category = Category::factory()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
         'name' => 'Test Product',
         'sku' => 'TEST-001',
-        'category' => 'Fertilizantes',
+        'category_id' => $category->id,
         'description' => 'A test product description',
         'price' => 29.99,
         'cost' => 15.00,
@@ -53,7 +56,7 @@ test('authenticated user can store a product', function () {
     $this->assertDatabaseHas('products', [
         'name' => 'Test Product',
         'sku' => 'TEST-001',
-        'category' => 'Fertilizantes',
+        'category_id' => $category->id,
     ]);
 });
 
@@ -62,16 +65,17 @@ test('validation fails with missing required fields', function () {
 
     $response = $this->actingAs($user)->post('/admin/products', []);
 
-    $response->assertSessionHasErrors(['name', 'sku', 'category', 'price', 'stock']);
+    $response->assertSessionHasErrors(['name', 'sku', 'category_id', 'price', 'stock']);
 });
 
 test('validation fails with invalid price', function () {
     $user = User::factory()->create();
+    $category = Category::factory()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
         'name' => 'Test Product',
         'sku' => 'TEST-001',
-        'category' => 'Fertilizantes',
+        'category_id' => $category->id,
         'price' => -10,
         'stock' => 100,
     ]);
@@ -81,11 +85,12 @@ test('validation fails with invalid price', function () {
 
 test('validation fails with invalid stock', function () {
     $user = User::factory()->create();
+    $category = Category::factory()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
         'name' => 'Test Product',
         'sku' => 'TEST-001',
-        'category' => 'Fertilizantes',
+        'category_id' => $category->id,
         'price' => 29.99,
         'stock' => -5,
     ]);
@@ -100,7 +105,7 @@ test('validation fails with duplicate sku', function () {
     $response = $this->actingAs($user)->post('/admin/products', [
         'name' => 'Test Product',
         'sku' => 'DUPE-001',
-        'category' => 'Fertilizantes',
+        'category_id' => Category::factory()->create()->id,
         'price' => 29.99,
         'stock' => 100,
     ]);

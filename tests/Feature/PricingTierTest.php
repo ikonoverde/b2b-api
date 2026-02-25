@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use App\Models\PricingTier;
 use App\Models\Product;
 use App\Models\User;
@@ -50,7 +51,7 @@ test('authenticated user can create product with pricing tiers', function () {
     $response = $this->actingAs($user)->post('/admin/products', [
         'name' => 'Test Product',
         'sku' => 'TEST-001',
-        'category' => 'Fertilizantes',
+        'category_id' => Category::factory()->create()->id,
         'description' => 'Test description',
         'price' => 100,
         'cost' => 50,
@@ -79,7 +80,7 @@ test('authenticated user can update product with pricing tiers', function () {
     $response = $this->actingAs($user)->put("/admin/products/{$product->id}", [
         'name' => $product->name,
         'sku' => $product->sku,
-        'category' => $product->category,
+        'category_id' => $product->category_id,
         'description' => $product->description,
         'price' => $product->price,
         'cost' => $product->cost,
@@ -128,7 +129,7 @@ test('validation fails for overlapping pricing tiers', function () {
     $response = $this->actingAs($user)->post('/admin/products', [
         'name' => 'Test Product',
         'sku' => 'TEST-OVERLAP',
-        'category' => 'Fertilizantes',
+        'category_id' => Category::factory()->create()->id,
         'price' => 100,
         'stock' => 100,
         'pricing_tiers' => [
@@ -146,7 +147,7 @@ test('validation fails for unlimited tier followed by another tier', function ()
     $response = $this->actingAs($user)->post('/admin/products', [
         'name' => 'Test Product',
         'sku' => 'TEST-UNLIMITED',
-        'category' => 'Fertilizantes',
+        'category_id' => Category::factory()->create()->id,
         'price' => 100,
         'stock' => 100,
         'pricing_tiers' => [
@@ -164,7 +165,7 @@ test('validation fails for pricing tier with max_qty less than min_qty', functio
     $response = $this->actingAs($user)->post('/admin/products', [
         'name' => 'Test Product',
         'sku' => 'TEST-INVALID-QTY',
-        'category' => 'Fertilizantes',
+        'category_id' => Category::factory()->create()->id,
         'price' => 100,
         'stock' => 100,
         'pricing_tiers' => [
@@ -181,7 +182,7 @@ test('validation fails for pricing tier with invalid discount', function () {
     $response = $this->actingAs($user)->post('/admin/products', [
         'name' => 'Test Product',
         'sku' => 'TEST-INVALID-DISCOUNT',
-        'category' => 'Fertilizantes',
+        'category_id' => Category::factory()->create()->id,
         'price' => 100,
         'stock' => 100,
         'pricing_tiers' => [
@@ -249,7 +250,7 @@ test('product can be created without pricing tiers', function () {
     $response = $this->actingAs($user)->post('/admin/products', [
         'name' => 'Test Product No Tiers',
         'sku' => 'TEST-NO-TIERS',
-        'category' => 'Fertilizantes',
+        'category_id' => Category::factory()->create()->id,
         'price' => 100,
         'stock' => 100,
     ]);

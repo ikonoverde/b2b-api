@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -23,10 +24,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        Product::factory(10)->create();
-        Product::factory(2)->inactive()->create();
-        Product::factory(2)->lowStock()->create();
-        Product::factory(1)->featured()->create();
-        Product::factory(1)->outOfStock()->create();
+        $categories = Category::factory(4)->create();
+
+        Product::factory(10)->recycle($categories)->create();
+        Product::factory(2)->recycle($categories)->inactive()->create();
+        Product::factory(2)->recycle($categories)->lowStock()->create();
+        Product::factory(1)->recycle($categories)->featured()->create();
+        Product::factory(1)->recycle($categories)->outOfStock()->create();
     }
 }

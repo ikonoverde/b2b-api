@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,17 +10,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ProductFactory extends Factory
 {
-    private array $categories = [
-        'Fertilizantes',
-        'Semillas',
-        'Control plagas',
-        'Bioestimulantes',
-        'Contenedores',
-        'Riego',
-        'Herramientas',
-        'Sustratos',
-    ];
-
     /**
      * Define the model's default state.
      *
@@ -30,7 +20,7 @@ class ProductFactory extends Factory
         return [
             'name' => fake()->words(3, true),
             'sku' => fake()->unique()->regexify('[A-Z]{3}-[0-9]{3}'),
-            'category' => fake()->randomElement($this->categories),
+            'category_id' => Category::factory(),
             'description' => fake()->optional()->paragraph(),
             'price' => fake()->randomFloat(2, 5, 500),
             'cost' => fake()->optional()->randomFloat(2, 1, 250),

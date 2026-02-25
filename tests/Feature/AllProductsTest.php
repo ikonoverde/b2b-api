@@ -36,7 +36,6 @@ test('products endpoint returns correct product structure', function () {
     Product::factory()->create([
         'name' => 'Test Product',
         'sku' => 'TEST-001',
-        'category' => 'Fertilizantes',
         'description' => 'A test description',
         'price' => 29.99,
         'stock' => 100,
