@@ -46,7 +46,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - You must only create documentation files if explicitly requested by the user.
 
 ## Issue Tracking
-- Use the GitHub project https://github.com/orgs/ikonoverde/projects/3 to manage all issues and tickets.
+- Use the GitHub project https://github.com/orgs/ikonoverde/projects/5 to manage all issues and tickets.
 
 ## Development Login
 - Local dev user: moeric@gmail.com / 42ekwN8tGIMv
@@ -464,3 +464,6 @@ export default () => (
     - Max accepted cyclo: 15
     - Max accepted cognitive/complex: 20
     - Refactor anything above those limits to lower the complexity
+
+## GIT
+- For all git and/or GitHub operations use gh
