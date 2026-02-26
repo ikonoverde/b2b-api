@@ -200,7 +200,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: February 25, 2026</li>
+        <li>Last updated: February 26, 2026</li>
     </ul>
 </div>
 
@@ -4108,7 +4108,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>
 </p>
 
-<p>Retrieve all products.</p>
+<p>Retrieve a paginated list of products.</p>
 
 <span id="example-requests-GETapi-products">
 <blockquote>Example request:</blockquote>
@@ -4116,7 +4116,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://192.168.0.193:8000/api/products" \
+    --get "http://192.168.0.193:8000/api/products?page=1&amp;per_page=15" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -4125,6 +4125,13 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <pre><code class="language-javascript">const url = new URL(
     "http://192.168.0.193:8000/api/products"
 );
+
+const params = {
+    "page": "1",
+    "per_page": "15",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Content-Type": "application/json",
@@ -4158,7 +4165,19 @@ fetch(url, {
             &quot;is_featured&quot;: true,
             &quot;image&quot;: null
         }
-    ]
+    ],
+    &quot;links&quot;: {
+        &quot;first&quot;: &quot;/api/products?page=1&quot;,
+        &quot;last&quot;: &quot;/api/products?page=5&quot;,
+        &quot;prev&quot;: null,
+        &quot;next&quot;: &quot;/api/products?page=2&quot;
+    },
+    &quot;meta&quot;: {
+        &quot;current_page&quot;: 1,
+        &quot;last_page&quot;: 5,
+        &quot;per_page&quot;: 15,
+        &quot;total&quot;: 73
+    }
 }</code>
  </pre>
     </span>
@@ -4233,7 +4252,32 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>Example: <code>application/json</code></p>
             </div>
-                        </form>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="page"                data-endpoint="GETapi-products"
+               value="1"
+               data-component="query">
+    <br>
+<p>The page number. Example: <code>1</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="per_page"                data-endpoint="GETapi-products"
+               value="15"
+               data-component="query">
+    <br>
+<p>Items per page (1-100, default 15). Example: <code>15</code></p>
+            </div>
+                </form>
 
                     <h2 id="products-GETapi-products-featured">Get Featured Products</h2>
 
