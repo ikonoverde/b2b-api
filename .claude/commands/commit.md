@@ -5,7 +5,7 @@ model: claude-sonnet-4-6
 
 ## Process
 
-1. Find the staged files using gh
+1. Find the staged files. (git status && git diff --cached)
 2. Generate a commit message based on the staged changes.
     - List the main changes
 3. Commit the changes to the codebase.

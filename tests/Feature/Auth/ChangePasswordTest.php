@@ -86,6 +86,40 @@ describe('PUT /api/password', function () {
             ->assertJsonValidationErrors(['password']);
     });
 
+    it('returns 422 when password has no letters', function () {
+        $user = User::factory()->create([
+            'password' => 'oldPassword1',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->putJson('/api/password', [
+            'current_password' => 'oldPassword1',
+            'password' => '123456789',
+            'password_confirmation' => '123456789',
+        ]);
+
+        $response->assertUnprocessable()
+            ->assertJsonValidationErrors(['password']);
+    });
+
+    it('returns 422 when password has no numbers', function () {
+        $user = User::factory()->create([
+            'password' => 'oldPassword1',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->putJson('/api/password', [
+            'current_password' => 'oldPassword1',
+            'password' => 'abcdefghij',
+            'password_confirmation' => 'abcdefghij',
+        ]);
+
+        $response->assertUnprocessable()
+            ->assertJsonValidationErrors(['password']);
+    });
+
     it('returns 422 when password confirmation does not match', function () {
         $user = User::factory()->create([
             'password' => 'oldPassword1',

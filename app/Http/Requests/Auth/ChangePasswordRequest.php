@@ -24,7 +24,7 @@ class ChangePasswordRequest extends FormRequest
     {
         return [
             'current_password' => ['required', 'string', 'current_password'],
-            'password' => ['required', 'string', Password::min(8), 'confirmed'],
+            'password' => ['required', 'string', Password::min(8)->letters()->numbers(), 'confirmed'],
         ];
     }
 
@@ -41,7 +41,7 @@ class ChangePasswordRequest extends FormRequest
                 'example' => 'currentP@ss1',
             ],
             'password' => [
-                'description' => 'The new password (min 8 characters)',
+                'description' => 'The new password (min 8 characters, must include letters and numbers)',
                 'example' => 'newP@ssw0rd',
             ],
             'password_confirmation' => [
