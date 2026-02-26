@@ -1,4 +1,6 @@
-To have a better understanding of the application current state we will maintain uml diagrams in mermaidjs format
+---
+description: To have a better understanding of the application current state we will maintain uml diagrams in mermaidjs format
+---
 
 - Use git to get the current changes
 - Only consider changes inside app/

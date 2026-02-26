@@ -37,9 +37,12 @@ classDiagram
         +int id
         +string name
         +string slug
+        +int parent_id
         +string description
         +bool is_active
         +products() HasMany~Product~
+        +parent() BelongsTo~Category~
+        +children() HasMany~Category~
     }
 
     class Product {
@@ -137,6 +140,8 @@ classDiagram
     User "1" --> "0..1" Cart : has one
 
     Category "1" --> "*" Product : has many
+    Category "1" --> "0..1" Category : parent
+    Category "1" --> "*" Category : children
 
     Product "1" --> "*" ProductImage : has many
     Product "1" --> "*" PricingTier : has many

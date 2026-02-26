@@ -1,7 +1,6 @@
 ---
 name: jira-ticket
 description: Work on a Jira ticket
-model: opus
 ---
 
 ## Flow:

@@ -1,4 +1,5 @@
 ---
+name: commit-staged
 description: Generate a commit message based on the staged changes and commit the changes to the codebase.
 ---
 

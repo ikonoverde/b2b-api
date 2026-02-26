@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Impact Analysis</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --text: #e2e8f0;
+            --text-dim: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            margin-bottom: 24px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            padding: 16px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .preset-btn {
+            width: 100%;
+            padding: 10px 14px;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            margin-bottom: 8px;
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+
+        .preset-btn:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--accent);
+        }
+
+        .preset-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .toggle-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .toggle-label input {
+            display: none;
+        }
+
+        .toggle-switch {
+            width: 32px;
+            height: 18px;
+            background: var(--border);
+            border-radius: 9px;
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: var(--text);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s;
+        }
+
+        .toggle-label input:checked + .toggle-switch {
+            background: var(--accent);
+        }
+
+        .toggle-label input:checked + .toggle-switch::after {
+            transform: translateX(14px);
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .diagram-container {
+            background: var(--bg-card);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            padding: 20px;
+            min-height: 400px;
+        }
+
+        .diagram-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            background: var(--bg);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .mermaid pre {
+            margin: 0;
+        }
+
+        .changes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .change-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 6px;
+            border-left: 3px solid var(--success);
+        }
+
+        .change-item.danger {
+            background: rgba(239, 68, 68, 0.1);
+            border-left-color: var(--danger);
+        }
+
+        .change-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .change-item .change-icon {
+            background: var(--success);
+            color: white;
+        }
+
+        .change-item.danger .change-icon {
+            background: var(--danger);
+            color: white;
+        }
+
+        .change-content h4 {
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .change-content p {
+            font-size: 12px;
+            color: var(--text-dim);
+            font-family: 'Courier New', monospace;
+        }
+
+        .route-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 6px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .method {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .method.get {
+            background: var(--success);
+            color: white;
+        }
+
+        .route-path {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .output-section {
+            background: var(--bg-card);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            padding: 20px;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .output-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dim);
+        }
+
+        .copy-btn {
+            padding: 8px 16px;
+            background: var(--accent);
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .copy-btn.copied {
+            background: var(--success);
+        }
+
+        #prompt-output {
+            width: 100%;
+            min-height: 200px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 16px;
+            color: var(--text);
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            resize: vertical;
+        }
+    </style>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: false,
+            theme: 'dark',
+            themeVariables: {
+                background: '#0f172a',
+                primaryColor: '#1e293b',
+                primaryTextColor: '#e2e8f0',
+                primaryBorderColor: '#334155',
+                lineColor: '#3b82f6',
+                secondaryColor: '#334155',
+                tertiaryColor: '#1e293b',
+                noteBkgColor: '#334155',
+                noteTextColor: '#e2e8f0',
+                noteBorderColor: '#475569',
+                actorBkg: '#1e293b',
+                actorBorder: '#3b82f6',
+                actorTextColor: '#e2e8f0',
+                signalColor: '#e2e8f0',
+                signalTextColor: '#e2e8f0',
+                sequenceNumberColor: '#e2e8f0'
+            }
+        });
+        window.mermaidLib = mermaid;
+        window.mermaidReady = true;
+        if (window.pendingRender) window.updateAll();
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Impact Analysis: Category Hierarchies</h1>
+        <p class="subtitle">Analyzing staged changes for nested category functionality</p>
+
+        <div class="layout">
+            <div class="sidebar">
+                <div class="card">
+                    <div class="card-title">View Presets</div>
+                    <button class="preset-btn active" onclick="setPreset('full')">Full Impact View</button>
+                    <button class="preset-btn" onclick="setPreset('dataflow')">Data Flow Only</button>
+                    <button class="preset-btn" onclick="setPreset('model')">Model Changes</button>
+                    <button class="preset-btn" onclick="setPreset('api')">API Changes</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Show Layers</div>
+                    <div class="toggle-group">
+                        <label class="toggle-label">
+                            <input type="checkbox" checked onchange="updateAll()" id="toggle-controller">
+                            <span class="toggle-switch"></span>
+                            Controller
+                        </label>
+                        <label class="toggle-label">
+                            <input type="checkbox" checked onchange="updateAll()" id="toggle-resource">
+                            <span class="toggle-switch"></span>
+                            Resource
+                        </label>
+                        <label class="toggle-label">
+                            <input type="checkbox" checked onchange="updateAll()" id="toggle-model">
+                            <span class="toggle-switch"></span>
+                            Model
+                        </label>
+                        <label class="toggle-label">
+                            <input type="checkbox" checked onchange="updateAll()" id="toggle-route">
+                            <span class="toggle-switch"></span>
+                            Route
+                        </label>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Affected Routes</div>
+                    <div class="route-card">
+                        <span class="method get">GET</span>
+                        <span class="route-path">/api/categories</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main">
+                <div class="card">
+                    <div class="card-title">Code Changes Summary</div>
+                    <div class="changes-list">
+                        <div class="change-item">
+                            <div class="change-icon">+</div>
+                            <div class="change-content">
+                                <h4>CategoriesController.php</h4>
+                                <p>->with('children') added to eager load child categories</p>
+                            </div>
+                        </div>
+                        <div class="change-item">
+                            <div class="change-icon">+</div>
+                            <div class="change-content">
+                                <h4>CategoryResource.php</h4>
+                                <p>Added parent_id and children fields to API response</p>
+                            </div>
+                        </div>
+                        <div class="change-item">
+                            <div class="change-icon">+</div>
+                            <div class="change-content">
+                                <h4>Category.php (Model)</h4>
+                                <p>Added parent_id, parent(), and children() relationships</p>
+                            </div>
+                        </div>
+                        <div class="change-item danger">
+                            <div class="change-icon">!</div>
+                            <div class="change-content">
+                                <h4>Migration</h4>
+                                <p>2026_02_26_071033_add_parent_id_to_categories_table.php</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Sequence Diagram: GET /api/categories</div>
+                    <div class="mermaid" id="diagram"></div>
+                </div>
+
+                <div class="output-section">
+                    <div class="output-header">
+                        <span class="output-title">Impact Report</span>
+                        <button class="copy-btn" onclick="copyPrompt()">Copy Prompt</button>
+                    </div>
+                    <textarea id="prompt-output" readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const state = {
+            preset: 'full',
+            showController: true,
+            showResource: true,
+            showModel: true,
+            showRoute: true
+        };
+
+        const diagrams = {
+            full: `sequenceDiagram
+    participant Client
+    participant Route as Route: GET /api/categories
+    participant Controller as CategoriesController
+    participant Model as Category (Model)
+    participant DB as Database
+
+    Client->>Route: GET /api/categories
+    Route->>Controller: __invoke()
+    Note over Controller: Added: ->with('children')
+    Controller->>Model: Category::query()->with('children')
+    Model->>DB: SELECT * FROM categories + children
+    DB-->>Model: Categories with parent_id
+    Model-->>Controller: Collection with relationships loaded
+    Note over Controller: Eager loading prevents N+1
+    Controller->>Controller: CategoryResource::collection()
+    Note over Controller: Added: parent_id field
+    Note over Controller: Added: children relationship
+    Controller-->>Client: JSON with nested categories`,
+
+            dataflow: `sequenceDiagram
+    participant Client
+    participant Route as /api/categories
+    participant Controller
+    participant Model
+    participant DB as DB
+
+    Client->>Route: GET
+    Route->>Controller: invoke()
+    Controller->>Model: with('children')
+    Model->>DB: Query + JOIN
+    DB-->>Model: Data
+    Model-->>Controller: With relationships
+    Controller->>Controller: Resource transform
+    Controller-->>Client: Nested JSON`,
+
+            model: `sequenceDiagram
+    participant Dev as Developer
+    participant Model as Category
+    participant Migration as Migration
+
+    Note over Dev,Migration: Model Changes
+    Dev->>Model: Add parent_id to $fillable
+    Dev->>Model: Add parent() BelongsTo relationship
+    Dev->>Model: Add children() HasMany relationship
+    Migration->>Model: Adds parent_id column`,
+
+            api: `sequenceDiagram
+    participant Client
+    participant Controller
+    participant Resource as CategoryResource
+
+    Note over Client,Resource: API Response Changes
+    Client->>Controller: GET /api/categories
+    Controller->>Controller: Process + Transform
+    Controller->>Resource: toArray()
+    Note over Resource: Now includes: parent_id
+    Note over Resource: Now includes: children
+    Resource-->>Client: {"id":1,"name":"A","parent_id":null,"children":[...]}`
+        };
+
+        let renderCounter = 0;
+
+        function setPreset(preset) {
+            state.preset = preset;
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            updateAll();
+        }
+
+        async function updateAll() {
+            state.showController = document.getElementById('toggle-controller').checked;
+            state.showResource = document.getElementById('toggle-resource').checked;
+            state.showModel = document.getElementById('toggle-model').checked;
+            state.showRoute = document.getElementById('toggle-route').checked;
+
+            await renderDiagram();
+            updatePrompt();
+        }
+        window.updateAll = updateAll;
+
+        function filterDiagram(diagram) {
+            if (state.preset !== 'full') return diagram;
+
+            const hidden = [];
+            if (!state.showController) hidden.push('Controller');
+            if (!state.showModel) hidden.push('Model');
+            if (!state.showRoute) hidden.push('Route');
+            if (!state.showResource) hidden.push('Resource');
+            if (hidden.length === 0) return diagram;
+
+            const lines = diagram.split('\n');
+            return lines.filter(line => {
+                const trimmed = line.trim();
+                if (!trimmed || trimmed === 'sequenceDiagram') return true;
+                return !hidden.some(keyword => trimmed.includes(keyword));
+            }).join('\n');
+        }
+
+        async function renderDiagram() {
+            if (!window.mermaidReady) {
+                window.pendingRender = true;
+                return;
+            }
+
+            const diagram = filterDiagram(diagrams[state.preset]);
+            const container = document.getElementById('diagram');
+
+            try {
+                renderCounter++;
+                const { svg } = await window.mermaidLib.render(
+                    `mmd-${renderCounter}`,
+                    diagram
+                );
+                container.innerHTML = svg;
+            } catch (err) {
+                container.innerHTML = '<p style="color: #94a3b8; text-align: center; padding: 40px;">Toggle more layers on to see the diagram.</p>';
+            }
+        }
+
+        function updatePrompt() {
+            const layers = [];
+            if (state.showController) layers.push('Controller');
+            if (state.showResource) layers.push('Resource');
+            if (state.showModel) layers.push('Model');
+            if (state.showRoute) layers.push('Route');
+
+            let content = `# Impact Analysis Report
+
+## Changes Overview
+
+This report analyzes staged changes that introduce hierarchical category functionality.
+
+### Modified Files:
+1. **app/Http/Controllers/CategoriesController.php**
+   - Added eager loading: \`->with('children')\`
+   - Prevents N+1 query problem when fetching categories
+
+2. **app/Http/Resources/CategoryResource.php**
+   - Added \`parent_id\` field to JSON output
+   - Added \`children\` relationship with recursive resource
+
+3. **app/Models/Category.php**
+   - Added \`parent_id\` to \`$fillable\` array
+   - Added \`parent()\` BelongsTo relationship
+   - Added \`children()\` HasMany relationship
+
+4. **database/migrations/** (new)
+   - Added \`parent_id\` column to categories table
+
+### Affected Routes:
+- \`GET /api/categories\` - Returns hierarchical category tree
+
+### Technical Impact:
+
+**Positive:**
+- Eliminates N+1 queries with eager loading
+- Provides complete category hierarchy in single request
+- Enables UI to render tree structures
+
+**Considerations:**
+- Response payload size increases with nested data
+- Frontend needs to handle recursive category rendering
+
+### Visibility: ${layers.join(', ') || 'None'}
+
+### Sequence Flow:
+${diagrams[state.preset]}`;
+
+            document.getElementById('prompt-output').value = content;
+        }
+
+        function copyPrompt() {
+            const textarea = document.getElementById('prompt-output');
+            navigator.clipboard.writeText(textarea.value).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy Prompt';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        updateAll();
+    </script>
+</body>
+</html>

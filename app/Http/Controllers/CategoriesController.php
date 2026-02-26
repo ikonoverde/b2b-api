@@ -27,6 +27,7 @@ class CategoriesController extends Controller
     {
         $categories = Category::query()
             ->where('is_active', true)
+            ->with('children')
             ->orderBy('name')
             ->get();
 
