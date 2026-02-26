@@ -1,0 +1,148 @@
+classDiagram
+    direction TB
+
+    class User {
+        +int id
+        +string name
+        +string rfc
+        +string email
+        +string phone
+        +datetime terms_accepted_at
+        +string password
+        +string role
+        +bool is_active
+        +orders() HasMany~Order~
+        +addresses() HasMany~Address~
+    }
+
+    class Address {
+        +int id
+        +int user_id
+        +string label
+        +string name
+        +string address_line_1
+        +string address_line_2
+        +string city
+        +string state
+        +string postal_code
+        +string phone
+        +bool is_default
+        +string country
+        +user() BelongsTo~User~
+        +setAsDefault() void
+        +promoteNextDefault() void
+    }
+
+    class Category {
+        +int id
+        +string name
+        +string slug
+        +string description
+        +bool is_active
+        +products() HasMany~Product~
+    }
+
+    class Product {
+        +int id
+        +string name
+        +string sku
+        +int category_id
+        +string description
+        +decimal price
+        +decimal cost
+        +int stock
+        +int min_stock
+        +bool is_active
+        +bool is_featured
+        +status string «accessor»
+        +image_url string «accessor»
+        +category() BelongsTo~Category~
+        +pricingTiers() HasMany~PricingTier~
+        +images() HasMany~ProductImage~
+        +scopeFilterByCategory(query, categoryId) Builder
+        +scopeFilterByPriceRange(query, min, max) Builder
+        +scopeSearch(query, term) Builder
+        +scopeSortBy(query, sort) Builder
+    }
+
+    class ProductImage {
+        +int id
+        +int product_id
+        +string image_path
+        +int position
+        +image_url string «accessor»
+        +product() BelongsTo~Product~
+    }
+
+    class PricingTier {
+        +int id
+        +int product_id
+        +int min_qty
+        +int max_qty
+        +decimal price
+        +decimal discount
+        +string label
+        +product() BelongsTo~Product~
+    }
+
+    class Cart {
+        +int id
+        +int user_id
+        +string status
+        +user() BelongsTo~User~
+        +items() HasMany~CartItem~
+        +calculateTotals() array
+    }
+
+    class CartItem {
+        +int id
+        +int cart_id
+        +int product_id
+        +int quantity
+        +decimal unit_price
+        +subtotal float «accessor»
+        +cart() BelongsTo~Cart~
+        +product() BelongsTo~Product~
+    }
+
+    class Order {
+        +int id
+        +int user_id
+        +string status
+        +string payment_status
+        +string payment_intent_id
+        +string checkout_session_id
+        +decimal total_amount
+        +decimal shipping_cost
+        +array shipping_address
+        +user() BelongsTo~User~
+        +items() HasMany~OrderItem~
+    }
+
+    class OrderItem {
+        +int id
+        +int order_id
+        +int product_id
+        +string product_name
+        +int quantity
+        +decimal unit_price
+        +decimal subtotal
+        +string image
+        +order() BelongsTo~Order~
+        +product() BelongsTo~Product~
+    }
+
+    User "1" --> "*" Address : has many
+    User "1" --> "*" Order : has many
+    User "1" --> "0..1" Cart : has one
+
+    Category "1" --> "*" Product : has many
+
+    Product "1" --> "*" ProductImage : has many
+    Product "1" --> "*" PricingTier : has many
+    Product "1" --> "*" CartItem : referenced by
+    Product "1" --> "*" OrderItem : referenced by
+
+    Cart "1" --> "*" CartItem : has many
+
+    Order "1" --> "*" OrderItem : has many

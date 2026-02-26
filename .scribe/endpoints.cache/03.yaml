@@ -19,7 +19,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Get All Products'
-      description: 'Retrieve a paginated list of products.'
+      description: 'Retrieve a paginated list of products with optional filtering and sorting.'
       authenticated: false
       deprecated: false
     headers:
@@ -50,9 +50,71 @@ endpoints:
         exampleWasSpecified: true
         nullable: false
         deprecated: false
+      category_id:
+        custom: []
+        name: category_id
+        description: 'Filter by category ID(s).'
+        required: false
+        example:
+          - 1
+        type: 'integer[]'
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      price_min:
+        custom: []
+        name: price_min
+        description: 'Minimum price filter.'
+        required: false
+        example: 10.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      price_max:
+        custom: []
+        name: price_max
+        description: 'Maximum price filter.'
+        required: false
+        example: 100.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      search:
+        custom: []
+        name: search
+        description: 'Search keyword (matches name, description, SKU).'
+        required: false
+        example: fertilizer
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sort:
+        custom: []
+        name: sort
+        description: 'Sort order: price_asc, price_desc, name_asc, name_desc, newest, oldest.'
+        required: false
+        example: newest
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
     cleanQueryParameters:
       page: 1
       per_page: 15
+      category_id:
+        - 1
+      price_min: 10.0
+      price_max: 100.0
+      search: fertilizer
+      sort: newest
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []

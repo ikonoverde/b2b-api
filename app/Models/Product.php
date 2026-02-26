@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -55,6 +56,59 @@ class Product extends Model
     public function getImageUrlAttribute(): ?string
     {
         return $this->images->first()?->image_url;
+    }
+
+    /**
+     * @param  Builder<self>  $query
+     * @param  int|array<int>  $categoryId
+     * @return Builder<self>
+     */
+    public function scopeFilterByCategory(Builder $query, int|array $categoryId): Builder
+    {
+        return $query->whereIn('category_id', (array) $categoryId);
+    }
+
+    /**
+     * @param  Builder<self>  $query
+     * @return Builder<self>
+     */
+    public function scopeFilterByPriceRange(Builder $query, ?float $min = null, ?float $max = null): Builder
+    {
+        return $query
+            ->when($min !== null, fn (Builder $q) => $q->where('price', '>=', $min))
+            ->when($max !== null, fn (Builder $q) => $q->where('price', '<=', $max));
+    }
+
+    /**
+     * @param  Builder<self>  $query
+     * @return Builder<self>
+     */
+    public function scopeSearch(Builder $query, string $term): Builder
+    {
+        $like = '%'.str_replace(['%', '_'], ['\%', '\_'], $term).'%';
+
+        return $query->where(function (Builder $q) use ($like) {
+            $q->where('name', 'LIKE', $like)
+                ->orWhere('description', 'LIKE', $like)
+                ->orWhere('sku', 'LIKE', $like);
+        });
+    }
+
+    /**
+     * @param  Builder<self>  $query
+     * @return Builder<self>
+     */
+    public function scopeSortBy(Builder $query, string $sort): Builder
+    {
+        return match ($sort) {
+            'price_asc' => $query->orderBy('price'),
+            'price_desc' => $query->orderBy('price', 'desc'),
+            'name_asc' => $query->orderBy('name'),
+            'name_desc' => $query->orderBy('name', 'desc'),
+            'newest' => $query->orderBy('created_at', 'desc'),
+            'oldest' => $query->orderBy('created_at'),
+            default => $query,
+        };
     }
 
     /**

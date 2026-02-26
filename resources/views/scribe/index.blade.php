@@ -4108,7 +4108,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>
 </p>
 
-<p>Retrieve a paginated list of products.</p>
+<p>Retrieve a paginated list of products with optional filtering and sorting.</p>
 
 <span id="example-requests-GETapi-products">
 <blockquote>Example request:</blockquote>
@@ -4116,7 +4116,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://192.168.0.193:8000/api/products?page=1&amp;per_page=15" \
+    --get "http://192.168.0.193:8000/api/products?page=1&amp;per_page=15&amp;category_id[]=1&amp;price_min=10&amp;price_max=100&amp;search=fertilizer&amp;sort=newest" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -4129,6 +4129,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
 const params = {
     "page": "1",
     "per_page": "15",
+    "category_id[0]": "1",
+    "price_min": "10",
+    "price_max": "100",
+    "search": "fertilizer",
+    "sort": "newest",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -4276,6 +4281,68 @@ You can check the Dev Tools console for debugging information.</code></pre>
                data-component="query">
     <br>
 <p>Items per page (1-100, default 15). Example: <code>15</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>category_id</code></b>&nbsp;&nbsp;
+<small>integer[]</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="category_id[0]"                data-endpoint="GETapi-products"
+               data-component="query">
+        <input type="number" style="display: none"
+               name="category_id[1]"                data-endpoint="GETapi-products"
+               data-component="query">
+    <br>
+<p>Filter by category ID(s).</p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>price_min</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="price_min"                data-endpoint="GETapi-products"
+               value="10"
+               data-component="query">
+    <br>
+<p>Minimum price filter. Example: <code>10</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>price_max</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="price_max"                data-endpoint="GETapi-products"
+               value="100"
+               data-component="query">
+    <br>
+<p>Maximum price filter. Example: <code>100</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>search</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="search"                data-endpoint="GETapi-products"
+               value="fertilizer"
+               data-component="query">
+    <br>
+<p>Search keyword (matches name, description, SKU). Example: <code>fertilizer</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>sort</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="sort"                data-endpoint="GETapi-products"
+               value="newest"
+               data-component="query">
+    <br>
+<p>Sort order: price_asc, price_desc, name_asc, name_desc, newest, oldest. Example: <code>newest</code></p>
             </div>
                 </form>
 
