@@ -13,6 +13,7 @@ classDiagram
         +bool is_active
         +orders() HasMany~Order~
         +addresses() HasMany~Address~
+        +tokens() MorphMany~PersonalAccessToken~
     }
 
     class Address {
@@ -135,9 +136,21 @@ classDiagram
         +product() BelongsTo~Product~
     }
 
+    class PersonalAccessToken {
+        +int id
+        +string tokenable_type
+        +int tokenable_id
+        +string name
+        +string token
+        +array abilities
+        +datetime last_used_at
+        +datetime expires_at
+    }
+
     User "1" --> "*" Address : has many
     User "1" --> "*" Order : has many
     User "1" --> "0..1" Cart : has one
+    User "1" --> "*" PersonalAccessToken : has many (morph)
 
     Category "1" --> "*" Product : has many
     Category "1" --> "0..1" Category : parent

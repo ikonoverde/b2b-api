@@ -4,6 +4,7 @@ use App\Http\Controllers\Addresses\DestroyAddressController;
 use App\Http\Controllers\Addresses\GetAddressesController;
 use App\Http\Controllers\Addresses\StoreAddressController;
 use App\Http\Controllers\Addresses\UpdateAddressController;
+use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -31,6 +32,7 @@ Route::post('/forgot-password', ForgotPasswordController::class);
 
 Route::get('/user', UserController::class)->middleware('auth:sanctum');
 Route::put('/user', UpdateUserController::class)->middleware('auth:sanctum');
+Route::put('/password', ChangePasswordController::class)->middleware('auth:sanctum');
 
 Route::get('/categories', CategoriesController::class);
 
