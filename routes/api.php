@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Cart\AddCartItemController;
 use App\Http\Controllers\Cart\ClearCartController;
 use App\Http\Controllers\Cart\GetCartController;
@@ -32,6 +33,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', RegisterController::class);
 Route::post('/login', LoginController::class);
 Route::post('/forgot-password', ForgotPasswordController::class);
+Route::post('/password/reset/confirm', ResetPasswordController::class);
 
 Route::post('/logout', LogoutController::class)->middleware('auth:sanctum');
 
