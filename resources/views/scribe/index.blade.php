@@ -3165,6 +3165,20 @@ fetch(url, {
 }</code>
  </pre>
             <blockquote>
+            <p>Example response (422, Insufficient stock):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Some items in your cart exceed available stock.&quot;,
+    &quot;errors&quot;: {
+        &quot;items&quot;: {
+            &quot;1&quot;: &quot;Only 5 units available (requested 10).&quot;
+        }
+    }
+}</code>
+ </pre>
+            <blockquote>
             <p>Example response (422, Inactive shipping method):</p>
         </blockquote>
                 <pre>

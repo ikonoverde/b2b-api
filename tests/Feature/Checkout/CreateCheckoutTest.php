@@ -265,6 +265,84 @@ it('rejects inactive shipping method', function () {
     $response->assertJsonPath('message', 'The selected shipping method is no longer available.');
 });
 
+it('returns 422 when cart item exceeds available stock', function () {
+    $user = User::factory()->create();
+    $product = Product::factory()->create(['price' => 50.00, 'stock' => 3]);
+    $cart = Cart::factory()->create(['user_id' => $user->id, 'status' => 'active']);
+    CartItem::factory()->create([
+        'cart_id' => $cart->id,
+        'product_id' => $product->id,
+        'quantity' => 10,
+        'unit_price' => 50.00,
+    ]);
+
+    $response = $this->actingAs($user)->postJson('/api/checkout', [
+        'success_url' => 'https://example.com/success',
+        'cancel_url' => 'https://example.com/cancel',
+    ]);
+
+    $response->assertUnprocessable();
+    $response->assertJsonPath('message', 'Some items in your cart exceed available stock.');
+    $response->assertJsonPath("errors.items.{$product->id}", 'Only 3 units available (requested 10).');
+});
+
+it('returns item-specific errors for multiple out-of-stock items', function () {
+    $user = User::factory()->create();
+    $product1 = Product::factory()->create(['price' => 25.00, 'stock' => 2]);
+    $product2 = Product::factory()->create(['price' => 75.00, 'stock' => 0]);
+    $cart = Cart::factory()->create(['user_id' => $user->id, 'status' => 'active']);
+    CartItem::factory()->create([
+        'cart_id' => $cart->id,
+        'product_id' => $product1->id,
+        'quantity' => 5,
+        'unit_price' => 25.00,
+    ]);
+    CartItem::factory()->create([
+        'cart_id' => $cart->id,
+        'product_id' => $product2->id,
+        'quantity' => 1,
+        'unit_price' => 75.00,
+    ]);
+
+    $response = $this->actingAs($user)->postJson('/api/checkout', [
+        'success_url' => 'https://example.com/success',
+        'cancel_url' => 'https://example.com/cancel',
+    ]);
+
+    $response->assertUnprocessable();
+    $response->assertJsonPath("errors.items.{$product1->id}", 'Only 2 units available (requested 5).');
+    $response->assertJsonPath("errors.items.{$product2->id}", 'Only 0 units available (requested 1).');
+});
+
+it('does not decrement stock when creating checkout session', function () {
+    $user = User::factory()->create();
+    $product = Product::factory()->create(['price' => 50.00, 'stock' => 100]);
+    $cart = Cart::factory()->create(['user_id' => $user->id, 'status' => 'active']);
+    CartItem::factory()->create([
+        'cart_id' => $cart->id,
+        'product_id' => $product->id,
+        'quantity' => 2,
+        'unit_price' => 50.00,
+    ]);
+
+    $mockSession = (object) [
+        'id' => 'cs_test_no_decrement',
+        'url' => 'https://checkout.stripe.com/c/pay/cs_test_no_decrement',
+    ];
+
+    $mockSessions = Mockery::mock();
+    $mockSessions->shouldReceive('create')->once()->andReturn($mockSession);
+
+    $this->mockStripeClient->checkout = (object) ['sessions' => $mockSessions];
+
+    $this->actingAs($user)->postJson('/api/checkout', [
+        'success_url' => 'https://example.com/success',
+        'cancel_url' => 'https://example.com/cancel',
+    ]);
+
+    expect($product->fresh()->stock)->toBe(100);
+});
+
 it('rejects invalid shipping method id', function () {
     $user = User::factory()->create();
 

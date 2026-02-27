@@ -51,6 +51,12 @@ class HandleStripeWebhook implements ShouldQueue
                 'payment_intent_id' => $payload['data']['object']['payment_intent'] ?? null,
             ]);
 
+            $order->load('items.product');
+
+            foreach ($order->items as $item) {
+                $item->product->decrementStock($item->quantity);
+            }
+
             $cart = Cart::where('user_id', $userId)
                 ->where('status', 'active')
                 ->first();
@@ -106,8 +112,16 @@ class HandleStripeWebhook implements ShouldQueue
             return;
         }
 
-        $order->update([
-            'payment_status' => 'refunded',
-        ]);
+        DB::transaction(function () use ($order): void {
+            $order->load('items.product');
+
+            foreach ($order->items as $item) {
+                $item->product->restoreStock($item->quantity);
+            }
+
+            $order->update([
+                'payment_status' => 'refunded',
+            ]);
+        });
     }
 }

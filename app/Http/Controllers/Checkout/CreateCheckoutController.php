@@ -33,6 +33,10 @@ class CreateCheckoutController extends Controller
      *     "items": [], "created_at": "2024-01-15T10:30:00Z"}
      * }
      * @response 400 scenario="Empty cart" {"message": "Cart is empty"}
+     * @response 422 scenario="Insufficient stock" {
+     *   "message": "Some items in your cart exceed available stock.",
+     *   "errors": {"items": {"1": "Only 5 units available (requested 10)."}}
+     * }
      * @response 422 scenario="Inactive shipping method" {
      *   "message": "The selected shipping method is no longer available."
      * }
@@ -56,6 +60,12 @@ class CreateCheckoutController extends Controller
             return response()->json([
                 'message' => 'Cart is empty',
             ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $stockErrors = $this->validateStock($cart);
+
+        if ($stockErrors instanceof JsonResponse) {
+            return $stockErrors;
         }
 
         $shippingResult = $this->resolveShipping($validated);
@@ -113,6 +123,31 @@ class CreateCheckoutController extends Controller
         }
 
         return ['method_id' => $method->id, 'cost' => (float) $method->cost, 'label' => "Shipping ({$method->name})"];
+    }
+
+    /**
+     * Validate that all cart items have sufficient stock.
+     */
+    private function validateStock(Cart $cart): ?JsonResponse
+    {
+        $errors = [];
+
+        foreach ($cart->items as $item) {
+            if ($item->product->stock < $item->quantity) {
+                $stock = $item->product->stock;
+                $qty = $item->quantity;
+                $errors[$item->product_id] = "Only {$stock} units available (requested {$qty}).";
+            }
+        }
+
+        if (empty($errors)) {
+            return null;
+        }
+
+        return response()->json([
+            'message' => 'Some items in your cart exceed available stock.',
+            'errors' => ['items' => $errors],
+        ], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     /**

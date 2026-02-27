@@ -3,6 +3,7 @@
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\User;
 use Laravel\Cashier\Events\WebhookReceived;
@@ -214,6 +215,122 @@ it('ignores charge refunded with unknown payment intent', function () {
         'payment_intent_id' => 'pi_test_known',
         'payment_status' => 'completed',
     ]);
+});
+
+// Stock management
+
+it('decrements product stock when checkout is completed', function () {
+    $user = User::factory()->create();
+    $product1 = Product::factory()->create(['stock' => 50]);
+    $product2 = Product::factory()->create(['stock' => 30]);
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'pending',
+        'payment_status' => 'pending',
+    ]);
+    OrderItem::factory()->create([
+        'order_id' => $order->id,
+        'product_id' => $product1->id,
+        'quantity' => 5,
+    ]);
+    OrderItem::factory()->create([
+        'order_id' => $order->id,
+        'product_id' => $product2->id,
+        'quantity' => 3,
+    ]);
+
+    event(new WebhookReceived(checkoutCompletedPayload(
+        metadata: ['order_id' => $order->id, 'user_id' => $user->id],
+    )));
+
+    expect($product1->fresh()->stock)->toBe(45);
+    expect($product2->fresh()->stock)->toBe(27);
+});
+
+it('does not double-decrement stock on duplicate webhook', function () {
+    $user = User::factory()->create();
+    $product = Product::factory()->create(['stock' => 50]);
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'pending',
+        'payment_status' => 'pending',
+    ]);
+    OrderItem::factory()->create([
+        'order_id' => $order->id,
+        'product_id' => $product->id,
+        'quantity' => 10,
+    ]);
+
+    $payload = checkoutCompletedPayload(
+        metadata: ['order_id' => $order->id, 'user_id' => $user->id],
+    );
+
+    event(new WebhookReceived($payload));
+    event(new WebhookReceived($payload));
+
+    expect($product->fresh()->stock)->toBe(40);
+});
+
+it('does not change stock when checkout session expires', function () {
+    $user = User::factory()->create();
+    $product = Product::factory()->create(['stock' => 50]);
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'pending',
+        'payment_status' => 'pending',
+    ]);
+    OrderItem::factory()->create([
+        'order_id' => $order->id,
+        'product_id' => $product->id,
+        'quantity' => 10,
+    ]);
+
+    event(new WebhookReceived(checkoutExpiredPayload(
+        metadata: ['order_id' => $order->id, 'user_id' => $user->id],
+    )));
+
+    expect($product->fresh()->stock)->toBe(50);
+});
+
+it('restores product stock when charge is refunded', function () {
+    $product1 = Product::factory()->create(['stock' => 45]);
+    $product2 = Product::factory()->create(['stock' => 27]);
+    $order = Order::factory()->create([
+        'payment_status' => 'completed',
+        'payment_intent_id' => 'pi_test_refund_stock',
+    ]);
+    OrderItem::factory()->create([
+        'order_id' => $order->id,
+        'product_id' => $product1->id,
+        'quantity' => 5,
+    ]);
+    OrderItem::factory()->create([
+        'order_id' => $order->id,
+        'product_id' => $product2->id,
+        'quantity' => 3,
+    ]);
+
+    event(new WebhookReceived(chargeRefundedPayload(paymentIntent: 'pi_test_refund_stock')));
+
+    expect($product1->fresh()->stock)->toBe(50);
+    expect($product2->fresh()->stock)->toBe(30);
+});
+
+it('does not restore stock for non-completed orders on refund', function () {
+    $product = Product::factory()->create(['stock' => 50]);
+    $order = Order::factory()->create([
+        'payment_status' => 'pending',
+        'payment_intent_id' => 'pi_test_pending_stock',
+    ]);
+    OrderItem::factory()->create([
+        'order_id' => $order->id,
+        'product_id' => $product->id,
+        'quantity' => 10,
+    ]);
+
+    event(new WebhookReceived(chargeRefundedPayload(paymentIntent: 'pi_test_pending_stock')));
+
+    expect($product->fresh()->stock)->toBe(50);
 });
 
 // Unrecognized events

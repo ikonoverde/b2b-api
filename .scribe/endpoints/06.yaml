@@ -167,6 +167,16 @@ endpoints:
         status: 422
         content: |-
           {
+            "message": "Some items in your cart exceed available stock.",
+            "errors": {"items": {"1": "Only 5 units available (requested 10)."}}
+          }
+        headers: []
+        description: 'Insufficient stock'
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
             "message": "The selected shipping method is no longer available."
           }
         headers: []

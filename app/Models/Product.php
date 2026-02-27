@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Exceptions\InsufficientStockException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -109,6 +111,31 @@ class Product extends Model
             'oldest' => $query->orderBy('created_at'),
             default => $query,
         };
+    }
+
+    /**
+     * Atomically decrement stock with pessimistic locking.
+     *
+     * @throws InsufficientStockException
+     */
+    public function decrementStock(int $quantity): void
+    {
+        $affected = self::query()
+            ->where('id', $this->id)
+            ->lockForUpdate()
+            ->where('stock', '>=', $quantity)
+            ->update(['stock' => DB::raw("stock - {$quantity}")]);
+
+        if ($affected === 0) {
+            throw new InsufficientStockException($this->id);
+        }
+
+        $this->refresh();
+    }
+
+    public function restoreStock(int $quantity): void
+    {
+        $this->increment('stock', $quantity);
     }
 
     /**
