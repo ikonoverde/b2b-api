@@ -7,6 +7,7 @@ use App\Http\Requests\Checkout\VerifyCheckoutRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Notifications\Order\OrderConfirmation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Laravel\Cashier\Cashier;
@@ -87,6 +88,9 @@ class VerifyCheckoutController extends Controller
                     $cart->update(['status' => 'completed']);
                 }
             });
+
+            // Send order confirmation email
+            $order->user->notify(new OrderConfirmation($order));
 
             $order->refresh();
         }

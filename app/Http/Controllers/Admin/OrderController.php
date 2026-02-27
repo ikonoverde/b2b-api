@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\Orders\StoreOrderNoteRequest;
 use App\Http\Requests\Admin\Orders\UpdateOrderStatusRequest;
 use App\Http\Requests\Admin\Orders\UpdateOrderTrackingRequest;
 use App\Models\Order;
+use App\Notifications\Order\OrderStatusChanged;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -92,6 +93,9 @@ class OrderController extends Controller
             ]);
         });
 
+        // Send status change notification to customer
+        $order->user->notify(new OrderStatusChanged($order, $fromStatus));
+
         return $this->renderShowWithFlash($order, 'success', 'Estado del pedido actualizado exitosamente.');
     }
 
@@ -121,6 +125,15 @@ class OrderController extends Controller
                 'note' => "Rastreo: {$validated['shipping_carrier']} - {$validated['tracking_number']}",
             ]);
         });
+
+        // Send status change notification with tracking info
+        $order->user->notify(new OrderStatusChanged(
+            $order,
+            $fromStatus,
+            $validated['tracking_number'],
+            $validated['shipping_carrier'],
+            $validated['tracking_url'] ?? null
+        ));
 
         return $this->renderShowWithFlash(
             $order, 'success', 'Información de rastreo actualizada y pedido marcado como enviado.'
