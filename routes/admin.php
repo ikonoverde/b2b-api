@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\Auth\LoginController;
 use App\Http\Controllers\Web\DashboardController;
@@ -26,5 +27,13 @@ Route::middleware('auth')->group(function () {
         Route::patch('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.update-role');
         Route::patch('/users/{user}/toggle-active', [UserController::class, 'toggleActive'])
             ->name('users.toggle-active');
+
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+        Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+        Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
+        Route::patch('/orders/{order}/tracking', [OrderController::class, 'updateTracking'])
+            ->name('orders.update-tracking');
+        Route::post('/orders/{order}/refund', [OrderController::class, 'createRefund'])->name('orders.create-refund');
+        Route::post('/orders/{order}/notes', [OrderController::class, 'storeNote'])->name('orders.store-note');
     });
 });

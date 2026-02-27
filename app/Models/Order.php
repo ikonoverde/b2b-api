@@ -12,6 +12,16 @@ class Order extends Model
     /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
 
+    /** @var array<string, string[]> */
+    public const ALLOWED_TRANSITIONS = [
+        'payment_pending' => ['pending', 'cancelled'],
+        'pending' => ['processing', 'cancelled'],
+        'processing' => ['shipped', 'cancelled'],
+        'shipped' => ['delivered'],
+        'delivered' => [],
+        'cancelled' => [],
+    ];
+
     protected $fillable = [
         'user_id',
         'status',
@@ -22,6 +32,9 @@ class Order extends Model
         'shipping_cost',
         'shipping_method_id',
         'shipping_address',
+        'tracking_number',
+        'shipping_carrier',
+        'refunded_amount',
     ];
 
     protected function casts(): array
@@ -31,8 +44,16 @@ class Order extends Model
             'shipping_method_id' => 'integer',
             'total_amount' => 'decimal:2',
             'shipping_cost' => 'decimal:2',
+            'refunded_amount' => 'decimal:2',
             'shipping_address' => 'array',
         ];
+    }
+
+    public function canTransitionTo(string $newStatus): bool
+    {
+        $allowedStatuses = self::ALLOWED_TRANSITIONS[$this->status] ?? [];
+
+        return in_array($newStatus, $allowedStatuses);
     }
 
     /**
@@ -57,5 +78,21 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    /**
+     * @return HasMany<OrderStatusHistory, $this>
+     */
+    public function statusHistories(): HasMany
+    {
+        return $this->hasMany(OrderStatusHistory::class);
+    }
+
+    /**
+     * @return HasMany<OrderNote, $this>
+     */
+    public function notes(): HasMany
+    {
+        return $this->hasMany(OrderNote::class);
     }
 }

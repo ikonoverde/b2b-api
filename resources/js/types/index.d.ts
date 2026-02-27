@@ -148,3 +148,76 @@ export interface Product {
     status: 'active' | 'inactive' | 'low_stock';
     image: string | null;
 }
+
+export interface AdminOrderCustomer {
+    id: number;
+    name: string;
+    email: string;
+}
+
+export interface AdminOrderItem {
+    id: number;
+    product_id: number;
+    product_name: string;
+    quantity: number;
+    unit_price: number;
+    subtotal: number;
+    image: string | null;
+}
+
+export interface OrderStatusHistoryEntry {
+    id: number;
+    from_status: string | null;
+    to_status: string;
+    note: string | null;
+    admin_name: string | null;
+    created_at: string;
+}
+
+export interface OrderNoteEntry {
+    id: number;
+    content: string;
+    admin_name: string | null;
+    created_at: string;
+}
+
+export interface AdminOrder {
+    id: number;
+    status: string;
+    payment_status: string;
+    payment_intent_id: string | null;
+    total_amount: number;
+    shipping_cost: number;
+    refunded_amount: number;
+    tracking_number: string | null;
+    shipping_carrier: string | null;
+    shipping_address: Record<string, string> | null;
+    created_at: string;
+    updated_at: string;
+    customer: AdminOrderCustomer | null;
+    shipping_method: { id: number; name: string } | null;
+    items: AdminOrderItem[];
+    status_histories: OrderStatusHistoryEntry[];
+    notes: OrderNoteEntry[];
+}
+
+export interface AdminOrderListItem {
+    id: number;
+    status: string;
+    payment_status: string;
+    total_amount: number;
+    created_at: string;
+    user: AdminOrderCustomer;
+}
+
+export interface OrderFilters {
+    status: string;
+    payment_status: string;
+    date_from: string;
+    date_to: string;
+    customer: string;
+    amount_min: string;
+    amount_max: string;
+    sort_by: string;
+    sort_order: string;
+}
