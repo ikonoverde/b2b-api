@@ -147,6 +147,7 @@ export interface Product {
     stock: number;
     status: 'active' | 'inactive' | 'low_stock';
     image: string | null;
+    has_pending_orders?: boolean;
 }
 
 export interface AdminOrderCustomer {

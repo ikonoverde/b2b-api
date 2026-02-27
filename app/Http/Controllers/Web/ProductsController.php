@@ -18,8 +18,15 @@ class ProductsController extends Controller
 {
     public function index(): Response
     {
+        $pendingStatuses = ['payment_pending', 'pending', 'processing', 'shipped'];
+
         $products = Product::query()
             ->with(['category', 'images' => fn ($query) => $query->orderBy('position')->limit(1)])
+            ->withCount(['orderItems as pending_orders_count' => function ($query) use ($pendingStatuses) {
+                $query->whereHas('order', function ($orderQuery) use ($pendingStatuses) {
+                    $orderQuery->whereIn('status', $pendingStatuses);
+                });
+            }])
             ->get()
             ->map(fn (Product $product) => [
                 'id' => $product->id,
@@ -30,6 +37,7 @@ class ProductsController extends Controller
                 'stock' => $product->stock,
                 'status' => $product->status,
                 'image' => $product->images->first()?->image_url,
+                'has_pending_orders' => $product->pending_orders_count > 0,
             ]);
 
         return Inertia::render('Products', [
@@ -115,6 +123,26 @@ class ProductsController extends Controller
         });
 
         return redirect()->route('admin.products')->with('success', 'Producto actualizado exitosamente');
+    }
+
+    public function destroy(Product $product): RedirectResponse
+    {
+        $pendingStatuses = ['payment_pending', 'pending', 'processing', 'shipped'];
+
+        $hasPendingOrders = $product->orderItems()
+            ->whereHas('order', function ($query) use ($pendingStatuses) {
+                $query->whereIn('status', $pendingStatuses);
+            })
+            ->exists();
+
+        if ($hasPendingOrders) {
+            return redirect()->route('admin.products')
+                ->with('error', 'No se puede eliminar el producto porque tiene pedidos pendientes');
+        }
+
+        $product->delete();
+
+        return redirect()->route('admin.products')->with('success', 'Producto archivado exitosamente');
     }
 
     private function deleteProductImages(Product $product, array $imageIds): void

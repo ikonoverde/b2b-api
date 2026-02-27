@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, usePage, router } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import {
     Search,
@@ -10,6 +10,8 @@ import {
     Plus,
     MoreHorizontal,
     Package,
+    Trash2,
+    AlertTriangle,
 } from 'lucide-react';
 import type { PageProps, Product } from '@/types';
 
@@ -31,6 +33,10 @@ export default function Products({ products }: ProductsProps) {
     const user = auth.user;
     const [activeTab, setActiveTab] = useState<TabFilter>('all');
     const [searchQuery, setSearchQuery] = useState('');
+    const [deleteModal, setDeleteModal] = useState<{
+        isOpen: boolean;
+        product: Product | null;
+    }>({ isOpen: false, product: null });
 
     const filteredProducts = products.filter((product) => {
         const matchesTab =
@@ -40,6 +46,24 @@ export default function Products({ products }: ProductsProps) {
             product.sku.toLowerCase().includes(searchQuery.toLowerCase());
         return matchesTab && matchesSearch;
     });
+
+    const handleDelete = (product: Product) => {
+        setDeleteModal({ isOpen: true, product });
+    };
+
+    const confirmDelete = () => {
+        if (deleteModal.product) {
+            router.delete(`/admin/products/${deleteModal.product.id}`, {
+                onSuccess: () => {
+                    setDeleteModal({ isOpen: false, product: null });
+                },
+            });
+        }
+    };
+
+    const closeModal = () => {
+        setDeleteModal({ isOpen: false, product: null });
+    };
 
     return (
         <AppLayout title="Productos" active="products">
@@ -155,7 +179,11 @@ export default function Products({ products }: ProductsProps) {
                     {/* Table Body */}
                     <div className="divide-y divide-[#E5E5E5]">
                         {filteredProducts.map((product) => (
-                            <ProductRow key={product.id} product={product} />
+                            <ProductRow 
+                                key={product.id} 
+                                product={product} 
+                                onDelete={handleDelete}
+                            />
                         ))}
                     </div>
 
@@ -168,12 +196,59 @@ export default function Products({ products }: ProductsProps) {
                         </div>
                     )}
                 </div>
+
+                {/* Delete Confirmation Modal */}
+                {deleteModal.isOpen && deleteModal.product && (
+                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                        <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4 shadow-xl">
+                            <div className="flex items-start gap-4">
+                                <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                                    <AlertTriangle className="w-6 h-6 text-red-600" />
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+                                        Archivar Producto
+                                    </h3>
+                                    <p className="text-sm text-[#666666] font-[Outfit] mt-1">
+                                        ¿Estás seguro de que quieres archivar <strong>{deleteModal.product.name}</strong>?
+                                    </p>
+                                    {deleteModal.product.has_pending_orders && (
+                                        <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                                            <p className="text-xs text-amber-700 font-[Outfit] flex items-start gap-2">
+                                                <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                                                <span>Este producto tiene pedidos pendientes. No se puede archivar hasta que todos los pedidos estén completados o cancelados.</span>
+                                            </p>
+                                        </div>
+                                    )}
+                                    <p className="text-xs text-[#999999] font-[Outfit] mt-2">
+                                        Este producto se ocultará del catálogo pero permanecerá visible en los pedidos históricos.
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-end gap-3 mt-6">
+                                <button
+                                    onClick={closeModal}
+                                    className="px-4 py-2 text-sm font-medium text-[#666666] font-[Outfit] hover:bg-gray-100 rounded-lg transition-colors"
+                                >
+                                    Cancelar
+                                </button>
+                                <button
+                                    onClick={confirmDelete}
+                                    disabled={deleteModal.product.has_pending_orders}
+                                    className="px-4 py-2 text-sm font-medium text-white font-[Outfit] bg-red-600 hover:bg-red-700 rounded-lg transition-colors disabled:bg-red-300 disabled:cursor-not-allowed"
+                                >
+                                    Archivar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </AppLayout>
     );
 }
 
-function ProductRow({ product }: { product: Product }) {
+function ProductRow({ product, onDelete }: { product: Product; onDelete: (product: Product) => void }) {
     const [menuOpen, setMenuOpen] = useState(false);
     const statusConfig = {
         active: {
@@ -255,13 +330,20 @@ function ProductRow({ product }: { product: Product }) {
                     <MoreHorizontal className="w-5 h-5 text-[#999999]" />
                 </button>
                 {menuOpen && (
-                    <div className="absolute right-0 top-full mt-1 bg-white rounded-lg border border-[#E5E5E5] shadow-lg z-10 min-w-[120px]">
+                    <div className="absolute right-0 top-full mt-1 bg-white rounded-lg border border-[#E5E5E5] shadow-lg z-10 min-w-[140px]">
                         <Link
                             href={`/admin/products/${product.id}/edit`}
                             className="block px-4 py-2.5 text-sm text-[#1A1A1A] font-[Outfit] hover:bg-[#F5F3F0] transition-colors"
                         >
                             Editar
                         </Link>
+                        <button
+                            onClick={() => onDelete(product)}
+                            className="w-full text-left px-4 py-2.5 text-sm text-red-600 font-[Outfit] hover:bg-red-50 transition-colors flex items-center gap-2"
+                        >
+                            <Trash2 className="w-4 h-4" />
+                            Archivar
+                        </button>
                     </div>
                 )}
             </div>
