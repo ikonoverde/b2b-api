@@ -21,7 +21,7 @@ class HomeController extends Controller
             ->map(fn (Product $product) => [
                 'id' => $product->id,
                 'name' => $product->name,
-                'category' => $product->category,
+                'category' => $product->category?->name,
                 'image_url' => $product->images->first()?->image_url,
             ]);
 

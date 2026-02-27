@@ -20,7 +20,7 @@ class CatalogController extends Controller
                 'id' => $product->id,
                 'name' => $product->name,
                 'sku' => $product->sku,
-                'category' => $product->category,
+                'category' => $product->category?->name,
                 'price' => (float) $product->price,
                 'image' => $product->images->first()?->image_url,
                 'is_featured' => $product->is_featured,
