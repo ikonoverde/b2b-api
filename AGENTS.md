@@ -447,3 +447,23 @@ export default () => (
 | decoration-slice | box-decoration-slice |
 | decoration-clone | box-decoration-clone |
 </laravel-boost-guidelines>
+
+## API Documentation
+- When adding or updating API endpoint methods, always add or update Scribe PHPDoc annotations (`@group`, `@authenticated`/`@unauthenticated`, `@response` with scenarios, `@urlParam`, etc.) in the controller docblocks. Follow the conventions used by sibling controllers.
+- When making changes to API routes or controllers (anything under `routes/api.php` or `app/Http/Controllers/Cart/`, `app/Http/Controllers/Checkout/`, `app/Http/Controllers/Orders/`, etc.), regenerate the API documentation by running `php artisan scribe:generate`.
+
+## Code quality
+- Before committing, ALWAYS run auto-formatting with `qlty fmt`
+- Before finishing, ALWAYS run `qlty check --fix --level=low` and fix any lint errors
+- Before finishing, ALWAYS run `qlty smells` and fix any issues
+- Before finishing, ALWAYS run `qlty metrics --sort complexity --limit=5 app/`
+    - Max accepted cyclo: 10
+    - Max accepted cognitive/complex: 15
+    - Refactor anything above those limits to lower the complexity
+- Before finishing, ALWAYS run `qlty metrics --sort complexity --limit=5 resources/`
+    - Max accepted cyclo: 15
+    - Max accepted cognitive/complex: 20
+    - Refactor anything above those limits to lower the complexity
+
+## Memory
+- After finishing, ALWAYS add notes using supermemory with information that might be useful in the future

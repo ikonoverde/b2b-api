@@ -11,13 +11,9 @@ use App\Http\Controllers\Web\CustomerDashboardController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\ProductController;
-use App\Models\User;
-use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/catalog', CatalogController::class)->name('catalog');
@@ -25,36 +21,14 @@ Route::get('/catalog', CatalogController::class)->name('catalog');
 Route::get('/checkout/success', fn () => view('checkout.success'))->name('checkout.success');
 Route::get('/checkout/cancel', fn () => view('checkout.cancel'))->name('checkout.cancel');
 
-Route::get('/reset-password/{token}', fn (string $token) => view('auth.reset-password', ['token' => $token]))
+Route::get('/reset-password/{token}', function (string $token, Request $request) {
+    return Inertia::render('Auth/ResetPassword', [
+        'token' => $token,
+        'email' => $request->input('email', ''),
+    ]);
+})
     ->middleware('guest')
     ->name('password.reset');
-
-Route::post('/reset-password', function (Request $request) {
-    $request->validate([
-        'token' => ['required'],
-        'email' => ['required', 'email'],
-        'password' => ['required', 'min:8', 'confirmed'],
-    ]);
-
-    $status = Password::reset(
-        $request->only('email', 'password', 'password_confirmation', 'token'),
-        function (User $user, string $password) {
-            $user->forceFill([
-                'password' => Hash::make($password),
-            ])->setRememberToken(Str::random(60));
-
-            $user->save();
-
-            event(new PasswordReset($user));
-        }
-    );
-
-    if ($status === Password::PasswordReset) {
-        return view('auth.reset-password-success');
-    }
-
-    return back()->withErrors(['email' => [__($status)]]);
-})->middleware('guest')->name('password.update');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'create'])->name('register');
