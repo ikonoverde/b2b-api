@@ -22,6 +22,7 @@ use App\Http\Controllers\Orders\GetOrderController;
 use App\Http\Controllers\Orders\GetOrdersController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\ShippingMethods\GetShippingMethodsController;
 use App\Http\Controllers\UpdateUserController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +48,8 @@ Route::prefix('cart')->middleware('auth:sanctum')->group(function () {
     Route::delete('/items/{item}', RemoveCartItemController::class);
     Route::delete('/', ClearCartController::class);
 });
+
+Route::get('/shipping-methods', GetShippingMethodsController::class)->middleware('auth:sanctum');
 
 Route::prefix('checkout')->middleware('auth:sanctum')->group(function () {
     Route::post('/', CreateCheckoutController::class);

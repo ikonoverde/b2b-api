@@ -25,6 +25,7 @@ class OrderFactory extends Factory
             'checkout_session_id' => null,
             'total_amount' => $this->faker->randomFloat(2, 10, 500),
             'shipping_cost' => 10.00,
+            'shipping_method_id' => null,
             'shipping_address' => [
                 'street' => $this->faker->streetAddress,
                 'city' => $this->faker->city,

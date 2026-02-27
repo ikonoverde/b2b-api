@@ -8,6 +8,7 @@ use App\Http\Resources\OrderResource;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\ShippingMethod;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Laravel\Cashier\Cashier;
@@ -28,9 +29,13 @@ class CreateCheckoutController extends Controller
      *   "checkout_url": "https://checkout.stripe.com/c/pay/cs_test_123",
      *   "data": {"id": 1, "user_id": 1, "status": "pending",
      *     "payment_status": "pending", "total_amount": 150.00,
-     *     "shipping_cost": 10.00, "items": [], "created_at": "2024-01-15T10:30:00Z"}
+     *     "shipping_cost": 10.00, "shipping_method_id": 1,
+     *     "items": [], "created_at": "2024-01-15T10:30:00Z"}
      * }
      * @response 400 scenario="Empty cart" {"message": "Cart is empty"}
+     * @response 422 scenario="Inactive shipping method" {
+     *   "message": "The selected shipping method is no longer available."
+     * }
      * @response 422 scenario="Validation error" {
      *   "message": "The success url field is required.",
      *   "errors": {"success_url": ["The success url field is required."]}
@@ -53,40 +58,17 @@ class CreateCheckoutController extends Controller
             ], Response::HTTP_BAD_REQUEST);
         }
 
+        $shippingResult = $this->resolveShipping($validated);
+
+        if ($shippingResult instanceof JsonResponse) {
+            return $shippingResult;
+        }
+
         $totals = $cart->calculateTotals();
-        $shippingCost = config('shop.shipping_cost', 10.00);
-        $totalAmount = $totals['subtotal'] + $shippingCost;
+        $totalAmount = $totals['subtotal'] + $shippingResult['cost'];
 
-        $order = DB::transaction(function () use ($cart, $validated, $totalAmount, $shippingCost) {
-            $order = Order::create([
-                'user_id' => auth()->id(),
-                'status' => 'pending',
-                'payment_status' => 'pending',
-                'total_amount' => $totalAmount,
-                'shipping_cost' => $shippingCost,
-                'shipping_address' => $validated['shipping_address'] ?? null,
-            ]);
-
-            foreach ($cart->items as $cartItem) {
-                $product = $cartItem->product;
-
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'product_id' => $cartItem->product_id,
-                    'product_name' => $product->name,
-                    'quantity' => $cartItem->quantity,
-                    'unit_price' => $cartItem->unit_price,
-                    'subtotal' => $cartItem->subtotal,
-                    'image' => $product->images->first()?->image_path,
-                ]);
-            }
-
-            $order->load(['items']);
-
-            return $order;
-        });
-
-        $lineItems = $this->buildLineItems($cart, $shippingCost);
+        $order = $this->createOrder($cart, $validated, $totalAmount, $shippingResult);
+        $lineItems = $this->buildLineItems($cart, $shippingResult);
 
         $session = Cashier::stripe()->checkout->sessions->create([
             'mode' => 'payment',
@@ -108,11 +90,73 @@ class CreateCheckoutController extends Controller
     }
 
     /**
-     * Build Stripe line_items from cart items and shipping cost.
+     * Resolve the shipping method and cost from validated request data.
      *
+     * @param  array<string, mixed>  $validated
+     * @return array{method_id: ?int, cost: float, label: string}|JsonResponse
+     */
+    private function resolveShipping(array $validated): array|JsonResponse
+    {
+        if (empty($validated['shipping_method_id'])) {
+            return ['method_id' => null, 'cost' => (float) config('shop.shipping_cost', 10.00), 'label' => 'Shipping'];
+        }
+
+        $method = ShippingMethod::query()
+            ->where('id', $validated['shipping_method_id'])
+            ->where('is_active', true)
+            ->first();
+
+        if (! $method) {
+            return response()->json([
+                'message' => 'The selected shipping method is no longer available.',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        return ['method_id' => $method->id, 'cost' => (float) $method->cost, 'label' => "Shipping ({$method->name})"];
+    }
+
+    /**
+     * Create the order and its items within a transaction.
+     *
+     * @param  array<string, mixed>  $validated
+     * @param  array{method_id: ?int, cost: float, label: string}  $shipping
+     */
+    private function createOrder(Cart $cart, array $validated, float $totalAmount, array $shipping): Order
+    {
+        return DB::transaction(function () use ($cart, $validated, $totalAmount, $shipping) {
+            $order = Order::create([
+                'user_id' => auth()->id(),
+                'status' => 'pending',
+                'payment_status' => 'pending',
+                'total_amount' => $totalAmount,
+                'shipping_cost' => $shipping['cost'],
+                'shipping_method_id' => $shipping['method_id'],
+                'shipping_address' => $validated['shipping_address'] ?? null,
+            ]);
+
+            foreach ($cart->items as $cartItem) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $cartItem->product_id,
+                    'product_name' => $cartItem->product->name,
+                    'quantity' => $cartItem->quantity,
+                    'unit_price' => $cartItem->unit_price,
+                    'subtotal' => $cartItem->subtotal,
+                    'image' => $cartItem->product->images->first()?->image_path,
+                ]);
+            }
+
+            return $order->load(['items']);
+        });
+    }
+
+    /**
+     * Build Stripe line_items from cart items and shipping.
+     *
+     * @param  array{method_id: ?int, cost: float, label: string}  $shipping
      * @return array<int, array<string, mixed>>
      */
-    private function buildLineItems(Cart $cart, float $shippingCost): array
+    private function buildLineItems(Cart $cart, array $shipping): array
     {
         $lineItems = [];
 
@@ -130,8 +174,8 @@ class CreateCheckoutController extends Controller
         $lineItems[] = [
             'price_data' => [
                 'currency' => 'usd',
-                'product_data' => ['name' => 'Shipping'],
-                'unit_amount' => (int) ($shippingCost * 100),
+                'product_data' => ['name' => $shipping['label']],
+                'unit_amount' => (int) ($shipping['cost'] * 100),
             ],
             'quantity' => 1,
         ];

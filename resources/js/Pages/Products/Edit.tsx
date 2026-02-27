@@ -55,10 +55,15 @@ interface ExistingImage {
     position: number;
 }
 
+interface Category {
+    id: number;
+    name: string;
+}
+
 interface ProductFormData {
     name: string;
     sku: string;
-    category: string;
+    category_id: string;
     description: string;
     price: string;
     cost: string;
@@ -75,7 +80,7 @@ interface ProductData {
     id: number;
     name: string;
     sku: string;
-    category: string;
+    category_id: string;
     description: string;
     price: string;
     cost: string;
@@ -90,24 +95,26 @@ interface ProductData {
 
 interface EditProductProps extends PageProps {
     product: ProductData;
-    categories: string[];
+    categories: Category[];
 }
 
 function CategoryDropdown({
-    category,
+    categoryId,
     categories,
     isOpen,
     onToggle,
     onSelect,
     error,
 }: {
-    category: string;
-    categories: string[];
+    categoryId: string;
+    categories: Category[];
     isOpen: boolean;
     onToggle: () => void;
-    onSelect: (cat: string) => void;
+    onSelect: (categoryId: string) => void;
     error?: string;
 }) {
+    const selectedCategory = categories.find((cat) => String(cat.id) === categoryId);
+
     return (
         <div className="flex-1 flex flex-col gap-2 relative">
             <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
@@ -118,8 +125,8 @@ function CategoryDropdown({
                 onClick={onToggle}
                 className="h-11 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors flex items-center justify-between"
             >
-                <span className={category ? 'text-[#1A1A1A]' : 'text-[#999999]'}>
-                    {category || 'Seleccionar categor\u00eda'}
+                <span className={categoryId ? 'text-[#1A1A1A]' : 'text-[#999999]'}>
+                    {selectedCategory?.name || 'Seleccionar categor\u00eda'}
                 </span>
                 <ChevronDown className="w-[18px] h-[18px] text-[#999999]" />
             </button>
@@ -127,12 +134,12 @@ function CategoryDropdown({
                 <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg border border-[#E5E5E5] shadow-lg z-10 max-h-48 overflow-y-auto">
                     {categories.map((cat) => (
                         <button
-                            key={cat}
+                            key={cat.id}
                             type="button"
-                            onClick={() => onSelect(cat)}
+                            onClick={() => onSelect(String(cat.id))}
                             className="w-full px-4 py-2.5 text-left text-sm text-[#1A1A1A] font-[Outfit] hover:bg-[#F5F3F0] transition-colors"
                         >
-                            {cat}
+                            {cat.name}
                         </button>
                     ))}
                 </div>
@@ -385,7 +392,7 @@ function BasicInfoCard({
     data: ProductFormData;
     setData: (key: keyof ProductFormData, value: string) => void;
     errors: Partial<Record<string, string>>;
-    categories: string[];
+    categories: Category[];
     categoryOpen: boolean;
     setCategoryOpen: (open: boolean) => void;
 }) {
@@ -433,15 +440,15 @@ function BasicInfoCard({
                     </div>
 
                     <CategoryDropdown
-                        category={data.category}
+                        categoryId={data.category_id}
                         categories={categories}
                         isOpen={categoryOpen}
                         onToggle={() => setCategoryOpen(!categoryOpen)}
-                        onSelect={(cat) => {
-                            setData('category', cat);
+                        onSelect={(id) => {
+                            setData('category_id', id);
                             setCategoryOpen(false);
                         }}
-                        error={errors.category}
+                        error={errors.category_id}
                     />
                 </div>
 
@@ -742,7 +749,7 @@ export default function Edit({ product, categories }: EditProductProps) {
     const { data, setData, post, processing, errors } = useForm<ProductFormData & { _method: string }>({
         name: product.name,
         sku: product.sku,
-        category: product.category,
+        category_id: String(product.category_id),
         description: product.description,
         price: product.price,
         cost: product.cost,

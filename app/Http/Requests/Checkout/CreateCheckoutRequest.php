@@ -24,6 +24,7 @@ class CreateCheckoutRequest extends FormRequest
         return [
             'success_url' => ['required', 'string', 'regex:/^https?:\/\//'],
             'cancel_url' => ['required', 'string', 'regex:/^https?:\/\//'],
+            'shipping_method_id' => ['sometimes', 'nullable', 'integer', 'exists:shipping_methods,id'],
             'shipping_address' => ['sometimes', 'array'],
             'shipping_address.street' => ['required_with:shipping_address', 'string', 'max:255'],
             'shipping_address.city' => ['required_with:shipping_address', 'string', 'max:255'],
@@ -48,6 +49,10 @@ class CreateCheckoutRequest extends FormRequest
             'cancel_url' => [
                 'description' => 'The URL to redirect to if the user cancels payment',
                 'example' => 'https://example.com/checkout/cancel',
+            ],
+            'shipping_method_id' => [
+                'description' => 'The ID of the shipping method to use (optional, defaults to standard shipping cost)',
+                'example' => 1,
             ],
             'shipping_address' => [
                 'description' => 'The shipping address for the order (optional)',

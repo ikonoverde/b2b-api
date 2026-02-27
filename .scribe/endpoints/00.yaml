@@ -316,7 +316,7 @@ endpoints:
       password:
         custom: []
         name: password
-        description: 'The new password (min 8 characters).'
+        description: 'The new password (min 8 characters, must include letters and numbers).'
         required: true
         example: newP@ssw0rd
         type: string

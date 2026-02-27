@@ -181,6 +181,16 @@
                             </li>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-shipping-methods" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="shipping-methods">
+                    <a href="#shipping-methods">Shipping Methods</a>
+                </li>
+                                    <ul id="tocify-subheader-shipping-methods" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="shipping-methods-GETapi-shipping-methods">
+                                <a href="#shipping-methods-GETapi-shipping-methods">List Shipping Methods</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
                     <ul id="tocify-header-user" class="tocify-header">
                 <li class="tocify-item level-1" data-unique="user">
                     <a href="#user">User</a>
@@ -203,7 +213,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: February 26, 2026</li>
+        <li>Last updated: February 27, 2026</li>
     </ul>
 </div>
 
@@ -2001,7 +2011,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="newP@ssw0rd"
                data-component="body">
     <br>
-<p>The new password (min 8 characters). Example: <code>newP@ssw0rd</code></p>
+<p>The new password (min 8 characters, must include letters and numbers). Example: <code>newP@ssw0rd</code></p>
         </div>
         </form>
 
@@ -3080,6 +3090,7 @@ The client should redirect the user to the returned <code>checkout_url</code> to
     --data "{
     \"success_url\": \"https:\\/\\/example.com\\/checkout\\/success?session_id={CHECKOUT_SESSION_ID}\",
     \"cancel_url\": \"https:\\/\\/example.com\\/checkout\\/cancel\",
+    \"shipping_method_id\": 1,
     \"shipping_address\": {
         \"street\": \"123 Main St\",
         \"city\": \"Springfield\",
@@ -3105,6 +3116,7 @@ const headers = {
 let body = {
     "success_url": "https:\/\/example.com\/checkout\/success?session_id={CHECKOUT_SESSION_ID}",
     "cancel_url": "https:\/\/example.com\/checkout\/cancel",
+    "shipping_method_id": 1,
     "shipping_address": {
         "street": "123 Main St",
         "city": "Springfield",
@@ -3137,6 +3149,7 @@ fetch(url, {
         &quot;payment_status&quot;: &quot;pending&quot;,
         &quot;total_amount&quot;: 150,
         &quot;shipping_cost&quot;: 10,
+        &quot;shipping_method_id&quot;: 1,
         &quot;items&quot;: [],
         &quot;created_at&quot;: &quot;2024-01-15T10:30:00Z&quot;
     }
@@ -3149,6 +3162,15 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;message&quot;: &quot;Cart is empty&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422, Inactive shipping method):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The selected shipping method is no longer available.&quot;
 }</code>
  </pre>
             <blockquote>
@@ -3273,6 +3295,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
                data-component="body">
     <br>
 <p>The URL to redirect to if the user cancels payment. Must match the regex /^https?:\/\//. Example: <code>https://example.com/checkout/cancel</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>shipping_method_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="shipping_method_id"                data-endpoint="POSTapi-checkout"
+               value="1"
+               data-component="body">
+    <br>
+<p>The ID of the shipping method to use (optional, defaults to standard shipping cost). The <code>id</code> of an existing record in the shipping_methods table. Example: <code>1</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
         <details>
@@ -4732,6 +4766,18 @@ fetch(url, {
         &quot;is_active&quot;: true,
         &quot;is_featured&quot;: true,
         &quot;image&quot;: null,
+        &quot;images&quot;: [
+            {
+                &quot;id&quot;: 1,
+                &quot;url&quot;: &quot;https://example.com/img1.jpg&quot;,
+                &quot;position&quot;: 0
+            },
+            {
+                &quot;id&quot;: 2,
+                &quot;url&quot;: &quot;https://example.com/img2.jpg&quot;,
+                &quot;position&quot;: 1
+            }
+        ],
         &quot;pricing_tiers&quot;: [
             {
                 &quot;id&quot;: 1,
@@ -4840,6 +4886,159 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>The ID of the product. Example: <code>1</code></p>
             </div>
                     </form>
+
+                <h1 id="shipping-methods">Shipping Methods</h1>
+
+    
+
+                                <h2 id="shipping-methods-GETapi-shipping-methods">List Shipping Methods</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Returns all active shipping methods sorted by cost (ascending).</p>
+
+<span id="example-requests-GETapi-shipping-methods">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://192.168.0.193:8000/api/shipping-methods" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://192.168.0.193:8000/api/shipping-methods"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-shipping-methods">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;name&quot;: &quot;Standard&quot;,
+            &quot;description&quot;: &quot;Standard shipping&quot;,
+            &quot;cost&quot;: 10,
+            &quot;estimated_delivery_days&quot;: 7
+        },
+        {
+            &quot;id&quot;: 2,
+            &quot;name&quot;: &quot;Express&quot;,
+            &quot;description&quot;: &quot;Express shipping&quot;,
+            &quot;cost&quot;: 25,
+            &quot;estimated_delivery_days&quot;: 3
+        }
+    ]
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-shipping-methods" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-shipping-methods"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-shipping-methods"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-shipping-methods" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-shipping-methods">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-shipping-methods" data-method="GET"
+      data-path="api/shipping-methods"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-shipping-methods', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-shipping-methods"
+                    onclick="tryItOut('GETapi-shipping-methods');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-shipping-methods"
+                    onclick="cancelTryOut('GETapi-shipping-methods');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-shipping-methods"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/shipping-methods</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-shipping-methods"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-shipping-methods"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-shipping-methods"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
 
                 <h1 id="user">User</h1>
 
