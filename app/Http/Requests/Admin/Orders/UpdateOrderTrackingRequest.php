@@ -21,6 +21,7 @@ class UpdateOrderTrackingRequest extends FormRequest
         return [
             'tracking_number' => ['required', 'string', 'max:100'],
             'shipping_carrier' => ['required', 'string', 'max:50'],
+            'tracking_url' => ['nullable', 'url', 'max:500'],
         ];
     }
 
@@ -34,6 +35,8 @@ class UpdateOrderTrackingRequest extends FormRequest
             'tracking_number.max' => 'El número de rastreo no debe exceder 100 caracteres.',
             'shipping_carrier.required' => 'La paquetería es requerida.',
             'shipping_carrier.max' => 'La paquetería no debe exceder 50 caracteres.',
+            'tracking_url.url' => 'La URL de rastreo debe ser una URL válida.',
+            'tracking_url.max' => 'La URL de rastreo no debe exceder 500 caracteres.',
         ];
     }
 }

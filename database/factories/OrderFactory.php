@@ -35,6 +35,7 @@ class OrderFactory extends Factory
             ],
             'tracking_number' => null,
             'shipping_carrier' => null,
+            'tracking_url' => null,
             'refunded_amount' => 0,
         ];
     }
@@ -56,6 +57,7 @@ class OrderFactory extends Factory
             'payment_intent_id' => 'pi_'.fake()->uuid(),
             'tracking_number' => fake()->numerify('##########'),
             'shipping_carrier' => fake()->randomElement(['DHL', 'FedEx', 'Estafeta']),
+            'tracking_url' => fake()->url(),
         ]);
     }
 
@@ -67,6 +69,7 @@ class OrderFactory extends Factory
             'payment_intent_id' => 'pi_'.fake()->uuid(),
             'tracking_number' => fake()->numerify('##########'),
             'shipping_carrier' => fake()->randomElement(['DHL', 'FedEx', 'Estafeta']),
+            'tracking_url' => fake()->url(),
         ]);
     }
 

@@ -110,6 +110,7 @@ class OrderController extends Controller
             $order->update([
                 'tracking_number' => $validated['tracking_number'],
                 'shipping_carrier' => $validated['shipping_carrier'],
+                'tracking_url' => $validated['tracking_url'] ?? null,
                 'status' => 'shipped',
             ]);
 
@@ -272,6 +273,7 @@ class OrderController extends Controller
             'refunded_amount' => (float) $order->refunded_amount,
             'tracking_number' => $order->tracking_number,
             'shipping_carrier' => $order->shipping_carrier,
+            'tracking_url' => $order->tracking_url,
             'shipping_address' => $order->shipping_address,
             'created_at' => $order->created_at->toIso8601String(),
             'updated_at' => $order->updated_at->toIso8601String(),

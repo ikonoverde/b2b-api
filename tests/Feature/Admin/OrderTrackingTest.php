@@ -136,6 +136,58 @@ test('super_admin can add tracking', function () {
     $response->assertSuccessful();
 });
 
+test('admin can add tracking with tracking_url', function () {
+    $admin = User::factory()->admin()->create();
+    $order = Order::factory()->processing()->create();
+
+    $response = $this->actingAs($admin)->patch("/admin/orders/{$order->id}/tracking", [
+        'tracking_number' => '1234567890',
+        'shipping_carrier' => 'DHL',
+        'tracking_url' => 'https://www.dhl.com/track?id=1234567890',
+    ]);
+
+    $response->assertSuccessful();
+    $response->assertInertia(fn ($page) => $page
+        ->where('order.tracking_number', '1234567890')
+        ->where('order.shipping_carrier', 'DHL')
+        ->where('order.tracking_url', 'https://www.dhl.com/track?id=1234567890')
+    );
+
+    $this->assertDatabaseHas('orders', [
+        'id' => $order->id,
+        'tracking_url' => 'https://www.dhl.com/track?id=1234567890',
+    ]);
+});
+
+test('tracking_url is optional', function () {
+    $admin = User::factory()->admin()->create();
+    $order = Order::factory()->processing()->create();
+
+    $response = $this->actingAs($admin)->patch("/admin/orders/{$order->id}/tracking", [
+        'tracking_number' => '1234567890',
+        'shipping_carrier' => 'DHL',
+    ]);
+
+    $response->assertSuccessful();
+    $this->assertDatabaseHas('orders', [
+        'id' => $order->id,
+        'tracking_url' => null,
+    ]);
+});
+
+test('tracking_url must be a valid url', function () {
+    $admin = User::factory()->admin()->create();
+    $order = Order::factory()->processing()->create();
+
+    $response = $this->actingAs($admin)->patch("/admin/orders/{$order->id}/tracking", [
+        'tracking_number' => '1234567890',
+        'shipping_carrier' => 'DHL',
+        'tracking_url' => 'not-a-url',
+    ]);
+
+    $response->assertSessionHasErrors(['tracking_url']);
+});
+
 test('tracking number max length is validated', function () {
     $admin = User::factory()->admin()->create();
     $order = Order::factory()->processing()->create();

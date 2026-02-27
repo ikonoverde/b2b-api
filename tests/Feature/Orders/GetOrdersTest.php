@@ -16,7 +16,7 @@ it('returns paginated orders for the authenticated user', function () {
     $response->assertSuccessful()
         ->assertJsonCount(15, 'data')
         ->assertJsonStructure([
-            'data' => [['id', 'user_id', 'status', 'total_amount', 'items', 'created_at']],
+            'data' => [['id', 'user_id', 'status', 'total_amount', 'tracking_number', 'shipping_carrier', 'tracking_url', 'items', 'created_at']],
             'links' => ['first', 'last', 'prev', 'next'],
             'meta' => ['current_page', 'last_page', 'per_page', 'total'],
         ])

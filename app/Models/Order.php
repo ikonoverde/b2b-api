@@ -34,6 +34,7 @@ class Order extends Model
         'shipping_address',
         'tracking_number',
         'shipping_carrier',
+        'tracking_url',
         'refunded_amount',
     ];
 

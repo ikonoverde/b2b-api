@@ -4333,7 +4333,7 @@ fetch(url, {
     &quot;data&quot;: {
         &quot;id&quot;: 1,
         &quot;user_id&quot;: 1,
-        &quot;status&quot;: &quot;pending&quot;,
+        &quot;status&quot;: &quot;shipped&quot;,
         &quot;payment_status&quot;: &quot;completed&quot;,
         &quot;total_amount&quot;: 150,
         &quot;shipping_cost&quot;: 10,
@@ -4344,6 +4344,9 @@ fetch(url, {
             &quot;zip&quot;: &quot;62701&quot;,
             &quot;country&quot;: &quot;USA&quot;
         },
+        &quot;tracking_number&quot;: &quot;1234567890&quot;,
+        &quot;shipping_carrier&quot;: &quot;DHL&quot;,
+        &quot;tracking_url&quot;: &quot;https://www.dhl.com/track?id=1234567890&quot;,
         &quot;items&quot;: [
             {
                 &quot;id&quot;: 1,
