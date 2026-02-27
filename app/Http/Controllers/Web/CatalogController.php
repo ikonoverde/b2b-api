@@ -13,6 +13,7 @@ class CatalogController extends Controller
     {
         $products = Product::query()
             ->with(['images' => fn ($query) => $query->orderBy('position')->limit(1)])
+            ->whereHas('category', fn ($q) => $q->where('is_active', true))
             ->where('is_active', true)
             ->latest()
             ->get()

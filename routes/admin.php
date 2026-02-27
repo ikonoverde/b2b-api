@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\Auth\LoginController;
+use App\Http\Controllers\Web\CategoriesController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\ProductsController;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/products/{product}/edit', [ProductsController::class, 'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductsController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductsController::class, 'destroy'])->name('products.destroy');
+
+    Route::get('/categories', [CategoriesController::class, 'index'])->name('categories');
+    Route::post('/categories', [CategoriesController::class, 'store'])->name('categories.store');
+    Route::put('/categories/{category}', [CategoriesController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{category}', [CategoriesController::class, 'destroy'])->name('categories.destroy');
+    Route::post('/categories/reorder', [CategoriesController::class, 'reorder'])->name('categories.reorder');
+    Route::patch('/categories/{category}/visibility', [CategoriesController::class, 'toggleVisibility'])
+        ->name('categories.toggle-visibility');
+    Route::get('/categories/{category}/stats', [CategoriesController::class, 'stats'])->name('categories.stats');
 
     Route::middleware('role:admin,super_admin')->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('users');

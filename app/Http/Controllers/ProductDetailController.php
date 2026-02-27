@@ -22,6 +22,8 @@ class ProductDetailController extends Controller
      */
     public function __invoke(Product $product): ProductDetailResource
     {
+        abort_if(! $product->category?->is_active, 404);
+
         $product->load(['category', 'pricingTiers', 'images']);
 
         return new ProductDetailResource($product);

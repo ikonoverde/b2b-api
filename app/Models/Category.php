@@ -18,6 +18,7 @@ class Category extends Model
         'description',
         'is_active',
         'parent_id',
+        'display_order',
     ];
 
     /**

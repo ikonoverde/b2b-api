@@ -5,6 +5,7 @@ import {
     Users,
     ShoppingCart,
     Package,
+    Folder,
     Truck,
     FileText,
     Settings,
@@ -36,6 +37,7 @@ const mainNav: NavItem[] = [
 const managementNav: NavItem[] = [
     { name: 'Pedidos', href: '/admin/orders', icon: ShoppingCart, id: 'orders', badge: 12 },
     { name: 'Productos', href: '/admin/products', icon: Package, id: 'products' },
+    { name: 'Categorías', href: '/admin/categories', icon: Folder, id: 'categories' },
     { name: 'Envios', href: '/admin/shipments', icon: Truck, id: 'shipments' },
     { name: 'Facturas', href: '/admin/invoices', icon: FileText, id: 'invoices' },
 ];

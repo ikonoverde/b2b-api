@@ -65,6 +65,7 @@ class ProductsController extends Controller
 
         $products = Product::query()
             ->with(['category', 'images' => fn ($query) => $query->orderBy('position')->limit(1)])
+            ->whereHas('category', fn ($q) => $q->where('is_active', true))
             ->when($request->validated('category_id'), fn ($q, $ids) => $q->filterByCategory($ids))
             ->when($priceMin !== null || $priceMax !== null, fn ($q) => $q->filterByPriceRange(
                 $priceMin !== null ? (float) $priceMin : null,

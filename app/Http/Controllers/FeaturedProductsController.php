@@ -24,6 +24,7 @@ class FeaturedProductsController extends Controller
     {
         $products = Product::query()
             ->with(['category', 'images' => fn ($query) => $query->orderBy('position')->limit(1)])
+            ->whereHas('category', fn ($q) => $q->where('is_active', true))
             ->where('is_featured', true)
             ->where('is_active', true)
             ->get();

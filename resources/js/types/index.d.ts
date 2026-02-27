@@ -222,3 +222,16 @@ export interface OrderFilters {
     sort_by: string;
     sort_order: string;
 }
+
+export interface Category {
+    id: number;
+    name: string;
+    slug: string;
+    description: string | null;
+    is_active: boolean;
+    parent_id: number | null;
+    display_order: number;
+    children?: Category[];
+    products_count?: number;
+    depth?: number;
+}
