@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\RefreshTokenController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Cart\AddCartItemController;
@@ -36,6 +37,7 @@ Route::post('/forgot-password', ForgotPasswordController::class);
 Route::post('/password/reset/confirm', ResetPasswordController::class);
 
 Route::post('/logout', LogoutController::class)->middleware('auth:sanctum');
+Route::post('/token/refresh', RefreshTokenController::class)->middleware('auth:sanctum');
 
 Route::get('/user', UserController::class)->middleware('auth:sanctum');
 Route::put('/user', UpdateUserController::class)->middleware('auth:sanctum');

@@ -280,6 +280,111 @@ endpoints:
     custom: []
     httpMethods:
       - POST
+    uri: api/password/reset/confirm
+    metadata:
+      custom: []
+      groupName: Authentication
+      groupDescription: |-
+
+        APIs for user authentication
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Reset password'
+      description: |-
+        Reset the user's password using a valid reset token.
+        Invalidates all existing API tokens for the user upon success.
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      token:
+        custom: []
+        name: token
+        description: 'The password reset token received via email.'
+        required: true
+        example: abc123def456
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      email:
+        custom: []
+        name: email
+        description: 'The email address associated with the account. Must be a valid email address.'
+        required: true
+        example: user@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      password:
+        custom: []
+        name: password
+        description: 'The new password (min 8 characters, must include letters and numbers).'
+        required: true
+        example: newP@ssw0rd
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      token: abc123def456
+      email: user@example.com
+      password: newP@ssw0rd
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"message": "Password has been reset successfully."}'
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "The provided token is invalid."
+          }
+        headers: []
+        description: 'Invalid token'
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "The password reset token has expired."
+          }
+        headers: []
+        description: 'Expired token'
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The password field is required.",
+            "errors": {"password": ["The password field is required."]}
+          }
+        headers: []
+        description: 'Validation error'
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
     uri: api/logout
     metadata:
       custom: []
@@ -311,6 +416,55 @@ endpoints:
         content: '{"message": "Successfully logged out."}'
         headers: []
         description: Success
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/token/refresh
+    metadata:
+      custom: []
+      groupName: Authentication
+      groupDescription: |-
+
+        APIs for user authentication
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Refresh Token'
+      description: 'Issue a new API token and invalidate the current one.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"user": {"id": 1, "name": "John Doe", "email": "john@example.com", "rfc": "ABCD123456XYZ", "phone": "+521234567890", "created_at": "2024-01-01T00:00:00.000000Z"}, "token": "2|xyz789abc012..."}'
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 401
+        content: '{"message": "Unauthenticated."}'
+        headers: []
+        description: Unauthenticated
     responseFields: []
     auth:
       - headers
