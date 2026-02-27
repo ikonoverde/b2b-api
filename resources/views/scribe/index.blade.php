@@ -163,6 +163,9 @@
                                                                                 <li class="tocify-item level-2" data-unique="orders-GETapi-orders--order_id-">
                                 <a href="#orders-GETapi-orders--order_id-">Get Order</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="orders-POSTapi-orders--order_id--reorder">
+                                <a href="#orders-POSTapi-orders--order_id--reorder">Reorder</a>
+                            </li>
                                                                         </ul>
                             </ul>
                     <ul id="tocify-header-products" class="tocify-header">
@@ -4345,6 +4348,227 @@ You can check the Dev Tools console for debugging information.</code></pre>
                data-component="url">
     <br>
 <p>The ID of the order. Example: <code>1</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="orders-POSTapi-orders--order_id--reorder">Reorder</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Re-add all items from a previous order to the user's cart. Validates stock
+availability, detects price changes, and returns a consolidated response.</p>
+
+<span id="example-requests-POSTapi-orders--order_id--reorder">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://192.168.0.193:8000/api/orders/1/reorder" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://192.168.0.193:8000/api/orders/1/reorder"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-orders--order_id--reorder">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;added&quot;: [
+            {
+                &quot;product_id&quot;: 1,
+                &quot;product_name&quot;: &quot;Fertilizante Premium&quot;,
+                &quot;quantity&quot;: 2,
+                &quot;unit_price&quot;: 50
+            }
+        ],
+        &quot;unavailable&quot;: [],
+        &quot;price_changes&quot;: []
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (200, Partial availability):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;added&quot;: [
+            {
+                &quot;product_id&quot;: 1,
+                &quot;product_name&quot;: &quot;Fertilizante Premium&quot;,
+                &quot;quantity&quot;: 2,
+                &quot;unit_price&quot;: 50
+            }
+        ],
+        &quot;unavailable&quot;: [
+            {
+                &quot;product_id&quot;: 5,
+                &quot;product_name&quot;: &quot;Discontinued&quot;,
+                &quot;reason&quot;: &quot;product_unavailable&quot;
+            }
+        ],
+        &quot;price_changes&quot;: [
+            {
+                &quot;product_id&quot;: 1,
+                &quot;original_price&quot;: 45,
+                &quot;current_price&quot;: 50
+            }
+        ]
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403, Order belongs to different user):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Forbidden&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404, Order not found):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Order not found&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-orders--order_id--reorder" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-orders--order_id--reorder"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-orders--order_id--reorder"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-orders--order_id--reorder" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-orders--order_id--reorder">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-orders--order_id--reorder" data-method="POST"
+      data-path="api/orders/{order_id}/reorder"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-orders--order_id--reorder', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-orders--order_id--reorder"
+                    onclick="tryItOut('POSTapi-orders--order_id--reorder');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-orders--order_id--reorder"
+                    onclick="cancelTryOut('POSTapi-orders--order_id--reorder');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-orders--order_id--reorder"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/orders/{order_id}/reorder</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-orders--order_id--reorder"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-orders--order_id--reorder"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-orders--order_id--reorder"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>order_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="order_id"                data-endpoint="POSTapi-orders--order_id--reorder"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the order. Example: <code>1</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>order</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="order"                data-endpoint="POSTapi-orders--order_id--reorder"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the order to reorder. Example: <code>1</code></p>
             </div>
                     </form>
 

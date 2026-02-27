@@ -20,6 +20,7 @@ use App\Http\Controllers\Checkout\VerifyCheckoutController;
 use App\Http\Controllers\FeaturedProductsController;
 use App\Http\Controllers\Orders\GetOrderController;
 use App\Http\Controllers\Orders\GetOrdersController;
+use App\Http\Controllers\Orders\ReorderController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ShippingMethods\GetShippingMethodsController;
@@ -60,6 +61,7 @@ Route::prefix('checkout')->middleware('auth:sanctum')->group(function () {
 Route::prefix('orders')->middleware('auth:sanctum')->group(function () {
     Route::get('/', GetOrdersController::class);
     Route::get('/{order}', GetOrderController::class);
+    Route::post('/{order}/reorder', ReorderController::class);
 });
 
 Route::prefix('addresses')->middleware('auth:sanctum')->group(function () {
