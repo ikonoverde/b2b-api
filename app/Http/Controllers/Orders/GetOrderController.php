@@ -36,7 +36,7 @@ class GetOrderController extends Controller
             ], Response::HTTP_FORBIDDEN);
         }
 
-        $order->load(['items']);
+        $order->load(['items', 'statusHistories.admin']);
 
         return response()->json([
             'data' => (new OrderResource($order))->resolve(),

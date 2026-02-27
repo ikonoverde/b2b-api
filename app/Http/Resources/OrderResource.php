@@ -28,6 +28,7 @@ class OrderResource extends JsonResource
             'shipping_carrier' => $this->shipping_carrier,
             'tracking_url' => $this->tracking_url,
             'items' => OrderItemResource::collection($this->whenLoaded('items', $this->items, [])),
+            'status_histories' => OrderStatusHistoryResource::collection($this->whenLoaded('statusHistories', $this->statusHistories, [])),
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
         ];

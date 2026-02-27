@@ -21,6 +21,7 @@ use App\Http\Controllers\Checkout\ConfirmPaymentController;
 use App\Http\Controllers\Checkout\CreateCheckoutController;
 use App\Http\Controllers\Checkout\VerifyCheckoutController;
 use App\Http\Controllers\FeaturedProductsController;
+use App\Http\Controllers\Orders\DownloadInvoiceController;
 use App\Http\Controllers\Orders\GetOrderController;
 use App\Http\Controllers\Orders\GetOrdersController;
 use App\Http\Controllers\Orders\ReorderController;
@@ -69,6 +70,7 @@ Route::prefix('orders')->middleware('auth:sanctum')->group(function () {
     Route::get('/', GetOrdersController::class);
     Route::get('/{order}', GetOrderController::class);
     Route::post('/{order}/reorder', ReorderController::class);
+    Route::get('/{order}/invoice', DownloadInvoiceController::class);
 });
 
 Route::prefix('addresses')->middleware('auth:sanctum')->group(function () {
