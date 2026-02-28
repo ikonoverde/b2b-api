@@ -147,12 +147,12 @@ export default function Login({ postUrl = '/login', registerUrl = '/register' }:
                                         Recordarme
                                     </span>
                                 </label>
-                                <a
-                                    href="#"
+                                <Link
+                                    href="/forgot-password"
                                     className="text-sm font-medium text-[#5E7052] hover:underline font-[Outfit]"
                                 >
                                     ¿Olvidaste tu contraseña?
-                                </a>
+                                </Link>
                             </div>
 
                             {/* Actions */}
