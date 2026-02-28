@@ -45,12 +45,6 @@ This application is a Laravel application and its main Laravel ecosystems packag
 ## Documentation Files
 - You must only create documentation files if explicitly requested by the user.
 
-## Issue Tracking
-- Use the GitHub project https://github.com/orgs/ikonoverde/projects/5 to manage all issues and tickets.
-
-## Development Login
-- Local dev user: moeric@gmail.com / 42ekwN8tGIMv
-
 === boost rules ===
 
 ## Laravel Boost
@@ -467,3 +461,7 @@ export default () => (
 
 ## GIT
 - For all git and/or GitHub operations use gh
+
+## Credentials for dev testing
+- **username**: moeric@gmail.com
+- **password**: 42ekwN8tGIMv

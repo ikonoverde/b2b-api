@@ -10,6 +10,7 @@ use App\Http\Controllers\Web\CheckoutController;
 use App\Http\Controllers\Web\CustomerDashboardController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\OrderController;
+use App\Http\Controllers\Web\PaymentMethodController;
 use App\Http\Controllers\Web\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -49,6 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'create'])->name('checkout');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::get('/account', AccountController::class)->name('account');
+    Route::get('/account/payment-methods', [PaymentMethodController::class, 'show'])->name('account.payment-methods');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 });

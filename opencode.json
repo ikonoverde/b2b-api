@@ -9,6 +9,18 @@
                 "artisan",
                 "boost:mcp"
             ]
+        },
+        "laravel-telescope": {
+            "type": "local",
+            "enabled": true,
+            "command": [
+                "php",
+                "/home/eric/projects/b2b/api/artisan",
+                "telescope-mcp:server"
+            ],
+            "environment": {
+                "APP_ENV": "local"
+            }
         }
     }
 }

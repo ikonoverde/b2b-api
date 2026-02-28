@@ -30,6 +30,7 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ShippingMethods\GetShippingMethodsController;
 use App\Http\Controllers\UpdateUserController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Web\PaymentMethodController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', RegisterController::class);
@@ -78,4 +79,12 @@ Route::prefix('addresses')->middleware('auth:sanctum')->group(function () {
     Route::post('/', StoreAddressController::class);
     Route::put('/{address}', UpdateAddressController::class);
     Route::delete('/{address}', DestroyAddressController::class);
+});
+
+Route::prefix('payment-methods')->middleware(['web', 'auth'])->group(function () {
+    Route::get('/', [PaymentMethodController::class, 'index']);
+    Route::post('/', [PaymentMethodController::class, 'store']);
+    Route::get('/stripe-key', [PaymentMethodController::class, 'getStripeKey']);
+    Route::patch('/{payment_method}/default', [PaymentMethodController::class, 'setDefault']);
+    Route::delete('/{payment_method}', [PaymentMethodController::class, 'destroy']);
 });

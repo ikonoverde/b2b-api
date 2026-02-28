@@ -1,4 +1,4 @@
-import { router, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import {
     Building2,
     ChevronRight,
@@ -119,6 +119,7 @@ export default function Account({ profile }: AccountProps) {
         { icon: MapPin, label: 'Direcciones de Envío' },
         { icon: Users, label: 'Usuarios Autorizados' },
         { icon: Headphones, label: 'Soporte Comercial' },
+        { icon: CreditCard, label: 'Métodos de Pago', href: '/account/payment-methods' },
         { icon: KeyRound, label: 'Cambiar Contraseña', onClick: () => setShowPasswordModal(true) },
     ];
 
@@ -160,15 +161,27 @@ export default function Account({ profile }: AccountProps) {
                     <h2 className="mb-3 text-sm font-bold text-[#1A1A1A] font-[Outfit]">Configuración</h2>
                     <div className="flex flex-col gap-2">
                         {menuItems.map((item) => (
-                            <button
-                                key={item.label}
-                                onClick={item.onClick}
-                                className="flex items-center gap-3 rounded-xl bg-white px-4 py-3.5 border border-[#E5E5E5] hover:bg-gray-50 transition-colors"
-                            >
-                                <item.icon className="h-5 w-5 text-[#5E7052]" />
-                                <span className="flex-1 text-left text-sm font-medium text-[#1A1A1A] font-[Outfit]">{item.label}</span>
-                                <ChevronRight className="h-4 w-4 text-[#999999]" />
-                            </button>
+                            item.href ? (
+                                <Link
+                                    key={item.label}
+                                    href={item.href}
+                                    className="flex items-center gap-3 rounded-xl bg-white px-4 py-3.5 border border-[#E5E5E5] hover:bg-gray-50 transition-colors"
+                                >
+                                    <item.icon className="h-5 w-5 text-[#5E7052]" />
+                                    <span className="flex-1 text-left text-sm font-medium text-[#1A1A1A] font-[Outfit]">{item.label}</span>
+                                    <ChevronRight className="h-4 w-4 text-[#999999]" />
+                                </Link>
+                            ) : (
+                                <button
+                                    key={item.label}
+                                    onClick={item.onClick}
+                                    className="flex items-center gap-3 rounded-xl bg-white px-4 py-3.5 border border-[#E5E5E5] hover:bg-gray-50 transition-colors"
+                                >
+                                    <item.icon className="h-5 w-5 text-[#5E7052]" />
+                                    <span className="flex-1 text-left text-sm font-medium text-[#1A1A1A] font-[Outfit]">{item.label}</span>
+                                    <ChevronRight className="h-4 w-4 text-[#999999]" />
+                                </button>
+                            )
                         ))}
                     </div>
                 </div>

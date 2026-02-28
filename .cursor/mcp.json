@@ -1,0 +1,15 @@
+{
+    "mcpServers": {
+        "laravel-telescope": {
+            "command": "php",
+            "args": [
+                "artisan",
+                "telescope-mcp:server"
+            ],
+            "env": {
+                "APP_ENV": "local"
+            },
+            "cwd": "/home/eric/projects/b2b/api"
+        }
+    }
+}
