@@ -13,6 +13,8 @@ use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\PaymentMethodController;
 use App\Http\Controllers\Web\ProductController;
+use App\Http\Controllers\Web\ProfileController;
+use App\Http\Controllers\Web\UpdateProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -52,6 +54,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'create'])->name('checkout');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::get('/account', AccountController::class)->name('account');
+    Route::get('/account/profile', ProfileController::class)->name('account.profile');
+    Route::put('/account/profile', UpdateProfileController::class)->name('account.profile.update');
     Route::get('/account/addresses', [AddressesController::class, 'show'])->name('account.addresses');
     Route::get('/account/payment-methods', [PaymentMethodController::class, 'show'])->name('account.payment-methods');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders');
