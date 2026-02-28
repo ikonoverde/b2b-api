@@ -38,6 +38,10 @@ export interface OrderItem {
     quantity: number;
     unit_price: number;
     subtotal: number;
+    image: string | null;
+    product?: {
+        slug: string;
+    };
 }
 
 export interface UserActivity {
@@ -83,6 +87,7 @@ export interface Cart {
 export interface ProductImage {
     id: number;
     url: string;
+    position?: number;
 }
 
 export interface PricingTier {
@@ -93,16 +98,39 @@ export interface PricingTier {
     label: string | null;
 }
 
+export interface BreadcrumbItem {
+    name: string;
+    slug: string | null;
+    url: string | null;
+}
+
 export interface ProductDetail {
     id: number;
     name: string;
+    slug: string;
     sku: string;
-    category: string;
+    category: {
+        id: number;
+        name: string;
+        slug: string;
+    };
     description: string | null;
     price: number;
-    size: string | null;
+    sale_price: number | null;
+    discount_percentage: number | null;
+    stock: number;
+    is_active: boolean;
     images: ProductImage[];
     pricing_tiers: PricingTier[];
+    breadcrumbs: BreadcrumbItem[];
+}
+
+export interface RelatedProduct {
+    id: number;
+    name: string;
+    slug: string;
+    price: number;
+    image: string | null;
 }
 
 export interface CustomerProfile {

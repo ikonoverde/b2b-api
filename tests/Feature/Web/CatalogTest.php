@@ -39,6 +39,7 @@ it('includes expected product fields', function () {
         ->component('Catalog')
         ->has('products.0', fn ($product) => $product
             ->has('id')
+            ->has('slug')
             ->has('name')
             ->has('sku')
             ->has('category')

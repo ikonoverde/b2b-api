@@ -40,7 +40,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', LogoutController::class)->name('logout');
     Route::get('/dashboard', CustomerDashboardController::class)->name('dashboard');
-    Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
+    Route::get('/products/{slug}', [ProductController::class, 'show'])->name('product.show');
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::post('/cart/items', [CartController::class, 'addItem'])->name('cart.addItem');
     Route::post('/cart/items/{cartItem}', [CartController::class, 'updateItem'])->name('cart.updateItem');

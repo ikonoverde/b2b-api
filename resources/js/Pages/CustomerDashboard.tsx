@@ -5,6 +5,7 @@ import type { PageProps } from '@/types';
 
 interface DashboardProduct {
     id: number;
+    slug: string;
     name: string;
     category: string;
     price: number;
@@ -96,7 +97,7 @@ export default function CustomerDashboard({ featuredProducts, profile }: Custome
                             {featuredProducts.map((product) => (
                                 <Link
                                     key={product.id}
-                                    href={`/product/${product.id}`}
+                                    href={`/products/${product.slug}`}
                                     className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden flex flex-col hover:shadow-md transition-shadow"
                                 >
                                     <div className="h-32 lg:h-40 bg-[#F5F3F0]">

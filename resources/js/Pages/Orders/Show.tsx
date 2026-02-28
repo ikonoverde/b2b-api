@@ -24,6 +24,9 @@ interface OrderItem {
     unit_price: number;
     subtotal: number;
     image: string | null;
+    product?: {
+        slug: string;
+    };
 }
 
 interface StatusHistory {
@@ -158,21 +161,47 @@ function OrderItems({ items }: { items: OrderItem[] }) {
             <div className="divide-y divide-[#E5E5E5]">
                 {items.map((item) => (
                     <div key={item.id} className="p-6 flex items-center gap-4">
-                        <div className="w-20 h-20 bg-[#F5F5F5] rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0">
-                            {item.image ? (
-                                <img
-                                    src={item.image}
-                                    alt={item.product_name}
-                                    className="w-full h-full object-cover"
-                                />
-                            ) : (
-                                <Package className="w-8 h-8 text-[#999999]" />
-                            )}
-                        </div>
+                        {item.product ? (
+                            <Link
+                                href={`/products/${item.product.slug}`}
+                                className="w-20 h-20 bg-[#F5F5F5] rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0 hover:opacity-80 transition-opacity"
+                            >
+                                {item.image ? (
+                                    <img
+                                        src={item.image}
+                                        alt={item.product_name}
+                                        className="w-full h-full object-cover"
+                                    />
+                                ) : (
+                                    <Package className="w-8 h-8 text-[#999999]" />
+                                )}
+                            </Link>
+                        ) : (
+                            <div className="w-20 h-20 bg-[#F5F5F5] rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0">
+                                {item.image ? (
+                                    <img
+                                        src={item.image}
+                                        alt={item.product_name}
+                                        className="w-full h-full object-cover"
+                                    />
+                                ) : (
+                                    <Package className="w-8 h-8 text-[#999999]" />
+                                )}
+                            </div>
+                        )}
                         <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-[#1A1A1A] font-[Outfit] truncate">
-                                {item.product_name}
-                            </p>
+                            {item.product ? (
+                                <Link
+                                    href={`/products/${item.product.slug}`}
+                                    className="text-sm font-medium text-[#1A1A1A] font-[Outfit] truncate hover:text-[#5E7052] hover:underline block"
+                                >
+                                    {item.product_name}
+                                </Link>
+                            ) : (
+                                <p className="text-sm font-medium text-[#1A1A1A] font-[Outfit] truncate">
+                                    {item.product_name}
+                                </p>
+                            )}
                             <p className="text-sm text-[#999999] font-[Outfit] mt-1">
                                 Cantidad: {item.quantity}
                             </p>

@@ -19,6 +19,7 @@ class CatalogController extends Controller
             ->get()
             ->map(fn (Product $product) => [
                 'id' => $product->id,
+                'slug' => $product->slug,
                 'name' => $product->name,
                 'sku' => $product->sku,
                 'category' => $product->category?->name,

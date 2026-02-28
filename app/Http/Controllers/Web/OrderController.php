@@ -20,7 +20,7 @@ class OrderController extends Controller
             abort(403);
         }
 
-        $order->load(['items', 'statusHistories']);
+        $order->load(['items.product', 'statusHistories']);
 
         return Inertia::render('Orders/Show', [
             'order' => $order,

@@ -5,6 +5,7 @@ import CustomerLayout from '@/Layouts/CustomerLayout';
 
 interface CatalogProduct {
     id: number;
+    slug: string;
     name: string;
     sku: string;
     category: string;
@@ -73,7 +74,7 @@ export default function Catalog({ products }: CatalogProps) {
                         {filtered.map((product) => (
                             <Link
                                 key={product.id}
-                                href={`/product/${product.id}`}
+                                href={`/products/${product.slug}`}
                                 className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden flex flex-col hover:shadow-md transition-shadow"
                             >
                                 {/* Image */}

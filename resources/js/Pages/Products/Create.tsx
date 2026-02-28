@@ -51,6 +51,7 @@ interface PricingTier {
 
 interface ProductFormData {
     name: string;
+    slug: string;
     sku: string;
     category_id: string;
     description: string;
@@ -426,6 +427,26 @@ function BasicInfoCard({
                     />
                 </div>
 
+                {/* Slug Field */}
+                <div className="flex flex-col gap-2">
+                    <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                        Slug (URL amigable)
+                    </label>
+                    <input
+                        type="text"
+                        value={data.slug}
+                        onChange={(e) => setData('slug', e.target.value)}
+                        placeholder="ej: fertilizante-premium"
+                        className="h-11 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
+                    />
+                    {errors.slug && (
+                        <span className="text-xs text-red-500 font-[Outfit]">{errors.slug}</span>
+                    )}
+                    <span className="text-xs text-[#999999] font-[Outfit]">
+                        URL: /products/{data.slug || 'slug-del-producto'}
+                    </span>
+                </div>
+
                 {/* Description Field */}
                 <div className="flex flex-col gap-2">
                     <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
@@ -708,6 +729,7 @@ export default function Create({ categories }: CreateProductProps) {
 
     const { data, setData, post, processing, errors } = useForm<ProductFormData>({
         name: '',
+        slug: '',
         sku: '',
         category_id: '',
         description: '',

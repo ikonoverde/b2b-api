@@ -7,6 +7,7 @@ type LucideIcon = ForwardRefExoticComponent<LucideProps & RefAttributes<SVGSVGEl
 
 interface FeaturedProduct {
     id: number;
+    slug: string;
     name: string;
     category: string;
     image_url: string | null;

@@ -80,6 +80,7 @@ class ProductsController extends Controller
             'product' => [
                 'id' => $product->id,
                 'name' => $product->name,
+                'slug' => $product->slug,
                 'sku' => $product->sku,
                 'category_id' => $product->category_id,
                 'description' => $product->description ?? '',

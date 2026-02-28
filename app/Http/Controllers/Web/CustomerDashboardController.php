@@ -23,6 +23,7 @@ class CustomerDashboardController extends Controller
             ->get()
             ->map(fn (Product $product) => [
                 'id' => $product->id,
+                'slug' => $product->slug,
                 'name' => $product->name,
                 'category' => $product->category?->name,
                 'price' => (float) $product->price,
