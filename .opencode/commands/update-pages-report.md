@@ -20,7 +20,8 @@ description: Compare customer-facing pages between the mobile and API projects a
    - File structure comparison
    - Backend requirements checklist
 5. Save the report to `context/pages.md`
-6. Update supermemory with key findings
+6. Use the playground skill to generate an interactive HTML report at `@playground/pages-report.html` from the markdown report
+7. Update supermemory with key findings
 
 ## Notes
 
