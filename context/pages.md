@@ -1,209 +1,354 @@
-# Customer-Facing Pages Comparison Report
+# B2B Platform Pages Comparison Report
 
-**Generated:** February 27, 2026  
-**Mobile Project:** `/home/eric/projects/b2b/mobile`  
-**API Project:** `/home/eric/projects/b2b/api`  
+**Generated:** 2026-02-27
+**Scope:** Customer-facing pages only (admin pages excluded)
 
----
+## Executive Summary
 
-## Summary
+| Project | Total Customer Pages | Status |
+|---------|---------------------|---------|
+| **Mobile** | 17 pages | ✅ Complete |
+| **API** | 11 pages | ⚠️ Partial |
 
-This report compares customer-facing pages between the mobile app and the web API project to identify gaps in the web implementation.
-
-| Metric | Mobile App | Web API | Gap |
-|--------|-----------|---------|-----|
-| **Total Customer Pages** | 17 | 11 | 6 pages missing |
-| **Public Pages** | 6 | 4 | 2 pages missing |
-| **Auth Pages** | 9 | 5 | 4 pages missing |
-| **Guest Pages** | 2 | 3 | -1 (web has extra Reset Password) |
+**Gap Analysis:** API project is missing **6 customer-facing pages** compared to Mobile.
 
 ---
 
-## Mobile App Pages (Reference)
+## Summary Table: Mobile vs API
 
-| # | Page | Route | Access | Status in Web API |
-|---|------|-------|--------|-------------------|
-| 1 | Welcome/Home | `/` | Public | ✅ Implemented (Home.tsx) |
-| 2 | Dashboard | `/dashboard` | Auth | ✅ Implemented (CustomerDashboard.tsx) |
-| 3 | Catalog | `/catalog` | Public | ✅ Implemented (Catalog.tsx) |
-| 4 | Product Detail | `/product/{id}` | Auth | ✅ Implemented (Product/Show.tsx) |
-| 5 | Cart | `/cart` | Auth | ✅ Implemented (Cart.tsx) |
-| 6 | Checkout | `/checkout` | Auth | ✅ Implemented (Checkout.tsx) |
-| 7 | Orders List | `/orders` | Auth | ⚠️ **Placeholder Only** (Orders/Index.tsx shows "Coming Soon") |
-| 8 | Account | `/account` | Auth | ✅ Implemented (Account.tsx) |
-| 9 | Edit Profile | `/account/profile` | Auth | ❌ **Missing** |
-| 10 | Addresses | `/account/addresses` | Auth | ❌ **Missing** |
-| 11 | Change Password | `/account/password` | Auth | ❌ **Missing** |
-| 12 | Login | `/login` | Guest | ✅ Implemented (Auth/Login.tsx) |
-| 13 | Register | `/register` | Guest | ✅ Implemented (Auth/Register.tsx) |
-| 14 | Forgot Password | `/forgot-password` | Guest | ❌ **Missing** |
-| 15 | Reset Password | `/reset-password` | Guest | ✅ Implemented (Auth/ResetPassword.tsx) |
-| 16 | Terms | `/terms` | Public | ❌ **Missing** |
-| 17 | Privacy | `/privacy` | Public | ❌ **Missing** |
-
----
-
-## Web API Pages - Current Implementation
-
-### ✅ Fully Implemented (11 pages)
-
-| Page | File | Route | Notes |
-|------|------|-------|-------|
-| Home | `resources/js/Pages/Home.tsx` | `/` | Landing with featured products |
-| Catalog | `resources/js/Pages/Catalog.tsx` | `/catalog` | Public product catalog |
-| Product Detail | `resources/js/Pages/Product/Show.tsx` | `/product/{product}` | Pricing tiers, public access |
-| Customer Dashboard | `resources/js/Pages/CustomerDashboard.tsx` | `/dashboard` | User stats, featured products |
-| Cart | `resources/js/Pages/Cart.tsx` | `/cart` | Shopping cart management |
-| Checkout | `resources/js/Pages/Checkout.tsx` | `/checkout` | Stripe integration |
-| Account | `resources/js/Pages/Account.tsx` | `/account` | User profile overview |
-| Login | `resources/js/Pages/Auth/Login.tsx` | `/login` | Authentication form |
-| Register | `resources/js/Pages/Auth/Register.tsx` | `/register` | B2B business registration |
-| Reset Password | `resources/js/Pages/Auth/ResetPassword.tsx` | `/reset-password/{token}` | API endpoint wrapper |
-| Error Page | `resources/js/Pages/Error.tsx` | Error handler | 404/403/500/503 display |
-
-### ⚠️ Partially Implemented
-
-| Page | File | Status | Notes |
-|------|------|--------|-------|
-| Orders | `resources/js/Pages/Orders/Index.tsx` | Placeholder | Shows "Coming Soon" - needs full implementation |
+| Page | Mobile Path | API Path | Status | Priority |
+|------|-------------|----------|---------|----------|
+| **Home/Landing** | `pages/welcome.tsx` | `Pages/Home.tsx` | ✅ Implemented | - |
+| **Login** | `pages/auth/login.tsx` | `Pages/Auth/Login.tsx` | ✅ Implemented | - |
+| **Register** | `pages/auth/register.tsx` | `Pages/Auth/Register.tsx` | ✅ Implemented | - |
+| **Forgot Password** | `pages/auth/forgot-password.tsx` | ❌ Missing | 🔴 **HIGH** | Missing Route |
+| **Reset Password** | `pages/auth/reset-password.tsx` | `Pages/Auth/ResetPassword.tsx` | ✅ Implemented | - |
+| **Dashboard** | `pages/dashboard.tsx` | `Pages/CustomerDashboard.tsx` | ✅ Implemented | - |
+| **Catalog** | `pages/catalog.tsx` | `Pages/Catalog.tsx` | ✅ Implemented | - |
+| **Product Detail** | `pages/product/show.tsx` | `Pages/Product/Show.tsx` | ✅ Implemented | - |
+| **Cart** | `pages/cart.tsx` | `Pages/Cart.tsx` | ✅ Implemented | - |
+| **Checkout** | `pages/checkout.tsx` | `Pages/Checkout.tsx` | ✅ Implemented | - |
+| **Orders List** | `pages/orders/index.tsx` | `Pages/Orders/Index.tsx` | ✅ Implemented | - |
+| **Order Detail** | ❌ Not Present | `Pages/Orders/Show.tsx` | ✅ API Only | N/A |
+| **Account** | `pages/account.tsx` | `Pages/Account.tsx` | ✅ Implemented | - |
+| **Edit Profile** | `pages/account/profile.tsx` | ❌ Missing | 🔴 **HIGH** | Missing Route+Controller |
+| **Addresses** | `pages/account/addresses.tsx` | ❌ Missing | 🔴 **HIGH** | Missing Route+Page |
+| **Change Password** | `pages/account/password.tsx` | ❌ Missing | 🔴 **HIGH** | Missing Page |
+| **Payment Methods** | ❌ Not Present | `Pages/PaymentMethods.tsx` | ✅ API Only | N/A |
+| **Terms** | `pages/terms.tsx` | ❌ Missing | 🟡 **LOW** | Static Page |
+| **Privacy Policy** | `pages/privacy.tsx` | ❌ Missing | 🟡 **LOW** | Static Page |
 
 ---
 
-## Missing Pages - Action Required (6 pages)
+## Missing Pages - Detailed Analysis
 
-### 🔴 High Priority - Account Management (3 pages)
+### 🔴 HIGH PRIORITY
 
-| # | Page | Mobile Route | Proposed Web Route | Priority | Complexity |
-|---|------|--------------|-------------------|----------|------------|
-| 1 | **Edit Profile** | `/account/profile` | `/account/profile` | High | Low |
-| 2 | **Addresses** | `/account/addresses` | `/account/addresses` | High | Medium |
-| 3 | **Change Password** | `/account/password` | `/account/password` | High | Low |
+#### 1. Edit Profile Page
+- **Mobile Path:** `pages/account/profile.tsx`
+- **Missing in API:** Page and route
+- **Backend Status:** ✅ API exists (`PUT /api/user`)
+- **Implementation Notes:**
+  - API endpoint already implemented in `UpdateUserController`
+  - Only needs frontend page
+  - Should be accessible at `/account/profile`
+- **Est. Effort:** 2-3 hours
+- **Route Needed:** `GET /account/profile`
 
-**Justification:** These are essential for user account management. The Account page exists but has no way to edit profile information, manage shipping addresses, or change passwords.
+#### 2. Addresses Management
+- **Mobile Path:** `pages/account/addresses.tsx`
+- **Missing in API:** Page and route
+- **Backend Status:** ✅ Full API exists
+  - `GET /api/addresses`
+  - `POST /api/addresses`
+  - `PUT /api/addresses/{address}`
+  - `DELETE /api/addresses/{address}`
+- **Implementation Notes:**
+  - Full CRUD API already implemented
+  - Complex form with address fields
+  - Need shipping/billing toggle
+- **Est. Effort:** 4-6 hours
+- **Route Needed:** `GET /account/addresses`
 
-### 🟡 Medium Priority - Authentication (1 page)
+#### 3. Change Password Page
+- **Mobile Path:** `pages/account/password.tsx`
+- **Missing in API:** Page and route  
+- **Backend Status:** ✅ API exists (`PUT /api/password`)
+- **Implementation Notes:**
+  - API endpoint already implemented
+  - Could be integrated into Account page or separate
+  - Should include current password verification
+- **Est. Effort:** 2-3 hours
+- **Route Needed:** `GET /account/password` or modal
 
-| # | Page | Mobile Route | Proposed Web Route | Priority | Complexity |
-|---|------|--------------|-------------------|----------|------------|
-| 4 | **Forgot Password** | `/forgot-password` | `/forgot-password` | Medium | Low |
+#### 4. Forgot Password Page
+- **Mobile Path:** `pages/auth/forgot-password.tsx`
+- **Missing in API:** Page
+- **Backend Status:** ✅ API exists (`POST /api/forgot-password`)
+- **Implementation Notes:**
+  - Email input form
+  - Success message display
+  - Could be modal instead of page
+- **Est. Effort:** 1-2 hours
+- **Route Needed:** `GET /forgot-password`
 
-**Justification:** The Reset Password page exists (for API token), but users need a way to request password reset emails. Currently only available via mobile app.
+### 🟡 MEDIUM PRIORITY
 
-### 🟢 Lower Priority - Legal Pages (2 pages)
+*None identified - all medium priority features are complete*
 
-| # | Page | Mobile Route | Proposed Web Route | Priority | Complexity |
-|---|------|--------------|-------------------|----------|------------|
-| 5 | **Terms** | `/terms` | `/terms` | Low | Low |
-| 6 | **Privacy** | `/privacy` | `/privacy` | Low | Low |
+### 🟢 LOW PRIORITY
 
-**Justification:** Legal compliance pages. Currently mobile-only, but needed for web users.
+#### 5. Terms of Service Page
+- **Mobile Path:** `pages/terms.tsx`
+- **Missing in API:** Entire page
+- **Backend Status:** ❌ No API needed (static)
+- **Implementation Notes:**
+  - Static content page
+  - Could be Markdown-based
+  - No authentication required
+- **Est. Effort:** 1 hour
+- **Route Needed:** `GET /terms`
+
+#### 6. Privacy Policy Page
+- **Mobile Path:** `pages/privacy.tsx`
+- **Missing in API:** Entire page
+- **Backend Status:** ❌ No API needed (static)
+- **Implementation Notes:**
+  - Static content page
+  - Could be Markdown-based
+  - No authentication required
+- **Est. Effort:** 1 hour
+- **Route Needed:** `GET /privacy`
 
 ---
 
-## Implementation Recommendations
+## Implementation Roadmap
 
-### Phase 1: Account Management (Week 1)
-1. **Edit Profile** - Add form to edit name, email, phone
-2. **Change Password** - Add password change form
-3. **Addresses** - Create address management (list, add, edit, delete)
+### Phase 1: Account Management (HIGH Priority)
+**Timeline:** 1-2 weeks
 
-### Phase 2: Authentication Flow (Week 2)
-4. **Forgot Password** - Request reset email form
-5. **Orders Page** - Replace placeholder with full order history
+1. **Create `/account/profile` page**
+   - Use existing `UpdateUserController` API
+   - Form fields: name, email, phone
+   - Validation matching mobile
 
-### Phase 3: Legal & Polish (Week 3)
-6. **Terms** - Static terms page
-7. **Privacy** - Static privacy policy page
+2. **Create `/account/addresses` page**
+   - Full addresses CRUD
+   - Use existing addresses API endpoints
+   - Include shipping/billing toggle
+
+3. **Create `/account/password` page**
+   - Password change form
+   - Integration with `ChangePasswordController`
+   - Current password requirement
+
+### Phase 2: Authentication Enhancement
+**Timeline:** 2-3 days
+
+4. **Add forgot password page**
+   - Link from login page
+   - Email form
+   - Success/error handling
+
+### Phase 3: Legal Pages
+**Timeline:** 1 day
+
+5. **Create `/terms` page**
+   - Static content
+   - Link from footer
+
+6. **Create `/privacy` page**
+   - Static content
+   - Link from footer
+
+---
+
+## Routes Comparison
+
+### Mobile Routes (from React Router)
+```
+/                    → welcome.tsx
+/login               → auth/login.tsx
+/register            → auth/register.tsx
+/forgot-password     → auth/forgot-password.tsx
+/reset-password      → auth/reset-password.tsx
+/dashboard           → dashboard.tsx
+/catalog             → catalog.tsx
+/product/:id         → product/show.tsx
+/cart                → cart.tsx
+/checkout            → checkout.tsx
+/orders              → orders/index.tsx
+/account             → account.tsx
+/account/profile     → account/profile.tsx
+/account/addresses   → account/addresses.tsx
+/account/password    → account/password.tsx
+/terms               → terms.tsx
+/privacy             → privacy.tsx
+```
+
+### API Routes (from web.php)
+```
+/                    → HomeController
+/login               → LoginController
+/register            → RegisterController
+/reset-password      → ResetPasswordController
+/dashboard           → CustomerDashboardController
+/catalog             → CatalogController
+/products/{slug}     → ProductController
+/cart                → CartController
+/checkout            → CheckoutController
+/orders              → OrderController
+/orders/{order}     → OrderController (show)
+/account             → AccountController
+/account/payment-methods → PaymentMethodController
+```
+
+### Missing Routes in API
+```
+GET /forgot-password         → New controller or view
+GET /account/profile         → New controller
+GET /account/addresses       → New controller
+GET /account/password        → New controller or modal
+GET /terms                   → Static or new controller
+GET /privacy                 → Static or new controller
+```
+
+---
+
+## Backend Requirements Checklist
+
+### ✅ Already Implemented
+- [x] User profile update API (`PUT /api/user`)
+- [x] Address CRUD APIs (`/api/addresses/*`)
+- [x] Password change API (`PUT /api/password`)
+- [x] Forgot password API (`POST /api/forgot-password`)
+
+### ❌ Needs Implementation
+- [ ] Web routes for account sub-pages
+- [ ] Controllers for account sub-pages
+- [ ] Terms page route (static)
+- [ ] Privacy page route (static)
+
+---
+
+## Additional Observations
+
+### Pages Present in API but NOT in Mobile
+1. **Payment Methods** (`/account/payment-methods`)
+   - Stripe integration
+   - Saved cards management
+   - Mobile should implement this
+
+2. **Order Detail** (`/orders/{order}`)
+   - Full order details with tracking
+   - Invoice download
+   - Reorder functionality
+   - Mobile only has list view
+
+### Mobile Placeholder Pages
+- `orders/index.tsx` - Shows "Coming Soon" placeholder
+  - Needs full implementation
+  - Copy API's Orders/Index.tsx approach
+
+### Feature Parity Recommendation
+**Priority 1:** Implement missing API pages to match mobile  
+**Priority 2:** Add payment methods to mobile  
+**Priority 3:** Add order details to mobile
+
+---
+
+## Test Coverage Requirements
+
+### Tests Needed for New Pages
+1. Account Profile Page Tests
+   - Route accessibility
+   - Form validation
+   - Update success/failure
+
+2. Addresses Page Tests
+   - List addresses
+   - Add address
+   - Edit address
+   - Delete address
+
+3. Password Page Tests
+   - Change password success
+   - Wrong current password
+   - Password validation
+
+4. Static Page Tests
+   - Terms page loads
+   - Privacy page loads
 
 ---
 
 ## File Structure Comparison
 
-### Mobile App Structure
+### Mobile Structure
 ```
 resources/js/pages/
-├── welcome.tsx
-├── dashboard.tsx
-├── catalog.tsx
-├── product/show.tsx
-├── cart.tsx
-├── checkout.tsx
-├── orders/index.tsx
 ├── account.tsx
 ├── account/
-│   ├── profile.tsx      ← Missing in web
-│   ├── addresses.tsx      ← Missing in web
-│   └── password.tsx       ← Missing in web
+│   ├── addresses.tsx      ❌ Missing in API
+│   ├── password.tsx       ❌ Missing in API
+│   └── profile.tsx        ❌ Missing in API
 ├── auth/
+│   ├── forgot-password.tsx ❌ Missing in API
 │   ├── login.tsx
 │   ├── register.tsx
-│   ├── forgot-password.tsx  ← Missing in web
 │   └── reset-password.tsx
-├── terms.tsx              ← Missing in web
-└── privacy.tsx            ← Missing in web
+├── cart.tsx
+├── catalog.tsx
+├── checkout.tsx
+├── dashboard.tsx
+├── orders/
+│   └── index.tsx
+├── privacy.tsx            ❌ Missing in API
+├── product/
+│   └── show.tsx
+├── terms.tsx              ❌ Missing in API
+└── welcome.tsx            → Home.tsx in API
 ```
 
-### Web API Structure
+### API Structure
 ```
 resources/js/Pages/
+├── Account.tsx
 ├── Auth/
 │   ├── Login.tsx
 │   ├── Register.tsx
-│   └── ResetPassword.tsx  ← Extra: Reset password for API
+│   └── ResetPassword.tsx
+├── Cart.tsx
+├── Catalog.tsx
+├── Categories.tsx         ← Admin only
+├── Checkout.tsx
+├── CustomerDashboard.tsx  ← Equivalent to dashboard.tsx
+├── Dashboard.tsx          ← Admin only
+├── Error.tsx              ← Generic error
+├── Home.tsx               ← Equivalent to welcome.tsx
+├── Orders/
+│   ├── Index.tsx
+│   └── Show.tsx           ✅ API only (detailed)
+├── PaymentMethods.tsx     ✅ API only
 ├── Product/
 │   └── Show.tsx
-├── Orders/
-│   └── Index.tsx          ← ⚠️ Placeholder
-├── Home.tsx
-├── Catalog.tsx
-├── CustomerDashboard.tsx
-├── Cart.tsx
-├── Checkout.tsx
-├── Account.tsx            ← ⚠️ No edit/profile submenu
-├── Dashboard.tsx          ← Admin only
 ├── Products.tsx           ← Admin only
-└── Error.tsx
+├── Products/
+│   ├── Create.tsx         ← Admin only
+│   └── Edit.tsx           ← Admin only
 ```
-
----
-
-## Backend Requirements
-
-The following backend endpoints appear to exist in the mobile app but may need verification for web:
-
-| Endpoint | Method | Purpose | Mobile Usage |
-|----------|--------|---------|--------------|
-| `/api/user` | GET | Get current user | Edit Profile |
-| `/api/user` | PUT/PATCH | Update profile | Edit Profile |
-| `/api/addresses` | GET | List addresses | Addresses |
-| `/api/addresses` | POST | Create address | Addresses |
-| `/api/addresses/{id}` | PUT/PATCH | Update address | Addresses |
-| `/api/addresses/{id}` | DELETE | Delete address | Addresses |
-| `/api/password/change` | POST | Change password | Change Password |
-| `/api/password/forgot` | POST | Request reset | Forgot Password |
-| `/api/orders` | GET | List orders | Orders |
-
-**Note:** Verify these endpoints exist in the API project or create them as needed.
-
----
-
-## Cross-Reference with Requirements
-
-Based on supermemory knowledge, these missing pages may relate to:
-
-- **REQ 1.x** - User registration/authentication (Forgot Password relates to REQ 1.3)
-- **REQ 2.x** - Profile management (Edit Profile relates to REQ 2.1)
-- **REQ 3.x** - Order management (Orders page placeholder needs full implementation for REQ 3.1-3.4)
-- **UC-001 to UC-004** - User account use cases
 
 ---
 
 ## Next Steps
 
-1. Review existing API endpoints for user management
-2. Prioritize account management pages (profile, addresses, password)
-3. Implement full Orders page to replace placeholder
-4. Add Forgot Password flow for web users
-5. Create static legal pages (Terms, Privacy)
+1. **Create GitHub issues** for each missing page
+2. **Prioritize account sub-pages** (profile, addresses, password)
+3. **Implement routes and controllers** for missing functionality
+4. **Write tests** for each new page
+5. **Consider adding** Payment Methods page to mobile
+6. **Implement** order detail page in mobile
 
-**Estimated Effort:** 2-3 weeks for complete implementation
+---
+
+*Report generated by automated page comparison analysis*
