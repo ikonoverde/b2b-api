@@ -34,6 +34,8 @@ Route::get('/reset-password/{token}', function (string $token, Request $request)
     ->middleware('guest')
     ->name('password.reset');
 
+Route::get('/terms', fn () => Inertia::render('Terms'))->name('terms');
+
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'create'])->name('register');
     Route::post('/register', [RegisterController::class, 'store']);

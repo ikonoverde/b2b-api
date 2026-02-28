@@ -144,12 +144,27 @@ export default function Home({ auth, featuredProducts }: HomeProps) {
                         <span className="text-[#999999] font-[Outfit] text-sm">
                             © {new Date().getFullYear()} Ikono Verde. Todos los derechos reservados.
                         </span>
-                        <Link
-                            href="/login"
-                            className="text-[#5E7052] font-[Outfit] text-sm font-medium hover:underline"
-                        >
-                            Acceso Profesional
-                        </Link>
+                        <div className="flex items-center gap-4">
+                            <Link
+                                href="/terms"
+                                className="text-[#5E7052] font-[Outfit] text-sm font-medium hover:underline"
+                            >
+                                Términos
+                            </Link>
+                            <Link
+                                href="/privacy"
+                                className="text-[#5E7052] font-[Outfit] text-sm font-medium hover:underline"
+                            >
+                                Privacidad
+                            </Link>
+                            <span className="text-[#CCCCCC]">|</span>
+                            <Link
+                                href="/login"
+                                className="text-[#5E7052] font-[Outfit] text-sm font-medium hover:underline"
+                            >
+                                Acceso Profesional
+                            </Link>
+                        </div>
                     </div>
                 </footer>
             </div>
