@@ -116,7 +116,7 @@ export default function Account({ profile }: AccountProps) {
 
     const menuItems = [
         { icon: CreditCard, label: 'Datos de Facturación' },
-        { icon: MapPin, label: 'Direcciones de Envío' },
+        { icon: MapPin, label: 'Direcciones de Envío', href: '/account/addresses' },
         { icon: Users, label: 'Usuarios Autorizados' },
         { icon: Headphones, label: 'Soporte Comercial' },
         { icon: CreditCard, label: 'Métodos de Pago', href: '/account/payment-methods' },

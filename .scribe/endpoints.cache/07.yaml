@@ -316,3 +316,84 @@ endpoints:
     controller: null
     method: null
     route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/orders/{order_id}/invoice'
+    metadata:
+      custom: []
+      groupName: Orders
+      groupDescription: |-
+
+        APIs for order management
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Download Invoice'
+      description: |-
+        Download the invoice for a specific order as an HTML document that can be
+        printed or saved as PDF.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      order_id:
+        custom: []
+        name: order_id
+        description: 'The ID of the order.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      order:
+        custom: []
+        name: order
+        description: 'The ID of the order.'
+        required: true
+        example: '1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      order_id: 1
+      order: '1'
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: 'HTML invoice document'
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 403
+        content: '{"message": "Forbidden"}'
+        headers: []
+        description: 'Order belongs to different user'
+      -
+        custom: []
+        status: 404
+        content: '{"message": "Order not found"}'
+        headers: []
+        description: 'Order not found'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

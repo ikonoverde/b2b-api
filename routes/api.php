@@ -74,7 +74,7 @@ Route::prefix('orders')->middleware('auth:sanctum')->group(function () {
     Route::get('/{order}/invoice', DownloadInvoiceController::class);
 });
 
-Route::prefix('addresses')->middleware('auth:sanctum')->group(function () {
+Route::prefix('addresses')->middleware(['web', 'auth'])->group(function () {
     Route::get('/', GetAddressesController::class);
     Route::post('/', StoreAddressController::class);
     Route::put('/{address}', UpdateAddressController::class);
