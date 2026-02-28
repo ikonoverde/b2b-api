@@ -379,3 +379,87 @@ test('toggle active requires boolean is_active value', function () {
 
     $response->assertSessionHasErrors(['is_active']);
 });
+
+test('admin can search users by name', function () {
+    $admin = User::factory()->admin()->create();
+    $userA = User::factory()->create(['name' => 'Alice Smith']);
+    $userB = User::factory()->create(['name' => 'Bob Jones']);
+
+    $response = $this->actingAs($admin)->get('/admin/users?search=Alice');
+
+    $response->assertInertia(fn ($page) => $page
+        ->where('users.data', fn ($data) => count($data) === 1 && $data[0]['id'] === $userA->id)
+    );
+});
+
+test('admin can search users by email', function () {
+    $admin = User::factory()->admin()->create();
+    $userA = User::factory()->create(['email' => 'alice@example.com']);
+    $userB = User::factory()->create(['email' => 'bob@example.com']);
+
+    $response = $this->actingAs($admin)->get('/admin/users?search=alice@example.com');
+
+    $response->assertInertia(fn ($page) => $page
+        ->where('users.data', fn ($data) => count($data) === 1 && $data[0]['id'] === $userA->id)
+    );
+});
+
+test('search is case insensitive', function () {
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->create(['name' => 'John Doe']);
+
+    $response = $this->actingAs($admin)->get('/admin/users?search=john');
+
+    $response->assertInertia(fn ($page) => $page
+        ->where('users.data', fn ($data) => collect($data)->contains('id', $user->id))
+    );
+});
+
+test('search returns empty result when no matches', function () {
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->create(['name' => 'John Doe']);
+
+    $response = $this->actingAs($admin)->get('/admin/users?search=nonexistent');
+
+    $response->assertInertia(fn ($page) => $page
+        ->where('users.total', 0)
+        ->where('users.data', fn ($data) => count($data) === 0)
+    );
+});
+
+test('admin can send password reset email', function () {
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->create(['email' => 'user@example.com']);
+
+    $response = $this->actingAs($admin)->post("/admin/users/{$user->id}/send-password-reset");
+
+    $response->assertInertia(fn ($page) => $page
+        ->where('flash.success', 'Se ha enviado un correo de restablecimiento de contraseña al usuario.')
+    );
+});
+
+test('super_admin can send password reset email', function () {
+    $superAdmin = User::factory()->superAdmin()->create();
+    $user = User::factory()->create(['email' => 'user@example.com']);
+
+    $response = $this->actingAs($superAdmin)->post("/admin/users/{$user->id}/send-password-reset");
+
+    $response->assertSuccessful();
+});
+
+test('customer cannot send password reset email', function () {
+    $customer = User::factory()->create();
+    $user = User::factory()->create(['email' => 'user@example.com']);
+
+    $response = $this->actingAs($customer)->post("/admin/users/{$user->id}/send-password-reset");
+
+    $response->assertForbidden();
+});
+
+test('unauthenticated user cannot send password reset email', function () {
+    $user = User::factory()->create(['email' => 'user@example.com']);
+
+    $response = $this->post("/admin/users/{$user->id}/send-password-reset");
+
+    $response->assertRedirect('/admin/login');
+});

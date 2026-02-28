@@ -38,6 +38,8 @@ Route::middleware('auth')->group(function () {
         Route::patch('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.update-role');
         Route::patch('/users/{user}/toggle-active', [UserController::class, 'toggleActive'])
             ->name('users.toggle-active');
+        Route::post('/users/{user}/send-password-reset', [UserController::class, 'sendPasswordReset'])
+            ->name('users.send-password-reset');
 
         Route::get('/orders', [OrderController::class, 'index'])->name('orders');
         Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');

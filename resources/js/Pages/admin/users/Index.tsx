@@ -4,8 +4,10 @@ import {
     ChevronLeft,
     ChevronRight,
     ArrowUpDown,
+    Search,
 } from 'lucide-react';
 import type { PageProps } from '@/types';
+import { useState, useEffect } from 'react';
 
 interface User {
     id: number;
@@ -61,12 +63,17 @@ function handleSort(field: string): void {
     const params = new URLSearchParams(window.location.search);
     const currentSortBy = params.get('sort_by') || 'created_at';
     const currentSortOrder = params.get('sort_order') || 'desc';
+    const search = params.get('search') || '';
 
     if (currentSortBy === field) {
         params.set('sort_order', currentSortOrder === 'asc' ? 'desc' : 'asc');
     } else {
         params.set('sort_by', field);
         params.set('sort_order', 'desc');
+    }
+
+    if (search) {
+        params.set('search', search);
     }
 
     window.location.href = `${window.location.pathname}?${params.toString()}`;
@@ -164,6 +171,25 @@ function Pagination({ users }: { users: UsersData }) {
 
 export default function UsersIndex() {
     const { users } = usePage<Props>().props;
+    const [searchQuery, setSearchQuery] = useState('');
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const search = params.get('search') || '';
+        setSearchQuery(search);
+    }, []);
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        const params = new URLSearchParams(window.location.search);
+        if (searchQuery) {
+            params.set('search', searchQuery);
+        } else {
+            params.delete('search');
+        }
+        params.set('page', '1');
+        window.location.href = `${window.location.pathname}?${params.toString()}`;
+    };
 
     return (
         <AppLayout title="Usuarios" active="users">
@@ -178,6 +204,33 @@ export default function UsersIndex() {
                         </p>
                     </div>
                 </div>
+
+                <form onSubmit={handleSearch} className="flex gap-3">
+                    <div className="relative flex-1 max-w-md">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#999999]" />
+                        <input
+                            type="text"
+                            placeholder="Buscar por nombre o email..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full h-11 pl-10 pr-4 bg-white rounded-xl border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        className="px-5 py-2.5 bg-[#4A5D4A] rounded-xl text-sm font-medium text-white font-[Outfit] hover:bg-[#3d4d3d] transition-colors"
+                    >
+                        Buscar
+                    </button>
+                    {searchQuery && (
+                        <Link
+                            href="/admin/users"
+                            className="px-5 py-2.5 rounded-xl border border-[#E5E5E5] text-sm font-medium text-[#1A1A1A] font-[Outfit] hover:bg-gray-50 transition-colors"
+                        >
+                            Limpiar
+                        </Link>
+                    )}
+                </form>
 
                 <div className="bg-white rounded-xl border border-[#E5E5E5] overflow-hidden">
                     <table className="w-full">
@@ -201,7 +254,9 @@ export default function UsersIndex() {
 
                     {users.data.length === 0 && (
                         <div className="flex flex-col items-center justify-center py-12">
-                            <p className="text-sm text-[#666666]">No hay usuarios registrados</p>
+                            <p className="text-sm text-[#666666]">
+                                {searchQuery ? 'No se encontraron usuarios que coincidan con la búsqueda' : 'No hay usuarios registrados'}
+                            </p>
                         </div>
                     )}
 

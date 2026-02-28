@@ -17,6 +17,8 @@ import {
     Check,
     Power,
     AlertTriangle,
+    Key,
+    CheckCircle,
 } from 'lucide-react';
 import { useState, FormEvent } from 'react';
 import type { PageProps } from '@/types';
@@ -110,6 +112,46 @@ const getPaymentStatusColor = (status: string): string => {
     };
     return colors[status] || 'bg-gray-100 text-gray-800';
 };
+
+function PasswordResetCard({
+    user,
+    onOpenPasswordResetModal,
+}: {
+    user: DetailedUser;
+    onOpenPasswordResetModal: () => void;
+}) {
+    return (
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
+            <div className="px-6 py-5 border-b border-[#E5E5E5]">
+                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+                    Restablecer Contraseña
+                </h2>
+            </div>
+            <div className="p-6 flex flex-col gap-4">
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
+                        <Key className="w-5 h-5 text-amber-600" />
+                    </div>
+                    <div className="flex-1">
+                        <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                            Enviar Email de Restablecimiento
+                        </span>
+                        <p className="text-xs text-[#666666] font-[Outfit]">
+                            El usuario recibirá un email con un enlace para crear una nueva contraseña.
+                        </p>
+                    </div>
+                </div>
+
+                <button
+                    onClick={onOpenPasswordResetModal}
+                    className="w-full px-4 py-2.5 bg-amber-600 rounded-lg text-sm font-medium text-white font-[Outfit] hover:bg-amber-700 transition-colors"
+                >
+                    Enviar Email de Restablecimiento
+                </button>
+            </div>
+        </div>
+    );
+}
 
 function PersonalInfoCard({ user }: { user: DetailedUser }) {
     return (
@@ -736,6 +778,69 @@ function StatusChangeModal({
     );
 }
 
+function PasswordResetModal({
+    user,
+    processing,
+    onClose,
+    onSubmit,
+}: {
+    user: DetailedUser;
+    processing: boolean;
+    onClose: () => void;
+    onSubmit: (e: FormEvent) => void;
+}) {
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+            <div className="bg-white rounded-2xl shadow-xl w-full max-w-md">
+                <div className="px-6 py-5 border-b border-[#E5E5E5] flex items-center justify-between">
+                    <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+                        Enviar Email de Restablecimiento
+                    </h2>
+                    <button
+                        onClick={onClose}
+                        className="p-1.5 text-[#999999] hover:text-[#666666] hover:bg-gray-100 rounded-lg transition-colors"
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
+                </div>
+
+                <form onSubmit={onSubmit} className="p-6 flex flex-col gap-5">
+                    <div className="flex items-start gap-3 p-4 bg-amber-50 rounded-xl border border-amber-200">
+                        <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                        <p className="text-sm text-amber-800 font-[Outfit]">
+                            ¿Estás seguro de que deseas enviar un email de restablecimiento de contraseña a {user.name}? El usuario recibirá un enlace para crear una nueva contraseña.
+                        </p>
+                    </div>
+
+                    <div className="flex items-center justify-end gap-3 pt-2">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="px-5 py-2.5 rounded-lg border border-[#E5E5E5] text-sm font-medium text-[#1A1A1A] font-[Outfit] hover:bg-gray-50 transition-colors"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            type="submit"
+                            disabled={processing}
+                            className="flex items-center gap-2 px-5 py-2.5 bg-amber-600 rounded-lg text-sm font-medium text-white font-[Outfit] hover:bg-amber-700 transition-colors disabled:opacity-50"
+                        >
+                            {processing ? (
+                                <span>Enviando...</span>
+                            ) : (
+                                <>
+                                    <Mail className="w-4 h-4" />
+                                    <span>Confirmar Envío</span>
+                                </>
+                            )}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+}
+
 export default function UserShow() {
     const { user, orders, activity, auth } = usePage<Props>().props;
     const [showRoleModal, setShowRoleModal] = useState(false);
@@ -750,6 +855,9 @@ export default function UserShow() {
     const { setData: setStatusData, patch: patchStatus, processing: statusProcessing } = useForm({
         is_active: user.is_active,
     });
+
+    const { post: postPasswordReset, processing: passwordResetProcessing } = useForm({});
+    const [showPasswordResetModal, setShowPasswordResetModal] = useState(false);
 
     const canAssignAdminRoles = auth.user?.role === 'super_admin';
     const isSelf = auth.user?.id === user.id;
@@ -785,6 +893,19 @@ export default function UserShow() {
                 },
             });
         }
+    };
+
+    const handlePasswordResetSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        postPasswordReset(`/admin/users/${user.id}/send-password-reset`, {
+            onSuccess: () => {
+                setShowPasswordResetModal(false);
+            },
+        });
+    };
+
+    const openPasswordResetModal = () => {
+        setShowPasswordResetModal(true);
     };
 
     return (
@@ -830,6 +951,13 @@ export default function UserShow() {
                             />
                         )}
 
+                        {!isSelf && (
+                            <PasswordResetCard
+                                user={user}
+                                onOpenPasswordResetModal={openPasswordResetModal}
+                            />
+                        )}
+
                         {(user.pm_type || user.pm_last_four) && (
                             <PaymentMethodCard user={user} />
                         )}
@@ -865,6 +993,15 @@ export default function UserShow() {
                     statusProcessing={statusProcessing}
                     onClose={() => setShowStatusModal(false)}
                     onSubmit={handleStatusSubmit}
+                />
+            )}
+
+            {showPasswordResetModal && (
+                <PasswordResetModal
+                    user={user}
+                    processing={passwordResetProcessing}
+                    onClose={() => setShowPasswordResetModal(false)}
+                    onSubmit={handlePasswordResetSubmit}
                 />
             )}
         </AppLayout>
