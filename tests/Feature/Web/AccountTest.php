@@ -36,3 +36,14 @@ it('shows correct stats', function () {
         ->where('profile.total_spent', 300)
     );
 });
+
+it('shows password change menu option', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get('/account');
+
+    $response->assertSuccessful()
+        ->assertInertia(fn ($page) => $page
+            ->component('Account')
+        );
+});
