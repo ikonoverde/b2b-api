@@ -11,7 +11,6 @@ import {
     MapPin,
     Package,
     Percent,
-    Users,
     X,
 } from 'lucide-react';
 import CustomerLayout from '@/Layouts/CustomerLayout';
@@ -117,7 +116,6 @@ export default function Account({ profile }: AccountProps) {
     const menuItems = [
         { icon: CreditCard, label: 'Datos de Facturación' },
         { icon: MapPin, label: 'Direcciones de Envío', href: '/account/addresses' },
-        { icon: Users, label: 'Usuarios Autorizados' },
         { icon: Headphones, label: 'Soporte Comercial' },
         { icon: CreditCard, label: 'Métodos de Pago', href: '/account/payment-methods' },
         { icon: KeyRound, label: 'Cambiar Contraseña', onClick: () => setShowPasswordModal(true) },

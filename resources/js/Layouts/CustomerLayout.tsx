@@ -2,6 +2,7 @@ import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Leaf, Menu, ShoppingCart, User, X, LogOut } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 import type { PageProps } from '@/types';
+import {Agentation} from "agentation";
 
 interface CustomerLayoutProps {
     children: ReactNode;
@@ -198,6 +199,7 @@ export default function CustomerLayout({ children, title }: CustomerLayoutProps)
                     </div>
                 </footer>
             </div>
+            <Agentation />
         </>
     );
 }
