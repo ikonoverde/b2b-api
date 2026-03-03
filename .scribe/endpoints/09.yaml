@@ -1,26 +1,23 @@
-name: 'Payment Methods'
+name: Addresses
 description: |-
 
-  Manage saved Stripe payment methods for authenticated users.
+  APIs for managing saved addresses
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/payment-methods
+    uri: api/addresses
     metadata:
       custom: []
-      groupName: 'Payment Methods'
+      groupName: Addresses
       groupDescription: |-
 
-        Manage saved Stripe payment methods for authenticated users.
+        APIs for managing saved addresses
       subgroup: ''
       subgroupDescription: ''
-      title: 'List saved payment methods'
-      description: |-
-        Returns a list of all saved payment methods for the authenticated user.
-        Includes card details (brand, last 4 digits, expiration date) and indicates
-        which method is the default.
+      title: 'List Addresses'
+      description: 'Retrieve all saved addresses for the authenticated user.'
       authenticated: true
       deprecated: false
     headers:
@@ -39,21 +36,33 @@ endpoints:
         custom: []
         status: 200
         content: |-
-          [
-            {
-              "id": "pm_1234567890",
-              "type": "card",
-              "card": {
-                "brand": "visa",
-                "last4": "4242",
-                "exp_month": 12,
-                "exp_year": 2025
-              },
-              "is_default": true
-            }
-          ]
+          {
+            "data": [
+              {
+                "id": 1,
+                "label": "Oficina Principal",
+                "name": "Juan Pérez",
+                "address_line_1": "Av. Reforma 222",
+                "address_line_2": "Piso 3, Oficina 301",
+                "city": "Ciudad de México",
+                "state": "CDMX",
+                "postal_code": "06600",
+                "phone": "5551234567",
+                "is_default": true,
+                "country": "MX",
+                "created_at": "2026-02-24T00:00:00.000000Z",
+                "updated_at": "2026-02-24T00:00:00.000000Z"
+              }
+            ]
+          }
         headers: []
         description: Success
+      -
+        custom: []
+        status: 200
+        content: '{"data": []}'
+        headers: []
+        description: 'No addresses'
     responseFields: []
     auth:
       - headers
@@ -66,20 +75,15 @@ endpoints:
     custom: []
     httpMethods:
       - POST
-    uri: api/payment-methods
+    uri: api/addresses
     metadata:
       custom: []
-      groupName: 'Payment Methods'
-      groupDescription: |-
-
-        Manage saved Stripe payment methods for authenticated users.
+      groupName: Addresses
+      groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Add a new payment method'
-      description: |-
-        Adds a new payment method to the user's account using a Stripe PaymentMethod ID
-        obtained via Stripe Elements on the frontend. The payment method is attached to
-        the user's Stripe customer account.
+      title: 'Create Address'
+      description: 'Store a new saved address for the authenticated user.'
       authenticated: true
       deprecated: false
     headers:
@@ -91,59 +95,147 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      payment_method_id:
+      label:
         custom: []
-        name: payment_method_id
-        description: 'The Stripe PaymentMethod ID obtained from Stripe Elements.'
+        name: label
+        description: 'A short label for the address. Must not be greater than 100 characters.'
         required: true
-        example: pm_1234567890
+        example: 'Oficina Principal'
         type: string
         enumValues: []
-        exampleWasSpecified: true
+        exampleWasSpecified: false
         nullable: false
         deprecated: false
-      set_as_default:
+      name:
         custom: []
-        name: set_as_default
-        description: 'Whether to set this as the default payment method.'
+        name: name
+        description: 'Full recipient name. Must not be greater than 255 characters.'
+        required: true
+        example: 'Juan Pérez'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      address_line_1:
+        custom: []
+        name: address_line_1
+        description: 'Primary street address. Must not be greater than 255 characters.'
+        required: true
+        example: 'Av. Reforma 222'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      address_line_2:
+        custom: []
+        name: address_line_2
+        description: 'Suite, apt, floor (optional). Must not be greater than 255 characters.'
         required: false
-        example: true
+        example: 'Piso 3, Oficina 301'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      city:
+        custom: []
+        name: city
+        description: 'City. Must not be greater than 255 characters.'
+        required: true
+        example: 'Ciudad de México'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      state:
+        custom: []
+        name: state
+        description: 'State. Must not be greater than 255 characters.'
+        required: true
+        example: CDMX
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      postal_code:
+        custom: []
+        name: postal_code
+        description: 'Postal code. Must not be greater than 10 characters.'
+        required: true
+        example: '06600'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      phone:
+        custom: []
+        name: phone
+        description: 'Contact phone number. Must not be greater than 20 characters.'
+        required: true
+        example: '5551234567'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      is_default:
+        custom: []
+        name: is_default
+        description: 'Set as default address. Unsets all other defaults.'
+        required: false
+        example: false
         type: boolean
         enumValues: []
-        exampleWasSpecified: true
+        exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      payment_method_id: pm_1234567890
-      set_as_default: true
+      label: 'Oficina Principal'
+      name: 'Juan Pérez'
+      address_line_1: 'Av. Reforma 222'
+      address_line_2: 'Piso 3, Oficina 301'
+      city: 'Ciudad de México'
+      state: CDMX
+      postal_code: '06600'
+      phone: '5551234567'
+      is_default: false
     fileParameters: []
     responses:
       -
         custom: []
-        status: 200
+        status: 201
         content: |-
           {
-            "message": "Método de pago agregado exitosamente.",
-            "payment_method": {
-              "id": "pm_1234567890",
-              "type": "card",
-              "card": {
-                "brand": "visa",
-                "last4": "4242",
-                "exp_month": 12,
-                "exp_year": 2025
-              },
-              "is_default": true
+            "data": {
+              "id": 1,
+              "label": "Oficina Principal",
+              "name": "Juan Pérez",
+              "address_line_1": "Av. Reforma 222",
+              "address_line_2": "Piso 3, Oficina 301",
+              "city": "Ciudad de México",
+              "state": "CDMX",
+              "postal_code": "06600",
+              "phone": "5551234567",
+              "is_default": true,
+              "country": "MX",
+              "created_at": "2026-02-24T00:00:00.000000Z",
+              "updated_at": "2026-02-24T00:00:00.000000Z"
             }
           }
         headers: []
-        description: 'Success created'
+        description: Success
       -
         custom: []
         status: 422
         content: |-
           {
-            "message": "El ID del método de pago es requerido."
+            "message": "The label field is required.",
+            "errors": {"label": ["The label field is required."]}
           }
         headers: []
         description: 'Validation error'
@@ -158,68 +250,16 @@ endpoints:
   -
     custom: []
     httpMethods:
-      - GET
-    uri: api/payment-methods/stripe-key
+      - PUT
+    uri: 'api/addresses/{address_id}'
     metadata:
       custom: []
-      groupName: 'Payment Methods'
-      groupDescription: |-
-
-        Manage saved Stripe payment methods for authenticated users.
+      groupName: Addresses
+      groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Get Stripe publishable key'
-      description: |-
-        Returns the Stripe publishable key needed to initialize Stripe Elements
-        on the frontend for securely collecting card information.
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "key": "pk_test_1234567890"
-          }
-        headers: []
-        description: Success
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - PATCH
-    uri: 'api/payment-methods/{payment_method}/default'
-    metadata:
-      custom: []
-      groupName: 'Payment Methods'
-      groupDescription: |-
-
-        Manage saved Stripe payment methods for authenticated users.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Set default payment method'
-      description: |-
-        Sets the specified payment method as the default for the user's account.
-        The default payment method is used for future invoices and subscriptions.
+      title: 'Update Address'
+      description: 'Update an existing saved address for the authenticated user.'
       authenticated: true
       deprecated: false
     headers:
@@ -227,23 +267,142 @@ endpoints:
       Content-Type: application/json
       Accept: application/json
     urlParameters:
-      payment_method:
+      address_id:
         custom: []
-        name: payment_method
-        description: 'The Stripe PaymentMethod ID.'
+        name: address_id
+        description: 'The ID of the address.'
         required: true
-        example: pm_1234567890
-        type: string
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      address:
+        custom: []
+        name: address
+        description: 'The ID of the address.'
+        required: true
+        example: 1
+        type: integer
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      payment_method: pm_1234567890
+      address_id: 1
+      address: 1
     queryParameters: []
     cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
+    bodyParameters:
+      label:
+        custom: []
+        name: label
+        description: 'A short label for the address. Must not be greater than 100 characters.'
+        required: true
+        example: Bodega
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      name:
+        custom: []
+        name: name
+        description: 'Full recipient name. Must not be greater than 255 characters.'
+        required: true
+        example: 'María López'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      address_line_1:
+        custom: []
+        name: address_line_1
+        description: 'Primary street address. Must not be greater than 255 characters.'
+        required: true
+        example: 'Calle Industrial 45'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      address_line_2:
+        custom: []
+        name: address_line_2
+        description: 'Suite, apt, floor (optional). Must not be greater than 255 characters.'
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      city:
+        custom: []
+        name: city
+        description: 'City. Must not be greater than 255 characters.'
+        required: true
+        example: Monterrey
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      state:
+        custom: []
+        name: state
+        description: 'State. Must not be greater than 255 characters.'
+        required: true
+        example: 'Nuevo León'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      postal_code:
+        custom: []
+        name: postal_code
+        description: 'Postal code. Must not be greater than 10 characters.'
+        required: true
+        example: '64000'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      phone:
+        custom: []
+        name: phone
+        description: 'Contact phone number. Must not be greater than 20 characters.'
+        required: true
+        example: '8187654321'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      is_default:
+        custom: []
+        name: is_default
+        description: 'Set as default address.'
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      label: Bodega
+      name: 'María López'
+      address_line_1: 'Calle Industrial 45'
+      city: Monterrey
+      state: 'Nuevo León'
+      postal_code: '64000'
+      phone: '8187654321'
+      is_default: false
     fileParameters: []
     responses:
       -
@@ -251,17 +410,34 @@ endpoints:
         status: 200
         content: |-
           {
-            "message": "Método de pago predeterminado actualizado exitosamente."
+            "data": {
+              "id": 1,
+              "label": "Bodega",
+              "name": "María López",
+              "address_line_1": "Calle Industrial 45",
+              "address_line_2": null,
+              "city": "Monterrey",
+              "state": "Nuevo León",
+              "postal_code": "64000",
+              "phone": "8187654321",
+              "is_default": false,
+              "country": "MX",
+              "created_at": "2026-02-24T00:00:00.000000Z",
+              "updated_at": "2026-02-24T00:00:00.000000Z"
+            }
           }
         headers: []
         description: Success
       -
         custom: []
+        status: 403
+        content: '{"message": "Forbidden"}'
+        headers: []
+        description: 'Belongs to another user'
+      -
+        custom: []
         status: 404
-        content: |-
-          {
-            "message": "Método de pago no encontrado."
-          }
+        content: '{"message": "Not Found"}'
         headers: []
         description: 'Not found'
     responseFields: []
@@ -276,19 +452,17 @@ endpoints:
     custom: []
     httpMethods:
       - DELETE
-    uri: 'api/payment-methods/{payment_method}'
+    uri: 'api/addresses/{address_id}'
     metadata:
       custom: []
-      groupName: 'Payment Methods'
-      groupDescription: |-
-
-        Manage saved Stripe payment methods for authenticated users.
+      groupName: Addresses
+      groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Remove a payment method'
+      title: 'Delete Address'
       description: |-
-        Deletes a saved payment method from the user's account. Cannot delete the
-        default payment method unless it's the only one remaining.
+        Delete a saved address. If the deleted address was the default,
+        the most recently created remaining address becomes the new default.
       authenticated: true
       deprecated: false
     headers:
@@ -296,19 +470,31 @@ endpoints:
       Content-Type: application/json
       Accept: application/json
     urlParameters:
-      payment_method:
+      address_id:
         custom: []
-        name: payment_method
-        description: 'The Stripe PaymentMethod ID.'
+        name: address_id
+        description: 'The ID of the address.'
         required: true
-        example: pm_1234567890
-        type: string
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      address:
+        custom: []
+        name: address
+        description: 'The ID of the address.'
+        required: true
+        example: 1
+        type: integer
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      payment_method: pm_1234567890
+      address_id: 1
+      address: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -317,29 +503,20 @@ endpoints:
     responses:
       -
         custom: []
-        status: 200
-        content: |-
-          {
-            "message": "Método de pago eliminado exitosamente."
-          }
+        status: 204
+        content: ''
         headers: []
-        description: 'Success deleted'
+        description: Deleted
       -
         custom: []
-        status: 400
-        content: |-
-          {
-            "message": "No se puede eliminar el método de pago predeterminado. Establezca otro método como predeterminado primero."
-          }
+        status: 403
+        content: '{"message": "Forbidden"}'
         headers: []
-        description: 'Cannot delete default'
+        description: 'Belongs to another user'
       -
         custom: []
         status: 404
-        content: |-
-          {
-            "message": "Método de pago no encontrado."
-          }
+        content: '{"message": "Not Found"}'
         headers: []
         description: 'Not found'
     responseFields: []

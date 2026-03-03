@@ -161,6 +161,19 @@
                             </li>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-notification-preferences" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="notification-preferences">
+                    <a href="#notification-preferences">Notification Preferences</a>
+                </li>
+                                    <ul id="tocify-subheader-notification-preferences" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="notification-preferences-GETapi-notification-preferences">
+                                <a href="#notification-preferences-GETapi-notification-preferences">Get Notification Preferences</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="notification-preferences-PUTapi-notification-preferences">
+                                <a href="#notification-preferences-PUTapi-notification-preferences">Update Notification Preferences</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
                     <ul id="tocify-header-orders" class="tocify-header">
                 <li class="tocify-item level-1" data-unique="orders">
                     <a href="#orders">Orders</a>
@@ -250,7 +263,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: February 28, 2026</li>
+        <li>Last updated: March 3, 2026</li>
     </ul>
 </div>
 
@@ -4435,6 +4448,389 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>This field is required when <code>shipping_address</code> is present. Must not be greater than 255 characters. Example: <code>USA</code></p>
                     </div>
                                     </details>
+        </div>
+        </form>
+
+                <h1 id="notification-preferences">Notification Preferences</h1>
+
+    <p>APIs for managing notification preferences</p>
+
+                                <h2 id="notification-preferences-GETapi-notification-preferences">Get Notification Preferences</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Retrieve the authenticated user's notification preferences.</p>
+
+<span id="example-requests-GETapi-notification-preferences">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://192.168.0.193:8000/api/notification-preferences" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://192.168.0.193:8000/api/notification-preferences"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-notification-preferences">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;notify_order_updates&quot;: true,
+        &quot;notify_promotional_emails&quot;: false,
+        &quot;notify_newsletter&quot;: false
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401, Unauthenticated):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-notification-preferences" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-notification-preferences"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-notification-preferences"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-notification-preferences" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-notification-preferences">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-notification-preferences" data-method="GET"
+      data-path="api/notification-preferences"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-notification-preferences', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-notification-preferences"
+                    onclick="tryItOut('GETapi-notification-preferences');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-notification-preferences"
+                    onclick="cancelTryOut('GETapi-notification-preferences');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-notification-preferences"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/notification-preferences</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-notification-preferences"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-notification-preferences"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-notification-preferences"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+                    <h2 id="notification-preferences-PUTapi-notification-preferences">Update Notification Preferences</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Update the authenticated user's notification preferences. All fields are optional.</p>
+
+<span id="example-requests-PUTapi-notification-preferences">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PUT \
+    "http://192.168.0.193:8000/api/notification-preferences" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"notify_order_updates\": false,
+    \"notify_promotional_emails\": false,
+    \"notify_newsletter\": false
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://192.168.0.193:8000/api/notification-preferences"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "notify_order_updates": false,
+    "notify_promotional_emails": false,
+    "notify_newsletter": false
+};
+
+fetch(url, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-PUTapi-notification-preferences">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;notify_order_updates&quot;: true,
+        &quot;notify_promotional_emails&quot;: false,
+        &quot;notify_newsletter&quot;: true
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422, Validation error):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The notify order updates field must be true or false.&quot;,
+    &quot;errors&quot;: {
+        &quot;notify_order_updates&quot;: [
+            &quot;The notify order updates field must be true or false.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-PUTapi-notification-preferences" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PUTapi-notification-preferences"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PUTapi-notification-preferences"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PUTapi-notification-preferences" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PUTapi-notification-preferences">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PUTapi-notification-preferences" data-method="PUT"
+      data-path="api/notification-preferences"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PUTapi-notification-preferences', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PUTapi-notification-preferences"
+                    onclick="tryItOut('PUTapi-notification-preferences');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PUTapi-notification-preferences"
+                    onclick="cancelTryOut('PUTapi-notification-preferences');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PUTapi-notification-preferences"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-darkblue">PUT</small>
+            <b><code>api/notification-preferences</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="PUTapi-notification-preferences"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="PUTapi-notification-preferences"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="PUTapi-notification-preferences"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>notify_order_updates</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="PUTapi-notification-preferences" style="display: none">
+            <input type="radio" name="notify_order_updates"
+                   value="true"
+                   data-endpoint="PUTapi-notification-preferences"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="PUTapi-notification-preferences" style="display: none">
+            <input type="radio" name="notify_order_updates"
+                   value="false"
+                   data-endpoint="PUTapi-notification-preferences"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Receive order status notifications. Example: <code>false</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>notify_promotional_emails</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="PUTapi-notification-preferences" style="display: none">
+            <input type="radio" name="notify_promotional_emails"
+                   value="true"
+                   data-endpoint="PUTapi-notification-preferences"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="PUTapi-notification-preferences" style="display: none">
+            <input type="radio" name="notify_promotional_emails"
+                   value="false"
+                   data-endpoint="PUTapi-notification-preferences"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Receive promotional emails. Example: <code>false</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>notify_newsletter</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="PUTapi-notification-preferences" style="display: none">
+            <input type="radio" name="notify_newsletter"
+                   value="true"
+                   data-endpoint="PUTapi-notification-preferences"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="PUTapi-notification-preferences" style="display: none">
+            <input type="radio" name="notify_newsletter"
+                   value="false"
+                   data-endpoint="PUTapi-notification-preferences"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Receive newsletter emails. Example: <code>false</code></p>
         </div>
         </form>
 

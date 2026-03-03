@@ -21,6 +21,8 @@ use App\Http\Controllers\Checkout\ConfirmPaymentController;
 use App\Http\Controllers\Checkout\CreateCheckoutController;
 use App\Http\Controllers\Checkout\VerifyCheckoutController;
 use App\Http\Controllers\FeaturedProductsController;
+use App\Http\Controllers\NotificationPreferences\GetNotificationPreferencesController;
+use App\Http\Controllers\NotificationPreferences\UpdateNotificationPreferencesController;
 use App\Http\Controllers\Orders\DownloadInvoiceController;
 use App\Http\Controllers\Orders\GetOrderController;
 use App\Http\Controllers\Orders\GetOrdersController;
@@ -73,6 +75,9 @@ Route::prefix('orders')->middleware('auth:sanctum')->group(function () {
     Route::post('/{order}/reorder', ReorderController::class);
     Route::get('/{order}/invoice', DownloadInvoiceController::class);
 });
+
+Route::get('/notification-preferences', GetNotificationPreferencesController::class)->middleware('auth:sanctum');
+Route::put('/notification-preferences', UpdateNotificationPreferencesController::class)->middleware('auth:sanctum');
 
 Route::prefix('addresses')->middleware(['web', 'auth'])->group(function () {
     Route::get('/', GetAddressesController::class);
