@@ -459,9 +459,6 @@ export default () => (
     - Max accepted cognitive/complex: 20
     - Refactor anything above those limits to lower the complexity
 
-## GIT
-- For all git and/or GitHub operations use gh
-
 ## Credentials for dev testing
 - **username**: moeric@gmail.com
 - **password**: 42ekwN8tGIMv
