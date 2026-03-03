@@ -55,7 +55,7 @@ export interface PageProps {
     auth: {
         user: User | null;
     };
-    cartItemCount: number;
+    miniCart: MiniCart | null;
     flash: {
         success?: string;
         error?: string;
@@ -71,6 +71,14 @@ export interface CartItem {
     price: number;
     quantity: number;
     subtotal: number;
+}
+
+export type MiniCartItem = Omit<CartItem, 'product_id'>;
+
+export interface MiniCart {
+    items: MiniCartItem[];
+    subtotal: number;
+    totalCount: number;
 }
 
 export interface CartTotals {

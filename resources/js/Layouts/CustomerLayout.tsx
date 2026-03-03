@@ -3,6 +3,7 @@ import { Leaf, Menu, ShoppingCart, User, X, LogOut } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 import type { PageProps } from '@/types';
 import {Agentation} from "agentation";
+import MiniCart from '@/Components/MiniCart';
 
 interface CustomerLayoutProps {
     children: ReactNode;
@@ -10,7 +11,8 @@ interface CustomerLayoutProps {
 }
 
 export default function CustomerLayout({ children, title }: CustomerLayoutProps) {
-    const { auth, cartItemCount } = usePage<PageProps>().props;
+    const { auth, miniCart } = usePage<PageProps>().props;
+    const cartItemCount = miniCart?.totalCount ?? 0;
     const user = auth.user;
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const { post, processing } = useForm({});
@@ -69,10 +71,15 @@ export default function CustomerLayout({ children, title }: CustomerLayoutProps)
                         <div className="flex items-center gap-3">
                             {user ? (
                                 <>
-                                    {/* Cart */}
+                                    {/* Cart - Desktop: mini cart dropdown, Mobile: link to /cart */}
+                                    <div className="hidden md:block">
+                                        <MiniCart
+                                            miniCart={miniCart ?? { items: [], subtotal: 0, totalCount: 0 }}
+                                        />
+                                    </div>
                                     <Link
                                         href="/cart"
-                                        className="relative p-2 text-white/80 hover:text-white transition-colors"
+                                        className="md:hidden relative p-2 text-white/80 hover:text-white transition-colors"
                                     >
                                         <ShoppingCart className="w-5 h-5" />
                                         {cartItemCount > 0 && (

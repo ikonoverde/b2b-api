@@ -114,6 +114,28 @@ it('returns existing cart when cart has non-active status', function () {
         ->assertInertia(fn ($page) => $page->component('Cart'));
 });
 
+it('does not add items to a completed cart', function () {
+    $user = User::factory()->create();
+    Cart::factory()->create(['user_id' => $user->id, 'status' => 'completed']);
+    $product = Product::factory()->create(['price' => 30.00]);
+
+    $response = $this->actingAs($user)->post('/cart/items', [
+        'product_id' => $product->id,
+        'quantity' => 1,
+    ]);
+
+    $response->assertRedirect();
+    $response->assertSessionHas('success');
+
+    // Item should be in a new active cart, not the completed one
+    $activeCart = Cart::where('user_id', $user->id)->where('status', 'active')->first();
+    expect($activeCart)->not->toBeNull();
+    expect($activeCart->items)->toHaveCount(1);
+
+    $completedCart = Cart::where('user_id', $user->id)->where('status', 'completed')->first();
+    expect($completedCart->items)->toHaveCount(0);
+});
+
 it('prevents updating another user cart item', function () {
     $user = User::factory()->create();
     $otherUser = User::factory()->create();

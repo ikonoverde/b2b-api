@@ -113,8 +113,7 @@ class CartController extends Controller
     private function getOrCreateCart(Request $request): Cart
     {
         return Cart::firstOrCreate(
-            ['user_id' => $request->user()->id],
-            ['status' => 'active'],
+            ['user_id' => $request->user()->id, 'status' => 'active'],
         );
     }
 }

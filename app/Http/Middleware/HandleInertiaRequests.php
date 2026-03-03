@@ -41,16 +41,41 @@ class HandleInertiaRequests extends Middleware
                     'initials' => $this->getInitials($user->name),
                 ] : null,
             ],
-            'cartItemCount' => fn () => $user
-                ? Cart::where('user_id', $user->id)
-                    ->where('status', 'active')
-                    ->withCount('items')
-                    ->first()?->items_count ?? 0
-                : 0,
+            'miniCart' => fn () => $user ? $this->getMiniCart($user) : null,
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),
             ],
+        ];
+    }
+
+    /**
+     * Get mini cart data for the header dropdown.
+     */
+    private function getMiniCart(\App\Models\User $user): array
+    {
+        $cart = Cart::where('user_id', $user->id)
+            ->where('status', 'active')
+            ->with('items.product.images')
+            ->first();
+
+        if (! $cart || $cart->items->isEmpty()) {
+            return ['items' => [], 'subtotal' => 0, 'totalCount' => 0];
+        }
+
+        $recentItems = $cart->items->sortByDesc('created_at')->take(3);
+
+        return [
+            'items' => $recentItems->map(fn ($item) => [
+                'id' => $item->id,
+                'name' => $item->product->name,
+                'image' => $item->product->images->first()?->image_url,
+                'price' => (float) $item->unit_price,
+                'quantity' => $item->quantity,
+                'subtotal' => $item->subtotal,
+            ])->values()->all(),
+            'subtotal' => round($cart->items->sum(fn ($item) => $item->subtotal), 2),
+            'totalCount' => $cart->items->count(),
         ];
     }
 
