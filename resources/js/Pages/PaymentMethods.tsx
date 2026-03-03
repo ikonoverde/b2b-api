@@ -14,21 +14,10 @@ import { loadStripe, type Stripe, type StripeCardElement } from '@stripe/stripe-
 import { useEffect, useRef, useState } from 'react';
 import CustomerLayout from '@/Layouts/CustomerLayout';
 import type { PaymentMethod } from '@/types';
+import { apiFetch } from '@/utils/api';
 
 interface PaymentMethodsProps {
     stripe_key: string;
-}
-
-function getCsrfToken(): string | null {
-    const match = document.cookie.match(new RegExp('(^| )XSRF-TOKEN=([^;]+)'));
-    if (match) {
-        try {
-            return decodeURIComponent(match[2]);
-        } catch {
-            return match[2];
-        }
-    }
-    return null;
 }
 
 function getCardIcon(brand: string): string {
@@ -155,20 +144,8 @@ export default function PaymentMethods({ stripe_key }: PaymentMethodsProps) {
             }
 
             // Send to backend
-            const csrfToken = getCsrfToken();
-            const headers: Record<string, string> = {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-            };
-            if (csrfToken) {
-                headers['X-XSRF-TOKEN'] = csrfToken;
-            }
-            
-            const response = await fetch('/api/payment-methods', {
+            const response = await apiFetch('/api/payment-methods', {
                 method: 'POST',
-                credentials: 'include',
-                headers,
                 body: JSON.stringify({
                     payment_method_id: paymentMethod.id,
                     set_as_default: true,
@@ -201,19 +178,8 @@ export default function PaymentMethods({ stripe_key }: PaymentMethodsProps) {
         setSuccess('');
 
         try {
-            const csrfToken = getCsrfToken();
-            const headers: Record<string, string> = {
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-            };
-            if (csrfToken) {
-                headers['X-XSRF-TOKEN'] = csrfToken;
-            }
-            
-            const response = await fetch(`/api/payment-methods/${paymentMethodId}`, {
+            const response = await apiFetch(`/api/payment-methods/${paymentMethodId}`, {
                 method: 'DELETE',
-                credentials: 'include',
-                headers,
             });
 
             const data = await response.json();
@@ -235,19 +201,8 @@ export default function PaymentMethods({ stripe_key }: PaymentMethodsProps) {
         setSuccess('');
 
         try {
-            const csrfToken = getCsrfToken();
-            const headers: Record<string, string> = {
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-            };
-            if (csrfToken) {
-                headers['X-XSRF-TOKEN'] = csrfToken;
-            }
-            
-            const response = await fetch(`/api/payment-methods/${paymentMethodId}/default`, {
+            const response = await apiFetch(`/api/payment-methods/${paymentMethodId}/default`, {
                 method: 'PATCH',
-                credentials: 'include',
-                headers,
             });
 
             const data = await response.json();

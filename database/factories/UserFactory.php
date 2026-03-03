@@ -34,6 +34,9 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'role' => 'customer',
             'is_active' => true,
+            'notify_order_updates' => true,
+            'notify_promotional_emails' => false,
+            'notify_newsletter' => false,
         ];
     }
 

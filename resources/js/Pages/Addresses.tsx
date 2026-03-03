@@ -15,6 +15,7 @@ import {
 import { useEffect, useState } from 'react';
 import CustomerLayout from '@/Layouts/CustomerLayout';
 import type { Address, AddressFormData } from '@/types';
+import { apiFetch } from '@/utils/api';
 
 const MEXICO_STATES = [
     'Aguascalientes', 'Baja California', 'Baja California Sur', 'Campeche',
@@ -24,18 +25,6 @@ const MEXICO_STATES = [
     'Puebla', 'Querétaro', 'Quintana Roo', 'San Luis Potosí', 'Sinaloa',
     'Sonora', 'Tabasco', 'Tamaulipas', 'Tlaxcala', 'Veracruz', 'Yucatán', 'Zacatecas',
 ];
-
-function getCsrfToken(): string | null {
-    const match = document.cookie.match(new RegExp('(^| )XSRF-TOKEN=([^;]+)'));
-    if (match) {
-        try {
-            return decodeURIComponent(match[2]);
-        } catch {
-            return match[2];
-        }
-    }
-    return null;
-}
 
 export default function Addresses() {
     const [addresses, setAddresses] = useState<Address[]>([]);
@@ -151,25 +140,13 @@ export default function Addresses() {
         setFormErrors({});
 
         try {
-            const csrfToken = getCsrfToken();
-            const headers: Record<string, string> = {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-            };
-            if (csrfToken) {
-                headers['X-XSRF-TOKEN'] = csrfToken;
-            }
-
             const url = editingAddress
                 ? `/api/addresses/${editingAddress.id}`
                 : '/api/addresses';
             const method = editingAddress ? 'PUT' : 'POST';
 
-            const response = await fetch(url, {
+            const response = await apiFetch(url, {
                 method,
-                credentials: 'include',
-                headers,
                 body: JSON.stringify(formData),
             });
 
@@ -199,19 +176,8 @@ export default function Addresses() {
         setSuccess('');
 
         try {
-            const csrfToken = getCsrfToken();
-            const headers: Record<string, string> = {
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-            };
-            if (csrfToken) {
-                headers['X-XSRF-TOKEN'] = csrfToken;
-            }
-
-            const response = await fetch(`/api/addresses/${addressId}`, {
+            const response = await apiFetch(`/api/addresses/${addressId}`, {
                 method: 'DELETE',
-                credentials: 'include',
-                headers,
             });
 
             const data = await response.json();
@@ -233,20 +199,8 @@ export default function Addresses() {
         setSuccess('');
 
         try {
-            const csrfToken = getCsrfToken();
-            const headers: Record<string, string> = {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-            };
-            if (csrfToken) {
-                headers['X-XSRF-TOKEN'] = csrfToken;
-            }
-
-            const response = await fetch(`/api/addresses/${addressId}`, {
+            const response = await apiFetch(`/api/addresses/${addressId}`, {
                 method: 'PUT',
-                credentials: 'include',
-                headers,
                 body: JSON.stringify({ is_default: true }),
             });
 

@@ -6,19 +6,8 @@ import {
 } from 'lucide-react';
 import CustomerLayout from '@/Layouts/CustomerLayout';
 import type { PageProps } from '@/types';
+import { apiFetch } from '@/utils/api';
 import { useState } from 'react';
-
-function getCsrfToken(): string | null {
-    const match = document.cookie.match(new RegExp('(^| )XSRF-TOKEN=([^;]+)'));
-    if (match) {
-        try {
-            return decodeURIComponent(match[2]);
-        } catch {
-            return match[2];
-        }
-    }
-    return null;
-}
 
 interface ProfileProps {
     user: {
@@ -63,21 +52,9 @@ export default function Profile({ user }: ProfileProps) {
         setErrors({});
         setSuccessMessage('');
 
-        const csrfToken = getCsrfToken();
-        const headers: Record<string, string> = {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            'Accept': 'application/json',
-        };
-        if (csrfToken) {
-            headers['X-XSRF-TOKEN'] = csrfToken;
-        }
-
         try {
-            const response = await fetch('/account/profile', {
+            const response = await apiFetch('/account/profile', {
                 method: 'PUT',
-                credentials: 'include',
-                headers,
                 body: JSON.stringify(formData),
             });
 

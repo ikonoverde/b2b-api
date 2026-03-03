@@ -1,5 +1,6 @@
 import { Link, router, usePage } from '@inertiajs/react';
 import {
+    Bell,
     Building2,
     ChevronRight,
     CreditCard,
@@ -16,19 +17,8 @@ import {
 } from 'lucide-react';
 import CustomerLayout from '@/Layouts/CustomerLayout';
 import type { PageProps, CustomerProfile } from '@/types';
+import { apiFetch } from '@/utils/api';
 import { useState } from 'react';
-
-function getCsrfToken(): string | null {
-    const match = document.cookie.match(new RegExp('(^| )XSRF-TOKEN=([^;]+)'));
-    if (match) {
-        try {
-            return decodeURIComponent(match[2]);
-        } catch {
-            return match[2];
-        }
-    }
-    return null;
-}
 
 interface AccountProps {
     profile: CustomerProfile;
@@ -79,21 +69,9 @@ export default function Account({ profile }: AccountProps) {
         setErrors({});
         setSuccessMessage('');
 
-        const csrfToken = getCsrfToken();
-        const headers: Record<string, string> = {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            'Accept': 'application/json',
-        };
-        if (csrfToken) {
-            headers['X-XSRF-TOKEN'] = csrfToken;
-        }
-
         try {
-            const response = await fetch('/api/password', {
+            const response = await apiFetch('/api/password', {
                 method: 'PUT',
-                credentials: 'include',
-                headers,
                 body: JSON.stringify(formData),
             });
 
@@ -139,6 +117,7 @@ export default function Account({ profile }: AccountProps) {
         { icon: MapPin, label: 'Direcciones de Envío', href: '/account/addresses' },
         { icon: Headphones, label: 'Soporte Comercial' },
         { icon: CreditCard, label: 'Métodos de Pago', href: '/account/payment-methods' },
+        { icon: Bell, label: 'Notificaciones', href: '/account/notifications' },
         { icon: KeyRound, label: 'Cambiar Contraseña', onClick: () => setShowPasswordModal(true) },
     ];
 

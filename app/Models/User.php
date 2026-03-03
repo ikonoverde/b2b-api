@@ -28,6 +28,9 @@ class User extends Authenticatable
         'password',
         'role',
         'is_active',
+        'notify_order_updates',
+        'notify_promotional_emails',
+        'notify_newsletter',
     ];
 
     /**
@@ -52,6 +55,9 @@ class User extends Authenticatable
             'terms_accepted_at' => 'datetime',
             'password' => 'hashed',
             'is_active' => 'boolean',
+            'notify_order_updates' => 'boolean',
+            'notify_promotional_emails' => 'boolean',
+            'notify_newsletter' => 'boolean',
         ];
     }
 
