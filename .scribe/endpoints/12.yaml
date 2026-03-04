@@ -1,0 +1,268 @@
+name: 'Payment Methods'
+description: |-
+
+  Manage saved Stripe payment methods for authenticated users.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/payment-methods
+    metadata:
+      custom: []
+      groupName: 'Payment Methods'
+      groupDescription: |-
+
+        Manage saved Stripe payment methods for authenticated users.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List saved payment methods'
+      description: 'Returns a list of all saved payment methods for the authenticated user.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          [
+            {
+              "id": "pm_1234567890",
+              "type": "card",
+              "card": {
+                "brand": "visa",
+                "last4": "4242",
+                "exp_month": 12,
+                "exp_year": 2025
+              },
+              "is_default": true
+            }
+          ]
+        headers: []
+        description: Success
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/payment-methods
+    metadata:
+      custom: []
+      groupName: 'Payment Methods'
+      groupDescription: |-
+
+        Manage saved Stripe payment methods for authenticated users.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Add a new payment method'
+      description: |-
+        Adds a new payment method to the user's account using a Stripe PaymentMethod ID
+        obtained via Stripe Elements on the frontend.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      payment_method_id:
+        custom: []
+        name: payment_method_id
+        description: 'The Stripe PaymentMethod ID.'
+        required: true
+        example: pm_1234567890
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      set_as_default:
+        custom: []
+        name: set_as_default
+        description: 'Whether to set this as the default.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      payment_method_id: pm_1234567890
+      set_as_default: true
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/payment-methods/stripe-key
+    metadata:
+      custom: []
+      groupName: 'Payment Methods'
+      groupDescription: |-
+
+        Manage saved Stripe payment methods for authenticated users.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Stripe publishable key'
+      description: ''
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PATCH
+    uri: 'api/payment-methods/{payment_method}/default'
+    metadata:
+      custom: []
+      groupName: 'Payment Methods'
+      groupDescription: |-
+
+        Manage saved Stripe payment methods for authenticated users.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Set default payment method'
+      description: ''
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      payment_method:
+        custom: []
+        name: payment_method
+        description: 'The Stripe PaymentMethod ID.'
+        required: true
+        example: pm_1234567890
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      payment_method: pm_1234567890
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/payment-methods/{payment_method}'
+    metadata:
+      custom: []
+      groupName: 'Payment Methods'
+      groupDescription: |-
+
+        Manage saved Stripe payment methods for authenticated users.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Remove a payment method'
+      description: ''
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      payment_method:
+        custom: []
+        name: payment_method
+        description: 'The Stripe PaymentMethod ID.'
+        required: true
+        example: pm_1234567890
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      payment_method: pm_1234567890
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

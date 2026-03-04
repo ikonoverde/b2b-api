@@ -445,6 +445,8 @@ export default () => (
 ## API Documentation
 - When adding or updating API endpoint methods, always add or update Scribe PHPDoc annotations (`@group`, `@authenticated`/`@unauthenticated`, `@response` with scenarios, `@urlParam`, etc.) in the controller docblocks. Follow the conventions used by sibling controllers.
 - When making changes to API routes or controllers (anything under `routes/api.php` or `app/Http/Controllers/Cart/`, `app/Http/Controllers/Checkout/`, `app/Http/Controllers/Orders/`, etc.), regenerate the API documentation by running `php artisan scribe:generate`.
+- All API endpoints are to be consumed by the external mobile app, always use sanctum for auth
+- Do not add API endpoints to be consumed by the Laravel/Inertia app implemented in this project, for that use web routes in the inertia way
 
 ## Code quality
 - Before committing, ALWAYS run auto-formatting with `qlty fmt`

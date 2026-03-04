@@ -1,9 +1,19 @@
-import { Head, Link } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { Percent, Truck, Headphones, UserPlus, LayoutGrid, Lock, type LucideProps } from 'lucide-react';
 import type { ForwardRefExoticComponent, RefAttributes } from 'react';
+import PublicLayout from '@/Layouts/PublicLayout';
 import type { PageProps } from '@/types';
 
 type LucideIcon = ForwardRefExoticComponent<LucideProps & RefAttributes<SVGSVGElement>>;
+
+interface BannerData {
+    id: number;
+    title: string;
+    subtitle: string | null;
+    image_url: string;
+    link_url: string | null;
+    link_text: string | null;
+}
 
 interface FeaturedProduct {
     id: number;
@@ -15,160 +25,128 @@ interface FeaturedProduct {
 
 interface HomeProps extends PageProps {
     featuredProducts: FeaturedProduct[];
+    banners: BannerData[];
 }
 
-export default function Home({ auth, featuredProducts }: HomeProps) {
+export default function Home({ auth, featuredProducts, banners }: HomeProps) {
     return (
-        <>
-            <Head title="Inicio" />
-            <div className="min-h-screen bg-[#FAF6F1]">
-                {/* Header */}
-                <header className="bg-[#5E7052] px-8 py-4">
-                    <div className="max-w-6xl mx-auto flex items-center justify-between">
-                        <div className="flex flex-col">
-                            <span className="text-white font-[Outfit] font-bold text-xl tracking-wider">
-                                IKONO VERDE
-                            </span>
-                            <span className="text-[#A8B5A0] font-[Outfit] text-xs tracking-widest uppercase">
-                                PROFESIONAL
-                            </span>
-                        </div>
+        <PublicLayout title="Inicio" auth={auth}>
+            {/* Hero */}
+            <section className="py-20 px-8 text-center">
+                <div className="max-w-3xl mx-auto flex flex-col gap-6">
+                    <h1 className="font-[Outfit] font-bold text-5xl leading-tight">
+                        <span className="text-[#5E7052]">Productos Mayoristas</span>
+                        <br />
+                        <span className="text-[#8B6F47]">para tu Negocio</span>
+                    </h1>
+                    <p className="text-[#666666] font-[Outfit] text-lg max-w-xl mx-auto">
+                        Accede a precios exclusivos, pedidos recurrentes y soporte dedicado para
+                        profesionales.
+                    </p>
 
-                        <div className="flex items-center gap-3">
-                            {auth.user ? (
-                                <Link
-                                    href="/dashboard"
-                                    className="flex items-center gap-2 bg-white text-[#5E7052] px-5 py-2 rounded-lg font-[Outfit] font-semibold text-sm hover:bg-white/90 transition-colors"
+                    {/* CTA Buttons */}
+                    <div className="flex items-center justify-center gap-4 pt-2">
+                        <Link
+                            href="/register"
+                            className="flex items-center gap-2 bg-[#5E7052] text-white px-8 py-3.5 rounded-xl font-[Outfit] font-semibold text-base hover:bg-[#4d5e43] transition-colors"
+                        >
+                            <UserPlus className="w-5 h-5" />
+                            Crear Cuenta
+                        </Link>
+                        <Link
+                            href="/catalog"
+                            className="flex items-center gap-2 border-2 border-[#5E7052] text-[#5E7052] px-8 py-3.5 rounded-xl font-[Outfit] font-semibold text-base hover:bg-[#5E7052]/10 transition-colors"
+                        >
+                            <LayoutGrid className="w-5 h-5" />
+                            Ver Catálogo
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* Benefits */}
+            <section className="px-8 pb-16">
+                <div className="max-w-3xl mx-auto grid grid-cols-3 gap-4">
+                    <BenefitCard
+                        icon={Percent}
+                        title="Precios"
+                        subtitle="Mayoristas"
+                        iconBg="#D4E5D0"
+                        iconColor="#5E7052"
+                    />
+                    <BenefitCard
+                        icon={Truck}
+                        title="Envío"
+                        subtitle="Gratis +$500k"
+                        iconBg="#E8DDD4"
+                        iconColor="#8B6F47"
+                    />
+                    <BenefitCard
+                        icon={Headphones}
+                        title="Soporte"
+                        subtitle="Dedicado"
+                        iconBg="#D4E5D0"
+                        iconColor="#5E7052"
+                    />
+                </div>
+            </section>
+
+            {/* Banners */}
+            {banners.length > 0 && (
+                <section className="px-8 pb-12">
+                    <div className="max-w-6xl mx-auto">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {banners.map((banner) => (
+                                <div
+                                    key={banner.id}
+                                    className="relative rounded-2xl overflow-hidden h-48 group"
                                 >
-                                    Mi Panel
-                                </Link>
-                            ) : (
-                                <>
-                                    <Link
-                                        href="/login"
-                                        className="border border-white text-white px-5 py-2 rounded-lg font-[Outfit] font-medium text-sm hover:bg-white/10 transition-colors"
-                                    >
-                                        Ingresar
-                                    </Link>
-                                    <Link
-                                        href="/register"
-                                        className="bg-white text-[#5E7052] px-5 py-2 rounded-lg font-[Outfit] font-semibold text-sm hover:bg-white/90 transition-colors"
-                                    >
-                                        Registrarse
-                                    </Link>
-                                </>
-                            )}
-                        </div>
-                    </div>
-                </header>
-
-                {/* Hero */}
-                <section className="py-20 px-8 text-center">
-                    <div className="max-w-3xl mx-auto flex flex-col gap-6">
-                        <h1 className="font-[Outfit] font-bold text-5xl leading-tight">
-                            <span className="text-[#5E7052]">Productos Mayoristas</span>
-                            <br />
-                            <span className="text-[#8B6F47]">para tu Negocio</span>
-                        </h1>
-                        <p className="text-[#666666] font-[Outfit] text-lg max-w-xl mx-auto">
-                            Accede a precios exclusivos, pedidos recurrentes y soporte dedicado para
-                            profesionales.
-                        </p>
-
-                        {/* CTA Buttons */}
-                        <div className="flex items-center justify-center gap-4 pt-2">
-                            <Link
-                                href="/register"
-                                className="flex items-center gap-2 bg-[#5E7052] text-white px-8 py-3.5 rounded-xl font-[Outfit] font-semibold text-base hover:bg-[#4d5e43] transition-colors"
-                            >
-                                <UserPlus className="w-5 h-5" />
-                                Crear Cuenta
-                            </Link>
-                            <Link
-                                href="/catalog"
-                                className="flex items-center gap-2 border-2 border-[#5E7052] text-[#5E7052] px-8 py-3.5 rounded-xl font-[Outfit] font-semibold text-base hover:bg-[#5E7052]/10 transition-colors"
-                            >
-                                <LayoutGrid className="w-5 h-5" />
-                                Ver Catálogo
-                            </Link>
+                                    <img
+                                        src={banner.image_url}
+                                        alt={banner.title}
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
+                                        <h3 className="font-[Outfit] font-bold text-xl text-white">
+                                            {banner.title}
+                                        </h3>
+                                        {banner.subtitle && (
+                                            <p className="font-[Outfit] text-sm text-white/80 mt-1">
+                                                {banner.subtitle}
+                                            </p>
+                                        )}
+                                        {banner.link_url && banner.link_text && (
+                                            <a
+                                                href={banner.link_url}
+                                                className="inline-flex mt-3 bg-white text-[#5E7052] px-4 py-2 rounded-lg font-[Outfit] font-semibold text-sm hover:bg-white/90 transition-colors w-fit"
+                                            >
+                                                {banner.link_text}
+                                            </a>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </section>
+            )}
 
-                {/* Benefits */}
-                <section className="px-8 pb-16">
-                    <div className="max-w-3xl mx-auto grid grid-cols-3 gap-4">
-                        <BenefitCard
-                            icon={Percent}
-                            title="Precios"
-                            subtitle="Mayoristas"
-                            iconBg="#D4E5D0"
-                            iconColor="#5E7052"
-                        />
-                        <BenefitCard
-                            icon={Truck}
-                            title="Envío"
-                            subtitle="Gratis +$500k"
-                            iconBg="#E8DDD4"
-                            iconColor="#8B6F47"
-                        />
-                        <BenefitCard
-                            icon={Headphones}
-                            title="Soporte"
-                            subtitle="Dedicado"
-                            iconBg="#D4E5D0"
-                            iconColor="#5E7052"
-                        />
+            {/* Featured Products */}
+            {featuredProducts.length > 0 && (
+                <section className="px-8 pb-20">
+                    <div className="max-w-6xl mx-auto flex flex-col gap-6">
+                        <h2 className="font-[Outfit] font-semibold text-xl text-[#1A1A1A]">
+                            Productos Destacados
+                        </h2>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                            {featuredProducts.map((product) => (
+                                <ProductCard key={product.id} product={product} />
+                            ))}
+                        </div>
                     </div>
                 </section>
-
-                {/* Featured Products */}
-                {featuredProducts.length > 0 && (
-                    <section className="px-8 pb-20">
-                        <div className="max-w-6xl mx-auto flex flex-col gap-6">
-                            <h2 className="font-[Outfit] font-semibold text-xl text-[#1A1A1A]">
-                                Productos Destacados
-                            </h2>
-                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                {featuredProducts.map((product) => (
-                                    <ProductCard key={product.id} product={product} />
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-                )}
-
-                {/* Footer */}
-                <footer className="border-t border-[#E5E5E5] py-8 px-8">
-                    <div className="max-w-6xl mx-auto flex items-center justify-between">
-                        <span className="text-[#999999] font-[Outfit] text-sm">
-                            © {new Date().getFullYear()} Ikono Verde. Todos los derechos reservados.
-                        </span>
-                        <div className="flex items-center gap-4">
-                            <Link
-                                href="/terms"
-                                className="text-[#5E7052] font-[Outfit] text-sm font-medium hover:underline"
-                            >
-                                Términos
-                            </Link>
-                            <Link
-                                href="/privacy"
-                                className="text-[#5E7052] font-[Outfit] text-sm font-medium hover:underline"
-                            >
-                                Privacidad
-                            </Link>
-                            <span className="text-[#CCCCCC]">|</span>
-                            <Link
-                                href="/login"
-                                className="text-[#5E7052] font-[Outfit] text-sm font-medium hover:underline"
-                            >
-                                Acceso Profesional
-                            </Link>
-                        </div>
-                    </div>
-                </footer>
-            </div>
-        </>
+            )}
+        </PublicLayout>
     );
 }
 

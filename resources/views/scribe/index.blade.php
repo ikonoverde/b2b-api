@@ -113,6 +113,16 @@
                             </li>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-banners" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="banners">
+                    <a href="#banners">Banners</a>
+                </li>
+                                    <ul id="tocify-subheader-banners" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="banners-GETapi-banners">
+                                <a href="#banners-GETapi-banners">Get Active Banners</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
                     <ul id="tocify-header-cart" class="tocify-header">
                 <li class="tocify-item level-1" data-unique="cart">
                     <a href="#cart">Cart</a>
@@ -193,6 +203,16 @@
                             </li>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-pages" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="pages">
+                    <a href="#pages">Pages</a>
+                </li>
+                                    <ul id="tocify-subheader-pages" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="pages-GETapi-pages--slug-">
+                                <a href="#pages-GETapi-pages--slug-">Get Static Page</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
                     <ul id="tocify-header-payment-methods" class="tocify-header">
                 <li class="tocify-item level-1" data-unique="payment-methods">
                     <a href="#payment-methods">Payment Methods</a>
@@ -263,7 +283,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: March 3, 2026</li>
+        <li>Last updated: March 4, 2026</li>
     </ul>
 </div>
 
@@ -2551,6 +2571,138 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>The new password (min 8 characters, must include letters and numbers). Example: <code>newP@ssw0rd</code></p>
         </div>
         </form>
+
+                <h1 id="banners">Banners</h1>
+
+    <p>APIs for promotional banners</p>
+
+                                <h2 id="banners-GETapi-banners">Get Active Banners</h2>
+
+<p>
+</p>
+
+<p>Retrieve all currently active promotional banners.</p>
+
+<span id="example-requests-GETapi-banners">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://192.168.0.193:8000/api/banners" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://192.168.0.193:8000/api/banners"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-banners">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;title&quot;: &quot;Promoci&oacute;n&quot;,
+            &quot;subtitle&quot;: &quot;Descuento&quot;,
+            &quot;image_url&quot;: &quot;http://localhost/storage/banners/example.jpg&quot;,
+            &quot;link_url&quot;: &quot;https://example.com&quot;,
+            &quot;link_text&quot;: &quot;Ver m&aacute;s&quot;
+        }
+    ]
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-banners" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-banners"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-banners"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-banners" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-banners">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-banners" data-method="GET"
+      data-path="api/banners"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-banners', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-banners"
+                    onclick="tryItOut('GETapi-banners');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-banners"
+                    onclick="cancelTryOut('GETapi-banners');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-banners"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/banners</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-banners"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-banners"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
 
                 <h1 id="cart">Cart</h1>
 
@@ -5668,6 +5820,156 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                     </form>
 
+                <h1 id="pages">Pages</h1>
+
+    <p>APIs for static pages</p>
+
+                                <h2 id="pages-GETapi-pages--slug-">Get Static Page</h2>
+
+<p>
+</p>
+
+<p>Retrieve a published static page by slug.</p>
+
+<span id="example-requests-GETapi-pages--slug-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://192.168.0.193:8000/api/pages/terms" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://192.168.0.193:8000/api/pages/terms"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-pages--slug-">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;slug&quot;: &quot;terms&quot;,
+        &quot;title&quot;: &quot;T&eacute;rminos y Condiciones&quot;,
+        &quot;content&quot;: &quot;## 1. Aceptaci&oacute;n...&quot;,
+        &quot;updated_at&quot;: &quot;2026-03-04T00:00:00.000000Z&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404, Not Found):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Page not found.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-pages--slug-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-pages--slug-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-pages--slug-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-pages--slug-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-pages--slug-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-pages--slug-" data-method="GET"
+      data-path="api/pages/{slug}"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-pages--slug-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-pages--slug-"
+                    onclick="tryItOut('GETapi-pages--slug-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-pages--slug-"
+                    onclick="cancelTryOut('GETapi-pages--slug-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-pages--slug-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/pages/{slug}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-pages--slug-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-pages--slug-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>slug</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="slug"                data-endpoint="GETapi-pages--slug-"
+               value="terms"
+               data-component="url">
+    <br>
+<p>The page slug. Example: <code>terms</code></p>
+            </div>
+                    </form>
+
                 <h1 id="payment-methods">Payment Methods</h1>
 
     <p>Manage saved Stripe payment methods for authenticated users.</p>
@@ -5678,9 +5980,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <small class="badge badge-darkred">requires authentication</small>
 </p>
 
-<p>Returns a list of all saved payment methods for the authenticated user.
-Includes card details (brand, last 4 digits, expiration date) and indicates
-which method is the default.</p>
+<p>Returns a list of all saved payment methods for the authenticated user.</p>
 
 <span id="example-requests-GETapi-payment-methods">
 <blockquote>Example request:</blockquote>
@@ -5825,8 +6125,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 </p>
 
 <p>Adds a new payment method to the user's account using a Stripe PaymentMethod ID
-obtained via Stripe Elements on the frontend. The payment method is attached to
-the user's Stripe customer account.</p>
+obtained via Stripe Elements on the frontend.</p>
 
 <span id="example-requests-POSTapi-payment-methods">
 <blockquote>Example request:</blockquote>
@@ -5870,36 +6169,7 @@ fetch(url, {
 </span>
 
 <span id="example-responses-POSTapi-payment-methods">
-            <blockquote>
-            <p>Example response (200, Success created):</p>
-        </blockquote>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;M&eacute;todo de pago agregado exitosamente.&quot;,
-    &quot;payment_method&quot;: {
-        &quot;id&quot;: &quot;pm_1234567890&quot;,
-        &quot;type&quot;: &quot;card&quot;,
-        &quot;card&quot;: {
-            &quot;brand&quot;: &quot;visa&quot;,
-            &quot;last4&quot;: &quot;4242&quot;,
-            &quot;exp_month&quot;: 12,
-            &quot;exp_year&quot;: 2025
-        },
-        &quot;is_default&quot;: true
-    }
-}</code>
- </pre>
-            <blockquote>
-            <p>Example response (422, Validation error):</p>
-        </blockquote>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;El ID del m&eacute;todo de pago es requerido.&quot;
-}</code>
- </pre>
-    </span>
+</span>
 <span id="execution-results-POSTapi-payment-methods" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-POSTapi-payment-methods"></span>:
@@ -5994,7 +6264,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="pm_1234567890"
                data-component="body">
     <br>
-<p>The Stripe PaymentMethod ID obtained from Stripe Elements. Example: <code>pm_1234567890</code></p>
+<p>The Stripe PaymentMethod ID. Example: <code>pm_1234567890</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>set_as_default</code></b>&nbsp;&nbsp;
@@ -6016,7 +6286,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Whether to set this as the default payment method. Example: <code>true</code></p>
+<p>Whether to set this as the default. Example: <code>true</code></p>
         </div>
         </form>
 
@@ -6026,8 +6296,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <small class="badge badge-darkred">requires authentication</small>
 </p>
 
-<p>Returns the Stripe publishable key needed to initialize Stripe Elements
-on the frontend for securely collecting card information.</p>
+
 
 <span id="example-requests-GETapi-payment-methods-stripe-key">
 <blockquote>Example request:</blockquote>
@@ -6061,12 +6330,19 @@ fetch(url, {
 
 <span id="example-responses-GETapi-payment-methods-stripe-key">
             <blockquote>
-            <p>Example response (200, Success):</p>
+            <p>Example response (401):</p>
         </blockquote>
-                <pre>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;key&quot;: &quot;pk_test_1234567890&quot;
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
 }</code>
  </pre>
     </span>
@@ -6161,8 +6437,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <small class="badge badge-darkred">requires authentication</small>
 </p>
 
-<p>Sets the specified payment method as the default for the user's account.
-The default payment method is used for future invoices and subscriptions.</p>
+
 
 <span id="example-requests-PATCHapi-payment-methods--payment_method--default">
 <blockquote>Example request:</blockquote>
@@ -6195,25 +6470,7 @@ fetch(url, {
 </span>
 
 <span id="example-responses-PATCHapi-payment-methods--payment_method--default">
-            <blockquote>
-            <p>Example response (200, Success):</p>
-        </blockquote>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;M&eacute;todo de pago predeterminado actualizado exitosamente.&quot;
-}</code>
- </pre>
-            <blockquote>
-            <p>Example response (404, Not found):</p>
-        </blockquote>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;M&eacute;todo de pago no encontrado.&quot;
-}</code>
- </pre>
-    </span>
+</span>
 <span id="execution-results-PATCHapi-payment-methods--payment_method--default" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-PATCHapi-payment-methods--payment_method--default"></span>:
@@ -6318,8 +6575,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <small class="badge badge-darkred">requires authentication</small>
 </p>
 
-<p>Deletes a saved payment method from the user's account. Cannot delete the
-default payment method unless it's the only one remaining.</p>
+
 
 <span id="example-requests-DELETEapi-payment-methods--payment_method-">
 <blockquote>Example request:</blockquote>
@@ -6352,34 +6608,7 @@ fetch(url, {
 </span>
 
 <span id="example-responses-DELETEapi-payment-methods--payment_method-">
-            <blockquote>
-            <p>Example response (200, Success deleted):</p>
-        </blockquote>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;M&eacute;todo de pago eliminado exitosamente.&quot;
-}</code>
- </pre>
-            <blockquote>
-            <p>Example response (400, Cannot delete default):</p>
-        </blockquote>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;No se puede eliminar el m&eacute;todo de pago predeterminado. Establezca otro m&eacute;todo como predeterminado primero.&quot;
-}</code>
- </pre>
-            <blockquote>
-            <p>Example response (404, Not found):</p>
-        </blockquote>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;M&eacute;todo de pago no encontrado.&quot;
-}</code>
- </pre>
-    </span>
+</span>
 <span id="execution-results-DELETEapi-payment-methods--payment_method-" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-DELETEapi-payment-methods--payment_method-"></span>:

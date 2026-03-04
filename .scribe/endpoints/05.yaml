@@ -1,23 +1,179 @@
-name: 'Shipping Methods'
-description: ''
+name: Products
+description: |-
+
+  APIs for product management
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/shipping-methods
+    uri: api/products
     metadata:
       custom: []
-      groupName: 'Shipping Methods'
-      groupDescription: ''
+      groupName: Products
+      groupDescription: |-
+
+        APIs for product management
       subgroup: ''
       subgroupDescription: ''
-      title: 'List Shipping Methods'
-      description: 'Returns all active shipping methods sorted by cost (ascending).'
-      authenticated: true
+      title: 'Get All Products'
+      description: 'Retrieve a paginated list of products with optional filtering and sorting.'
+      authenticated: false
       deprecated: false
     headers:
-      Authorization: 'Bearer {YOUR_AUTH_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      page:
+        custom: []
+        name: page
+        description: 'The page number.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      per_page:
+        custom: []
+        name: per_page
+        description: 'Items per page (1-100, default 15).'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      category_id:
+        custom: []
+        name: category_id
+        description: 'Filter by category ID(s).'
+        required: false
+        example:
+          - 1
+        type: 'integer[]'
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      price_min:
+        custom: []
+        name: price_min
+        description: 'Minimum price filter.'
+        required: false
+        example: 10.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      price_max:
+        custom: []
+        name: price_max
+        description: 'Maximum price filter.'
+        required: false
+        example: 100.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      search:
+        custom: []
+        name: search
+        description: 'Search keyword (matches name, description, SKU).'
+        required: false
+        example: fertilizer
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sort:
+        custom: []
+        name: sort
+        description: 'Sort order: price_asc, price_desc, name_asc, name_desc, newest, oldest.'
+        required: false
+        example: newest
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      page: 1
+      per_page: 15
+      category_id:
+        - 1
+      price_min: 10.0
+      price_max: 100.0
+      search: fertilizer
+      sort: newest
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "name": "Fertilizante Premium",
+                "sku": "FER-001",
+                "category": "Fertilizantes",
+                "description": "High quality fertilizer",
+                "price": 45.00,
+                "stock": 100,
+                "is_active": true,
+                "is_featured": true,
+                "image": null
+              }
+            ],
+            "links": {
+              "first": "/api/products?page=1",
+              "last": "/api/products?page=5",
+              "prev": null,
+              "next": "/api/products?page=2"
+            },
+            "meta": {
+              "current_page": 1,
+              "last_page": 5,
+              "per_page": 15,
+              "total": 73
+            }
+          }
+        headers: []
+        description: Success
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/products/featured
+    metadata:
+      custom: []
+      groupName: Products
+      groupDescription: |-
+
+        APIs for product management
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Featured Products'
+      description: 'Retrieve all featured and active products.'
+      authenticated: false
+      deprecated: false
+    headers:
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -31,28 +187,68 @@ endpoints:
       -
         custom: []
         status: 200
-        content: |-
-          {
-            "data": [
-              {
-                "id": 1, "name": "Standard",
-                "description": "Standard shipping",
-                "cost": 10.00, "estimated_delivery_days": 7
-              },
-              {
-                "id": 2, "name": "Express",
-                "description": "Express shipping",
-                "cost": 25.00, "estimated_delivery_days": 3
-              }
-            ]
-          }
+        content: '{"data": [{"id": 1, "name": "Fertilizante Premium", "sku": "FER-001", "category": "Fertilizantes", "description": "High quality fertilizer", "price": 45.00, "stock": 100, "is_active": true, "is_featured": true, "image": null}]}'
         headers: []
         description: Success
     responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/products/{product_id}'
+    metadata:
+      custom: []
+      groupName: Products
+      groupDescription: |-
+
+        APIs for product management
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Product Details'
+      description: 'Retrieve a single product with its pricing tiers.'
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      product_id:
+        custom: []
+        name: product_id
+        description: 'The ID of the product.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      product_id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"id": 1, "name": "Fertilizante Premium", "sku": "FER-001", "category": "Fertilizantes", "description": "High quality fertilizer", "price": 45.00, "stock": 100, "is_active": true, "is_featured": true, "image": null, "images": [{"id": 1, "url": "https://example.com/img1.jpg", "position": 0}, {"id": 2, "url": "https://example.com/img2.jpg", "position": 1}], "pricing_tiers": [{"id": 1, "min_qty": 10, "max_qty": 50, "price": 40.00, "discount": 11.11, "label": "Mayorista"}]}}'
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 404
+        content: '{"message": "No query results for model [App\\Models\\Product] 999"}'
+        headers: []
+        description: 'Not Found'
+    responseFields: []
+    auth: []
     controller: null
     method: null
     route: null

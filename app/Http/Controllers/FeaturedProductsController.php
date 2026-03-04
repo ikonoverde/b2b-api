@@ -27,6 +27,7 @@ class FeaturedProductsController extends Controller
             ->whereHas('category', fn ($q) => $q->where('is_active', true))
             ->where('is_featured', true)
             ->where('is_active', true)
+            ->orderBy('featured_order')
             ->get();
 
         return ProductResource::collection($products);

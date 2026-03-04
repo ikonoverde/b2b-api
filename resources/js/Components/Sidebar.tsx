@@ -13,6 +13,9 @@ import {
     Plus,
     Leaf,
     LogOut,
+    Star,
+    Image,
+    PenLine,
 } from 'lucide-react';
 import type { PageProps } from '@/types';
 
@@ -40,6 +43,12 @@ const managementNav: NavItem[] = [
     { name: 'Categorías', href: '/admin/categories', icon: Folder, id: 'categories' },
     { name: 'Envios', href: '/admin/shipments', icon: Truck, id: 'shipments' },
     { name: 'Facturas', href: '/admin/invoices', icon: FileText, id: 'invoices' },
+];
+
+const contentNav: NavItem[] = [
+    { name: 'Destacados', href: '/admin/featured-products', icon: Star, id: 'featured-products' },
+    { name: 'Banners', href: '/admin/banners', icon: Image, id: 'banners' },
+    { name: 'Páginas', href: '/admin/static-pages', icon: PenLine, id: 'static-pages' },
 ];
 
 const systemNav: NavItem[] = [
@@ -91,6 +100,20 @@ export default function Sidebar({ active }: SidebarProps) {
                     GESTION
                 </span>
                 {managementNav.map((item) => (
+                    <NavLink
+                        key={item.id}
+                        item={item}
+                        isActive={active === item.id}
+                    />
+                ))}
+            </div>
+
+            {/* Contenido Section */}
+            <div className="flex flex-col gap-1 px-4 mt-4">
+                <span className="text-[11px] font-medium text-[#999999] tracking-wider px-4 mb-1 font-[Outfit]">
+                    CONTENIDO
+                </span>
+                {contentNav.map((item) => (
                     <NavLink
                         key={item.id}
                         item={item}

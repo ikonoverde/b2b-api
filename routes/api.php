@@ -4,6 +4,8 @@ use App\Http\Controllers\Addresses\DestroyAddressController;
 use App\Http\Controllers\Addresses\GetAddressesController;
 use App\Http\Controllers\Addresses\StoreAddressController;
 use App\Http\Controllers\Addresses\UpdateAddressController;
+use App\Http\Controllers\Api\BannersController as ApiBannersController;
+use App\Http\Controllers\Api\StaticPagesController as ApiStaticPagesController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
@@ -46,6 +48,9 @@ Route::post('/token/refresh', RefreshTokenController::class)->middleware('auth:s
 Route::get('/user', UserController::class)->middleware('auth:sanctum');
 Route::put('/user', UpdateUserController::class)->middleware('auth:sanctum');
 Route::put('/password', ChangePasswordController::class)->middleware('auth:sanctum');
+
+Route::get('/banners', ApiBannersController::class);
+Route::get('/pages/{slug}', ApiStaticPagesController::class);
 
 Route::get('/categories', CategoriesController::class);
 

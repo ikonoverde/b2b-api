@@ -3,9 +3,12 @@
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\Auth\LoginController;
+use App\Http\Controllers\Web\BannersController;
 use App\Http\Controllers\Web\CategoriesController;
+use App\Http\Controllers\Web\ContentFeaturedProductsController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\ProductsController;
+use App\Http\Controllers\Web\StaticPagesController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -31,6 +34,25 @@ Route::middleware('auth')->group(function () {
     Route::patch('/categories/{category}/visibility', [CategoriesController::class, 'toggleVisibility'])
         ->name('categories.toggle-visibility');
     Route::get('/categories/{category}/stats', [CategoriesController::class, 'stats'])->name('categories.stats');
+
+    Route::get('/featured-products', [ContentFeaturedProductsController::class, 'index'])
+        ->name('featured-products');
+    Route::put('/featured-products', [ContentFeaturedProductsController::class, 'update'])
+        ->name('featured-products.update');
+
+    Route::get('/banners', [BannersController::class, 'index'])->name('banners');
+    Route::post('/banners', [BannersController::class, 'store'])->name('banners.store');
+    Route::put('/banners/{banner}', [BannersController::class, 'update'])->name('banners.update');
+    Route::delete('/banners/{banner}', [BannersController::class, 'destroy'])->name('banners.destroy');
+    Route::post('/banners/reorder', [BannersController::class, 'reorder'])->name('banners.reorder');
+    Route::patch('/banners/{banner}/visibility', [BannersController::class, 'toggleVisibility'])
+        ->name('banners.toggle-visibility');
+
+    Route::get('/static-pages', [StaticPagesController::class, 'index'])->name('static-pages');
+    Route::get('/static-pages/{staticPage}/edit', [StaticPagesController::class, 'edit'])
+        ->name('static-pages.edit');
+    Route::put('/static-pages/{staticPage}', [StaticPagesController::class, 'update'])
+        ->name('static-pages.update');
 
     Route::middleware('role:admin,super_admin')->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('users');

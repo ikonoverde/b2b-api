@@ -50,6 +50,7 @@ class ProductFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'is_featured' => true,
+            'featured_order' => fake()->numberBetween(1, 20),
         ]);
     }
 

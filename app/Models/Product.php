@@ -29,6 +29,7 @@ class Product extends Model
         'min_stock',
         'is_active',
         'is_featured',
+        'featured_order',
     ];
 
     /**

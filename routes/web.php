@@ -15,6 +15,7 @@ use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\PaymentMethodController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileController;
+use App\Http\Controllers\Web\StaticPageController;
 use App\Http\Controllers\Web\UpdateNotificationPreferencesController;
 use App\Http\Controllers\Web\UpdateProfileController;
 use Illuminate\Http\Request;
@@ -36,8 +37,10 @@ Route::get('/reset-password/{token}', function (string $token, Request $request)
     ->middleware('guest')
     ->name('password.reset');
 
-Route::get('/terms', fn () => Inertia::render('Terms'))->name('terms');
-Route::get('/privacy', fn () => Inertia::render('Privacy'))->name('privacy');
+Route::get('/terms', [StaticPageController::class, 'show'])->defaults('slug', 'terms')->name('terms');
+Route::get('/privacy', [StaticPageController::class, 'show'])->defaults('slug', 'privacy')->name('privacy');
+Route::get('/about', [StaticPageController::class, 'show'])->defaults('slug', 'about')->name('about');
+Route::get('/faq', [StaticPageController::class, 'show'])->defaults('slug', 'faq')->name('faq');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'create'])->name('register');
