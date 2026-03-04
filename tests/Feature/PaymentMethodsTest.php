@@ -37,6 +37,26 @@ describe('Authentication', function () {
 
         $response->assertRedirect('/login');
     });
+
+    it('requires authentication to store payment method via web', function () {
+        $response = $this->post('/account/payment-methods', [
+            'payment_method_id' => 'pm_test123',
+        ]);
+
+        $response->assertRedirect('/login');
+    });
+
+    it('requires authentication to delete payment method via web', function () {
+        $response = $this->delete('/account/payment-methods/pm_test123');
+
+        $response->assertRedirect('/login');
+    });
+
+    it('requires authentication to set default via web', function () {
+        $response = $this->patch('/account/payment-methods/pm_test123/default');
+
+        $response->assertRedirect('/login');
+    });
 });
 
 // Validation Tests
@@ -50,6 +70,16 @@ describe('Validation', function () {
 
         $response->assertUnprocessable()
             ->assertJsonValidationErrors(['payment_method_id']);
+    });
+
+    it('validates payment_method_id is required when adding via web', function () {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post('/account/payment-methods', [
+            'set_as_default' => true,
+        ]);
+
+        $response->assertSessionHasErrors(['payment_method_id']);
     });
 });
 
@@ -90,6 +120,7 @@ describe('Web Routes', function () {
             ->assertInertia(fn ($page) => $page
                 ->component('PaymentMethods')
                 ->has('stripe_key')
+                ->has('payment_methods')
             );
     });
 
@@ -103,6 +134,19 @@ describe('Web Routes', function () {
             ->component('PaymentMethods')
             ->where('stripe_key', 'pk_test_example123')
         );
+    });
+
+    it('passes empty payment methods when user has no stripe id', function () {
+        Config::set('cashier.key', 'pk_test_1234567890');
+        $user = User::factory()->create(['stripe_id' => null]);
+
+        $response = $this->actingAs($user)->get('/account/payment-methods');
+
+        $response->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('PaymentMethods')
+                ->where('payment_methods', [])
+            );
     });
 });
 

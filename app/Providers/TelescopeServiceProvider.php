@@ -28,6 +28,8 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
                    $entry->isScheduledTask() ||
                    $entry->hasMonitoredTag();
         });
+
+        Telescope::$hiddenRequestHeaders = [];
     }
 
     /**

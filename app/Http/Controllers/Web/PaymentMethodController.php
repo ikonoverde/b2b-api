@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PaymentMethods\StorePaymentMethodRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -16,12 +18,12 @@ use Inertia\Response;
  */
 class PaymentMethodController extends Controller
 {
+    private const NOT_FOUND_MSG = 'Método de pago no encontrado.';
+
     /**
      * List saved payment methods
      *
      * Returns a list of all saved payment methods for the authenticated user.
-     * Includes card details (brand, last 4 digits, expiration date) and indicates
-     * which method is the default.
      *
      * @authenticated
      *
@@ -44,31 +46,16 @@ class PaymentMethodController extends Controller
         $user = $request->user();
 
         try {
-            // Ensure customer exists in Stripe
             if (! $user->stripe_id) {
                 $user->createAsStripeCustomer();
             }
 
             $paymentMethods = $user->paymentMethods();
-            $defaultPaymentMethod = $user->defaultPaymentMethod();
-
-            $formattedMethods = $paymentMethods->map(function ($method) use ($defaultPaymentMethod) {
-                return [
-                    'id' => $method->id,
-                    'type' => $method->type,
-                    'card' => [
-                        'brand' => $method->card->brand,
-                        'last4' => $method->card->last4,
-                        'exp_month' => $method->card->exp_month,
-                        'exp_year' => $method->card->exp_year,
-                    ],
-                    'is_default' => $defaultPaymentMethod && $defaultPaymentMethod->id === $method->id,
-                ];
-            });
+            $default = $user->defaultPaymentMethod();
 
             return response()->json([
-                'payment_methods' => $formattedMethods,
-                'has_default' => $defaultPaymentMethod !== null,
+                'payment_methods' => $this->formatMethods($paymentMethods, $default),
+                'has_default' => $default !== null,
             ]);
         } catch (\Exception $e) {
             Log::error('Error fetching payment methods', [
@@ -88,71 +75,51 @@ class PaymentMethodController extends Controller
      * Add a new payment method
      *
      * Adds a new payment method to the user's account using a Stripe PaymentMethod ID
-     * obtained via Stripe Elements on the frontend. The payment method is attached to
-     * the user's Stripe customer account.
+     * obtained via Stripe Elements on the frontend.
      *
      * @authenticated
      *
-     * @bodyParam payment_method_id string required The Stripe PaymentMethod ID obtained from Stripe Elements. Example: pm_1234567890
-     * @bodyParam set_as_default boolean Whether to set this as the default payment method. Example: true
-     *
-     * @response scenario="Success created" {
-     *   "message": "Método de pago agregado exitosamente.",
-     *   "payment_method": {
-     *     "id": "pm_1234567890",
-     *     "type": "card",
-     *     "card": {
-     *       "brand": "visa",
-     *       "last4": "4242",
-     *       "exp_month": 12,
-     *       "exp_year": 2025
-     *     },
-     *     "is_default": true
-     *   }
-     * }
-     * @response status=422 scenario="Validation error" {
-     *   "message": "El ID del método de pago es requerido."
-     * }
+     * @bodyParam payment_method_id string required The Stripe PaymentMethod ID. Example: pm_1234567890
+     * @bodyParam set_as_default boolean Whether to set this as the default. Example: true
      */
-    public function store(Request $request): JsonResponse
+    public function store(StorePaymentMethodRequest $request): JsonResponse|RedirectResponse
     {
-        $validated = $request->validate([
-            'payment_method_id' => 'required|string',
-            'set_as_default' => 'boolean',
-        ]);
-
+        $validated = $request->validated();
         $user = $request->user();
 
         try {
-            // Ensure customer exists in Stripe
             if (! $user->stripe_id) {
                 $user->createAsStripeCustomer();
             }
 
-            // Add the payment method
             $paymentMethod = $user->addPaymentMethod($validated['payment_method_id']);
 
-            // Set as default if requested or if it's the first payment method
             if ($validated['set_as_default'] ?? true) {
                 $user->updateDefaultPaymentMethod($validated['payment_method_id']);
             }
 
-            $isDefault = $user->defaultPaymentMethod()?->id === $paymentMethod->id;
+            $message = 'Método de pago agregado exitosamente.';
 
-            return response()->json([
-                'message' => 'Método de pago agregado exitosamente.',
-                'payment_method' => [
-                    'id' => $paymentMethod->id,
-                    'type' => $paymentMethod->type,
-                    'card' => [
-                        'brand' => $paymentMethod->card->brand,
-                        'last4' => $paymentMethod->card->last4,
-                        'exp_month' => $paymentMethod->card->exp_month,
-                        'exp_year' => $paymentMethod->card->exp_year,
+            if ($request->expectsJson()) {
+                $isDefault = $user->defaultPaymentMethod()?->id === $paymentMethod->id;
+
+                return response()->json([
+                    'message' => $message,
+                    'payment_method' => [
+                        'id' => $paymentMethod->id,
+                        'type' => $paymentMethod->type,
+                        'card' => [
+                            'brand' => $paymentMethod->card->brand,
+                            'last4' => $paymentMethod->card->last4,
+                            'exp_month' => $paymentMethod->card->exp_month,
+                            'exp_year' => $paymentMethod->card->exp_year,
+                        ],
+                        'is_default' => $isDefault,
                     ],
-                    'is_default' => $isDefault,
-                ],
-            ], 201);
+                ], 201);
+            }
+
+            return back()->with('success', $message);
         } catch (\Exception $e) {
             Log::error('Error adding payment method', [
                 'user_id' => $user->id,
@@ -160,63 +127,35 @@ class PaymentMethodController extends Controller
                 'error' => $e->getMessage(),
             ]);
 
-            return response()->json([
-                'message' => 'Error al agregar el método de pago. Por favor, verifique los datos de la tarjeta.',
-            ], 422);
+            $errorMsg = 'Error al agregar el método de pago.';
+
+            return $request->expectsJson()
+                ? response()->json(['message' => $errorMsg], 422)
+                : back()->with('error', $errorMsg);
         }
     }
 
     /**
      * Remove a payment method
      *
-     * Deletes a saved payment method from the user's account. Cannot delete the
-     * default payment method unless it's the only one remaining.
-     *
      * @authenticated
      *
      * @urlParam payment_method string required The Stripe PaymentMethod ID. Example: pm_1234567890
-     *
-     * @response scenario="Success deleted" {
-     *   "message": "Método de pago eliminado exitosamente."
-     * }
-     * @response status=400 scenario="Cannot delete default" {
-     *   "message": "No se puede eliminar el método de pago predeterminado. Establezca otro método como predeterminado primero."
-     * }
-     * @response status=404 scenario="Not found" {
-     *   "message": "Método de pago no encontrado."
-     * }
      */
-    public function destroy(Request $request, string $paymentMethodId): JsonResponse
+    public function destroy(Request $request, string $paymentMethodId): JsonResponse|RedirectResponse
     {
         $user = $request->user();
 
         try {
-            $paymentMethod = $user->findPaymentMethod($paymentMethodId);
+            $error = $this->validateDeletion($user, $paymentMethodId);
 
-            if (! $paymentMethod) {
-                return response()->json([
-                    'message' => 'Método de pago no encontrado.',
-                ], 404);
-            }
-
-            $defaultPaymentMethod = $user->defaultPaymentMethod();
-
-            // Check if trying to delete the default payment method
-            if ($defaultPaymentMethod && $defaultPaymentMethod->id === $paymentMethodId) {
-                // Check if there are other payment methods
-                $allMethods = $user->paymentMethods();
-                if ($allMethods->count() > 1) {
-                    return response()->json([
-                        'message' => 'No se puede eliminar el método de pago predeterminado. Establezca otro método como predeterminado primero.',
-                    ], 400);
-                }
+            if ($error) {
+                return $this->respond($request, $error['message'], 'error', $error['status']);
             }
 
             $user->removePaymentMethod($paymentMethodId);
 
-            return response()->json([
-                'message' => 'Método de pago eliminado exitosamente.',
-            ]);
+            return $this->respond($request, 'Método de pago eliminado exitosamente.');
         } catch (\Exception $e) {
             Log::error('Error removing payment method', [
                 'user_id' => $user->id,
@@ -224,30 +163,45 @@ class PaymentMethodController extends Controller
                 'error' => $e->getMessage(),
             ]);
 
-            return response()->json([
-                'message' => 'Error al eliminar el método de pago.',
-            ], 500);
+            return $this->respond($request, 'Error al eliminar el método de pago.', 'error', 500);
         }
+    }
+
+    /**
+     * Validate that a payment method can be deleted.
+     *
+     * @return array{message: string, status: int}|null
+     */
+    private function validateDeletion(\App\Models\User $user, string $paymentMethodId): ?array
+    {
+        $paymentMethod = $user->findPaymentMethod($paymentMethodId);
+
+        if (! $paymentMethod) {
+            return ['message' => self::NOT_FOUND_MSG, 'status' => 404];
+        }
+
+        $default = $user->defaultPaymentMethod();
+        $isDefault = $default && $default->id === $paymentMethodId;
+
+        if ($isDefault && $user->paymentMethods()->count() > 1) {
+            return [
+                'message' => 'No se puede eliminar el método de pago predeterminado. '
+                    .'Establezca otro método como predeterminado primero.',
+                'status' => 400,
+            ];
+        }
+
+        return null;
     }
 
     /**
      * Set default payment method
      *
-     * Sets the specified payment method as the default for the user's account.
-     * The default payment method is used for future invoices and subscriptions.
-     *
      * @authenticated
      *
      * @urlParam payment_method string required The Stripe PaymentMethod ID. Example: pm_1234567890
-     *
-     * @response scenario="Success" {
-     *   "message": "Método de pago predeterminado actualizado exitosamente."
-     * }
-     * @response status=404 scenario="Not found" {
-     *   "message": "Método de pago no encontrado."
-     * }
      */
-    public function setDefault(Request $request, string $paymentMethodId): JsonResponse
+    public function setDefault(Request $request, string $paymentMethodId): JsonResponse|RedirectResponse
     {
         $user = $request->user();
 
@@ -255,16 +209,15 @@ class PaymentMethodController extends Controller
             $paymentMethod = $user->findPaymentMethod($paymentMethodId);
 
             if (! $paymentMethod) {
-                return response()->json([
-                    'message' => 'Método de pago no encontrado.',
-                ], 404);
+                return $this->respond($request, self::NOT_FOUND_MSG, 'error', 404);
             }
 
             $user->updateDefaultPaymentMethod($paymentMethodId);
 
-            return response()->json([
-                'message' => 'Método de pago predeterminado actualizado exitosamente.',
-            ]);
+            return $this->respond(
+                $request,
+                'Método de pago predeterminado actualizado exitosamente.',
+            );
         } catch (\Exception $e) {
             Log::error('Error setting default payment method', [
                 'user_id' => $user->id,
@@ -272,23 +225,19 @@ class PaymentMethodController extends Controller
                 'error' => $e->getMessage(),
             ]);
 
-            return response()->json([
-                'message' => 'Error al establecer el método de pago predeterminado.',
-            ], 500);
+            return $this->respond(
+                $request,
+                'Error al establecer el método de pago predeterminado.',
+                'error',
+                500,
+            );
         }
     }
 
     /**
      * Get Stripe publishable key
      *
-     * Returns the Stripe publishable key needed to initialize Stripe Elements
-     * on the frontend for securely collecting card information.
-     *
      * @authenticated
-     *
-     * @response scenario="Success" {
-     *   "key": "pk_test_1234567890"
-     * }
      */
     public function getStripeKey(): JsonResponse
     {
@@ -300,23 +249,73 @@ class PaymentMethodController extends Controller
             ], 500);
         }
 
-        return response()->json([
-            'key' => $key,
-        ]);
+        return response()->json(['key' => $key]);
     }
 
     /**
      * Show the payment methods management page
      *
-     * Renders the Inertia page for managing saved payment methods.
-     * Provides the Stripe publishable key for initializing Stripe Elements.
-     *
      * @authenticated
      */
     public function show(Request $request): Response
     {
+        $user = $request->user();
+        $paymentMethods = [];
+
+        try {
+            if ($user->stripe_id) {
+                $paymentMethods = $this->formatMethods(
+                    $user->paymentMethods(),
+                    $user->defaultPaymentMethod(),
+                );
+            }
+        } catch (\Exception $e) {
+            Log::error('Error loading payment methods for page', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
         return Inertia::render('PaymentMethods', [
             'stripe_key' => config('cashier.key'),
+            'payment_methods' => $paymentMethods,
         ]);
+    }
+
+    /**
+     * Return a JSON or redirect response depending on the request type.
+     */
+    private function respond(
+        Request $request,
+        string $message,
+        string $flashType = 'success',
+        int $statusCode = 200,
+    ): JsonResponse|RedirectResponse {
+        if ($request->expectsJson()) {
+            return response()->json(['message' => $message], $statusCode);
+        }
+
+        return back()->with($flashType, $message);
+    }
+
+    /**
+     * @param  \Illuminate\Support\Collection  $methods
+     * @return array<int, array<string, mixed>>
+     */
+    private function formatMethods($methods, $default): array
+    {
+        return $methods->map(function ($method) use ($default) {
+            return [
+                'id' => $method->id,
+                'type' => $method->type,
+                'card' => [
+                    'brand' => $method->card->brand,
+                    'last4' => $method->card->last4,
+                    'exp_month' => $method->card->exp_month,
+                    'exp_year' => $method->card->exp_year,
+                ],
+                'is_default' => $default && $default->id === $method->id,
+            ];
+        })->all();
     }
 }

@@ -79,14 +79,14 @@ Route::prefix('orders')->middleware('auth:sanctum')->group(function () {
 Route::get('/notification-preferences', GetNotificationPreferencesController::class)->middleware('auth:sanctum');
 Route::put('/notification-preferences', UpdateNotificationPreferencesController::class)->middleware('auth:sanctum');
 
-Route::prefix('addresses')->middleware(['web', 'auth'])->group(function () {
+Route::prefix('addresses')->middleware('auth:sanctum')->group(function () {
     Route::get('/', GetAddressesController::class);
     Route::post('/', StoreAddressController::class);
     Route::put('/{address}', UpdateAddressController::class);
     Route::delete('/{address}', DestroyAddressController::class);
 });
 
-Route::prefix('payment-methods')->middleware(['web', 'auth'])->group(function () {
+Route::prefix('payment-methods')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [PaymentMethodController::class, 'index']);
     Route::post('/', [PaymentMethodController::class, 'store']);
     Route::get('/stripe-key', [PaymentMethodController::class, 'getStripeKey']);

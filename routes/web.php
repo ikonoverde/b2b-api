@@ -62,9 +62,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/profile', ProfileController::class)->name('account.profile');
     Route::put('/account/profile', UpdateProfileController::class)->name('account.profile.update');
     Route::get('/account/addresses', [AddressesController::class, 'show'])->name('account.addresses');
+    Route::post('/account/addresses', [AddressesController::class, 'store'])->name('account.addresses.store');
+    Route::put('/account/addresses/{address}', [AddressesController::class, 'update'])
+        ->name('account.addresses.update');
+    Route::delete('/account/addresses/{address}', [AddressesController::class, 'destroy'])
+        ->name('account.addresses.destroy');
     Route::get('/account/notifications', NotificationPreferencesController::class)->name('account.notifications');
-    Route::put('/account/notifications', UpdateNotificationPreferencesController::class)->name('account.notifications.update');
-    Route::get('/account/payment-methods', [PaymentMethodController::class, 'show'])->name('account.payment-methods');
+    Route::put('/account/notifications', UpdateNotificationPreferencesController::class)
+        ->name('account.notifications.update');
+    Route::get('/account/payment-methods', [PaymentMethodController::class, 'show'])
+        ->name('account.payment-methods');
+    Route::post('/account/payment-methods', [PaymentMethodController::class, 'store'])
+        ->name('account.payment-methods.store');
+    Route::patch('/account/payment-methods/{payment_method}/default', [PaymentMethodController::class, 'setDefault'])
+        ->name('account.payment-methods.set-default');
+    Route::delete('/account/payment-methods/{payment_method}', [PaymentMethodController::class, 'destroy'])
+        ->name('account.payment-methods.destroy');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 });
