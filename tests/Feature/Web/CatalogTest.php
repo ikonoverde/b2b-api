@@ -43,6 +43,7 @@ it('includes expected product fields', function () {
             ->has('name')
             ->has('sku')
             ->has('category')
+            ->has('category_id')
             ->has('price')
             ->has('image')
             ->has('is_featured')
