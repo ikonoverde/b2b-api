@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Banner;
+use App\Models\Category;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -22,14 +24,16 @@ test('admin can view banners page', function () {
     );
 });
 
-test('admin can create a banner', function () {
+test('admin can create a banner with product link', function () {
     $admin = User::factory()->admin()->create();
+    $product = Product::factory()->create();
 
     $response = $this->actingAs($admin)->post('/admin/banners', [
         'title' => 'Test Banner',
         'subtitle' => 'A subtitle',
         'image' => UploadedFile::fake()->create('banner.jpg', 100, 'image/jpeg'),
-        'link_url' => 'https://example.com',
+        'link_type' => 'product',
+        'link_value' => (string) $product->id,
         'link_text' => 'Ver más',
         'is_active' => true,
     ]);
@@ -39,8 +43,56 @@ test('admin can create a banner', function () {
     $banner = Banner::first();
     expect($banner->title)->toBe('Test Banner');
     expect($banner->subtitle)->toBe('A subtitle');
-    expect($banner->link_url)->toBe('https://example.com');
+    expect($banner->link_type)->toBe('product');
+    expect($banner->link_value)->toBe((string) $product->id);
     Storage::disk('public')->assertExists($banner->image_path);
+});
+
+test('admin can create a banner with category link', function () {
+    $admin = User::factory()->admin()->create();
+    $category = Category::factory()->create();
+
+    $response = $this->actingAs($admin)->post('/admin/banners', [
+        'title' => 'Category Banner',
+        'image' => UploadedFile::fake()->create('banner.jpg', 100, 'image/jpeg'),
+        'link_type' => 'category',
+        'link_value' => (string) $category->id,
+        'is_active' => true,
+    ]);
+
+    $response->assertRedirect('/admin/banners');
+    $this->assertDatabaseHas('banners', ['link_type' => 'category', 'link_value' => (string) $category->id]);
+});
+
+test('admin can create a banner with url link', function () {
+    $admin = User::factory()->admin()->create();
+
+    $response = $this->actingAs($admin)->post('/admin/banners', [
+        'title' => 'URL Banner',
+        'image' => UploadedFile::fake()->create('banner.jpg', 100, 'image/jpeg'),
+        'link_type' => 'url',
+        'link_value' => 'https://example.com/promo',
+        'link_text' => 'Ver promo',
+        'is_active' => true,
+    ]);
+
+    $response->assertRedirect('/admin/banners');
+    $this->assertDatabaseHas('banners', ['link_type' => 'url', 'link_value' => 'https://example.com/promo']);
+});
+
+test('admin can create a banner without link', function () {
+    $admin = User::factory()->admin()->create();
+
+    $response = $this->actingAs($admin)->post('/admin/banners', [
+        'title' => 'No Link Banner',
+        'image' => UploadedFile::fake()->create('banner.jpg', 100, 'image/jpeg'),
+        'is_active' => true,
+    ]);
+
+    $response->assertRedirect('/admin/banners');
+    $banner = Banner::first();
+    expect($banner->link_type)->toBeNull();
+    expect($banner->link_value)->toBeNull();
 });
 
 test('admin can update a banner', function () {
@@ -130,6 +182,70 @@ test('banner creation validates image type', function () {
     ]);
 
     $response->assertSessionHasErrors('image');
+});
+
+test('banner creation rejects invalid link_type', function () {
+    $admin = User::factory()->admin()->create();
+
+    $response = $this->actingAs($admin)->post('/admin/banners', [
+        'title' => 'Test',
+        'image' => UploadedFile::fake()->create('banner.jpg', 100, 'image/jpeg'),
+        'link_type' => 'invalid',
+        'link_value' => 'something',
+    ]);
+
+    $response->assertSessionHasErrors('link_type');
+});
+
+test('banner creation requires link_value when link_type is set', function () {
+    $admin = User::factory()->admin()->create();
+
+    $response = $this->actingAs($admin)->post('/admin/banners', [
+        'title' => 'Test',
+        'image' => UploadedFile::fake()->create('banner.jpg', 100, 'image/jpeg'),
+        'link_type' => 'product',
+    ]);
+
+    $response->assertSessionHasErrors('link_value');
+});
+
+test('banner creation validates product id exists', function () {
+    $admin = User::factory()->admin()->create();
+
+    $response = $this->actingAs($admin)->post('/admin/banners', [
+        'title' => 'Test',
+        'image' => UploadedFile::fake()->create('banner.jpg', 100, 'image/jpeg'),
+        'link_type' => 'product',
+        'link_value' => '99999',
+    ]);
+
+    $response->assertSessionHasErrors('link_value');
+});
+
+test('banner creation validates category id exists', function () {
+    $admin = User::factory()->admin()->create();
+
+    $response = $this->actingAs($admin)->post('/admin/banners', [
+        'title' => 'Test',
+        'image' => UploadedFile::fake()->create('banner.jpg', 100, 'image/jpeg'),
+        'link_type' => 'category',
+        'link_value' => '99999',
+    ]);
+
+    $response->assertSessionHasErrors('link_value');
+});
+
+test('banner creation validates url format', function () {
+    $admin = User::factory()->admin()->create();
+
+    $response = $this->actingAs($admin)->post('/admin/banners', [
+        'title' => 'Test',
+        'image' => UploadedFile::fake()->create('banner.jpg', 100, 'image/jpeg'),
+        'link_type' => 'url',
+        'link_value' => 'not-a-url',
+    ]);
+
+    $response->assertSessionHasErrors('link_value');
 });
 
 test('unauthenticated user cannot access banners page', function () {

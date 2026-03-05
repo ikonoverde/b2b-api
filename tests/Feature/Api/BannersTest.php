@@ -51,7 +51,7 @@ test('banners endpoint returns correct structure', function () {
 
     $response->assertJsonStructure([
         'data' => [
-            '*' => ['id', 'title', 'subtitle', 'image_url', 'link_url', 'link_text'],
+            '*' => ['id', 'title', 'subtitle', 'image_url', 'link_type', 'link_value', 'link_text'],
         ],
     ]);
 });

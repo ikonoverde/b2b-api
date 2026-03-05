@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\BannerResource;
+use App\Http\Resources\MobileBannerResource;
 use App\Models\Banner;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -32,6 +32,6 @@ class BannersController extends Controller
             ->orderBy('display_order')
             ->get();
 
-        return BannerResource::collection($banners);
+        return MobileBannerResource::collection($banners);
     }
 }

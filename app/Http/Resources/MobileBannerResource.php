@@ -5,25 +5,20 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BannerResource extends JsonResource
+class MobileBannerResource extends JsonResource
 {
     /**
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
     {
-        $linkValue = match ($this->link_type) {
-            'product' => $this->product?->slug ?? $this->link_value,
-            default => $this->link_value,
-        };
-
         return [
             'id' => $this->id,
             'title' => $this->title,
             'subtitle' => $this->subtitle,
             'image_url' => $this->image_url,
             'link_type' => $this->link_type,
-            'link_value' => $linkValue,
+            'link_value' => $this->link_value,
             'link_text' => $this->link_text,
         ];
     }

@@ -1,7 +1,12 @@
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { PackageOpen, Search, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import CustomerLayout from '@/Layouts/CustomerLayout';
+
+interface Category {
+    id: number;
+    name: string;
+}
 
 interface CatalogProduct {
     id: number;
@@ -9,6 +14,7 @@ interface CatalogProduct {
     name: string;
     sku: string;
     category: string;
+    category_id: number;
     price: number;
     image: string | null;
     is_featured: boolean;
@@ -16,14 +22,24 @@ interface CatalogProduct {
 
 interface CatalogProps {
     products: CatalogProduct[];
+    categories: Category[];
+    selectedCategoryId: number | null;
 }
 
 function formatCurrency(amount: number): string {
     return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount);
 }
 
-export default function Catalog({ products }: CatalogProps) {
+export default function Catalog({ products, categories, selectedCategoryId }: CatalogProps) {
     const [search, setSearch] = useState('');
+
+    function handleCategorySelect(id: number | null) {
+        const query: Record<string, string> = {};
+        if (id) {
+            query.category_id = String(id);
+        }
+        router.get(window.location.pathname, query, { preserveState: true });
+    }
 
     const filtered = useMemo(() => {
         if (!search.trim()) return products;
@@ -66,6 +82,33 @@ export default function Catalog({ products }: CatalogProps) {
                             <X className="h-5 w-5" />
                         </button>
                     )}
+                </div>
+
+                {/* Category Chips */}
+                <div className="mb-6 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                    <button
+                        onClick={() => handleCategorySelect(null)}
+                        className={`shrink-0 rounded-full border px-4 py-2 font-[Outfit] text-sm font-medium transition-colors ${
+                            !selectedCategoryId
+                                ? 'border-[#5E7052] bg-[#5E7052] text-white'
+                                : 'border-[#E5E5E5] bg-white text-[#666666] hover:border-[#5E7052] hover:text-[#5E7052]'
+                        }`}
+                    >
+                        Todos
+                    </button>
+                    {categories.map((category) => (
+                        <button
+                            key={category.id}
+                            onClick={() => handleCategorySelect(category.id)}
+                            className={`shrink-0 rounded-full border px-4 py-2 font-[Outfit] text-sm font-medium transition-colors ${
+                                selectedCategoryId === category.id
+                                    ? 'border-[#5E7052] bg-[#5E7052] text-white'
+                                    : 'border-[#E5E5E5] bg-white text-[#666666] hover:border-[#5E7052] hover:text-[#5E7052]'
+                            }`}
+                        >
+                            {category.name}
+                        </button>
+                    ))}
                 </div>
 
                 {/* Product Grid */}

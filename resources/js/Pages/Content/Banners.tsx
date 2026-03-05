@@ -5,12 +5,15 @@ import AppLayout from '@/Layouts/AppLayout';
 import type { PageProps } from '@/types';
 import { formatDateShort } from '@/utils/date';
 
+type LinkType = 'product' | 'category' | 'url' | '';
+
 interface BannerData {
     id: number;
     title: string;
     subtitle: string | null;
     image_url: string;
-    link_url: string | null;
+    link_type: LinkType | null;
+    link_value: string | null;
     link_text: string | null;
     display_order: number;
     is_active: boolean;
@@ -30,6 +33,12 @@ const statusConfig: Record<string, { label: string; bg: string; text: string }> 
     expired: { label: 'Expirado', bg: 'bg-red-50', text: 'text-red-700' },
 };
 
+const linkTypeLabels: Record<string, string> = {
+    product: 'Producto',
+    category: 'Categoría',
+    url: 'URL externa',
+};
+
 export default function Banners({ banners }: Props) {
     const { flash } = usePage<PageProps>().props;
     const [showModal, setShowModal] = useState(false);
@@ -40,7 +49,8 @@ export default function Banners({ banners }: Props) {
         title: string;
         subtitle: string;
         image: File | null;
-        link_url: string;
+        link_type: LinkType;
+        link_value: string;
         link_text: string;
         is_active: boolean;
         starts_at: string;
@@ -49,7 +59,8 @@ export default function Banners({ banners }: Props) {
         title: '',
         subtitle: '',
         image: null,
-        link_url: '',
+        link_type: '',
+        link_value: '',
         link_text: '',
         is_active: true,
         starts_at: '',
@@ -68,7 +79,8 @@ export default function Banners({ banners }: Props) {
             title: banner.title,
             subtitle: banner.subtitle || '',
             image: null,
-            link_url: banner.link_url || '',
+            link_type: banner.link_type || '',
+            link_value: banner.link_value || '',
             link_text: banner.link_text || '',
             is_active: banner.is_active,
             starts_at: banner.starts_at ? banner.starts_at.slice(0, 16) : '',
@@ -86,7 +98,10 @@ export default function Banners({ banners }: Props) {
         if (form.data.image) {
             formData.append('image', form.data.image);
         }
-        formData.append('link_url', form.data.link_url);
+        if (form.data.link_type) {
+            formData.append('link_type', form.data.link_type);
+            formData.append('link_value', form.data.link_value);
+        }
         formData.append('link_text', form.data.link_text);
         formData.append('is_active', form.data.is_active ? '1' : '0');
         formData.append('starts_at', form.data.starts_at);
@@ -130,6 +145,15 @@ export default function Banners({ banners }: Props) {
         router.post('/admin/banners/reorder', { items: reordered }, {
             preserveScroll: true,
         });
+    };
+
+    const linkValuePlaceholder = (): string => {
+        switch (form.data.link_type) {
+            case 'product': return 'ID del producto';
+            case 'category': return 'ID de categoría';
+            case 'url': return 'https://ejemplo.com';
+            default: return '';
+        }
     };
 
     return (
@@ -260,30 +284,62 @@ export default function Banners({ banners }: Props) {
                                     <p className="text-red-500 text-xs mt-1">{form.errors.image}</p>
                                 )}
                             </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
-                                        URL del enlace
-                                    </label>
-                                    <input
-                                        type="url"
-                                        value={form.data.link_url}
-                                        onChange={(e) => form.setData('link_url', e.target.value)}
-                                        className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
-                                        Texto del enlace
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={form.data.link_text}
-                                        onChange={(e) => form.setData('link_text', e.target.value)}
-                                        className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
-                                    />
-                                </div>
+                            <div>
+                                <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                                    Tipo de enlace
+                                </label>
+                                <select
+                                    value={form.data.link_type}
+                                    onChange={(e) => {
+                                        const value = e.target.value as LinkType;
+                                        form.setData({
+                                            ...form.data,
+                                            link_type: value,
+                                            link_value: value ? form.data.link_value : '',
+                                        });
+                                    }}
+                                    className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                                >
+                                    <option value="">Ninguno</option>
+                                    <option value="product">Producto</option>
+                                    <option value="category">Categoría</option>
+                                    <option value="url">URL externa</option>
+                                </select>
+                                {form.errors.link_type && (
+                                    <p className="text-red-500 text-xs mt-1">{form.errors.link_type}</p>
+                                )}
                             </div>
+                            {form.data.link_type && (
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                                            {linkTypeLabels[form.data.link_type]} *
+                                        </label>
+                                        <input
+                                            type={form.data.link_type === 'url' ? 'url' : 'text'}
+                                            placeholder={linkValuePlaceholder()}
+                                            value={form.data.link_value}
+                                            onChange={(e) => form.setData('link_value', e.target.value)}
+                                            className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                                            required
+                                        />
+                                        {form.errors.link_value && (
+                                            <p className="text-red-500 text-xs mt-1">{form.errors.link_value}</p>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                                            Texto del enlace
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={form.data.link_text}
+                                            onChange={(e) => form.setData('link_text', e.target.value)}
+                                            className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                                        />
+                                    </div>
+                                </div>
+                            )}
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
@@ -408,9 +464,9 @@ function BannerRow({
                         <p className="font-[Outfit] text-sm font-medium text-[#1A1A1A]">
                             {banner.title}
                         </p>
-                        {banner.subtitle && (
+                        {banner.link_type && (
                             <p className="font-[Outfit] text-xs text-[#999999]">
-                                {banner.subtitle}
+                                {linkTypeLabels[banner.link_type]}: {banner.link_value}
                             </p>
                         )}
                     </div>

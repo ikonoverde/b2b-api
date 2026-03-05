@@ -2,10 +2,14 @@
 
 namespace App\Http\Requests\Web\Content;
 
+use App\Http\Requests\Web\Content\Concerns\HasBannerLinkValidation;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateBannerRequest extends FormRequest
 {
+    use HasBannerLinkValidation;
+
     public function authorize(): bool
     {
         return true;
@@ -22,7 +26,8 @@ class UpdateBannerRequest extends FormRequest
             'title' => ['required', 'string', $maxString],
             'subtitle' => ['nullable', 'string', $maxString],
             'image' => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:5120'],
-            'link_url' => ['nullable', 'url', $maxString],
+            'link_type' => ['nullable', 'string', Rule::in(['product', 'category', 'url'])],
+            'link_value' => ['nullable', 'required_with:link_type', 'string', $maxString, $this->linkValueRule()],
             'link_text' => ['nullable', 'string', $maxString],
             'is_active' => ['boolean'],
             'starts_at' => ['nullable', 'date'],

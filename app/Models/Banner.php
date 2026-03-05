@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 
 class Banner extends Model
@@ -15,7 +16,8 @@ class Banner extends Model
         'title',
         'subtitle',
         'image_path',
-        'link_url',
+        'link_type',
+        'link_value',
         'link_text',
         'display_order',
         'is_active',
@@ -34,6 +36,14 @@ class Banner extends Model
             'starts_at' => 'datetime',
             'ends_at' => 'datetime',
         ];
+    }
+
+    /**
+     * @return BelongsTo<Product, $this>
+     */
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class, 'link_value');
     }
 
     public function getImageUrlAttribute(): string

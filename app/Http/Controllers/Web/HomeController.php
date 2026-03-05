@@ -32,6 +32,7 @@ class HomeController extends Controller
         $banners = BannerResource::collection(
             Banner::query()
                 ->active()
+                ->with(['product:id,slug'])
                 ->orderBy('display_order')
                 ->get()
         )->resolve();

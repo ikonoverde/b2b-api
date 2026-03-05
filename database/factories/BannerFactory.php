@@ -11,12 +11,20 @@ class BannerFactory extends Factory
 {
     public function definition(): array
     {
+        $linkType = fake()->optional()->randomElement(['product', 'category', 'url']);
+
         return [
             'title' => fake()->sentence(3),
             'subtitle' => fake()->optional()->sentence(5),
             'image_path' => 'banners/'.fake()->uuid().'.jpg',
-            'link_url' => fake()->optional()->url(),
-            'link_text' => fake()->optional()->words(2, true),
+            'link_type' => $linkType,
+            'link_value' => match ($linkType) {
+                'product' => (string) fake()->numberBetween(1, 50),
+                'category' => (string) fake()->numberBetween(1, 50),
+                'url' => fake()->url(),
+                default => null,
+            },
+            'link_text' => $linkType ? fake()->words(2, true) : null,
             'display_order' => fake()->numberBetween(0, 10),
             'is_active' => true,
             'starts_at' => null,
