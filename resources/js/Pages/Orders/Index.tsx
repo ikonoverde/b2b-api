@@ -1,12 +1,16 @@
-import { useState, useEffect } from 'react';
-import { Link } from '@inertiajs/react';
+import { useState } from 'react';
+import { Link, router, usePage } from '@inertiajs/react';
 import CustomerLayout from '@/Layouts/CustomerLayout';
 import {
     Package,
     ChevronRight,
+    RefreshCw,
     ShoppingBag,
-    Loader2,
 } from 'lucide-react';
+import { formatCurrency } from '@/utils/currency';
+import { formatDateLong } from '@/utils/date';
+import { statusLabels, statusColors } from '@/utils/order';
+import type { PageProps } from '@/types';
 
 interface OrderItem {
     id: number;
@@ -29,52 +33,43 @@ interface Order {
 
 interface PaginatedOrders {
     data: Order[];
-    links: {
-        first: string | null;
-        last: string | null;
-        prev: string | null;
-        next: string | null;
-    };
-    meta: {
-        current_page: number;
-        last_page: number;
-        per_page: number;
-        total: number;
-    };
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
 }
 
-const statusLabels: Record<string, string> = {
-    payment_pending: 'Pago Pendiente',
-    pending: 'Pendiente',
-    processing: 'Procesando',
-    shipped: 'Enviado',
-    delivered: 'Entregado',
-    cancelled: 'Cancelado',
-};
+interface OrdersIndexProps extends PageProps {
+    orders: PaginatedOrders;
+}
 
-const statusColors: Record<string, string> = {
-    payment_pending: 'bg-orange-100 text-orange-800',
-    pending: 'bg-yellow-100 text-yellow-800',
-    processing: 'bg-blue-100 text-blue-800',
-    shipped: 'bg-indigo-100 text-indigo-800',
-    delivered: 'bg-green-100 text-green-800',
-    cancelled: 'bg-red-100 text-red-800',
-};
 
-const formatDate = (dateString: string): string => {
-    return new Date(dateString).toLocaleDateString('es-MX', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    });
-};
+function ReorderButton({ orderId }: { orderId: number }) {
+    const [processing, setProcessing] = useState(false);
 
-const formatCurrency = (amount: number): string => {
-    return new Intl.NumberFormat('es-MX', {
-        style: 'currency',
-        currency: 'MXN',
-    }).format(amount);
-};
+    const handleReorder = (e: React.MouseEvent): void => {
+        e.preventDefault();
+        e.stopPropagation();
+        setProcessing(true);
+
+        router.post(`/orders/${orderId}/reorder`, {}, {
+            preserveScroll: true,
+            onFinish: () => setProcessing(false),
+        });
+    };
+
+    return (
+        <button
+            type="button"
+            onClick={handleReorder}
+            disabled={processing}
+            className="inline-flex items-center gap-1.5 text-sm text-[#5E7052] font-medium font-[Outfit] hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+            <RefreshCw className={`w-3.5 h-3.5 ${processing ? 'animate-spin' : ''}`} />
+            {processing ? 'Procesando...' : 'Reordenar'}
+        </button>
+    );
+}
 
 function OrderCard({ order }: { order: Order }) {
     const itemCount = order.items.reduce((sum, item) => sum + item.quantity, 0);
@@ -91,7 +86,7 @@ function OrderCard({ order }: { order: Order }) {
                             Pedido #{order.id}
                         </p>
                         <p className="text-sm text-[#666666] font-[Outfit] mt-1">
-                            {formatDate(order.created_at)}
+                            {formatDateLong(order.created_at)}
                         </p>
                     </div>
                     <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${statusColors[order.status]}`}>
@@ -137,10 +132,13 @@ function OrderCard({ order }: { order: Order }) {
                     <span className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
                         {formatCurrency(order.total_amount)}
                     </span>
-                    <span className="inline-flex items-center gap-1 text-sm text-[#5E7052] font-medium font-[Outfit]">
-                        Ver detalles
-                        <ChevronRight className="w-4 h-4" />
-                    </span>
+                    <div className="flex items-center gap-4">
+                        <ReorderButton orderId={order.id} />
+                        <span className="inline-flex items-center gap-1 text-sm text-[#5E7052] font-medium font-[Outfit]">
+                            Ver detalles
+                            <ChevronRight className="w-4 h-4" />
+                        </span>
+                    </div>
                 </div>
             </div>
         </Link>
@@ -171,32 +169,35 @@ function EmptyState() {
     );
 }
 
-function Pagination({
-    meta,
-    onPageChange,
-}: {
-    meta: PaginatedOrders['meta'];
-    onPageChange: (page: number) => void;
-}) {
-    if (meta.last_page <= 1) return null;
+function Pagination({ orders }: { orders: PaginatedOrders }) {
+    if (orders.last_page <= 1) {
+        return null;
+    }
+
+    const handlePageChange = (page: number): void => {
+        router.get('/orders', { page }, {
+            preserveState: true,
+            preserveScroll: false,
+        });
+    };
 
     return (
         <div className="flex items-center justify-center gap-2 mt-8">
             <button
-                onClick={() => onPageChange(meta.current_page - 1)}
-                disabled={meta.current_page === 1}
+                onClick={() => handlePageChange(orders.current_page - 1)}
+                disabled={orders.current_page === 1}
                 className="px-4 py-2 text-sm font-medium text-[#666666] bg-white border border-[#E5E5E5] rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed font-[Outfit]"
             >
                 Anterior
             </button>
 
             <span className="text-sm text-[#666666] font-[Outfit]">
-                Página {meta.current_page} de {meta.last_page}
+                Página {orders.current_page} de {orders.last_page}
             </span>
 
             <button
-                onClick={() => onPageChange(meta.current_page + 1)}
-                disabled={meta.current_page === meta.last_page}
+                onClick={() => handlePageChange(orders.current_page + 1)}
+                disabled={orders.current_page === orders.last_page}
                 className="px-4 py-2 text-sm font-medium text-[#666666] bg-white border border-[#E5E5E5] rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed font-[Outfit]"
             >
                 Siguiente
@@ -206,43 +207,7 @@ function Pagination({
 }
 
 export default function OrdersIndex() {
-    const [orders, setOrders] = useState<PaginatedOrders | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [currentPage, setCurrentPage] = useState(1);
-
-    const fetchOrders = async (page: number = 1) => {
-        setLoading(true);
-        setError(null);
-
-        try {
-            const response = await fetch(`/api/orders?page=${page}`, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error('Error al cargar los pedidos');
-            }
-
-            const data = await response.json();
-            setOrders(data);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Error desconocido');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchOrders(currentPage);
-    }, [currentPage]);
-
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
+    const { orders, flash } = usePage<OrdersIndexProps>().props;
 
     return (
         <CustomerLayout title="Mis Pedidos">
@@ -251,37 +216,28 @@ export default function OrdersIndex() {
                     Mis Pedidos
                 </h1>
 
-                {loading ? (
-                    <div className="flex items-center justify-center py-20">
-                        <Loader2 className="w-8 h-8 text-[#5E7052] animate-spin" />
-                        <span className="ml-2 text-[#666666] font-[Outfit]">Cargando...</span>
+                {flash?.success && (
+                    <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-xl">
+                        <p className="text-sm text-green-700 font-[Outfit]">{flash.success}</p>
                     </div>
-                ) : error ? (
-                    <div className="text-center py-20">
-                        <p className="text-red-600 font-[Outfit]">{error}</p>
-                        <button
-                            onClick={() => fetchOrders(currentPage)}
-                            className="mt-4 text-[#5E7052] hover:underline font-[Outfit]"
-                        >
-                            Intentar de nuevo
-                        </button>
+                )}
+                {flash?.error && (
+                    <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl">
+                        <p className="text-sm text-red-700 font-[Outfit]">{flash.error}</p>
                     </div>
-                ) : orders?.data.length === 0 ? (
+                )}
+
+                {orders.data.length === 0 ? (
                     <EmptyState />
                 ) : (
                     <>
                         <div className="space-y-4">
-                            {orders?.data.map((order) => (
+                            {orders.data.map((order) => (
                                 <OrderCard key={order.id} order={order} />
                             ))}
                         </div>
 
-                        {orders?.meta && (
-                            <Pagination
-                                meta={orders.meta}
-                                onPageChange={handlePageChange}
-                            />
-                        )}
+                        <Pagination orders={orders} />
                     </>
                 )}
             </div>

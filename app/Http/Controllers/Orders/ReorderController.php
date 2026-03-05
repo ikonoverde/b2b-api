@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Orders;
 
+use App\Actions\ReorderAction;
 use App\Http\Controllers\Controller;
-use App\Models\Cart;
-use App\Models\CartItem;
 use App\Models\Order;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,7 +42,7 @@ class ReorderController extends Controller
      *
      * @authenticated
      */
-    public function __invoke(Order $order): JsonResponse
+    public function __invoke(Order $order, ReorderAction $reorderAction): JsonResponse
     {
         if ($order->user_id !== auth()->id()) {
             return response()->json([
@@ -51,73 +50,10 @@ class ReorderController extends Controller
             ], Response::HTTP_FORBIDDEN);
         }
 
-        $order->load(['items.product']);
-
-        $added = [];
-        $unavailable = [];
-        $priceChanges = [];
-
-        $cart = Cart::firstOrCreate(
-            ['user_id' => auth()->id(), 'status' => 'active'],
-        );
-
-        foreach ($order->items as $item) {
-            $product = $item->product;
-
-            if (! $product || ! $product->is_active) {
-                $unavailable[] = [
-                    'product_id' => $item->product_id,
-                    'product_name' => $item->product_name,
-                    'reason' => 'product_unavailable',
-                ];
-
-                continue;
-            }
-
-            if ($product->stock < $item->quantity) {
-                $unavailable[] = [
-                    'product_id' => $item->product_id,
-                    'product_name' => $item->product_name,
-                    'reason' => 'out_of_stock',
-                ];
-
-                continue;
-            }
-
-            CartItem::updateOrCreate(
-                [
-                    'cart_id' => $cart->id,
-                    'product_id' => $product->id,
-                ],
-                [
-                    'quantity' => $item->quantity,
-                    'unit_price' => $product->price,
-                ]
-            );
-
-            $added[] = [
-                'product_id' => $product->id,
-                'product_name' => $item->product_name,
-                'quantity' => $item->quantity,
-                'unit_price' => (float) $product->price,
-            ];
-
-            if ((float) $product->price !== (float) $item->unit_price) {
-                $priceChanges[] = [
-                    'product_id' => $product->id,
-                    'product_name' => $item->product_name,
-                    'original_price' => (float) $item->unit_price,
-                    'current_price' => (float) $product->price,
-                ];
-            }
-        }
+        $result = $reorderAction->execute($order);
 
         return response()->json([
-            'data' => [
-                'added' => $added,
-                'unavailable' => $unavailable,
-                'price_changes' => $priceChanges,
-            ],
+            'data' => $result,
         ]);
     }
 }

@@ -45,11 +45,7 @@ export default function CustomerDashboard({ featuredProducts, profile, banners }
 
                 {/* Banners Carousel */}
                 <Deferred data="banners" fallback={<BannerCarouselSkeleton />}>
-                    {banners.length > 0 && (
-                        <div className="mb-8">
-                            <BannerCarousel banners={banners} />
-                        </div>
-                    )}
+                    <BannerCarouselSection banners={banners} />
                 </Deferred>
 
                 {/* Stats */}
@@ -151,6 +147,18 @@ export default function CustomerDashboard({ featuredProducts, profile, banners }
                 )}
             </div>
         </CustomerLayout>
+    );
+}
+
+function BannerCarouselSection({ banners }: { banners?: BannerData[] }) {
+    if (!banners || banners.length === 0) {
+        return null;
+    }
+
+    return (
+        <div className="mb-8">
+            <BannerCarousel banners={banners} />
+        </div>
     );
 }
 

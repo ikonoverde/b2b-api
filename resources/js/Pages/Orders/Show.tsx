@@ -14,6 +14,9 @@ import {
     Send,
 } from 'lucide-react';
 import { useState } from 'react';
+import { formatCurrency } from '@/utils/currency';
+import { formatDateTimeLong } from '@/utils/date';
+import { statusLabels, statusColors } from '@/utils/order';
 import type { PageProps } from '@/types';
 
 interface OrderItem {
@@ -57,24 +60,6 @@ interface Props extends PageProps {
     order: Order;
 }
 
-const statusLabels: Record<string, string> = {
-    payment_pending: 'Pago Pendiente',
-    pending: 'Pendiente',
-    processing: 'Procesando',
-    shipped: 'Enviado',
-    delivered: 'Entregado',
-    cancelled: 'Cancelado',
-};
-
-const statusColors: Record<string, string> = {
-    payment_pending: 'bg-orange-100 text-orange-800',
-    pending: 'bg-yellow-100 text-yellow-800',
-    processing: 'bg-blue-100 text-blue-800',
-    shipped: 'bg-indigo-100 text-indigo-800',
-    delivered: 'bg-green-100 text-green-800',
-    cancelled: 'bg-red-100 text-red-800',
-};
-
 const statusIcons: Record<string, React.ReactNode> = {
     payment_pending: <Clock className="w-5 h-5" />,
     pending: <Clock className="w-5 h-5" />,
@@ -84,22 +69,6 @@ const statusIcons: Record<string, React.ReactNode> = {
     cancelled: <XCircle className="w-5 h-5" />,
 };
 
-const formatDate = (dateString: string): string => {
-    return new Date(dateString).toLocaleDateString('es-MX', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-    });
-};
-
-const formatCurrency = (amount: number): string => {
-    return new Intl.NumberFormat('es-MX', {
-        style: 'currency',
-        currency: 'MXN',
-    }).format(amount);
-};
 
 function getCarrierTrackingUrl(carrier: string | null, trackingNumber: string | null): string | null {
     if (!carrier || !trackingNumber) return null;
@@ -138,7 +107,7 @@ function OrderHeader({ order }: { order: Order }) {
                             Pedido #{order.id}
                         </h1>
                         <p className="text-sm text-[#999999] font-[Outfit] mt-1">
-                            Realizado el {formatDate(order.created_at)}
+                            Realizado el {formatDateTimeLong(order.created_at)}
                         </p>
                     </div>
                     <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${statusColors[order.status]}`}>
@@ -259,7 +228,7 @@ function StatusTimeline({ statusHistories, currentStatus }: { statusHistories: S
                 icon: statusIcons[status],
                 isCompleted,
                 isCurrent,
-                date: historyEntry ? formatDate(historyEntry.created_at) : null,
+                date: historyEntry ? formatDateTimeLong(historyEntry.created_at) : null,
             };
         });
     };
@@ -404,57 +373,18 @@ function ShippingInfo({ order }: { order: Order }) {
 
 function ActionButtons({ orderId }: { orderId: number }) {
     const [reordering, setReordering] = useState(false);
-    const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-    const handleReorder = async () => {
+    const handleReorder = (): void => {
         setReordering(true);
-        setMessage(null);
 
-        try {
-            const response = await fetch(`/api/orders/${orderId}/reorder`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                let messageText = '';
-
-                if (data.data.added.length > 0) {
-                    messageText = `${data.data.added.length} producto(s) agregado(s) al carrito`;
-                }
-
-                if (data.data.unavailable.length > 0) {
-                    messageText += messageText ? '. ' : '';
-                    messageText += `${data.data.unavailable.length} producto(s) no disponible(s)`;
-                }
-
-                if (data.data.price_changes.length > 0) {
-                    messageText += messageText ? '. ' : '';
-                    messageText += `Precio actualizado en ${data.data.price_changes.length} producto(s)`;
-                }
-
-                setMessage({ type: 'success', text: messageText || 'Productos agregados al carrito' });
-
-                if (data.data.added.length > 0) {
-                    router.visit('/cart');
-                }
-            } else {
-                setMessage({ type: 'error', text: data.message || 'Error al reordenar' });
-            }
-        } catch (error) {
-            setMessage({ type: 'error', text: 'Error de conexión. Intenta de nuevo.' });
-        } finally {
-            setReordering(false);
-        }
+        router.post(`/orders/${orderId}/reorder`, {}, {
+            preserveScroll: true,
+            onFinish: () => setReordering(false),
+        });
     };
 
     const handleDownloadInvoice = () => {
-        window.open(`/api/orders/${orderId}/invoice`, '_blank');
+        window.open(`/orders/${orderId}/invoice`, '_blank');
     };
 
     return (
@@ -481,25 +411,13 @@ function ActionButtons({ orderId }: { orderId: number }) {
                     <FileText className="w-4 h-4" />
                     Descargar factura
                 </button>
-
-                {message && (
-                    <div
-                        className={`p-3 rounded-lg text-sm font-[Outfit] ${
-                            message.type === 'success'
-                                ? 'bg-green-50 text-green-800'
-                                : 'bg-red-50 text-red-800'
-                        }`}
-                    >
-                        {message.text}
-                    </div>
-                )}
             </div>
         </div>
     );
 }
 
 export default function OrderShow() {
-    const { order } = usePage<Props>().props;
+    const { order, flash } = usePage<Props>().props;
 
     return (
         <CustomerLayout title={`Pedido #${order.id}`}>
@@ -511,6 +429,17 @@ export default function OrderShow() {
                     <ArrowLeft className="w-4 h-4" />
                     Volver a mis pedidos
                 </Link>
+
+                {flash?.success && (
+                    <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-xl">
+                        <p className="text-sm text-green-700 font-[Outfit]">{flash.success}</p>
+                    </div>
+                )}
+                {flash?.error && (
+                    <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl">
+                        <p className="text-sm text-red-700 font-[Outfit]">{flash.error}</p>
+                    </div>
+                )}
 
                 <div className="space-y-6">
                     <OrderHeader order={order} />
