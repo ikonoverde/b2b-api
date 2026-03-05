@@ -1,6 +1,6 @@
 import { Link, router } from '@inertiajs/react';
-import { LayoutGrid, List, PackageOpen, Search, X } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { ArrowUpDown, Check, LayoutGrid, List, PackageOpen, Plus, Search, X } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import CustomerLayout from '@/Layouts/CustomerLayout';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { formatCurrency } from '@/utils/currency';
@@ -22,23 +22,299 @@ interface CatalogProduct {
     is_featured: boolean;
 }
 
+type SortOption = 'newest' | 'oldest' | 'price_asc' | 'price_desc' | 'name_asc' | 'name_desc';
+
+const SORT_LABELS: Record<SortOption, string> = {
+    newest: 'Más recientes',
+    oldest: 'Más antiguos',
+    price_asc: 'Precio: menor a mayor',
+    price_desc: 'Precio: mayor a menor',
+    name_asc: 'Nombre: A-Z',
+    name_desc: 'Nombre: Z-A',
+};
+
 interface CatalogProps {
     products: CatalogProduct[];
     categories: Category[];
     selectedCategoryId: number | null;
+    selectedSort: SortOption | null;
 }
 
-export default function Catalog({ products, categories, selectedCategoryId }: CatalogProps) {
+function SortDropdown({ selected, onSelect }: { selected: SortOption | null; onSelect: (sort: SortOption) => void }) {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <div className="relative shrink-0">
+            <button
+                onClick={() => setOpen(!open)}
+                className="flex h-10 items-center gap-2 rounded-xl border border-[#E5E5E5] bg-white px-4 font-[Outfit] text-sm font-medium text-[#666666] transition-colors hover:border-[#5E7052] hover:text-[#5E7052]"
+            >
+                <ArrowUpDown className="h-4 w-4" />
+                <span>{selected ? SORT_LABELS[selected] : 'Ordenar'}</span>
+            </button>
+            {open && (
+                <>
+                    <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
+                    <div className="absolute left-0 top-full z-20 mt-1 w-56 rounded-xl border border-[#E5E5E5] bg-white py-1 shadow-lg">
+                        {(Object.entries(SORT_LABELS) as [SortOption, string][]).map(([value, label]) => (
+                            <button
+                                key={value}
+                                onClick={() => {
+                                    setOpen(false);
+                                    onSelect(value);
+                                }}
+                                className={`w-full px-4 py-2 text-left font-[Outfit] text-sm transition-colors hover:bg-[#F5F3F0] ${
+                                    selected === value || (!selected && value === 'newest')
+                                        ? 'font-semibold text-[#5E7052]'
+                                        : 'text-[#666666]'
+                                }`}
+                            >
+                                {label}
+                            </button>
+                        ))}
+                    </div>
+                </>
+            )}
+        </div>
+    );
+}
+
+type CartState = 'loading' | 'added';
+
+function AddToCartButton({ state, onClick }: { state?: CartState; onClick: (e: React.MouseEvent) => void }) {
+    return (
+        <button
+            onClick={onClick}
+            disabled={!!state}
+            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${
+                state === 'added'
+                    ? 'scale-95 bg-emerald-500 text-white'
+                    : 'bg-[#5E7052] text-white hover:bg-[#4a5c42] active:scale-90'
+            } ${state ? 'opacity-80' : ''}`}
+        >
+            {state === 'added' ? (
+                <Check className="h-4 w-4" strokeWidth={2.5} />
+            ) : state === 'loading' ? (
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+            ) : (
+                <Plus className="h-4 w-4" strokeWidth={2.5} />
+            )}
+        </button>
+    );
+}
+
+function ProductGridCard({
+    product,
+    cartState,
+    onAddToCart,
+}: {
+    product: CatalogProduct;
+    cartState?: CartState;
+    onAddToCart: (e: React.MouseEvent, id: number) => void;
+}) {
+    return (
+        <Link
+            href={`/products/${product.slug}`}
+            className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden flex flex-col hover:shadow-md transition-shadow"
+        >
+            <div className="h-40 lg:h-48 bg-[#F5F3F0] relative">
+                {product.image ? (
+                    <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                        <div className="w-12 h-12 bg-[#E8E8E8] rounded-full" />
+                    </div>
+                )}
+                <span className="absolute top-2 left-2 bg-white/90 text-[#666666] font-[Outfit] text-xs font-medium px-2 py-1 rounded-full">
+                    {product.category}
+                </span>
+                {product.is_featured && (
+                    <span className="absolute top-2 right-2 bg-[#D4A853] text-white font-[Outfit] text-xs font-medium px-2 py-1 rounded-full">
+                        Destacado
+                    </span>
+                )}
+            </div>
+            <div className="p-4 flex flex-col gap-2 flex-1">
+                <span className="font-[Outfit] font-semibold text-[#1A1A1A] text-sm leading-snug line-clamp-2">
+                    {product.name}
+                </span>
+                <div className="mt-auto flex items-end justify-between gap-2">
+                    <span className="font-[Outfit] font-bold text-[#8B6F47] text-sm">
+                        {formatCurrency(product.price)}
+                    </span>
+                    <AddToCartButton state={cartState} onClick={(e) => onAddToCart(e, product.id)} />
+                </div>
+            </div>
+        </Link>
+    );
+}
+
+function ProductListCard({
+    product,
+    cartState,
+    onAddToCart,
+}: {
+    product: CatalogProduct;
+    cartState?: CartState;
+    onAddToCart: (e: React.MouseEvent, id: number) => void;
+}) {
+    return (
+        <Link
+            href={`/products/${product.slug}`}
+            className="flex items-center gap-4 bg-white rounded-2xl border border-[#E5E5E5] p-3 hover:shadow-md transition-shadow"
+        >
+            <div className="h-20 w-20 shrink-0 rounded-xl bg-[#F5F3F0] overflow-hidden">
+                {product.image ? (
+                    <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                        <div className="w-8 h-8 bg-[#E8E8E8] rounded-full" />
+                    </div>
+                )}
+            </div>
+            <div className="flex flex-col gap-1 flex-1 min-w-0">
+                <span className="font-[Outfit] text-xs font-medium text-[#999999]">{product.category}</span>
+                <span className="font-[Outfit] font-semibold text-[#1A1A1A] text-sm leading-snug line-clamp-2">
+                    {product.name}
+                </span>
+                <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                        <span className="font-[Outfit] font-bold text-[#8B6F47] text-sm">
+                            {formatCurrency(product.price)}
+                        </span>
+                        {product.is_featured && (
+                            <span className="bg-[#D4A853] text-white font-[Outfit] text-xs font-medium px-2 py-0.5 rounded-full">
+                                Destacado
+                            </span>
+                        )}
+                    </div>
+                    <AddToCartButton state={cartState} onClick={(e) => onAddToCart(e, product.id)} />
+                </div>
+            </div>
+        </Link>
+    );
+}
+
+function buildQuery(categoryId: number | null, sort: SortOption | null): Record<string, string> {
+    const query: Record<string, string> = {};
+    if (categoryId) {
+        query.category_id = String(categoryId);
+    }
+    if (sort) {
+        query.sort = sort;
+    }
+    return query;
+}
+
+function ProductList({
+    products,
+    viewMode,
+    cartStates,
+    onAddToCart,
+    search,
+}: {
+    products: CatalogProduct[];
+    viewMode: 'grid' | 'list';
+    cartStates: Record<number, CartState>;
+    onAddToCart: (e: React.MouseEvent, id: number) => void;
+    search: string;
+}) {
+    if (products.length === 0) {
+        return (
+            <div className="flex flex-col items-center gap-4 py-16">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#D4E5D0]">
+                    <PackageOpen className="h-8 w-8 text-[#5E7052]" />
+                </div>
+                <p className="text-center text-sm text-[#666666] font-[Outfit]">
+                    No se encontraron productos
+                    {search && (
+                        <>
+                            {' '}
+                            para &ldquo;<span className="font-semibold text-[#5E7052]">{search}</span>&rdquo;
+                        </>
+                    )}
+                </p>
+            </div>
+        );
+    }
+
+    const Card = viewMode === 'grid' ? ProductGridCard : ProductListCard;
+
+    return (
+        <div
+            className={
+                viewMode === 'grid'
+                    ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'
+                    : 'flex flex-col gap-3'
+            }
+        >
+            {products.map((product) => (
+                <Card key={product.id} product={product} cartState={cartStates[product.id]} onAddToCart={onAddToCart} />
+            ))}
+        </div>
+    );
+}
+
+export default function Catalog({ products, categories, selectedCategoryId, selectedSort }: CatalogProps) {
     const [search, setSearch] = useState('');
     const [viewMode, setViewMode] = useLocalStorage<'grid' | 'list'>('catalog-view', 'grid');
+    const [cartStates, setCartStates] = useState<Record<number, CartState>>({});
+    const timersRef = useRef<Record<number, ReturnType<typeof setTimeout>>>({});
 
-    function handleCategorySelect(id: number | null) {
-        const query: Record<string, string> = {};
-        if (id) {
-            query.category_id = String(id);
-        }
-        router.get(window.location.pathname, query, { preserveState: true });
-    }
+    useEffect(() => {
+        return () => {
+            Object.values(timersRef.current).forEach(clearTimeout);
+        };
+    }, []);
+
+    const addToCart = useCallback((e: React.MouseEvent, productId: number) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        router.post(
+            '/cart/items',
+            { product_id: productId, quantity: 1 },
+            {
+                preserveScroll: true,
+                preserveState: true,
+                onStart: () => setCartStates((s) => ({ ...s, [productId]: 'loading' })),
+                onSuccess: () => {
+                    setCartStates((s) => ({ ...s, [productId]: 'added' }));
+                    clearTimeout(timersRef.current[productId]);
+                    timersRef.current[productId] = setTimeout(() => {
+                        setCartStates((s) => {
+                            const next = { ...s };
+                            delete next[productId];
+                            return next;
+                        });
+                        delete timersRef.current[productId];
+                    }, 1500);
+                },
+                onError: () => {
+                    setCartStates((s) => {
+                        const next = { ...s };
+                        delete next[productId];
+                        return next;
+                    });
+                },
+            },
+        );
+    }, []);
+
+    const handleCategorySelect = useCallback(
+        (id: number | null) => {
+            router.get(window.location.pathname, buildQuery(id, selectedSort), { preserveState: true });
+        },
+        [selectedSort],
+    );
+
+    const handleSortSelect = useCallback(
+        (sort: SortOption) => {
+            const newSort = sort === selectedSort || sort === 'newest' ? null : sort;
+            router.get(window.location.pathname, buildQuery(selectedCategoryId, newSort), { preserveState: true });
+        },
+        [selectedSort, selectedCategoryId],
+    );
 
     const filtered = useMemo(() => {
         if (!search.trim()) return products;
@@ -107,6 +383,11 @@ export default function Catalog({ products, categories, selectedCategoryId }: Ca
                     )}
                 </div>
 
+                {/* Sort & Category Chips */}
+                <div className="mb-6 flex items-center gap-4">
+                    <SortDropdown selected={selectedSort} onSelect={handleSortSelect} />
+                </div>
+
                 {/* Category Chips */}
                 <div className="mb-6 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
                     <button
@@ -135,108 +416,13 @@ export default function Catalog({ products, categories, selectedCategoryId }: Ca
                 </div>
 
                 {/* Product Grid */}
-                {filtered.length > 0 ? (
-                    <div
-                        className={
-                            viewMode === 'grid'
-                                ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'
-                                : 'flex flex-col gap-3'
-                        }
-                    >
-                        {filtered.map((product) =>
-                            viewMode === 'grid' ? (
-                                <Link
-                                    key={product.id}
-                                    href={`/products/${product.slug}`}
-                                    className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden flex flex-col hover:shadow-md transition-shadow"
-                                >
-                                    <div className="h-40 lg:h-48 bg-[#F5F3F0] relative">
-                                        {product.image ? (
-                                            <img
-                                                src={product.image}
-                                                alt={product.name}
-                                                className="w-full h-full object-cover"
-                                            />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center">
-                                                <div className="w-12 h-12 bg-[#E8E8E8] rounded-full" />
-                                            </div>
-                                        )}
-                                        <span className="absolute top-2 left-2 bg-white/90 text-[#666666] font-[Outfit] text-xs font-medium px-2 py-1 rounded-full">
-                                            {product.category}
-                                        </span>
-                                        {product.is_featured && (
-                                            <span className="absolute top-2 right-2 bg-[#D4A853] text-white font-[Outfit] text-xs font-medium px-2 py-1 rounded-full">
-                                                Destacado
-                                            </span>
-                                        )}
-                                    </div>
-                                    <div className="p-4 flex flex-col gap-2 flex-1">
-                                        <span className="font-[Outfit] font-semibold text-[#1A1A1A] text-sm leading-snug line-clamp-2">
-                                            {product.name}
-                                        </span>
-                                        <span className="font-[Outfit] font-bold text-[#8B6F47] text-sm mt-auto">
-                                            {formatCurrency(product.price)}
-                                        </span>
-                                    </div>
-                                </Link>
-                            ) : (
-                                <Link
-                                    key={product.id}
-                                    href={`/products/${product.slug}`}
-                                    className="flex items-center gap-4 bg-white rounded-2xl border border-[#E5E5E5] p-3 hover:shadow-md transition-shadow"
-                                >
-                                    <div className="h-20 w-20 shrink-0 rounded-xl bg-[#F5F3F0] overflow-hidden">
-                                        {product.image ? (
-                                            <img
-                                                src={product.image}
-                                                alt={product.name}
-                                                className="w-full h-full object-cover"
-                                            />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center">
-                                                <div className="w-8 h-8 bg-[#E8E8E8] rounded-full" />
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="flex flex-col gap-1 flex-1 min-w-0">
-                                        <span className="font-[Outfit] text-xs font-medium text-[#999999]">
-                                            {product.category}
-                                        </span>
-                                        <span className="font-[Outfit] font-semibold text-[#1A1A1A] text-sm leading-snug line-clamp-2">
-                                            {product.name}
-                                        </span>
-                                        <div className="flex items-center gap-2">
-                                            <span className="font-[Outfit] font-bold text-[#8B6F47] text-sm">
-                                                {formatCurrency(product.price)}
-                                            </span>
-                                            {product.is_featured && (
-                                                <span className="bg-[#D4A853] text-white font-[Outfit] text-xs font-medium px-2 py-0.5 rounded-full">
-                                                    Destacado
-                                                </span>
-                                            )}
-                                        </div>
-                                    </div>
-                                </Link>
-                            ),
-                        )}
-                    </div>
-                ) : (
-                    <div className="flex flex-col items-center gap-4 py-16">
-                        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#D4E5D0]">
-                            <PackageOpen className="h-8 w-8 text-[#5E7052]" />
-                        </div>
-                        <p className="text-center text-sm text-[#666666] font-[Outfit]">
-                            No se encontraron productos
-                            {search && (
-                                <>
-                                    {' '}
-                                    para &ldquo;<span className="font-semibold text-[#5E7052]">{search}</span>&rdquo;
-                                </>
-                            )}
-                        </p>
-                    </div>
-                )}
+                <ProductList
+                    products={filtered}
+                    viewMode={viewMode}
+                    cartStates={cartStates}
+                    onAddToCart={addToCart}
+                    search={search}
+                />
             </div>
         </CustomerLayout>
     );

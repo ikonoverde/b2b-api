@@ -14,13 +14,16 @@ class CatalogController extends Controller
     public function __invoke(Request $request): Response
     {
         $categoryId = $request->integer('category_id') ?: null;
+        $sort = $request->string('sort')->value() ?: null;
+        $validSorts = ['newest', 'oldest', 'price_asc', 'price_desc', 'name_asc', 'name_desc'];
+        $sort = in_array($sort, $validSorts, true) ? $sort : null;
 
         $products = Product::query()
             ->with(['category', 'images' => fn ($query) => $query->orderBy('position')->limit(1)])
             ->whereHas('category', fn ($q) => $q->where('is_active', true))
             ->where('is_active', true)
             ->when($categoryId, fn ($q) => $q->filterByCategory($categoryId))
-            ->latest()
+            ->when($sort, fn ($q) => $q->sortBy($sort), fn ($q) => $q->latest())
             ->get()
             ->map(fn (Product $product) => [
                 'id' => $product->id,
@@ -43,6 +46,7 @@ class CatalogController extends Controller
             'products' => $products,
             'categories' => $categories,
             'selectedCategoryId' => $categoryId,
+            'selectedSort' => $sort,
         ]);
     }
 }

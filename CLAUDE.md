@@ -464,3 +464,6 @@ export default () => (
 ## Credentials for dev testing
 - **username**: moeric@gmail.com
 - **password**: 42ekwN8tGIMv
+
+## Additional context
+- Before starting, ALWAYS search supermemory to get historical context for the given question/task
