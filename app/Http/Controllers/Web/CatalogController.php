@@ -15,6 +15,7 @@ class CatalogController extends Controller
     {
         $categoryId = $request->integer('category_id') ?: null;
         $sort = $request->string('sort')->value() ?: null;
+        $search = $request->string('search')->value() ?: null;
         $validSorts = ['newest', 'oldest', 'price_asc', 'price_desc', 'name_asc', 'name_desc'];
         $sort = in_array($sort, $validSorts, true) ? $sort : null;
 
@@ -23,9 +24,11 @@ class CatalogController extends Controller
             ->whereHas('category', fn ($q) => $q->where('is_active', true))
             ->where('is_active', true)
             ->when($categoryId, fn ($q) => $q->filterByCategory($categoryId))
+            ->when($search, fn ($q) => $q->search($search))
             ->when($sort, fn ($q) => $q->sortBy($sort), fn ($q) => $q->latest())
-            ->get()
-            ->map(fn (Product $product) => [
+            ->paginate(20)
+            ->withQueryString()
+            ->through(fn (Product $product) => [
                 'id' => $product->id,
                 'slug' => $product->slug,
                 'name' => $product->name,
@@ -43,10 +46,11 @@ class CatalogController extends Controller
             ->get(['id', 'name']);
 
         return Inertia::render('Catalog', [
-            'products' => $products,
+            'products' => Inertia::scroll($products),
             'categories' => $categories,
             'selectedCategoryId' => $categoryId,
             'selectedSort' => $sort,
+            'selectedSearch' => $search,
         ]);
     }
 }

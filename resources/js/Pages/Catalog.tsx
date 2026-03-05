@@ -1,6 +1,6 @@
-import { Link, router } from '@inertiajs/react';
+import { InfiniteScroll, Link, router } from '@inertiajs/react';
 import { ArrowUpDown, Check, LayoutGrid, List, PackageOpen, Plus, Search, X } from 'lucide-react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import CustomerLayout from '@/Layouts/CustomerLayout';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { formatCurrency } from '@/utils/currency';
@@ -22,6 +22,10 @@ interface CatalogProduct {
     is_featured: boolean;
 }
 
+interface PaginatedProducts {
+    data: CatalogProduct[];
+}
+
 type SortOption = 'newest' | 'oldest' | 'price_asc' | 'price_desc' | 'name_asc' | 'name_desc';
 
 const SORT_LABELS: Record<SortOption, string> = {
@@ -34,10 +38,11 @@ const SORT_LABELS: Record<SortOption, string> = {
 };
 
 interface CatalogProps {
-    products: CatalogProduct[];
+    products: PaginatedProducts;
     categories: Category[];
     selectedCategoryId: number | null;
     selectedSort: SortOption | null;
+    selectedSearch: string | null;
 }
 
 function SortDropdown({ selected, onSelect }: { selected: SortOption | null; onSelect: (sort: SortOption) => void }) {
@@ -195,13 +200,16 @@ function ProductListCard({
     );
 }
 
-function buildQuery(categoryId: number | null, sort: SortOption | null): Record<string, string> {
+function buildQuery(categoryId: number | null, sort: SortOption | null, search: string | null): Record<string, string> {
     const query: Record<string, string> = {};
     if (categoryId) {
         query.category_id = String(categoryId);
     }
     if (sort) {
         query.sort = sort;
+    }
+    if (search) {
+        query.search = search;
     }
     return query;
 }
@@ -211,33 +219,12 @@ function ProductList({
     viewMode,
     cartStates,
     onAddToCart,
-    search,
 }: {
     products: CatalogProduct[];
     viewMode: 'grid' | 'list';
     cartStates: Record<number, CartState>;
     onAddToCart: (e: React.MouseEvent, id: number) => void;
-    search: string;
 }) {
-    if (products.length === 0) {
-        return (
-            <div className="flex flex-col items-center gap-4 py-16">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#D4E5D0]">
-                    <PackageOpen className="h-8 w-8 text-[#5E7052]" />
-                </div>
-                <p className="text-center text-sm text-[#666666] font-[Outfit]">
-                    No se encontraron productos
-                    {search && (
-                        <>
-                            {' '}
-                            para &ldquo;<span className="font-semibold text-[#5E7052]">{search}</span>&rdquo;
-                        </>
-                    )}
-                </p>
-            </div>
-        );
-    }
-
     const Card = viewMode === 'grid' ? ProductGridCard : ProductListCard;
 
     return (
@@ -255,17 +242,64 @@ function ProductList({
     );
 }
 
-export default function Catalog({ products, categories, selectedCategoryId, selectedSort }: CatalogProps) {
-    const [search, setSearch] = useState('');
+function EmptyState({ search }: { search: string }) {
+    return (
+        <div className="flex flex-col items-center gap-4 py-16">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#D4E5D0]">
+                <PackageOpen className="h-8 w-8 text-[#5E7052]" />
+            </div>
+            <p className="text-center text-sm text-[#666666] font-[Outfit]">
+                No se encontraron productos
+                {search && (
+                    <>
+                        {' '}
+                        para &ldquo;<span className="font-semibold text-[#5E7052]">{search}</span>&rdquo;
+                    </>
+                )}
+            </p>
+        </div>
+    );
+}
+
+function LoadingIndicator() {
+    return (
+        <div className="flex justify-center py-6">
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#5E7052]/30 border-t-[#5E7052]" />
+        </div>
+    );
+}
+
+export default function Catalog({ products, categories, selectedCategoryId, selectedSort, selectedSearch }: CatalogProps) {
+    const [search, setSearch] = useState(selectedSearch ?? '');
     const [viewMode, setViewMode] = useLocalStorage<'grid' | 'list'>('catalog-view', 'grid');
     const [cartStates, setCartStates] = useState<Record<number, CartState>>({});
     const timersRef = useRef<Record<number, ReturnType<typeof setTimeout>>>({});
+    const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+    const filtersRef = useRef({ categoryId: selectedCategoryId, sort: selectedSort });
+    filtersRef.current = { categoryId: selectedCategoryId, sort: selectedSort };
 
     useEffect(() => {
         return () => {
             Object.values(timersRef.current).forEach(clearTimeout);
         };
     }, []);
+
+    useEffect(() => {
+        if (search === (selectedSearch ?? '')) {
+            return;
+        }
+
+        clearTimeout(debounceRef.current);
+        debounceRef.current = setTimeout(() => {
+            router.get(
+                window.location.pathname,
+                buildQuery(filtersRef.current.categoryId, filtersRef.current.sort, search || null),
+                { preserveState: true, preserveScroll: true },
+            );
+        }, 300);
+
+        return () => clearTimeout(debounceRef.current);
+    }, [search, selectedSearch]);
 
     const addToCart = useCallback((e: React.MouseEvent, productId: number) => {
         e.preventDefault();
@@ -303,30 +337,24 @@ export default function Catalog({ products, categories, selectedCategoryId, sele
 
     const handleCategorySelect = useCallback(
         (id: number | null) => {
-            router.get(window.location.pathname, buildQuery(id, selectedSort), { preserveState: true });
+            router.get(window.location.pathname, buildQuery(id, selectedSort, search || null), { preserveState: true });
         },
-        [selectedSort],
+        [selectedSort, search],
     );
 
     const handleSortSelect = useCallback(
         (sort: SortOption) => {
             const newSort = sort === selectedSort || sort === 'newest' ? null : sort;
-            router.get(window.location.pathname, buildQuery(selectedCategoryId, newSort), { preserveState: true });
+            router.get(window.location.pathname, buildQuery(selectedCategoryId, newSort, search || null), { preserveState: true });
         },
-        [selectedSort, selectedCategoryId],
+        [selectedSort, selectedCategoryId, search],
     );
 
-    const filtered = useMemo(() => {
-        if (!search.trim()) return products;
-
-        const q = search.toLowerCase();
-        return products.filter(
-            (p) =>
-                p.name.toLowerCase().includes(q) ||
-                p.category.toLowerCase().includes(q) ||
-                p.sku.toLowerCase().includes(q),
-        );
-    }, [products, search]);
+    const handleClearSearch = useCallback(() => {
+        clearTimeout(debounceRef.current);
+        setSearch('');
+        router.get(window.location.pathname, buildQuery(selectedCategoryId, selectedSort, null), { preserveState: true });
+    }, [selectedCategoryId, selectedSort]);
 
     return (
         <CustomerLayout title="Catálogo">
@@ -335,9 +363,6 @@ export default function Catalog({ products, categories, selectedCategoryId, sele
                 <div className="flex items-center justify-between mb-6">
                     <h1 className="text-2xl font-bold text-[#1A1A1A] font-[Outfit]">Catálogo</h1>
                     <div className="flex items-center gap-3">
-                        <span className="text-sm font-medium text-[#999999] font-[Outfit]">
-                            {filtered.length} {filtered.length === 1 ? 'producto' : 'productos'}
-                        </span>
                         <div className="flex overflow-hidden rounded-lg border border-[#E5E5E5]">
                             <button
                                 onClick={() => setViewMode('grid')}
@@ -375,7 +400,7 @@ export default function Catalog({ products, categories, selectedCategoryId, sele
                     />
                     {search && (
                         <button
-                            onClick={() => setSearch('')}
+                            onClick={handleClearSearch}
                             className="absolute top-1/2 right-4 -translate-y-1/2 text-[#999999] hover:text-[#666666]"
                         >
                             <X className="h-5 w-5" />
@@ -415,14 +440,23 @@ export default function Catalog({ products, categories, selectedCategoryId, sele
                     ))}
                 </div>
 
-                {/* Product Grid */}
-                <ProductList
-                    products={filtered}
-                    viewMode={viewMode}
-                    cartStates={cartStates}
-                    onAddToCart={addToCart}
-                    search={search}
-                />
+                {/* Product Grid with Infinite Scroll */}
+                {products.data.length === 0 ? (
+                    <EmptyState search={search} />
+                ) : (
+                    <InfiniteScroll
+                        data="products"
+                        preserveUrl
+                        loading={<LoadingIndicator />}
+                    >
+                        <ProductList
+                            products={products.data}
+                            viewMode={viewMode}
+                            cartStates={cartStates}
+                            onAddToCart={addToCart}
+                        />
+                    </InfiniteScroll>
+                )}
             </div>
         </CustomerLayout>
     );
