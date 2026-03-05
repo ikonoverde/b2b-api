@@ -24,7 +24,7 @@ it('shows customer dashboard', function () {
 });
 
 it('shows profile stats', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create(['discount_percentage' => 10]);
     Order::factory(3)->create(['user_id' => $user->id, 'total_amount' => 100]);
 
     $response = $this->actingAs($user)->get('/dashboard');
@@ -32,6 +32,7 @@ it('shows profile stats', function () {
     $response->assertInertia(fn ($page) => $page
         ->where('profile.orders_count', 3)
         ->where('profile.total_spent', 300)
+        ->where('profile.discount_percentage', 10)
     );
 });
 

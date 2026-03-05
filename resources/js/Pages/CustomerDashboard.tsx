@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { ClipboardList, CreditCard, Package, ShoppingCart } from 'lucide-react';
+import { ClipboardList, CreditCard, Package, Percent, ShoppingCart } from 'lucide-react';
 import CustomerLayout from '@/Layouts/CustomerLayout';
 import type { PageProps } from '@/types';
 
@@ -15,6 +15,7 @@ interface DashboardProduct {
 interface Profile {
     orders_count: number;
     total_spent: number;
+    discount_percentage: number;
 }
 
 interface CustomerDashboardProps {
@@ -56,6 +57,15 @@ export default function CustomerDashboard({ featuredProducts, profile }: Custome
                         <div className="flex flex-col">
                             <span className="text-2xl font-bold text-[#8B6F47] font-[Outfit]">{formatCurrency(profile.total_spent)}</span>
                             <span className="text-xs font-medium text-[#999999] font-[Outfit]">Compras</span>
+                        </div>
+                    </div>
+                    <div className="flex flex-1 items-center gap-4 rounded-2xl bg-white p-5 border border-[#E5E5E5]">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#D4E5D0]">
+                            <Percent className="h-6 w-6 text-[#5E7052]" />
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-2xl font-bold text-[#5E7052] font-[Outfit]">{profile.discount_percentage}%</span>
+                            <span className="text-xs font-medium text-[#999999] font-[Outfit]">Descuento</span>
                         </div>
                     </div>
                 </div>
