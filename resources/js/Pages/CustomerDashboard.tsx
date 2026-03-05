@@ -1,5 +1,8 @@
-import { Link, usePage } from '@inertiajs/react';
-import { ClipboardList, CreditCard, Package, Percent, ShoppingCart } from 'lucide-react';
+import { Deferred, Link, usePage } from '@inertiajs/react';
+import { ChevronLeft, ChevronRight, ClipboardList, CreditCard, Package, Percent, ShoppingCart } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import BannerCard from '@/Components/BannerCard';
+import type { BannerData } from '@/Components/BannerCard';
 import CustomerLayout from '@/Layouts/CustomerLayout';
 import type { PageProps } from '@/types';
 
@@ -21,13 +24,14 @@ interface Profile {
 interface CustomerDashboardProps {
     featuredProducts: DashboardProduct[];
     profile: Profile;
+    banners: BannerData[];
 }
 
 function formatCurrency(amount: number): string {
     return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount);
 }
 
-export default function CustomerDashboard({ featuredProducts, profile }: CustomerDashboardProps) {
+export default function CustomerDashboard({ featuredProducts, profile, banners }: CustomerDashboardProps) {
     const { auth } = usePage<PageProps>().props;
 
     return (
@@ -38,6 +42,15 @@ export default function CustomerDashboard({ featuredProducts, profile }: Custome
                     <span className="text-sm font-medium text-[#999999] font-[Outfit]">Bienvenido de vuelta</span>
                     <h1 className="text-2xl font-bold text-[#1A1A1A] font-[Outfit]">{auth.user?.name}</h1>
                 </div>
+
+                {/* Banners Carousel */}
+                <Deferred data="banners" fallback={<BannerCarouselSkeleton />}>
+                    {banners.length > 0 && (
+                        <div className="mb-8">
+                            <BannerCarousel banners={banners} />
+                        </div>
+                    )}
+                </Deferred>
 
                 {/* Stats */}
                 <div className="flex gap-4 mb-8">
@@ -138,5 +151,88 @@ export default function CustomerDashboard({ featuredProducts, profile }: Custome
                 )}
             </div>
         </CustomerLayout>
+    );
+}
+
+function BannerCarouselSkeleton() {
+    return (
+        <div className="mb-8">
+            <div className="h-44 md:h-52 rounded-2xl bg-[#F5F3F0] animate-pulse" />
+        </div>
+    );
+}
+
+const AUTOPLAY_INTERVAL = 5000;
+
+function BannerCarousel({ banners }: { banners: BannerData[] }) {
+    const [current, setCurrent] = useState(0);
+    const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+    const resetTimer = useCallback(() => {
+        if (timerRef.current) {
+            clearInterval(timerRef.current);
+        }
+        timerRef.current = setInterval(() => {
+            setCurrent((prev) => (prev + 1) % banners.length);
+        }, AUTOPLAY_INTERVAL);
+    }, [banners.length]);
+
+    useEffect(() => {
+        if (banners.length <= 1) {
+            return;
+        }
+        resetTimer();
+        return () => {
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+            }
+        };
+    }, [banners.length, resetTimer]);
+
+    const goTo = (index: number): void => {
+        setCurrent(index);
+        resetTimer();
+    };
+
+    const goNext = (): void => goTo((current + 1) % banners.length);
+    const goPrev = (): void => goTo((current - 1 + banners.length) % banners.length);
+
+    const banner = banners[current];
+
+    return (
+        <div className="relative group">
+            <BannerCard banner={banner} className="h-44 md:h-52" />
+
+            {banners.length > 1 && (
+                <>
+                    <button
+                        type="button"
+                        onClick={goPrev}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                        <ChevronLeft className="w-4 h-4 text-[#1A1A1A]" />
+                    </button>
+                    <button
+                        type="button"
+                        onClick={goNext}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                        <ChevronRight className="w-4 h-4 text-[#1A1A1A]" />
+                    </button>
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                        {banners.map((b, i) => (
+                            <button
+                                key={b.id}
+                                type="button"
+                                onClick={() => goTo(i)}
+                                className={`w-2 h-2 rounded-full transition-colors ${
+                                    i === current ? 'bg-white' : 'bg-white/50'
+                                }`}
+                            />
+                        ))}
+                    </div>
+                </>
+            )}
+        </div>
     );
 }

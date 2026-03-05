@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\BannerResource;
 use App\Models\Banner;
 use App\Models\Product;
 use Inertia\Inertia;
@@ -29,17 +28,9 @@ class HomeController extends Controller
                 'image_url' => $product->images->first()?->image_url,
             ]);
 
-        $banners = BannerResource::collection(
-            Banner::query()
-                ->active()
-                ->with(['product:id,slug'])
-                ->orderBy('display_order')
-                ->get()
-        )->resolve();
-
         return Inertia::render('Home', [
             'featuredProducts' => $featuredProducts,
-            'banners' => $banners,
+            'banners' => Banner::resolvedActive(),
         ]);
     }
 }

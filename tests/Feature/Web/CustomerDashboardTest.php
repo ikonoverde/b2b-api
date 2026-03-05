@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Banner;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
@@ -44,5 +45,37 @@ it('shows featured products', function () {
 
     $response->assertInertia(fn ($page) => $page
         ->has('featuredProducts', 3)
+    );
+});
+
+it('shows active banners', function () {
+    $user = User::factory()->create();
+    Banner::factory(2)->create(['is_active' => true]);
+    Banner::factory()->create(['is_active' => false]);
+
+    $response = $this->actingAs($user)->get('/dashboard');
+
+    $response->assertInertia(fn ($page) => $page
+        ->missing('banners')
+        ->loadDeferredProps(fn ($reload) => $reload
+            ->has('banners', 2)
+        )
+    );
+});
+
+it('shows banners in display order', function () {
+    $user = User::factory()->create();
+    Banner::factory()->create(['is_active' => true, 'display_order' => 2, 'title' => 'Second']);
+    Banner::factory()->create(['is_active' => true, 'display_order' => 1, 'title' => 'First']);
+
+    $response = $this->actingAs($user)->get('/dashboard');
+
+    $response->assertInertia(fn ($page) => $page
+        ->missing('banners')
+        ->loadDeferredProps(fn ($reload) => $reload
+            ->has('banners', 2)
+            ->where('banners.0.title', 'First')
+            ->where('banners.1.title', 'Second')
+        )
     );
 });

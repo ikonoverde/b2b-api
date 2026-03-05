@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Banner;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -39,6 +40,7 @@ class CustomerDashboardController extends Controller
         return Inertia::render('CustomerDashboard', [
             'featuredProducts' => $featuredProducts,
             'profile' => $profile,
+            'banners' => Inertia::defer(fn () => Banner::resolvedActive()),
         ]);
     }
 }

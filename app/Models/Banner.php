@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Resources\BannerResource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -49,6 +50,20 @@ class Banner extends Model
     public function getImageUrlAttribute(): string
     {
         return Storage::disk('public')->url($this->image_path);
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    public static function resolvedActive(): array
+    {
+        return BannerResource::collection(
+            static::query()
+                ->active()
+                ->with(['product:id,slug'])
+                ->orderBy('display_order')
+                ->get()
+        )->resolve();
     }
 
     /**
