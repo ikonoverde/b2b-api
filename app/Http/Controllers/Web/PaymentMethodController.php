@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\PaymentMethods\PaymentMethodData;
 use App\Http\Requests\PaymentMethods\StorePaymentMethodRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -106,14 +107,7 @@ class PaymentMethodController extends Controller
                 return response()->json([
                     'message' => $message,
                     'payment_method' => [
-                        'id' => $paymentMethod->id,
-                        'type' => $paymentMethod->type,
-                        'card' => [
-                            'brand' => $paymentMethod->card->brand,
-                            'last4' => $paymentMethod->card->last4,
-                            'exp_month' => $paymentMethod->card->exp_month,
-                            'exp_year' => $paymentMethod->card->exp_year,
-                        ],
+                        ...PaymentMethodData::fromStripe($paymentMethod),
                         'is_default' => $isDefault,
                     ],
                 ], 201);
@@ -306,14 +300,7 @@ class PaymentMethodController extends Controller
     {
         return $methods->map(function ($method) use ($default) {
             return [
-                'id' => $method->id,
-                'type' => $method->type,
-                'card' => [
-                    'brand' => $method->card->brand,
-                    'last4' => $method->card->last4,
-                    'exp_month' => $method->card->exp_month,
-                    'exp_year' => $method->card->exp_year,
-                ],
+                ...PaymentMethodData::fromStripe($method),
                 'is_default' => $default && $default->id === $method->id,
             ];
         })->all();

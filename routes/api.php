@@ -29,6 +29,8 @@ use App\Http\Controllers\Orders\DownloadInvoiceController;
 use App\Http\Controllers\Orders\GetOrderController;
 use App\Http\Controllers\Orders\GetOrdersController;
 use App\Http\Controllers\Orders\ReorderController;
+use App\Http\Controllers\PaymentMethods\CreateSetupSessionController;
+use App\Http\Controllers\PaymentMethods\VerifySetupSessionController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ShippingMethods\GetShippingMethodsController;
@@ -95,6 +97,8 @@ Route::prefix('payment-methods')->middleware('auth:sanctum')->group(function () 
     Route::get('/', [PaymentMethodController::class, 'index']);
     Route::post('/', [PaymentMethodController::class, 'store']);
     Route::get('/stripe-key', [PaymentMethodController::class, 'getStripeKey']);
+    Route::post('/setup-session', CreateSetupSessionController::class);
+    Route::get('/setup-verify', VerifySetupSessionController::class);
     Route::patch('/{payment_method}/default', [PaymentMethodController::class, 'setDefault']);
     Route::delete('/{payment_method}', [PaymentMethodController::class, 'destroy']);
 });

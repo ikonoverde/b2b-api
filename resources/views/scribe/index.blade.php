@@ -227,6 +227,12 @@
                                                                                 <li class="tocify-item level-2" data-unique="payment-methods-GETapi-payment-methods-stripe-key">
                                 <a href="#payment-methods-GETapi-payment-methods-stripe-key">Get Stripe publishable key</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="payment-methods-POSTapi-payment-methods-setup-session">
+                                <a href="#payment-methods-POSTapi-payment-methods-setup-session">Create Setup Session</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="payment-methods-GETapi-payment-methods-setup-verify">
+                                <a href="#payment-methods-GETapi-payment-methods-setup-verify">Verify Setup Session</a>
+                            </li>
                                                                                 <li class="tocify-item level-2" data-unique="payment-methods-PATCHapi-payment-methods--payment_method--default">
                                 <a href="#payment-methods-PATCHapi-payment-methods--payment_method--default">Set default payment method</a>
                             </li>
@@ -283,7 +289,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: March 4, 2026</li>
+        <li>Last updated: March 6, 2026</li>
     </ul>
 </div>
 
@@ -6430,6 +6436,411 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Example: <code>application/json</code></p>
             </div>
                         </form>
+
+                    <h2 id="payment-methods-POSTapi-payment-methods-setup-session">Create Setup Session</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Creates a Stripe Checkout Session in setup mode so the user can add a new
+payment method via Stripe's hosted page. The client should redirect the
+user to the returned <code>checkout_url</code>.</p>
+
+<span id="example-requests-POSTapi-payment-methods-setup-session">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://192.168.0.193:8000/api/payment-methods/setup-session" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"success_url\": \"https:\\/\\/example.com\\/payment-methods?setup=success\",
+    \"cancel_url\": \"https:\\/\\/example.com\\/payment-methods?setup=cancelled\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://192.168.0.193:8000/api/payment-methods/setup-session"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "success_url": "https:\/\/example.com\/payment-methods?setup=success",
+    "cancel_url": "https:\/\/example.com\/payment-methods?setup=cancelled"
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-payment-methods-setup-session">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;checkout_url&quot;: &quot;https://checkout.stripe.com/c/setup/cs_test_123&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422, Validation error):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The success url field is required.&quot;,
+    &quot;errors&quot;: {
+        &quot;success_url&quot;: [
+            &quot;The success url field is required.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-payment-methods-setup-session" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-payment-methods-setup-session"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-payment-methods-setup-session"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-payment-methods-setup-session" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-payment-methods-setup-session">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-payment-methods-setup-session" data-method="POST"
+      data-path="api/payment-methods/setup-session"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-payment-methods-setup-session', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-payment-methods-setup-session"
+                    onclick="tryItOut('POSTapi-payment-methods-setup-session');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-payment-methods-setup-session"
+                    onclick="cancelTryOut('POSTapi-payment-methods-setup-session');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-payment-methods-setup-session"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/payment-methods/setup-session</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-payment-methods-setup-session"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-payment-methods-setup-session"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-payment-methods-setup-session"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>success_url</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="success_url"                data-endpoint="POSTapi-payment-methods-setup-session"
+               value="https://example.com/payment-methods?setup=success"
+               data-component="body">
+    <br>
+<p>The URL to redirect to after successfully adding the card. Must be a valid URL. Example: <code>https://example.com/payment-methods?setup=success</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>cancel_url</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="cancel_url"                data-endpoint="POSTapi-payment-methods-setup-session"
+               value="https://example.com/payment-methods?setup=cancelled"
+               data-component="body">
+    <br>
+<p>The URL to redirect to if the user cancels. Must be a valid URL. Example: <code>https://example.com/payment-methods?setup=cancelled</code></p>
+        </div>
+        </form>
+
+                    <h2 id="payment-methods-GETapi-payment-methods-setup-verify">Verify Setup Session</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Retrieves the Stripe Checkout Session created in setup mode and returns
+the newly added payment method details so the mobile app can confirm.</p>
+
+<span id="example-requests-GETapi-payment-methods-setup-verify">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://192.168.0.193:8000/api/payment-methods/setup-verify?session_id=cs_test_abc123" \
+    --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"session_id\": \"architecto\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://192.168.0.193:8000/api/payment-methods/setup-verify"
+);
+
+const params = {
+    "session_id": "cs_test_abc123",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "session_id": "architecto"
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-payment-methods-setup-verify">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;status&quot;: &quot;complete&quot;,
+    &quot;payment_method&quot;: {
+        &quot;id&quot;: &quot;pm_1234567890&quot;,
+        &quot;type&quot;: &quot;card&quot;,
+        &quot;card&quot;: {
+            &quot;brand&quot;: &quot;visa&quot;,
+            &quot;last4&quot;: &quot;4242&quot;,
+            &quot;exp_month&quot;: 12,
+            &quot;exp_year&quot;: 2025
+        }
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (200, Pending):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;status&quot;: &quot;pending&quot;,
+    &quot;payment_method&quot;: null
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403, Session belongs to another customer):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This session does not belong to your account.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422, Validation error):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The session id field is required.&quot;,
+    &quot;errors&quot;: {
+        &quot;session_id&quot;: [
+            &quot;The session id field is required.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-payment-methods-setup-verify" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-payment-methods-setup-verify"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-payment-methods-setup-verify"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-payment-methods-setup-verify" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-payment-methods-setup-verify">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-payment-methods-setup-verify" data-method="GET"
+      data-path="api/payment-methods/setup-verify"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-payment-methods-setup-verify', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-payment-methods-setup-verify"
+                    onclick="tryItOut('GETapi-payment-methods-setup-verify');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-payment-methods-setup-verify"
+                    onclick="cancelTryOut('GETapi-payment-methods-setup-verify');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-payment-methods-setup-verify"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/payment-methods/setup-verify</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-payment-methods-setup-verify"
+               value="Bearer {YOUR_AUTH_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-payment-methods-setup-verify"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-payment-methods-setup-verify"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>session_id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="session_id"                data-endpoint="GETapi-payment-methods-setup-verify"
+               value="cs_test_abc123"
+               data-component="query">
+    <br>
+<p>The Stripe Checkout Session ID. Example: <code>cs_test_abc123</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>session_id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="session_id"                data-endpoint="GETapi-payment-methods-setup-verify"
+               value="architecto"
+               data-component="body">
+    <br>
+<p>Example: <code>architecto</code></p>
+        </div>
+        </form>
 
                     <h2 id="payment-methods-PATCHapi-payment-methods--payment_method--default">Set default payment method</h2>
 

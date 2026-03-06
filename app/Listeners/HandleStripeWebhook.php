@@ -4,8 +4,10 @@ namespace App\Listeners;
 
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\DB;
+use Laravel\Cashier\Cashier;
 use Laravel\Cashier\Events\WebhookReceived;
 
 class HandleStripeWebhook implements ShouldQueue
@@ -28,7 +30,16 @@ class HandleStripeWebhook implements ShouldQueue
      */
     private function handleCheckoutCompleted(array $payload): void
     {
-        $metadata = $payload['data']['object']['metadata'] ?? [];
+        $session = $payload['data']['object'] ?? [];
+        $mode = $session['mode'] ?? 'payment';
+
+        if ($mode === 'setup') {
+            $this->handleSetupCompleted($session);
+
+            return;
+        }
+
+        $metadata = $session['metadata'] ?? [];
         $orderId = $metadata['order_id'] ?? null;
         $userId = $metadata['user_id'] ?? null;
 
@@ -66,6 +77,37 @@ class HandleStripeWebhook implements ShouldQueue
                 $cart->update(['status' => 'completed']);
             }
         });
+    }
+
+    /**
+     * @param  array<string, mixed>  $session
+     */
+    private function handleSetupCompleted(array $session): void
+    {
+        $customerId = $session['customer'] ?? null;
+        $setupIntentId = $session['setup_intent'] ?? null;
+
+        if (! $customerId || ! $setupIntentId) {
+            return;
+        }
+
+        $user = User::where('stripe_id', $customerId)->first();
+
+        if (! $user) {
+            return;
+        }
+
+        $stripe = Cashier::stripe();
+        $setupIntent = $stripe->setupIntents->retrieve($setupIntentId);
+        $paymentMethodId = $setupIntent->payment_method;
+
+        $stripe->paymentMethods->attach($paymentMethodId, [
+            'customer' => $customerId,
+        ]);
+
+        $stripe->customers->update($customerId, [
+            'invoice_settings' => ['default_payment_method' => $paymentMethodId],
+        ]);
     }
 
     /**
