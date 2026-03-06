@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\Web\AccountController;
 use App\Http\Controllers\Web\AddressesController;
+use App\Http\Controllers\Web\Auth\ForgotPasswordController;
 use App\Http\Controllers\Web\Auth\LoginController;
 use App\Http\Controllers\Web\Auth\LogoutController;
 use App\Http\Controllers\Web\Auth\RegisterController;
+use App\Http\Controllers\Web\Auth\ResetPasswordController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\CatalogController;
 use App\Http\Controllers\Web\CheckoutController;
@@ -28,14 +30,16 @@ Route::get('/catalog', CatalogController::class)->name('catalog');
 Route::get('/checkout/success', fn () => view('checkout.success'))->name('checkout.success');
 Route::get('/checkout/cancel', fn () => view('checkout.cancel'))->name('checkout.cancel');
 
-Route::get('/reset-password/{token}', function (string $token, Request $request) {
-    return Inertia::render('Auth/ResetPassword', [
-        'token' => $token,
-        'email' => $request->input('email', ''),
-    ]);
-})
-    ->middleware('guest')
-    ->name('password.reset');
+Route::middleware('guest')->group(function () {
+    Route::get('/reset-password/{token}', function (string $token, Request $request) {
+        return Inertia::render('Auth/ResetPassword', [
+            'token' => $token,
+            'email' => $request->input('email', ''),
+        ]);
+    })->name('password.reset');
+
+    Route::post('/reset-password', ResetPasswordController::class)->name('password.update');
+});
 
 Route::get('/terms', [StaticPageController::class, 'show'])->defaults('slug', 'terms')->name('terms');
 Route::get('/privacy', [StaticPageController::class, 'show'])->defaults('slug', 'privacy')->name('privacy');
@@ -48,6 +52,7 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
     Route::post('/login', [LoginController::class, 'store']);
     Route::get('/forgot-password', fn () => Inertia::render('Auth/ForgotPassword'))->name('password.request');
+    Route::post('/forgot-password', ForgotPasswordController::class)->name('password.email');
 });
 
 Route::middleware('auth')->group(function () {
