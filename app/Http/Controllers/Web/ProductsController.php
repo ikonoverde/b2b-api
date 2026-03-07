@@ -9,6 +9,7 @@ use App\Jobs\ProcessProductImage;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Services\ProductionApiService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -17,6 +18,8 @@ use Inertia\Response;
 
 class ProductsController extends Controller
 {
+    public function __construct(private ProductionApiService $productionApi) {}
+
     public function index(): Response
     {
         $pendingStatuses = ['payment_pending', 'pending', 'processing', 'shipped'];
@@ -52,6 +55,7 @@ class ProductsController extends Controller
 
         return Inertia::render('Products/Create', [
             'categories' => $categories,
+            'formulas' => Inertia::defer(fn () => $this->productionApi->getFormulas()),
         ]);
     }
 
@@ -84,6 +88,7 @@ class ProductsController extends Controller
                 'slug' => $product->slug,
                 'sku' => $product->sku,
                 'category_id' => $product->category_id,
+                'formula_id' => $product->formula_id,
                 'description' => $product->description ?? '',
                 'price' => (string) $product->price,
                 'cost' => $product->cost ? (string) $product->cost : '',
@@ -105,6 +110,7 @@ class ProductsController extends Controller
                 ])->values()->all(),
             ],
             'categories' => $categories,
+            'formulas' => Inertia::defer(fn () => $this->productionApi->getFormulas()),
         ]);
     }
 

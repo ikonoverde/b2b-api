@@ -1,8 +1,10 @@
 import { FormEvent, useState, useRef, DragEvent } from 'react';
-import { Link, useForm } from '@inertiajs/react';
+import { Deferred, Link, useForm } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import { Save, ImagePlus, ChevronDown, X, Plus, Trash2 } from 'lucide-react';
 import type { PageProps } from '@/types';
+import FormulaDropdown from '@/Components/FormulaDropdown';
+import type { Formula } from '@/Components/FormulaDropdown';
 
 const ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
@@ -54,6 +56,7 @@ interface ProductFormData {
     slug: string;
     sku: string;
     category_id: string;
+    formula_id: string;
     description: string;
     price: string;
     cost: string;
@@ -72,6 +75,7 @@ interface Category {
 
 interface CreateProductProps extends PageProps {
     categories: Category[];
+    formulas: Formula[];
 }
 
 function CategoryDropdown({
@@ -363,6 +367,9 @@ function BasicInfoCard({
     categories,
     categoryOpen,
     setCategoryOpen,
+    formulas,
+    formulaOpen,
+    setFormulaOpen,
 }: {
     data: ProductFormData;
     setData: (key: keyof ProductFormData, value: string) => void;
@@ -370,6 +377,9 @@ function BasicInfoCard({
     categories: Category[];
     categoryOpen: boolean;
     setCategoryOpen: (open: boolean) => void;
+    formulas: Formula[];
+    formulaOpen: boolean;
+    setFormulaOpen: (open: boolean) => void;
 }) {
     return (
         <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
@@ -426,6 +436,26 @@ function BasicInfoCard({
                         error={errors.category_id}
                     />
                 </div>
+
+                {/* Formula Field */}
+                <Deferred data="formulas" fallback={
+                    <div className="flex flex-col gap-2">
+                        <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">F&oacute;rmula</span>
+                        <div className="h-11 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] animate-pulse" />
+                    </div>
+                }>
+                    <FormulaDropdown
+                        formulaId={data.formula_id}
+                        formulas={formulas}
+                        isOpen={formulaOpen}
+                        onToggle={() => setFormulaOpen(!formulaOpen)}
+                        onSelect={(id) => {
+                            setData('formula_id', id);
+                            setFormulaOpen(false);
+                        }}
+                        error={errors.formula_id}
+                    />
+                </Deferred>
 
                 {/* Slug Field */}
                 <div className="flex flex-col gap-2">
@@ -724,14 +754,16 @@ function ImageSection({
     );
 }
 
-export default function Create({ categories }: CreateProductProps) {
+export default function Create({ categories, formulas }: CreateProductProps) {
     const [categoryOpen, setCategoryOpen] = useState(false);
+    const [formulaOpen, setFormulaOpen] = useState(false);
 
     const { data, setData, post, processing, errors } = useForm<ProductFormData>({
         name: '',
         slug: '',
         sku: '',
         category_id: '',
+        formula_id: '',
         description: '',
         price: '',
         cost: '',
@@ -798,6 +830,9 @@ export default function Create({ categories }: CreateProductProps) {
                             categories={categories}
                             categoryOpen={categoryOpen}
                             setCategoryOpen={setCategoryOpen}
+                            formulas={formulas}
+                            formulaOpen={formulaOpen}
+                            setFormulaOpen={setFormulaOpen}
                         />
 
                         <PricingInventoryCard

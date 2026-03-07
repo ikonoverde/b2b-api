@@ -60,6 +60,48 @@ test('authenticated user can store a product', function () {
     ]);
 });
 
+test('authenticated user can store a product with formula_id', function () {
+    $user = User::factory()->create();
+    $category = Category::factory()->create();
+
+    $response = $this->actingAs($user)->post('/admin/products', [
+        'name' => 'Product with Formula',
+        'sku' => 'FORM-001',
+        'category_id' => $category->id,
+        'formula_id' => 42,
+        'price' => 29.99,
+        'stock' => 100,
+    ]);
+
+    $response->assertRedirect(route('admin.products'));
+
+    $this->assertDatabaseHas('products', [
+        'name' => 'Product with Formula',
+        'sku' => 'FORM-001',
+        'formula_id' => 42,
+    ]);
+});
+
+test('formula_id is nullable when creating a product', function () {
+    $user = User::factory()->create();
+    $category = Category::factory()->create();
+
+    $response = $this->actingAs($user)->post('/admin/products', [
+        'name' => 'Product No Formula',
+        'sku' => 'NOFORM-001',
+        'category_id' => $category->id,
+        'price' => 19.99,
+        'stock' => 50,
+    ]);
+
+    $response->assertRedirect(route('admin.products'));
+
+    $this->assertDatabaseHas('products', [
+        'sku' => 'NOFORM-001',
+        'formula_id' => null,
+    ]);
+});
+
 test('validation fails with missing required fields', function () {
     $user = User::factory()->create();
 

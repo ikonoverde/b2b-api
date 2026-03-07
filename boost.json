@@ -5,8 +5,9 @@
     ],
     "editors": [
         "claude_code",
-        "opencode",
-        "vscode"
+        "opencode"
     ],
-    "guidelines": []
+    "guidelines": [
+        "laravel/ai"
+    ]
 }

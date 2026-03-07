@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'produccion' => [
+        'base_url' => env('PRODUCCION_URL', 'http://127.0.0.1:8000'),
+        'client_id' => env('PRODUCCION_CLIENT'),
+        'client_secret' => env('PRODUCCION_SECRET'),
+    ],
+
 ];

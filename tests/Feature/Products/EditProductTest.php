@@ -4,6 +4,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 test('authenticated user can view edit product page', function () {
@@ -78,6 +79,73 @@ test('authenticated user can update a product', function () {
         'sku' => 'UPD-001',
         'category_id' => $category->id,
     ]);
+});
+
+test('authenticated user can update a product with formula_id', function () {
+    $user = User::factory()->create();
+    $category = Category::factory()->create();
+    $product = Product::factory()->create(['formula_id' => null]);
+
+    $response = $this->actingAs($user)->put("/admin/products/{$product->id}", [
+        'name' => 'Updated with Formula',
+        'sku' => $product->sku,
+        'category_id' => $category->id,
+        'formula_id' => 7,
+        'price' => 29.99,
+        'stock' => 100,
+    ]);
+
+    $response->assertRedirect(route('admin.products'));
+
+    $this->assertDatabaseHas('products', [
+        'id' => $product->id,
+        'formula_id' => 7,
+    ]);
+});
+
+test('formula_id can be cleared on update', function () {
+    $user = User::factory()->create();
+    $category = Category::factory()->create();
+    $product = Product::factory()->withFormula(5)->create();
+
+    $response = $this->actingAs($user)->put("/admin/products/{$product->id}", [
+        'name' => 'Clear Formula',
+        'sku' => $product->sku,
+        'category_id' => $category->id,
+        'formula_id' => null,
+        'price' => 29.99,
+        'stock' => 100,
+    ]);
+
+    $response->assertRedirect(route('admin.products'));
+
+    $this->assertDatabaseHas('products', [
+        'id' => $product->id,
+        'formula_id' => null,
+    ]);
+});
+
+test('edit page includes formula_id in product data', function () {
+    Http::fake([
+        '*/oauth/token' => Http::response(['access_token' => 'test-token']),
+        '*/api/formulas' => Http::response([
+            ['id' => 3, 'name' => 'Formula Test'],
+        ]),
+    ]);
+
+    $user = User::factory()->create();
+    $product = Product::factory()->withFormula(3)->create();
+
+    $response = $this->actingAs($user)->get("/admin/products/{$product->id}/edit");
+
+    $response->assertInertia(fn ($page) => $page
+        ->component('Products/Edit')
+        ->where('product.formula_id', 3)
+        ->missing('formulas')
+        ->loadDeferredProps(fn ($reload) => $reload
+            ->has('formulas')
+        )
+    );
 });
 
 test('validation fails with missing required fields', function () {

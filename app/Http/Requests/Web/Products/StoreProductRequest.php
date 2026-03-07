@@ -27,6 +27,7 @@ class StoreProductRequest extends FormRequest
             'slug' => ['nullable', 'string', 'max:255', 'unique:products,slug'],
             'sku' => ['required', 'string', 'max:50', 'unique:products,sku'],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
+            'formula_id' => ['nullable', 'integer'],
             'description' => ['nullable', 'string'],
             'price' => ['required', 'numeric', 'min:0'],
             'cost' => ['nullable', 'numeric', 'min:0'],

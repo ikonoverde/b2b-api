@@ -22,6 +22,7 @@ class Product extends Model
         'slug',
         'sku',
         'category_id',
+        'formula_id',
         'description',
         'price',
         'cost',

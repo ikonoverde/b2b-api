@@ -21,6 +21,7 @@ class ProductFactory extends Factory
             'name' => fake()->words(3, true),
             'sku' => fake()->unique()->regexify('[A-Z]{3}-[0-9]{3}'),
             'category_id' => Category::factory(),
+            'formula_id' => null,
             'description' => fake()->optional()->paragraph(),
             'price' => fake()->randomFloat(2, 5, 500),
             'cost' => fake()->optional()->randomFloat(2, 1, 250),
@@ -59,6 +60,13 @@ class ProductFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'stock' => 0,
             'min_stock' => 10,
+        ]);
+    }
+
+    public function withFormula(int $formulaId = 1): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'formula_id' => $formulaId,
         ]);
     }
 }
