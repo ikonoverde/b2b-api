@@ -39,6 +39,7 @@ test('products page returns expected product data structure', function () {
             ->has('stock')
             ->has('status')
             ->has('image')
+            ->has('has_pending_orders')
         )
     );
 });

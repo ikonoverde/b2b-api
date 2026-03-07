@@ -40,7 +40,7 @@ test('pricing tiers are deleted when product is deleted', function () {
 
     expect(PricingTier::where('product_id', $product->id)->count())->toBe(3);
 
-    $product->delete();
+    $product->forceDelete();
 
     expect(PricingTier::where('product_id', $product->id)->count())->toBe(0);
 });

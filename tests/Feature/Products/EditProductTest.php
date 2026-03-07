@@ -201,7 +201,7 @@ test('authenticated user can update a product with images', function () {
         'sku' => 'IMG-001',
     ]);
 
-    $image = UploadedFile::fake()->create('product.jpg', 100, 'image/jpeg');
+    $image = UploadedFile::fake()->image('product.jpg');
 
     $response = $this->actingAs($user)->put("/admin/products/{$product->id}", [
         'name' => 'Updated with Image',
@@ -226,7 +226,7 @@ test('updating product can delete old images and add new ones', function () {
     Storage::fake('public');
 
     $user = User::factory()->create();
-    $oldImage = UploadedFile::fake()->create('old.jpg', 50, 'image/jpeg');
+    $oldImage = UploadedFile::fake()->image('old.jpg');
     $oldImagePath = $oldImage->store('products', 'public');
 
     $product = Product::factory()->create([
@@ -238,7 +238,7 @@ test('updating product can delete old images and add new ones', function () {
         'position' => 0,
     ]);
 
-    $newImage = UploadedFile::fake()->create('new.jpg', 100, 'image/jpeg');
+    $newImage = UploadedFile::fake()->image('new.jpg');
 
     $response = $this->actingAs($user)->put("/admin/products/{$product->id}", [
         'name' => 'Product with New Image',
