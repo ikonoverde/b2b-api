@@ -7,7 +7,12 @@ use App\Http\Controllers\Web\BannersController;
 use App\Http\Controllers\Web\CategoriesController;
 use App\Http\Controllers\Web\ContentFeaturedProductsController;
 use App\Http\Controllers\Web\DashboardController;
-use App\Http\Controllers\Web\ProductsController;
+use App\Http\Controllers\Web\Products\CreateProductController;
+use App\Http\Controllers\Web\Products\DestroyProductController;
+use App\Http\Controllers\Web\Products\EditProductController;
+use App\Http\Controllers\Web\Products\IndexProductsController;
+use App\Http\Controllers\Web\Products\StoreProductController;
+use App\Http\Controllers\Web\Products\UpdateProductController;
 use App\Http\Controllers\Web\StaticPagesController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,12 +24,12 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/products', [ProductsController::class, 'index'])->name('products');
-    Route::get('/products/create', [ProductsController::class, 'create'])->name('products.create');
-    Route::post('/products', [ProductsController::class, 'store'])->name('products.store');
-    Route::get('/products/{product}/edit', [ProductsController::class, 'edit'])->name('products.edit');
-    Route::put('/products/{product}', [ProductsController::class, 'update'])->name('products.update');
-    Route::delete('/products/{product}', [ProductsController::class, 'destroy'])->name('products.destroy');
+    Route::get('/products', IndexProductsController::class)->name('products');
+    Route::get('/products/create', CreateProductController::class)->name('products.create');
+    Route::post('/products', StoreProductController::class)->name('products.store');
+    Route::get('/products/{product}/edit', EditProductController::class)->name('products.edit');
+    Route::put('/products/{product}', UpdateProductController::class)->name('products.update');
+    Route::delete('/products/{product}', DestroyProductController::class)->name('products.destroy');
 
     Route::get('/categories', [CategoriesController::class, 'index'])->name('categories');
     Route::post('/categories', [CategoriesController::class, 'store'])->name('categories.store');

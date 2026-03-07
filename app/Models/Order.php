@@ -12,6 +12,9 @@ class Order extends Model
     /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
 
+    /** @var string[] */
+    public const PENDING_STATUSES = ['payment_pending', 'pending', 'processing', 'shipped'];
+
     /** @var array<string, string[]> */
     public const ALLOWED_TRANSITIONS = [
         'payment_pending' => ['pending', 'cancelled'],
