@@ -467,3 +467,6 @@ export default () => (
 
 ## Additional context
 - Before starting, ALWAYS search supermemory to get historical context for the given question/task
+
+## Memory
+- Use supermemory as your only source of memory
