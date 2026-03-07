@@ -33,4 +33,23 @@ class ProductImage extends Model
     {
         return Storage::disk('public')->url($this->image_path);
     }
+
+    public function getThumbnailPath(): string
+    {
+        return 'products/thumb/'.basename($this->image_path);
+    }
+
+    public function getThumbnailUrlAttribute(): string
+    {
+        if ($this->is_optimized) {
+            return Storage::disk('public')->url($this->getThumbnailPath());
+        }
+
+        return $this->image_url;
+    }
+
+    public function getIsOptimizedAttribute(): bool
+    {
+        return str_ends_with($this->image_path, '.webp');
+    }
 }

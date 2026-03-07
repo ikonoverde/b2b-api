@@ -25,6 +25,7 @@ class ProductDetailResource extends JsonResource
             'is_active' => $this->is_active,
             'is_featured' => $this->is_featured,
             'image' => $this->image_url,
+            'thumbnail' => $this->images->first()?->thumbnail_url,
             'images' => ProductImageResource::collection($this->whenLoaded('images')),
             'pricing_tiers' => PricingTierResource::collection($this->whenLoaded('pricingTiers')),
         ];

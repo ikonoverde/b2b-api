@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\Products\StoreProductRequest;
 use App\Http\Requests\Web\Products\UpdateProductRequest;
+use App\Jobs\ProcessProductImage;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
@@ -158,6 +159,7 @@ class ProductsController extends Controller
 
         foreach ($imagesToDelete as $img) {
             Storage::disk('public')->delete($img->image_path);
+            Storage::disk('public')->delete($img->getThumbnailPath());
         }
 
         ProductImage::whereIn('id', $imageIds)
@@ -179,10 +181,11 @@ class ProductsController extends Controller
             }
 
             $path = $image->store('products', 'public');
-            $product->images()->create([
+            $productImage = $product->images()->create([
                 'image_path' => $path,
                 'position' => $currentCount + $index,
             ]);
+            ProcessProductImage::dispatch($productImage);
         }
     }
 
