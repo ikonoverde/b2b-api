@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { Deferred } from '@inertiajs/react';
 import FormulaDropdown from '@/Components/FormulaDropdown';
 import type { Formula } from '@/Components/FormulaDropdown';
 import CategoryDropdown from './CategoryDropdown';
 import type { ProductFormData, Category } from '../types';
+
+const MDEditor = lazy(() => import('@uiw/react-md-editor'));
 
 export default function BasicInfoCard({
     data,
@@ -114,15 +116,21 @@ export default function BasicInfoCard({
 
                 <div className="flex flex-col gap-2">
                     <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                        Descripci&oacute;n
+                        Descripci&oacute;n (Markdown)
                     </label>
-                    <textarea
-                        value={data.description}
-                        onChange={(e) => setData('description', e.target.value)}
-                        placeholder="Describe las caracter&iacute;sticas del producto..."
-                        rows={4}
-                        className="p-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors resize-none leading-relaxed"
-                    />
+                    <Suspense
+                        fallback={
+                            <div className="h-[300px] bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] animate-pulse" />
+                        }
+                    >
+                        <div data-color-mode="light">
+                            <MDEditor
+                                value={data.description}
+                                onChange={(val) => setData('description', val || '')}
+                                height={300}
+                            />
+                        </div>
+                    </Suspense>
                     {errors.description && (
                         <span className="text-xs text-red-500 font-[Outfit]">{errors.description}</span>
                     )}

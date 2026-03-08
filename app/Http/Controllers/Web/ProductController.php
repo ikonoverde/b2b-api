@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -51,7 +52,7 @@ class ProductController extends Controller
                     'name' => $product->category?->name,
                     'slug' => $product->category?->slug,
                 ],
-                'description' => $product->description,
+                'description' => Str::of($product->description)->markdown(),
                 'price' => (float) $product->price,
                 'sale_price' => $hasDiscount ? $lowestPrice : null,
                 'discount_percentage' => $discountPercentage,

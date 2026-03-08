@@ -231,7 +231,7 @@ function TabContent({ activeTab, product }: { activeTab: string; product: Produc
             return (
                 <div className="prose prose-sm max-w-none font-[Outfit]">
                     {product.description ? (
-                        <p className="text-[#666666] leading-relaxed">{product.description}</p>
+                        <div className="text-[#666666] leading-relaxed" dangerouslySetInnerHTML={{ __html: product.description }} />
                     ) : (
                         <p className="text-[#999999] italic">No hay descripción disponible para este producto.</p>
                     )}
