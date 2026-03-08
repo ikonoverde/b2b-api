@@ -25,6 +25,14 @@
                 "APP_ENV": "local"
             },
             "cwd": "/home/eric/projects/b2b/api"
+        },
+        "formulas": {
+            "type": "http",
+            "url": "https://produccion.ikonoverde.com/mcp/formulas"
+        },
+        "dataforseo": {
+            "type": "http",
+            "url": "http://localhost:3030/mcp"
         }
     }
 }
