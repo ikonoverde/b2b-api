@@ -1,11 +1,12 @@
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { Loader2, MapPin, Phone, User } from 'lucide-react';
 import type { FormEvent } from 'react';
 import CustomerLayout from '@/Layouts/CustomerLayout';
 import TextInput from '@/Components/TextInput';
-import type { Cart } from '@/types';
+import CheckoutStepIndicator from '@/Components/CheckoutStepIndicator';
+import type { Cart, PageProps } from '@/types';
 
-interface CheckoutProps {
+interface ShippingProps {
     cart: Cart;
 }
 
@@ -13,7 +14,9 @@ function formatCurrency(amount: number): string {
     return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount);
 }
 
-export default function Checkout({ cart }: CheckoutProps) {
+export default function Shipping({ cart }: ShippingProps) {
+    const { errors } = usePage<PageProps & { errors: Record<string, string | string[]> }>().props;
+
     const form = useForm({
         name: '',
         address_line_1: '',
@@ -26,19 +29,33 @@ export default function Checkout({ cart }: CheckoutProps) {
 
     function submit(e: FormEvent) {
         e.preventDefault();
-        form.post('/checkout');
+        form.post('/checkout/shipping');
     }
 
     return (
-        <CustomerLayout title="Checkout">
+        <CustomerLayout title="Envío - Checkout">
             <div className="px-6 py-8">
-                <h1 className="text-2xl font-bold text-[#1A1A1A] font-[Outfit] mb-6">Finalizar Pedido</h1>
+                <CheckoutStepIndicator currentStep={1} />
+
+                <h1 className="text-2xl font-bold text-[#1A1A1A] font-[Outfit] mb-6">Dirección de Envío</h1>
+
+                {errors.stock && (
+                    <div className="mb-4 rounded-xl border border-red-200 bg-red-50 p-4">
+                        <p className="text-sm font-medium text-red-800 font-[Outfit]">
+                            Algunos productos no tienen suficiente stock:
+                        </p>
+                        <ul className="mt-1 list-disc pl-5 text-sm text-red-700 font-[Outfit]">
+                            {(Array.isArray(errors.stock) ? errors.stock : [errors.stock]).map(
+                                (error: string, i: number) => (
+                                    <li key={i}>{error}</li>
+                                ),
+                            )}
+                        </ul>
+                    </div>
+                )}
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {/* Shipping Form */}
                     <form onSubmit={submit} className="lg:col-span-2 flex flex-col gap-4">
-                        <h2 className="text-sm font-bold text-[#1A1A1A] font-[Outfit]">Dirección de Envío</h2>
-
                         <TextInput
                             id="name"
                             label="Nombre de contacto"
@@ -71,7 +88,6 @@ export default function Checkout({ cart }: CheckoutProps) {
                             error={form.errors.address_line_2}
                         />
 
-                        {/* City & State */}
                         <div className="grid grid-cols-2 gap-4">
                             <TextInput
                                 id="city"
@@ -93,7 +109,6 @@ export default function Checkout({ cart }: CheckoutProps) {
                             />
                         </div>
 
-                        {/* Postal Code & Phone */}
                         <div className="grid grid-cols-2 gap-4">
                             <TextInput
                                 id="postal_code"
@@ -122,11 +137,14 @@ export default function Checkout({ cart }: CheckoutProps) {
                             disabled={form.processing}
                             className="h-12 bg-[#5E7052] text-white font-semibold rounded-xl hover:bg-[#4d5e43] transition-colors disabled:opacity-50 font-[Outfit] mt-2"
                         >
-                            {form.processing ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : 'Confirmar Pedido'}
+                            {form.processing ? (
+                                <Loader2 className="w-5 h-5 animate-spin mx-auto" />
+                            ) : (
+                                'Continuar al Pago'
+                            )}
                         </button>
                     </form>
 
-                    {/* Order Summary */}
                     <div className="lg:col-span-1">
                         <div className="flex flex-col gap-4 rounded-2xl bg-white p-5 border border-[#E5E5E5] sticky top-20">
                             <h2 className="text-sm font-bold text-[#1A1A1A] font-[Outfit]">
@@ -138,17 +156,23 @@ export default function Checkout({ cart }: CheckoutProps) {
                                         <span className="text-[#999999]">
                                             {item.name} x{item.quantity}
                                         </span>
-                                        <span className="font-medium text-[#1A1A1A]">{formatCurrency(item.subtotal)}</span>
+                                        <span className="font-medium text-[#1A1A1A]">
+                                            {formatCurrency(item.subtotal)}
+                                        </span>
                                     </div>
                                 ))}
                                 <div className="border-t border-[#E5E5E5] pt-2 mt-1">
                                     <div className="flex justify-between text-sm font-[Outfit]">
                                         <span className="text-[#999999]">Subtotal</span>
-                                        <span className="font-medium text-[#1A1A1A]">{formatCurrency(cart.totals.subtotal)}</span>
+                                        <span className="font-medium text-[#1A1A1A]">
+                                            {formatCurrency(cart.totals.subtotal)}
+                                        </span>
                                     </div>
                                     <div className="flex justify-between text-sm font-[Outfit]">
                                         <span className="text-[#999999]">Envío</span>
-                                        <span className="font-medium text-[#1A1A1A]">{formatCurrency(cart.totals.shipping)}</span>
+                                        <span className="font-medium text-[#1A1A1A]">
+                                            {formatCurrency(cart.totals.shipping)}
+                                        </span>
                                     </div>
                                     <div className="mt-2 flex justify-between">
                                         <span className="text-sm font-bold text-[#1A1A1A] font-[Outfit]">Total</span>

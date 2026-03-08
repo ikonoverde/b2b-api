@@ -17,7 +17,7 @@ class Order extends Model
 
     /** @var array<string, string[]> */
     public const ALLOWED_TRANSITIONS = [
-        'payment_pending' => ['pending', 'cancelled'],
+        'payment_pending' => ['pending', 'processing', 'cancelled'],
         'pending' => ['processing', 'cancelled'],
         'processing' => ['shipped', 'cancelled'],
         'shipped' => ['delivered'],

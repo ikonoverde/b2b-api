@@ -20,6 +20,7 @@ class HandleStripeWebhook implements ShouldQueue
         match ($type) {
             'checkout.session.completed' => $this->handleCheckoutCompleted($payload),
             'checkout.session.expired' => $this->handleCheckoutExpired($payload),
+            'payment_intent.succeeded' => $this->handlePaymentIntentSucceeded($payload),
             'charge.refunded' => $this->handleChargeRefunded($payload),
             default => null,
         };
@@ -31,83 +32,37 @@ class HandleStripeWebhook implements ShouldQueue
     private function handleCheckoutCompleted(array $payload): void
     {
         $session = $payload['data']['object'] ?? [];
-        $mode = $session['mode'] ?? 'payment';
 
-        if ($mode === 'setup') {
+        if (($session['mode'] ?? 'payment') === 'setup') {
             $this->handleSetupCompleted($session);
 
             return;
         }
 
-        $metadata = $session['metadata'] ?? [];
-        $orderId = $metadata['order_id'] ?? null;
-        $userId = $metadata['user_id'] ?? null;
+        $order = $this->findPendingOrder($session['metadata'] ?? []);
 
-        if (! $orderId || ! $userId) {
+        if (! $order) {
             return;
         }
 
-        $order = Order::where('id', $orderId)
-            ->where('user_id', $userId)
-            ->first();
+        $paymentIntentId = $session['payment_intent'] ?? null;
 
-        if (! $order || $order->payment_status === 'completed') {
-            return;
-        }
-
-        DB::transaction(function () use ($order, $payload, $userId): void {
-            $order->update([
-                'payment_status' => 'completed',
-                'status' => 'processing',
-                'payment_intent_id' => $payload['data']['object']['payment_intent'] ?? null,
-            ]);
-
-            $order->load('items.product');
-
-            foreach ($order->items as $item) {
-                $item->product->decrementStock($item->quantity);
-            }
-
-            $cart = Cart::where('user_id', $userId)
-                ->where('status', 'active')
-                ->first();
-
-            if ($cart) {
-                $cart->items()->delete();
-                $cart->update(['status' => 'completed']);
-            }
-        });
+        $this->fulfillOrder($order, (int) $order->user_id, $paymentIntentId);
     }
 
     /**
-     * @param  array<string, mixed>  $session
+     * @param  array<string, mixed>  $payload
      */
-    private function handleSetupCompleted(array $session): void
+    private function handlePaymentIntentSucceeded(array $payload): void
     {
-        $customerId = $session['customer'] ?? null;
-        $setupIntentId = $session['setup_intent'] ?? null;
+        $paymentIntent = $payload['data']['object'] ?? [];
+        $order = $this->findPendingOrder($paymentIntent['metadata'] ?? []);
 
-        if (! $customerId || ! $setupIntentId) {
+        if (! $order || $order->payment_intent_id !== ($paymentIntent['id'] ?? null)) {
             return;
         }
 
-        $user = User::where('stripe_id', $customerId)->first();
-
-        if (! $user) {
-            return;
-        }
-
-        $stripe = Cashier::stripe();
-        $setupIntent = $stripe->setupIntents->retrieve($setupIntentId);
-        $paymentMethodId = $setupIntent->payment_method;
-
-        $stripe->paymentMethods->attach($paymentMethodId, [
-            'customer' => $customerId,
-        ]);
-
-        $stripe->customers->update($customerId, [
-            'invoice_settings' => ['default_payment_method' => $paymentMethodId],
-        ]);
+        $this->fulfillOrder($order, (int) $order->user_id);
     }
 
     /**
@@ -115,17 +70,7 @@ class HandleStripeWebhook implements ShouldQueue
      */
     private function handleCheckoutExpired(array $payload): void
     {
-        $metadata = $payload['data']['object']['metadata'] ?? [];
-        $orderId = $metadata['order_id'] ?? null;
-        $userId = $metadata['user_id'] ?? null;
-
-        if (! $orderId || ! $userId) {
-            return;
-        }
-
-        $order = Order::where('id', $orderId)
-            ->where('user_id', $userId)
-            ->first();
+        $order = $this->findOrderByMetadata($payload['data']['object']['metadata'] ?? []);
 
         if (! $order || $order->payment_status !== 'pending') {
             return;
@@ -161,9 +106,102 @@ class HandleStripeWebhook implements ShouldQueue
                 $item->product->restoreStock($item->quantity);
             }
 
-            $order->update([
-                'payment_status' => 'refunded',
-            ]);
+            $order->update(['payment_status' => 'refunded']);
+        });
+    }
+
+    /**
+     * @param  array<string, mixed>  $session
+     */
+    private function handleSetupCompleted(array $session): void
+    {
+        $customerId = $session['customer'] ?? null;
+        $setupIntentId = $session['setup_intent'] ?? null;
+
+        if (! $customerId || ! $setupIntentId) {
+            return;
+        }
+
+        $user = User::where('stripe_id', $customerId)->first();
+
+        if (! $user) {
+            return;
+        }
+
+        $stripe = Cashier::stripe();
+        $setupIntent = $stripe->setupIntents->retrieve($setupIntentId);
+        $paymentMethodId = $setupIntent->payment_method;
+
+        $stripe->paymentMethods->attach($paymentMethodId, [
+            'customer' => $customerId,
+        ]);
+
+        $stripe->customers->update($customerId, [
+            'invoice_settings' => ['default_payment_method' => $paymentMethodId],
+        ]);
+    }
+
+    /**
+     * Find a pending order by metadata, returning null if not found or already completed.
+     *
+     * @param  array<string, mixed>  $metadata
+     */
+    private function findPendingOrder(array $metadata): ?Order
+    {
+        $order = $this->findOrderByMetadata($metadata);
+
+        if (! $order || $order->payment_status === 'completed') {
+            return null;
+        }
+
+        return $order;
+    }
+
+    /**
+     * @param  array<string, mixed>  $metadata
+     */
+    private function findOrderByMetadata(array $metadata): ?Order
+    {
+        $orderId = $metadata['order_id'] ?? null;
+        $userId = $metadata['user_id'] ?? null;
+
+        if (! $orderId || ! $userId) {
+            return null;
+        }
+
+        return Order::where('id', $orderId)
+            ->where('user_id', $userId)
+            ->first();
+    }
+
+    private function fulfillOrder(Order $order, int $userId, ?string $paymentIntentId = null): void
+    {
+        DB::transaction(function () use ($order, $userId, $paymentIntentId): void {
+            $updateData = [
+                'payment_status' => 'completed',
+                'status' => 'processing',
+            ];
+
+            if ($paymentIntentId) {
+                $updateData['payment_intent_id'] = $paymentIntentId;
+            }
+
+            $order->update($updateData);
+
+            $order->load('items.product');
+
+            foreach ($order->items as $item) {
+                $item->product->decrementStock($item->quantity);
+            }
+
+            $cart = Cart::where('user_id', $userId)
+                ->where('status', 'active')
+                ->first();
+
+            if ($cart) {
+                $cart->items()->delete();
+                $cart->update(['status' => 'completed']);
+            }
         });
     }
 }

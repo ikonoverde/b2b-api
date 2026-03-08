@@ -124,7 +124,7 @@ export default function MiniCart({ miniCart }: MiniCartProps) {
                                     Ver Carrito
                                 </Link>
                                 <Link
-                                    href="/checkout"
+                                    href="/checkout/shipping"
                                     className="flex-1 text-center py-2 text-sm font-medium text-white bg-[#5E7052] rounded-lg font-[Outfit] hover:bg-[#4a5d42] transition-colors"
                                 >
                                     Ir al Checkout

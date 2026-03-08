@@ -9,7 +9,10 @@ use App\Http\Controllers\Web\Auth\RegisterController;
 use App\Http\Controllers\Web\Auth\ResetPasswordController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\CatalogController;
-use App\Http\Controllers\Web\CheckoutController;
+use App\Http\Controllers\Web\Checkout\ShowCheckoutPaymentController;
+use App\Http\Controllers\Web\Checkout\ShowCheckoutShippingController;
+use App\Http\Controllers\Web\Checkout\ShowCheckoutThankYouController;
+use App\Http\Controllers\Web\Checkout\StoreCheckoutShippingController;
 use App\Http\Controllers\Web\CustomerDashboardController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\NotificationPreferencesController;
@@ -26,9 +29,6 @@ use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/catalog', CatalogController::class)->name('catalog');
-
-Route::get('/checkout/success', fn () => view('checkout.success'))->name('checkout.success');
-Route::get('/checkout/cancel', fn () => view('checkout.cancel'))->name('checkout.cancel');
 
 Route::middleware('guest')->group(function () {
     Route::get('/reset-password/{token}', function (string $token, Request $request) {
@@ -64,8 +64,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/items/{cartItem}', [CartController::class, 'updateItem'])->name('cart.updateItem');
     Route::delete('/cart/items/{cartItem}', [CartController::class, 'removeItem'])->name('cart.removeItem');
     Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
-    Route::get('/checkout', [CheckoutController::class, 'create'])->name('checkout');
-    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/checkout/shipping', ShowCheckoutShippingController::class)->name('checkout.shipping');
+    Route::post('/checkout/shipping', StoreCheckoutShippingController::class)->name('checkout.shipping.store');
+    Route::get('/checkout/payment', ShowCheckoutPaymentController::class)->name('checkout.payment');
+    Route::get('/checkout/thank-you', ShowCheckoutThankYouController::class)->name('checkout.thank-you');
     Route::get('/account', AccountController::class)->name('account');
     Route::get('/account/profile', ProfileController::class)->name('account.profile');
     Route::put('/account/profile', UpdateProfileController::class)->name('account.profile.update');

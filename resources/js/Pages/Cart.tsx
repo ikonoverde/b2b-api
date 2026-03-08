@@ -152,7 +152,7 @@ export default function CartPage({ cart }: CartPageProps) {
                                 </div>
 
                                 <Link
-                                    href="/checkout"
+                                    href="/checkout/shipping"
                                     className="flex items-center justify-center rounded-xl bg-[#5E7052] px-6 py-3 text-sm font-bold text-white font-[Outfit] hover:bg-[#4d5e43] transition-colors"
                                 >
                                     Realizar Pedido

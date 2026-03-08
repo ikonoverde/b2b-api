@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasTable('static_pages')) {
+            return;
+        }
+
         Schema::create('static_pages', function (Blueprint $table) {
             $table->id();
             $table->string('slug')->unique();

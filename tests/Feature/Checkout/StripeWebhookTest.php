@@ -333,6 +333,81 @@ it('does not restore stock for non-completed orders on refund', function () {
     expect($product->fresh()->stock)->toBe(50);
 });
 
+// payment_intent.succeeded
+
+function paymentIntentSucceededPayload(string $paymentIntentId = 'pi_test_123', array $metadata = []): array
+{
+    return [
+        'type' => 'payment_intent.succeeded',
+        'data' => [
+            'object' => [
+                'id' => $paymentIntentId,
+                'metadata' => $metadata,
+            ],
+        ],
+    ];
+}
+
+it('fulfills order on payment_intent.succeeded', function () {
+    $user = User::factory()->create();
+    $product = Product::factory()->create(['stock' => 50]);
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'payment_pending',
+        'payment_status' => 'pending',
+        'payment_intent_id' => 'pi_test_web_123',
+    ]);
+    OrderItem::factory()->create([
+        'order_id' => $order->id,
+        'product_id' => $product->id,
+        'quantity' => 5,
+    ]);
+    $cart = Cart::factory()->create(['user_id' => $user->id, 'status' => 'active']);
+    CartItem::factory()->create(['cart_id' => $cart->id, 'product_id' => $product->id]);
+
+    event(new WebhookReceived(paymentIntentSucceededPayload(
+        paymentIntentId: 'pi_test_web_123',
+        metadata: ['order_id' => $order->id, 'user_id' => $user->id],
+    )));
+
+    $order->refresh();
+    expect($order->payment_status)->toBe('completed');
+    expect($order->status)->toBe('processing');
+    expect($product->fresh()->stock)->toBe(45);
+    expect($cart->fresh()->status)->toBe('completed');
+    expect($cart->items()->count())->toBe(0);
+});
+
+it('is idempotent for payment_intent.succeeded on already completed order', function () {
+    $user = User::factory()->create();
+    $product = Product::factory()->create(['stock' => 45]);
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'processing',
+        'payment_status' => 'completed',
+        'payment_intent_id' => 'pi_test_idempotent',
+    ]);
+    OrderItem::factory()->create([
+        'order_id' => $order->id,
+        'product_id' => $product->id,
+        'quantity' => 5,
+    ]);
+
+    event(new WebhookReceived(paymentIntentSucceededPayload(
+        paymentIntentId: 'pi_test_idempotent',
+        metadata: ['order_id' => $order->id, 'user_id' => $user->id],
+    )));
+
+    expect($product->fresh()->stock)->toBe(45);
+    expect($order->fresh()->payment_status)->toBe('completed');
+});
+
+it('ignores payment_intent.succeeded with missing metadata', function () {
+    event(new WebhookReceived(paymentIntentSucceededPayload(metadata: [])));
+
+    expect(Order::where('payment_status', 'completed')->count())->toBe(0);
+});
+
 // Unrecognized events
 
 it('silently ignores unrecognized event types', function () {
