@@ -83,8 +83,17 @@ export interface MiniCart {
 
 export interface CartTotals {
     subtotal: number;
-    shipping: number;
-    total: number;
+    shipping: number | null;
+    total: number | null;
+}
+
+export interface ShippingQuote {
+    carrier: string;
+    service: string;
+    price: number;
+    estimated_days: number;
+    quote_id: string;
+    shipping_method_id: number | null;
 }
 
 export interface Cart {

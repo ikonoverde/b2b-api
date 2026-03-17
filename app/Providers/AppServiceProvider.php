@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Services\ProductionApiService;
+use App\Services\SkydropxService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,14 @@ class AppServiceProvider extends ServiceProvider
                 baseUrl: $config['base_url'],
                 clientId: $config['client_id'],
                 clientSecret: $config['client_secret'],
+            );
+        });
+
+        $this->app->singleton(SkydropxService::class, function () {
+            return new SkydropxService(
+                baseUrl: config('services.skydropx.base_url'),
+                apiKey: config('services.skydropx.api_key'),
+                apiSecret: config('services.skydropx.api_secret')
             );
         });
     }

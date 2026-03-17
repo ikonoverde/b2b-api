@@ -41,4 +41,10 @@ return [
         'client_secret' => env('PRODUCCION_SECRET'),
     ],
 
+    'skydropx' => [
+        'api_key' => env('SKYDROPX_API_KEY'),
+        'api_secret' => env('SKYDROPX_API_SECRET'),
+        'base_url' => env('SKYDROPX_BASE_URL', 'https://sb-pro.skydropx.com/api/v1'),
+    ],
+
 ];

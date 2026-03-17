@@ -9,6 +9,7 @@ use App\Http\Controllers\Web\Auth\RegisterController;
 use App\Http\Controllers\Web\Auth\ResetPasswordController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\CatalogController;
+use App\Http\Controllers\Web\Checkout\GetShippingQuotesController;
 use App\Http\Controllers\Web\Checkout\ShowCheckoutPaymentController;
 use App\Http\Controllers\Web\Checkout\ShowCheckoutShippingController;
 use App\Http\Controllers\Web\Checkout\ShowCheckoutThankYouController;
@@ -66,6 +67,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
     Route::get('/checkout/shipping', ShowCheckoutShippingController::class)->name('checkout.shipping');
     Route::post('/checkout/shipping', StoreCheckoutShippingController::class)->name('checkout.shipping.store');
+    Route::post('/checkout/shipping-quotes', GetShippingQuotesController::class)->name('checkout.shipping-quotes');
     Route::get('/checkout/payment', ShowCheckoutPaymentController::class)->name('checkout.payment');
     Route::get('/checkout/thank-you', ShowCheckoutThankYouController::class)->name('checkout.thank-you');
     Route::get('/account', AccountController::class)->name('account');

@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\CheckoutRequest;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Services\ShippingQuoteService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Laravel\Cashier\Cashier;
 
 class StoreCheckoutShippingController extends Controller
 {
-    public function __invoke(CheckoutRequest $request): RedirectResponse
+    public function __invoke(CheckoutRequest $request, ShippingQuoteService $quoteService): RedirectResponse
     {
         $cart = Cart::with(['items.product.images' => fn ($query) => $query->orderBy('position')->limit(1)])
             ->where('user_id', $request->user()->id)
@@ -29,17 +30,19 @@ class StoreCheckoutShippingController extends Controller
             return back()->withErrors(['stock' => $stockErrors]);
         }
 
+        $shippingData = $this->resolveShipping($request, $quoteService, $cart);
         $subtotal = $cart->items->sum(fn ($item) => $item->subtotal);
-        $shipping = 99.00;
-        $totalAmount = round($subtotal + $shipping, 2);
+        $totalAmount = round($subtotal + $shippingData['cost'], 2);
 
-        $order = DB::transaction(function () use ($request, $cart, $totalAmount, $shipping) {
+        $order = DB::transaction(function () use ($request, $cart, $totalAmount, $shippingData) {
             $order = Order::create([
                 'user_id' => $request->user()->id,
                 'status' => 'payment_pending',
                 'payment_status' => 'pending',
                 'total_amount' => $totalAmount,
-                'shipping_cost' => $shipping,
+                'shipping_cost' => $shippingData['cost'],
+                'shipping_carrier' => $shippingData['carrier'],
+                'shipping_method_id' => $shippingData['shipping_method_id'],
                 'shipping_address' => [
                     'name' => $request->validated('name'),
                     'address_line_1' => $request->validated('address_line_1'),
@@ -78,6 +81,47 @@ class StoreCheckoutShippingController extends Controller
         $order->update(['payment_intent_id' => $paymentIntent->id]);
 
         return redirect()->route('checkout.payment', ['order' => $order->id]);
+    }
+
+    /**
+     * Re-validate the selected shipping quote server-side.
+     *
+     * @return array{cost: float, carrier: string, shipping_method_id: int|null}
+     */
+    private function resolveShipping(CheckoutRequest $request, ShippingQuoteService $quoteService, Cart $cart): array
+    {
+        $result = $quoteService->getQuotes(
+            [
+                'postal_code' => $request->validated('postal_code'),
+                'city' => $request->validated('city'),
+                'state' => $request->validated('state'),
+                'neighborhood' => $request->validated('address_line_2'),
+            ],
+            $cart->items,
+        );
+
+        $submittedQuoteId = $request->validated('shipping_quote_id');
+
+        $matchedQuote = collect($result['quotes'])
+            ->firstWhere('quote_id', $submittedQuoteId);
+
+        if (! $matchedQuote) {
+            $matchedQuote = collect($result['quotes'])->first();
+        }
+
+        if (! $matchedQuote) {
+            return [
+                'cost' => (float) config('shop.shipping_cost'),
+                'carrier' => 'Envío estándar',
+                'shipping_method_id' => null,
+            ];
+        }
+
+        return [
+            'cost' => (float) $matchedQuote['price'],
+            'carrier' => $matchedQuote['carrier'].' - '.$matchedQuote['service'],
+            'shipping_method_id' => $matchedQuote['shipping_method_id'] ?? null,
+        ];
     }
 
     /**

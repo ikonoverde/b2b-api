@@ -34,15 +34,14 @@ class ShowCheckoutShippingController extends Controller
         ]);
 
         $subtotal = $items->sum('subtotal');
-        $shipping = 99.00;
 
         return Inertia::render('Checkout/Shipping', [
             'cart' => [
                 'items' => $items,
                 'totals' => [
                     'subtotal' => round($subtotal, 2),
-                    'shipping' => $shipping,
-                    'total' => round($subtotal + $shipping, 2),
+                    'shipping' => null,
+                    'total' => null,
                 ],
             ],
         ]);

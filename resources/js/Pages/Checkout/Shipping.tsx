@@ -1,21 +1,32 @@
 import { useForm, usePage } from '@inertiajs/react';
-import { Loader2, MapPin, Phone, User } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import type { FormEvent } from 'react';
 import CustomerLayout from '@/Layouts/CustomerLayout';
-import TextInput from '@/Components/TextInput';
+import AddressForm from '@/Components/AddressForm';
 import CheckoutStepIndicator from '@/Components/CheckoutStepIndicator';
+import ShippingQuoteSelector from '@/Components/ShippingQuoteSelector';
+import CheckoutSummary from '@/Components/CheckoutSummary';
+import useShippingQuotes from '@/hooks/useShippingQuotes';
 import type { Cart, PageProps } from '@/types';
 
 interface ShippingProps {
     cart: Cart;
 }
 
-function formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount);
+const QUOTE_FIELDS = new Set(['postal_code', 'city', 'state', 'address_line_2']);
+
+function canFetchQuotes(data: Record<string, string>): boolean {
+    return (
+        data.postal_code.length === 5 &&
+        !!data.city.trim() &&
+        !!data.state.trim() &&
+        !!data.address_line_2.trim()
+    );
 }
 
 export default function Shipping({ cart }: ShippingProps) {
     const { errors } = usePage<PageProps & { errors: Record<string, string | string[]> }>().props;
+    const { quotes, loading, error, fetched, fetch: fetchQuotes } = useShippingQuotes();
 
     const form = useForm({
         name: '',
@@ -25,7 +36,28 @@ export default function Shipping({ cart }: ShippingProps) {
         state: '',
         postal_code: '',
         phone: '',
+        shipping_quote_id: '',
     });
+
+    const selectedQuote = quotes.find((q) => q.quote_id === form.data.shipping_quote_id) ?? null;
+    const shippingCost = selectedQuote?.price ?? null;
+    const total = shippingCost !== null ? cart.totals.subtotal + shippingCost : null;
+
+    function handleFieldChange(field: string, value: string) {
+        form.setData(field as keyof typeof form.data, value);
+
+        const updated = { ...form.data, [field]: value };
+
+        if (QUOTE_FIELDS.has(field) && canFetchQuotes(updated)) {
+            form.setData('shipping_quote_id', '');
+            fetchQuotes({
+                postal_code: updated.postal_code,
+                city: updated.city,
+                state: updated.state,
+                neighborhood: updated.address_line_2,
+            });
+        }
+    }
 
     function submit(e: FormEvent) {
         e.preventDefault();
@@ -56,85 +88,26 @@ export default function Shipping({ cart }: ShippingProps) {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <form onSubmit={submit} className="lg:col-span-2 flex flex-col gap-4">
-                        <TextInput
-                            id="name"
-                            label="Nombre de contacto"
-                            value={form.data.name}
-                            onChange={(e) => form.setData('name', e.target.value)}
-                            placeholder="Nombre completo"
-                            icon={User}
+                        <AddressForm
+                            data={form.data}
+                            errors={form.errors}
                             disabled={form.processing}
-                            error={form.errors.name}
+                            onFieldChange={handleFieldChange}
                         />
 
-                        <TextInput
-                            id="address_line_1"
-                            label="Dirección"
-                            value={form.data.address_line_1}
-                            onChange={(e) => form.setData('address_line_1', e.target.value)}
-                            placeholder="Calle y número"
-                            icon={MapPin}
-                            disabled={form.processing}
-                            error={form.errors.address_line_1}
+                        <ShippingQuoteSelector
+                            quotes={quotes}
+                            selectedQuoteId={form.data.shipping_quote_id}
+                            loading={loading}
+                            fetched={fetched}
+                            error={error}
+                            validationError={form.errors.shipping_quote_id}
+                            onSelect={(quote) => form.setData('shipping_quote_id', quote.quote_id)}
                         />
-
-                        <TextInput
-                            id="address_line_2"
-                            label="Dirección línea 2 (opcional)"
-                            value={form.data.address_line_2}
-                            onChange={(e) => form.setData('address_line_2', e.target.value)}
-                            placeholder="Interior, colonia, etc."
-                            disabled={form.processing}
-                            error={form.errors.address_line_2}
-                        />
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <TextInput
-                                id="city"
-                                label="Ciudad"
-                                value={form.data.city}
-                                onChange={(e) => form.setData('city', e.target.value)}
-                                placeholder="Ciudad"
-                                disabled={form.processing}
-                                error={form.errors.city}
-                            />
-                            <TextInput
-                                id="state"
-                                label="Estado"
-                                value={form.data.state}
-                                onChange={(e) => form.setData('state', e.target.value)}
-                                placeholder="Estado"
-                                disabled={form.processing}
-                                error={form.errors.state}
-                            />
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <TextInput
-                                id="postal_code"
-                                label="Código Postal"
-                                value={form.data.postal_code}
-                                onChange={(e) => form.setData('postal_code', e.target.value)}
-                                placeholder="00000"
-                                disabled={form.processing}
-                                error={form.errors.postal_code}
-                            />
-                            <TextInput
-                                id="phone"
-                                label="Teléfono"
-                                type="tel"
-                                value={form.data.phone}
-                                onChange={(e) => form.setData('phone', e.target.value)}
-                                placeholder="10 dígitos"
-                                icon={Phone}
-                                disabled={form.processing}
-                                error={form.errors.phone}
-                            />
-                        </div>
 
                         <button
                             type="submit"
-                            disabled={form.processing}
+                            disabled={form.processing || !form.data.shipping_quote_id}
                             className="h-12 bg-[#5E7052] text-white font-semibold rounded-xl hover:bg-[#4d5e43] transition-colors disabled:opacity-50 font-[Outfit] mt-2"
                         >
                             {form.processing ? (
@@ -146,43 +119,12 @@ export default function Shipping({ cart }: ShippingProps) {
                     </form>
 
                     <div className="lg:col-span-1">
-                        <div className="flex flex-col gap-4 rounded-2xl bg-white p-5 border border-[#E5E5E5] sticky top-20">
-                            <h2 className="text-sm font-bold text-[#1A1A1A] font-[Outfit]">
-                                Resumen ({cart.items.length} productos)
-                            </h2>
-                            <div className="flex flex-col gap-2">
-                                {cart.items.map((item) => (
-                                    <div key={item.id} className="flex justify-between text-sm font-[Outfit]">
-                                        <span className="text-[#999999]">
-                                            {item.name} x{item.quantity}
-                                        </span>
-                                        <span className="font-medium text-[#1A1A1A]">
-                                            {formatCurrency(item.subtotal)}
-                                        </span>
-                                    </div>
-                                ))}
-                                <div className="border-t border-[#E5E5E5] pt-2 mt-1">
-                                    <div className="flex justify-between text-sm font-[Outfit]">
-                                        <span className="text-[#999999]">Subtotal</span>
-                                        <span className="font-medium text-[#1A1A1A]">
-                                            {formatCurrency(cart.totals.subtotal)}
-                                        </span>
-                                    </div>
-                                    <div className="flex justify-between text-sm font-[Outfit]">
-                                        <span className="text-[#999999]">Envío</span>
-                                        <span className="font-medium text-[#1A1A1A]">
-                                            {formatCurrency(cart.totals.shipping)}
-                                        </span>
-                                    </div>
-                                    <div className="mt-2 flex justify-between">
-                                        <span className="text-sm font-bold text-[#1A1A1A] font-[Outfit]">Total</span>
-                                        <span className="text-lg font-bold text-[#8B6F47] font-[Outfit]">
-                                            {formatCurrency(cart.totals.total)}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <CheckoutSummary
+                            items={cart.items}
+                            subtotal={cart.totals.subtotal}
+                            shippingCost={shippingCost}
+                            total={total}
+                        />
                     </div>
                 </div>
             </div>
