@@ -28,6 +28,10 @@ class ProductDetailResource extends JsonResource
             'thumbnail' => $this->images->first()?->thumbnail_url,
             'images' => ProductImageResource::collection($this->whenLoaded('images')),
             'pricing_tiers' => PricingTierResource::collection($this->whenLoaded('pricingTiers')),
+            'weight_kg' => $this->weight_kg !== null ? (float) $this->weight_kg : null,
+            'width_cm' => $this->width_cm !== null ? (float) $this->width_cm : null,
+            'height_cm' => $this->height_cm !== null ? (float) $this->height_cm : null,
+            'depth_cm' => $this->depth_cm !== null ? (float) $this->depth_cm : null,
         ];
     }
 }

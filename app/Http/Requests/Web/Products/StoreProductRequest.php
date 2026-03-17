@@ -33,6 +33,8 @@ class StoreProductRequest extends FormRequest
             'cost' => ['nullable', 'numeric', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],
             'min_stock' => ['nullable', 'integer', 'min:0'],
+            'weight_kg' => ['nullable', 'numeric', 'min:0.01', 'max:999'],
+            ...array_fill_keys(['width_cm', 'height_cm', 'depth_cm'], ['nullable', 'numeric', 'min:0.1', 'max:9999']),
             'is_active' => ['boolean'],
             'is_featured' => ['boolean'],
             'images' => ['nullable', 'array', 'max:4'],

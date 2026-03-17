@@ -7,6 +7,7 @@ import type { ProductFormData, Category, ExistingImage, PricingTier } from './ty
 import ProductFormHeader from './components/ProductFormHeader';
 import BasicInfoCard from './components/BasicInfoCard';
 import PricingInventoryCard from './components/PricingInventoryCard';
+import ShippingDimensionsCard from './components/ShippingDimensionsCard';
 import PricingTiersSection from './components/PricingTiersSection';
 import ImageSection from './components/ImageSection';
 import StatusCard from './components/StatusCard';
@@ -23,6 +24,10 @@ interface ProductData {
     cost: string;
     stock: string;
     min_stock: string;
+    weight_kg: string;
+    width_cm: string;
+    height_cm: string;
+    depth_cm: string;
     is_active: boolean;
     is_featured: boolean;
     image_url?: string | null;
@@ -50,6 +55,10 @@ export default function Edit({ product, categories, formulas }: EditProductProps
         cost: product.cost,
         stock: product.stock,
         min_stock: product.min_stock,
+        weight_kg: product.weight_kg ?? '',
+        width_cm: product.width_cm ?? '',
+        height_cm: product.height_cm ?? '',
+        depth_cm: product.depth_cm ?? '',
         is_active: product.is_active,
         is_featured: product.is_featured,
         images: [],
@@ -89,6 +98,12 @@ export default function Edit({ product, categories, formulas }: EditProductProps
                         />
 
                         <PricingInventoryCard
+                            data={data}
+                            setData={setData}
+                            errors={errors}
+                        />
+
+                        <ShippingDimensionsCard
                             data={data}
                             setData={setData}
                             errors={errors}

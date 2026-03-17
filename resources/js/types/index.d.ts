@@ -128,6 +128,10 @@ export interface ProductDetail {
     discount_percentage: number | null;
     stock: number;
     is_active: boolean;
+    weight_kg: number | null;
+    width_cm: number | null;
+    height_cm: number | null;
+    depth_cm: number | null;
     images: ProductImage[];
     pricing_tiers: PricingTier[];
     breadcrumbs: BreadcrumbItem[];

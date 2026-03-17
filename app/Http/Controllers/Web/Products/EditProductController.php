@@ -31,6 +31,10 @@ class EditProductController extends Controller
                 'cost' => $product->cost ? (string) $product->cost : '',
                 'stock' => (string) $product->stock,
                 'min_stock' => $product->min_stock ? (string) $product->min_stock : '',
+                'weight_kg' => $product->weight_kg !== null ? (string) $product->weight_kg : '',
+                'width_cm' => $product->width_cm !== null ? (string) $product->width_cm : '',
+                'height_cm' => $product->height_cm !== null ? (string) $product->height_cm : '',
+                'depth_cm' => $product->depth_cm !== null ? (string) $product->depth_cm : '',
                 'is_active' => $product->is_active,
                 'is_featured' => $product->is_featured,
                 'images' => $product->images->map(fn ($img) => [

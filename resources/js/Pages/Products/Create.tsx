@@ -7,6 +7,7 @@ import type { ProductFormData, Category } from './types';
 import ProductFormHeader from './components/ProductFormHeader';
 import BasicInfoCard from './components/BasicInfoCard';
 import PricingInventoryCard from './components/PricingInventoryCard';
+import ShippingDimensionsCard from './components/ShippingDimensionsCard';
 import PricingTiersSection from './components/PricingTiersSection';
 import ImageSection from './components/ImageSection';
 import StatusCard from './components/StatusCard';
@@ -28,6 +29,10 @@ export default function Create({ categories, formulas }: CreateProductProps) {
         cost: '',
         stock: '',
         min_stock: '',
+        weight_kg: '',
+        width_cm: '',
+        height_cm: '',
+        depth_cm: '',
         is_active: true,
         is_featured: false,
         images: [],
@@ -60,6 +65,12 @@ export default function Create({ categories, formulas }: CreateProductProps) {
                         />
 
                         <PricingInventoryCard
+                            data={data}
+                            setData={setData}
+                            errors={errors}
+                        />
+
+                        <ShippingDimensionsCard
                             data={data}
                             setData={setData}
                             errors={errors}

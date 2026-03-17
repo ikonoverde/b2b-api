@@ -252,6 +252,60 @@ function Breadcrumbs({ breadcrumbs }: { breadcrumbs: { name: string; url: string
     );
 }
 
+function SpecificationsTab({ product }: { product: ProductDetail }) {
+    const hasDimensions = product.width_cm != null || product.height_cm != null || product.depth_cm != null;
+
+    return (
+        <div className="font-[Outfit]">
+            <table className="w-full text-sm">
+                <tbody className="divide-y divide-[#E5E5E5]">
+                    <tr className="py-2">
+                        <td className="py-3 text-[#666666] font-medium w-1/3">SKU</td>
+                        <td className="py-3 text-[#1A1A1A]">{product.sku}</td>
+                    </tr>
+                    <tr>
+                        <td className="py-3 text-[#666666] font-medium">Categoría</td>
+                        <td className="py-3 text-[#1A1A1A]">{product.category.name}</td>
+                    </tr>
+                    <tr>
+                        <td className="py-3 text-[#666666] font-medium">Stock disponible</td>
+                        <td className="py-3 text-[#1A1A1A]">{product.stock} unidades</td>
+                    </tr>
+                    {product.weight_kg != null && (
+                        <tr>
+                            <td className="py-3 text-[#666666] font-medium">Peso</td>
+                            <td className="py-3 text-[#1A1A1A]">{product.weight_kg} kg</td>
+                        </tr>
+                    )}
+                    {hasDimensions && (
+                        <tr>
+                            <td className="py-3 text-[#666666] font-medium">Dimensiones</td>
+                            <td className="py-3 text-[#1A1A1A]">
+                                {[product.width_cm, product.height_cm, product.depth_cm]
+                                    .filter((v) => v != null)
+                                    .join(' × ')}{' '}
+                                cm
+                            </td>
+                        </tr>
+                    )}
+                    <tr>
+                        <td className="py-3 text-[#666666] font-medium">Estado</td>
+                        <td className="py-3">
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                product.is_active
+                                    ? 'bg-emerald-100 text-emerald-800'
+                                    : 'bg-gray-100 text-gray-800'
+                            }`}>
+                                {product.is_active ? 'Activo' : 'Inactivo'}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    );
+}
+
 function TabContent({ activeTab, product }: { activeTab: string; product: ProductDetail }) {
     switch (activeTab) {
         case 'description':
@@ -265,38 +319,7 @@ function TabContent({ activeTab, product }: { activeTab: string; product: Produc
                 </div>
             );
         case 'specifications':
-            return (
-                <div className="font-[Outfit]">
-                    <table className="w-full text-sm">
-                        <tbody className="divide-y divide-[#E5E5E5]">
-                            <tr className="py-2">
-                                <td className="py-3 text-[#666666] font-medium w-1/3">SKU</td>
-                                <td className="py-3 text-[#1A1A1A]">{product.sku}</td>
-                            </tr>
-                            <tr>
-                                <td className="py-3 text-[#666666] font-medium">Categoría</td>
-                                <td className="py-3 text-[#1A1A1A]">{product.category.name}</td>
-                            </tr>
-                            <tr>
-                                <td className="py-3 text-[#666666] font-medium">Stock disponible</td>
-                                <td className="py-3 text-[#1A1A1A]">{product.stock} unidades</td>
-                            </tr>
-                            <tr>
-                                <td className="py-3 text-[#666666] font-medium">Estado</td>
-                                <td className="py-3">
-                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                        product.is_active
-                                            ? 'bg-emerald-100 text-emerald-800'
-                                            : 'bg-gray-100 text-gray-800'
-                                    }`}>
-                                        {product.is_active ? 'Activo' : 'Inactivo'}
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            );
+            return <SpecificationsTab product={product} />;
         case 'reviews':
             return (
                 <div className="font-[Outfit]">

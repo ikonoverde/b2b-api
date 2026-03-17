@@ -30,6 +30,10 @@ export interface ProductFormData {
     min_stock: string;
     is_active: boolean;
     is_featured: boolean;
+    weight_kg: string;
+    width_cm: string;
+    height_cm: string;
+    depth_cm: string;
     images: File[];
     delete_images?: number[];
     pricing_tiers: PricingTier[];

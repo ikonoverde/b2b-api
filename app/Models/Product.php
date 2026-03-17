@@ -31,6 +31,10 @@ class Product extends Model
         'is_active',
         'is_featured',
         'featured_order',
+        'weight_kg',
+        'width_cm',
+        'height_cm',
+        'depth_cm',
     ];
 
     /**
@@ -45,6 +49,10 @@ class Product extends Model
             'min_stock' => 'integer',
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
+            'weight_kg' => 'decimal:2',
+            'width_cm' => 'decimal:2',
+            'height_cm' => 'decimal:2',
+            'depth_cm' => 'decimal:2',
         ];
     }
 
