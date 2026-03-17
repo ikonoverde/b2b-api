@@ -70,31 +70,22 @@ const statusIcons: Record<string, React.ReactNode> = {
 };
 
 
+const carrierTrackingUrls: Record<string, (id: string) => string> = {
+    dhl: (id) => `https://www.dhl.com/mx-es/home/tracking/tracking-parcel.html?submit=1&tracking-id=${id}`,
+    fedex: (id) => `https://www.fedex.com/apps/fedextrack/?tracknumbers=${id}`,
+    ups: (id) => `https://www.ups.com/track?tracknum=${id}`,
+    estafeta: (id) => `https://www.estafeta.com/rastrear-pedido?gui=${id}`,
+    redpack: (id) => `https://www.redpack.com.mx/es/rastreo/?guia=${id}`,
+    paquetexpress: (id) => `https://www.paquetexpress.com.mx/rastreo/?guia=${id}`,
+};
+
 function getCarrierTrackingUrl(carrier: string | null, trackingNumber: string | null): string | null {
     if (!carrier || !trackingNumber) return null;
 
     const carrierLower = carrier.toLowerCase();
+    const matchedKey = Object.keys(carrierTrackingUrls).find((key) => carrierLower.includes(key));
 
-    if (carrierLower.includes('dhl')) {
-        return `https://www.dhl.com/mx-es/home/tracking/tracking-parcel.html?submit=1&tracking-id=${trackingNumber}`;
-    }
-    if (carrierLower.includes('fedex')) {
-        return `https://www.fedex.com/apps/fedextrack/?tracknumbers=${trackingNumber}`;
-    }
-    if (carrierLower.includes('ups')) {
-        return `https://www.ups.com/track?tracknum=${trackingNumber}`;
-    }
-    if (carrierLower.includes('estafeta')) {
-        return `https://www.estafeta.com/rastrear-pedido?gui=${trackingNumber}`;
-    }
-    if (carrierLower.includes('redpack')) {
-        return `https://www.redpack.com.mx/es/rastreo/?guia=${trackingNumber}`;
-    }
-    if (carrierLower.includes('paquetexpress')) {
-        return `https://www.paquetexpress.com.mx/rastreo/?guia=${trackingNumber}`;
-    }
-
-    return null;
+    return matchedKey ? carrierTrackingUrls[matchedKey](trackingNumber) : null;
 }
 
 function OrderHeader({ order }: { order: Order }) {
@@ -258,47 +249,37 @@ function StatusTimeline({ statusHistories, currentStatus }: { statusHistories: S
                 ) : (
                     <div className="space-y-6">
                         {steps.map((step, index) => (
-                            <div key={step.status} className="flex gap-4">
-                                <div className="flex flex-col items-center">
-                                    <div
-                                        className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                                            step.isCompleted
-                                                ? 'bg-[#5E7052] text-white'
-                                                : step.isCurrent
-                                                    ? 'bg-[#D4E5D0] text-[#5E7052]'
-                                                    : 'bg-gray-100 text-gray-400'
-                                        }`}
-                                    >
-                                        {step.icon}
-                                    </div>
-                                    {index < steps.length - 1 && (
-                                        <div
-                                            className={`w-0.5 h-full min-h-[24px] mt-2 ${
-                                                step.isCompleted ? 'bg-[#5E7052]' : 'bg-gray-200'
-                                            }`}
-                                        />
-                                    )}
-                                </div>
-                                <div className="flex-1 pb-6">
-                                    <p
-                                        className={`font-medium font-[Outfit] ${
-                                            step.isCompleted || step.isCurrent
-                                                ? 'text-[#1A1A1A]'
-                                                : 'text-gray-400'
-                                        }`}
-                                    >
-                                        {step.label}
-                                    </p>
-                                    {step.date && (
-                                        <p className="text-sm text-[#999999] font-[Outfit] mt-1">
-                                            {step.date}
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
+                            <TimelineStep key={step.status} step={step} isLast={index === steps.length - 1} />
                         ))}
                     </div>
                 )}
+            </div>
+        </div>
+    );
+}
+
+function TimelineStep({ step, isLast }: { step: { status: string; label: string; icon: React.ReactNode; isCompleted: boolean; isCurrent: boolean; date: string | null }; isLast: boolean }) {
+    const iconClass = step.isCompleted
+        ? 'bg-[#5E7052] text-white'
+        : step.isCurrent
+            ? 'bg-[#D4E5D0] text-[#5E7052]'
+            : 'bg-gray-100 text-gray-400';
+
+    return (
+        <div className="flex gap-4">
+            <div className="flex flex-col items-center">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${iconClass}`}>
+                    {step.icon}
+                </div>
+                {!isLast && (
+                    <div className={`w-0.5 h-full min-h-[24px] mt-2 ${step.isCompleted ? 'bg-[#5E7052]' : 'bg-gray-200'}`} />
+                )}
+            </div>
+            <div className="flex-1 pb-6">
+                <p className={`font-medium font-[Outfit] ${step.isCompleted || step.isCurrent ? 'text-[#1A1A1A]' : 'text-gray-400'}`}>
+                    {step.label}
+                </p>
+                {step.date && <p className="text-sm text-[#999999] font-[Outfit] mt-1">{step.date}</p>}
             </div>
         </div>
     );

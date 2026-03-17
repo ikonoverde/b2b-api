@@ -18,29 +18,54 @@ class NonOverlappingPricingTiers implements ValidationRule
             return;
         }
 
-        // Sort tiers by min_qty
         $tiers = collect($value)->sortBy('min_qty')->values()->all();
 
         for ($i = 0; $i < count($tiers) - 1; $i++) {
-            $currentTier = $tiers[$i];
-            $nextTier = $tiers[$i + 1];
-
-            $currentMax = $currentTier['max_qty'] ?? null;
-            $nextMin = $nextTier['min_qty'] ?? null;
-
-            // If current tier has no max (unlimited), it overlaps with everything after
-            if ($currentMax === null || $currentMax === '') {
-                $fail('Los niveles de precios no pueden superponerse. El nivel "'.($currentTier['label'] ?? ($i + 1)).'" no tiene cantidad máxima pero hay niveles posteriores.');
-
-                return;
-            }
-
-            // Check if ranges overlap: next min should be greater than current max
-            if ($nextMin !== null && (int) $nextMin <= (int) $currentMax) {
-                $fail('Los niveles de precios no pueden superponerse. El nivel "'.($nextTier['label'] ?? ($i + 2)).'" se superpone con el nivel anterior.');
+            $overlap = $this->findOverlap($tiers[$i], $tiers[$i + 1], $i);
+            if ($overlap) {
+                $fail($overlap);
 
                 return;
             }
         }
+    }
+
+    private function findOverlap(array $currentTier, array $nextTier, int $index): ?string
+    {
+        if ($this->hasUnlimitedMax($currentTier)) {
+            return $this->overlapMessage(
+                $currentTier,
+                $index + 1,
+                'no tiene cantidad máxima pero hay niveles posteriores',
+            );
+        }
+
+        if ($this->rangesOverlap($currentTier, $nextTier)) {
+            return $this->overlapMessage($nextTier, $index + 2, 'se superpone con el nivel anterior');
+        }
+
+        return null;
+    }
+
+    private function hasUnlimitedMax(array $tier): bool
+    {
+        $max = $tier['max_qty'] ?? null;
+
+        return $max === null || $max === '';
+    }
+
+    private function rangesOverlap(array $currentTier, array $nextTier): bool
+    {
+        $nextMin = $nextTier['min_qty'] ?? null;
+        $currentMax = $currentTier['max_qty'] ?? null;
+
+        return $nextMin !== null && (int) $nextMin <= (int) $currentMax;
+    }
+
+    private function overlapMessage(array $tier, int $fallbackLabel, string $reason): string
+    {
+        $label = $tier['label'] ?? $fallbackLabel;
+
+        return "Los niveles de precios no pueden superponerse. El nivel \"{$label}\" {$reason}.";
     }
 }

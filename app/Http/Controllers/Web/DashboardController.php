@@ -33,78 +33,50 @@ class DashboardController extends Controller
      */
     private function getSalesMetrics(): array
     {
+        return [
+            'daily' => $this->getPeriodSales('day'),
+            'weekly' => $this->getPeriodSales('week'),
+            'monthly' => $this->getPeriodSales('month'),
+        ];
+    }
+
+    /**
+     * @return array{total: float, change: float, previous: float}
+     */
+    private function getPeriodSales(string $period): array
+    {
         $now = Carbon::now();
 
-        // Daily metrics
-        $todaySales = Order::query()
-            ->whereDate('created_at', $now->toDateString())
-            ->where('payment_status', 'completed')
-            ->sum('total_amount') ?? 0;
+        $currentStart = $now->copy()->{'startOf'.ucfirst($period)}();
+        $currentEnd = $now->copy()->{'endOf'.ucfirst($period)}();
+        $previousStart = $now->copy()->{'sub'.ucfirst($period)}()->{'startOf'.ucfirst($period)}();
+        $previousEnd = $now->copy()->{'sub'.ucfirst($period)}()->{'endOf'.ucfirst($period)}();
 
-        $yesterdaySales = Order::query()
-            ->whereDate('created_at', $now->copy()->subDay()->toDateString())
-            ->where('payment_status', 'completed')
-            ->sum('total_amount') ?? 0;
-
-        $dailyChange = $yesterdaySales > 0
-            ? (($todaySales - $yesterdaySales) / $yesterdaySales) * 100
-            : ($todaySales > 0 ? 100 : 0);
-
-        // Weekly metrics
-        $weekStart = $now->copy()->startOfWeek();
-        $weekEnd = $now->copy()->endOfWeek();
-        $thisWeekSales = Order::query()
-            ->whereBetween('created_at', [$weekStart, $weekEnd])
-            ->where('payment_status', 'completed')
-            ->sum('total_amount') ?? 0;
-
-        $lastWeekStart = $now->copy()->subWeek()->startOfWeek();
-        $lastWeekEnd = $now->copy()->subWeek()->endOfWeek();
-        $lastWeekSales = Order::query()
-            ->whereBetween('created_at', [$lastWeekStart, $lastWeekEnd])
-            ->where('payment_status', 'completed')
-            ->sum('total_amount') ?? 0;
-
-        $weeklyChange = $lastWeekSales > 0
-            ? (($thisWeekSales - $lastWeekSales) / $lastWeekSales) * 100
-            : ($thisWeekSales > 0 ? 100 : 0);
-
-        // Monthly metrics
-        $monthStart = $now->copy()->startOfMonth();
-        $monthEnd = $now->copy()->endOfMonth();
-        $thisMonthSales = Order::query()
-            ->whereBetween('created_at', [$monthStart, $monthEnd])
-            ->where('payment_status', 'completed')
-            ->sum('total_amount') ?? 0;
-
-        $lastMonthStart = $now->copy()->subMonth()->startOfMonth();
-        $lastMonthEnd = $now->copy()->subMonth()->endOfMonth();
-        $lastMonthSales = Order::query()
-            ->whereBetween('created_at', [$lastMonthStart, $lastMonthEnd])
-            ->where('payment_status', 'completed')
-            ->sum('total_amount') ?? 0;
-
-        $monthlyChange = $lastMonthSales > 0
-            ? (($thisMonthSales - $lastMonthSales) / $lastMonthSales) * 100
-            : ($thisMonthSales > 0 ? 100 : 0);
+        $currentSales = $this->completedOrdersSumBetween($currentStart, $currentEnd);
+        $previousSales = $this->completedOrdersSumBetween($previousStart, $previousEnd);
 
         return [
-            'daily' => [
-                'total' => round($todaySales, 2),
-                'change' => round($dailyChange, 1),
-                'previous' => round($yesterdaySales, 2),
-            ],
-            'weekly' => [
-                'total' => round($thisWeekSales, 2),
-                'change' => round($weeklyChange, 1),
-                'previous' => round($lastWeekSales, 2),
-            ],
-            'monthly' => [
-                'total' => round($thisMonthSales, 2),
-                'change' => round($monthlyChange, 1),
-                'previous' => round($lastMonthSales, 2),
-            ],
+            'total' => round($currentSales, 2),
+            'change' => round($this->percentageChange($currentSales, $previousSales), 1),
+            'previous' => round($previousSales, 2),
         ];
+    }
+
+    private function completedOrdersSumBetween(Carbon $start, Carbon $end): float
+    {
+        return (float) Order::query()
+            ->whereBetween('created_at', [$start, $end])
+            ->where('payment_status', 'completed')
+            ->sum('total_amount');
+    }
+
+    private function percentageChange(float $current, float $previous): float
+    {
+        if ($previous > 0) {
+            return (($current - $previous) / $previous) * 100;
+        }
+
+        return $current > 0 ? 100 : 0;
     }
 
     /**
@@ -188,9 +160,7 @@ class DashboardController extends Controller
             ->whereYear('created_at', $now->copy()->subMonth()->year)
             ->count();
 
-        $change = $lastMonthCount > 0
-            ? (($thisMonthCount - $lastMonthCount) / $lastMonthCount) * 100
-            : ($thisMonthCount > 0 ? 100 : 0);
+        $change = $this->percentageChange($thisMonthCount, $lastMonthCount);
 
         return [
             'this_month' => $thisMonthCount,

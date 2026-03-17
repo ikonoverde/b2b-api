@@ -98,13 +98,80 @@ function getUnitPrice(activeTier: PricingTier | null, basePrice: number): number
     return activeTier?.price ?? basePrice;
 }
 
-function ImageGallery({ images, alt }: { images: { id: number; url: string; position: number }[]; alt: string }) {
-    const [selectedIndex, setSelectedIndex] = useState(0);
+function ZoomableImage({ imageUrl, isZooming, zoomPosition, onZoomStart, onZoomEnd, onMouseMove, imageRef }: {
+    imageUrl: string | undefined;
+    isZooming: boolean;
+    zoomPosition: { x: number; y: number };
+    onZoomStart: () => void;
+    onZoomEnd: () => void;
+    onMouseMove: (e: React.MouseEvent<HTMLDivElement>) => void;
+    imageRef: React.RefObject<HTMLDivElement | null>;
+}) {
+    return (
+        <div
+            ref={imageRef}
+            className="relative overflow-hidden rounded-2xl bg-white border border-[#E5E5E5] cursor-zoom-in"
+            onMouseEnter={onZoomStart}
+            onMouseLeave={onZoomEnd}
+            onMouseMove={onMouseMove}
+        >
+            <div className="aspect-square overflow-hidden bg-[#F5F3F0]">
+                {imageUrl ? (
+                    <div
+                        className="h-full w-full transition-transform duration-200"
+                        style={{
+                            backgroundImage: `url(${imageUrl})`,
+                            backgroundSize: isZooming ? '200%' : 'cover',
+                            backgroundPosition: isZooming ? `${zoomPosition.x}% ${zoomPosition.y}%` : 'center',
+                            backgroundRepeat: 'no-repeat',
+                        }}
+                    />
+                ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                        <div className="w-20 h-20 bg-[#E8E8E8] rounded-full" />
+                    </div>
+                )}
+            </div>
+            {imageUrl && (
+                <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-sm">
+                    <ZoomIn className="h-4 w-4 text-[#5E7052]" />
+                </div>
+            )}
+        </div>
+    );
+}
+
+function ImageThumbnails({ images, alt, selectedIndex, onSelect }: {
+    images: { id: number; url: string; position?: number }[];
+    alt: string;
+    selectedIndex: number;
+    onSelect: (index: number) => void;
+}) {
+    if (images.length <= 1) return null;
+
+    return (
+        <div className="flex gap-2 overflow-x-auto pb-2">
+            {images.map((img, idx) => (
+                <button
+                    key={img.id}
+                    onClick={() => onSelect(idx)}
+                    className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${
+                        selectedIndex === idx
+                            ? 'border-[#5E7052] ring-2 ring-[#5E7052]/20'
+                            : 'border-[#E5E5E5] hover:border-[#5E7052]/50'
+                    }`}
+                >
+                    <img src={img.url} alt={`${alt} - vista ${idx + 1}`} className="w-full h-full object-cover" />
+                </button>
+            ))}
+        </div>
+    );
+}
+
+function useImageZoom() {
     const [isZooming, setIsZooming] = useState(false);
     const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
     const imageRef = useRef<HTMLDivElement>(null);
-
-    const selectedImage = images[selectedIndex]?.url;
 
     function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
         if (!imageRef.current || !isZooming) return;
@@ -114,60 +181,41 @@ function ImageGallery({ images, alt }: { images: { id: number; url: string; posi
         setZoomPosition({ x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) });
     }
 
-    function nextImage() {
-        setSelectedIndex((prev) => (prev + 1) % images.length);
-    }
+    return {
+        isZooming, zoomPosition, imageRef,
+        onZoomStart: () => setIsZooming(true),
+        onZoomEnd: () => setIsZooming(false),
+        onMouseMove: handleMouseMove,
+    };
+}
 
-    function prevImage() {
-        setSelectedIndex((prev) => (prev - 1 + images.length) % images.length);
-    }
+function ImageGallery({ images, alt }: { images: { id: number; url: string; position?: number }[]; alt: string }) {
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const zoom = useImageZoom();
+    const selectedImage = images[selectedIndex]?.url;
 
     return (
         <div className="flex flex-col gap-4">
-            {/* Main Image with Zoom */}
-            <div
-                ref={imageRef}
-                className="relative overflow-hidden rounded-2xl bg-white border border-[#E5E5E5] cursor-zoom-in"
-                onMouseEnter={() => setIsZooming(true)}
-                onMouseLeave={() => setIsZooming(false)}
-                onMouseMove={handleMouseMove}
-            >
-                <div className="aspect-square overflow-hidden bg-[#F5F3F0]">
-                    {selectedImage ? (
-                        <div
-                            className="h-full w-full transition-transform duration-200"
-                            style={{
-                                backgroundImage: `url(${selectedImage})`,
-                                backgroundSize: isZooming ? '200%' : 'cover',
-                                backgroundPosition: isZooming ? `${zoomPosition.x}% ${zoomPosition.y}%` : 'center',
-                                backgroundRepeat: 'no-repeat',
-                            }}
-                        />
-                    ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                            <div className="w-20 h-20 bg-[#E8E8E8] rounded-full" />
-                        </div>
-                    )}
-                </div>
-
-                {/* Zoom indicator */}
-                {selectedImage && (
-                    <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-sm">
-                        <ZoomIn className="h-4 w-4 text-[#5E7052]" />
-                    </div>
-                )}
-
-                {/* Navigation arrows for mobile */}
+            <div className="relative">
+                <ZoomableImage
+                    imageUrl={selectedImage}
+                    isZooming={zoom.isZooming}
+                    zoomPosition={zoom.zoomPosition}
+                    onZoomStart={zoom.onZoomStart}
+                    onZoomEnd={zoom.onZoomEnd}
+                    onMouseMove={zoom.onMouseMove}
+                    imageRef={zoom.imageRef}
+                />
                 {images.length > 1 && (
                     <>
                         <button
-                            onClick={prevImage}
+                            onClick={() => setSelectedIndex((prev) => (prev - 1 + images.length) % images.length)}
                             className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-sm hover:bg-white transition-colors"
                         >
                             <ChevronLeft className="h-5 w-5 text-[#5E7052]" />
                         </button>
                         <button
-                            onClick={nextImage}
+                            onClick={() => setSelectedIndex((prev) => (prev + 1) % images.length)}
                             className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-sm hover:bg-white transition-colors"
                         >
                             <ChevronRight className="h-5 w-5 text-[#5E7052]" />
@@ -176,28 +224,7 @@ function ImageGallery({ images, alt }: { images: { id: number; url: string; posi
                 )}
             </div>
 
-            {/* Thumbnails */}
-            {images.length > 1 && (
-                <div className="flex gap-2 overflow-x-auto pb-2">
-                    {images.map((img, idx) => (
-                        <button
-                            key={img.id}
-                            onClick={() => setSelectedIndex(idx)}
-                            className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${
-                                selectedIndex === idx
-                                    ? 'border-[#5E7052] ring-2 ring-[#5E7052]/20'
-                                    : 'border-[#E5E5E5] hover:border-[#5E7052]/50'
-                            }`}
-                        >
-                            <img
-                                src={img.url}
-                                alt={`${alt} - vista ${idx + 1}`}
-                                className="w-full h-full object-cover"
-                            />
-                        </button>
-                    ))}
-                </div>
-            )}
+            <ImageThumbnails images={images} alt={alt} selectedIndex={selectedIndex} onSelect={setSelectedIndex} />
         </div>
     );
 }
@@ -322,6 +349,30 @@ function RelatedProductsCarousel({ products }: { products: RelatedProduct[] }) {
     );
 }
 
+function PriceDisplay({ product }: { product: ProductDetail }) {
+    return (
+        <div className="flex items-baseline gap-3 flex-wrap">
+            {product.sale_price && product.discount_percentage ? (
+                <>
+                    <span className="text-2xl font-bold text-[#8B6F47] font-[Outfit]">
+                        {formatCurrency(product.sale_price)}
+                    </span>
+                    <span className="text-lg text-[#999999] line-through font-[Outfit]">
+                        {formatCurrency(product.price)}
+                    </span>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800 font-[Outfit]">
+                        -{product.discount_percentage}%
+                    </span>
+                </>
+            ) : (
+                <span className="text-2xl font-bold text-[#8B6F47] font-[Outfit]">
+                    {formatCurrency(product.price)}
+                </span>
+            )}
+        </div>
+    );
+}
+
 export default function ProductShow({ product, related_products }: ProductShowProps) {
     const [quantity, setQuantity] = useState(1);
     const [loading, setLoading] = useState(false);
@@ -396,25 +447,7 @@ export default function ProductShow({ product, related_products }: ProductShowPr
                         </div>
 
                         {/* Price with discount badge */}
-                        <div className="flex items-baseline gap-3 flex-wrap">
-                            {product.sale_price && product.discount_percentage ? (
-                                <>
-                                    <span className="text-2xl font-bold text-[#8B6F47] font-[Outfit]">
-                                        {formatCurrency(product.sale_price)}
-                                    </span>
-                                    <span className="text-lg text-[#999999] line-through font-[Outfit]">
-                                        {formatCurrency(product.price)}
-                                    </span>
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800 font-[Outfit]">
-                                        -{product.discount_percentage}%
-                                    </span>
-                                </>
-                            ) : (
-                                <span className="text-2xl font-bold text-[#8B6F47] font-[Outfit]">
-                                    {formatCurrency(product.price)}
-                                </span>
-                            )}
-                        </div>
+                        <PriceDisplay product={product} />
 
                         {/* Pricing Tiers */}
                         {product.pricing_tiers && product.pricing_tiers.length > 0 && (

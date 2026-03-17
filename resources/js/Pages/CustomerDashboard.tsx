@@ -1,4 +1,5 @@
 import { Deferred, Link, usePage } from '@inertiajs/react';
+import ProductCard from '@/Components/ProductCard';
 import { ChevronLeft, ChevronRight, ClipboardList, CreditCard, Package, Percent, ShoppingCart } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import BannerCard from '@/Components/BannerCard';
@@ -114,33 +115,13 @@ export default function CustomerDashboard({ featuredProducts, profile, banners }
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                             {featuredProducts.map((product) => (
-                                <Link
+                                <ProductCard
                                     key={product.id}
-                                    href={`/products/${product.slug}`}
-                                    className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden flex flex-col hover:shadow-md transition-shadow"
-                                >
-                                    <div className="h-32 lg:h-40 bg-[#F5F3F0]">
-                                        {product.image ? (
-                                            <img
-                                                src={product.image}
-                                                alt={product.name}
-                                                className="w-full h-full object-cover"
-                                            />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center">
-                                                <div className="w-10 h-10 bg-[#E8E8E8] rounded-full" />
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="p-3 flex flex-col gap-1">
-                                        <span className="font-[Outfit] font-semibold text-[#1A1A1A] text-sm leading-snug line-clamp-2">
-                                            {product.name}
-                                        </span>
-                                        <span className="font-[Outfit] font-bold text-[#8B6F47] text-sm">
-                                            {formatCurrency(product.price)}
-                                        </span>
-                                    </div>
-                                </Link>
+                                    slug={product.slug}
+                                    name={product.name}
+                                    price={formatCurrency(product.price)}
+                                    image={product.image}
+                                />
                             ))}
                         </div>
                     </div>
@@ -167,6 +148,33 @@ function BannerCarouselSkeleton() {
         <div className="mb-8">
             <div className="h-44 md:h-52 rounded-2xl bg-[#F5F3F0] animate-pulse" />
         </div>
+    );
+}
+
+function CarouselNavigation({ current, bannerIds, onPrev, onNext, onGoTo }: {
+    current: number;
+    bannerIds: number[];
+    onPrev: () => void;
+    onNext: () => void;
+    onGoTo: (index: number) => void;
+}) {
+    return (
+        <>
+            <button type="button" onClick={onPrev}
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ChevronLeft className="w-4 h-4 text-[#1A1A1A]" />
+            </button>
+            <button type="button" onClick={onNext}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ChevronRight className="w-4 h-4 text-[#1A1A1A]" />
+            </button>
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                {bannerIds.map((id, i) => (
+                    <button key={id} type="button" onClick={() => onGoTo(i)}
+                        className={`w-2 h-2 rounded-full transition-colors ${i === current ? 'bg-white' : 'bg-white/50'}`} />
+                ))}
+            </div>
+        </>
     );
 }
 
@@ -210,36 +218,14 @@ function BannerCarousel({ banners }: { banners: BannerData[] }) {
     return (
         <div className="relative group">
             <BannerCard banner={banner} className="h-44 md:h-52" />
-
             {banners.length > 1 && (
-                <>
-                    <button
-                        type="button"
-                        onClick={goPrev}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                        <ChevronLeft className="w-4 h-4 text-[#1A1A1A]" />
-                    </button>
-                    <button
-                        type="button"
-                        onClick={goNext}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                        <ChevronRight className="w-4 h-4 text-[#1A1A1A]" />
-                    </button>
-                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-                        {banners.map((b, i) => (
-                            <button
-                                key={b.id}
-                                type="button"
-                                onClick={() => goTo(i)}
-                                className={`w-2 h-2 rounded-full transition-colors ${
-                                    i === current ? 'bg-white' : 'bg-white/50'
-                                }`}
-                            />
-                        ))}
-                    </div>
-                </>
+                <CarouselNavigation
+                    current={current}
+                    bannerIds={banners.map(b => b.id)}
+                    onPrev={goPrev}
+                    onNext={goNext}
+                    onGoTo={goTo}
+                />
             )}
         </div>
     );

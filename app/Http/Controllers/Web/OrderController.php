@@ -62,28 +62,34 @@ class OrderController extends Controller
         }
 
         $result = $reorderAction->execute($order);
-
-        $messages = [];
-
-        if (count($result['added']) > 0) {
-            $messages[] = count($result['added']).' producto(s) agregado(s) al carrito';
-        }
-
-        if (count($result['unavailable']) > 0) {
-            $messages[] = count($result['unavailable']).' producto(s) no disponible(s)';
-        }
-
-        if (count($result['price_changes']) > 0) {
-            $messages[] = 'Precio actualizado en '.count($result['price_changes']).' producto(s)';
-        }
-
-        $message = implode('. ', $messages) ?: 'No se pudieron agregar productos al carrito';
+        $message = $this->buildReorderMessage($result);
 
         if (count($result['added']) > 0) {
             return redirect()->route('cart')->with('success', $message);
         }
 
         return back()->with('error', $message);
+    }
+
+    /**
+     * @param  array{added: array<mixed>, unavailable: array<mixed>, price_changes: array<mixed>}  $result
+     */
+    private function buildReorderMessage(array $result): string
+    {
+        $parts = [
+            'added' => [count($result['added']), '{n} producto(s) agregado(s) al carrito'],
+            'unavailable' => [count($result['unavailable']), '{n} producto(s) no disponible(s)'],
+            'price_changes' => [count($result['price_changes']), 'Precio actualizado en {n} producto(s)'],
+        ];
+
+        $messages = [];
+        foreach ($parts as [$count, $template]) {
+            if ($count > 0) {
+                $messages[] = str_replace('{n}', (string) $count, $template);
+            }
+        }
+
+        return implode('. ', $messages) ?: 'No se pudieron agregar productos al carrito';
     }
 
     public function invoice(Order $order): HttpResponse

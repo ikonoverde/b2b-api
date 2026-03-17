@@ -52,23 +52,43 @@ class ConfirmPaymentController extends Controller
             ]);
         }
 
-        $stripe = Cashier::stripe();
-        $paymentIntent = $stripe->paymentIntents->retrieve($validated['payment_intent_id']);
-
-        if ($paymentIntent->status !== 'succeeded' && $paymentIntent->status !== 'requires_capture') {
-            return response()->json([
-                'message' => 'Payment failed',
-                'error' => "Payment intent status: {$paymentIntent->status}",
-            ], Response::HTTP_BAD_REQUEST);
+        $errorResponse = $this->validatePaymentIntent($validated['payment_intent_id']);
+        if ($errorResponse) {
+            return $errorResponse;
         }
 
+        $this->completeOrder($order, $validated);
+
+        $order->refresh();
+
+        return response()->json([
+            'data' => (new OrderResource($order))->resolve(),
+        ], Response::HTTP_OK);
+    }
+
+    private function validatePaymentIntent(string $paymentIntentId): ?JsonResponse
+    {
+        $stripe = Cashier::stripe();
+        $paymentIntent = $stripe->paymentIntents->retrieve($paymentIntentId);
+
+        if ($paymentIntent->status === 'succeeded' || $paymentIntent->status === 'requires_capture') {
+            return null;
+        }
+
+        return response()->json([
+            'message' => 'Payment failed',
+            'error' => "Payment intent status: {$paymentIntent->status}",
+        ], Response::HTTP_BAD_REQUEST);
+    }
+
+    private function completeOrder(Order $order, array $validated): void
+    {
         DB::transaction(function () use ($order, $validated) {
             $updateData = [
                 'payment_status' => 'completed',
                 'status' => 'pending',
             ];
 
-            // If shipping address was collected by Stripe Elements and order doesn't have one yet
             if (isset($validated['shipping_address']) && $order->shipping_address === null) {
                 $updateData['shipping_address'] = $validated['shipping_address'];
             }
@@ -84,11 +104,5 @@ class ConfirmPaymentController extends Controller
                 $cart->update(['status' => 'completed']);
             }
         });
-
-        $order->refresh();
-
-        return response()->json([
-            'data' => (new OrderResource($order))->resolve(),
-        ], Response::HTTP_OK);
     }
 }

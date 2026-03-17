@@ -116,65 +116,9 @@ export default function Profile({ user }: ProfileProps) {
                         </div>
 
                         <div className="space-y-4">
-                            {/* Name Field */}
-                            <div>
-                                <label htmlFor="name" className="block text-sm font-medium text-[#1A1A1A] mb-1.5 font-[Outfit]">
-                                    Nombre Completo
-                                </label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleInputChange}
-                                    className={`w-full rounded-xl border ${errors.name ? 'border-red-300 focus:border-red-500 focus:ring-red-200' : 'border-[#E5E5E5] focus:border-[#5E7052] focus:ring-[#5E7052]/20'} px-4 py-3 text-sm font-[Outfit] focus:outline-none focus:ring-2 transition-colors`}
-                                    placeholder="Ingrese su nombre completo"
-                                    required
-                                />
-                                {errors.name && (
-                                    <p className="mt-1.5 text-xs text-red-600 font-[Outfit]">{errors.name}</p>
-                                )}
-                            </div>
-
-                            {/* Email Field */}
-                            <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-[#1A1A1A] mb-1.5 font-[Outfit]">
-                                    Correo Electrónico
-                                </label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleInputChange}
-                                    className={`w-full rounded-xl border ${errors.email ? 'border-red-300 focus:border-red-500 focus:ring-red-200' : 'border-[#E5E5E5] focus:border-[#5E7052] focus:ring-[#5E7052]/20'} px-4 py-3 text-sm font-[Outfit] focus:outline-none focus:ring-2 transition-colors`}
-                                    placeholder="Ingrese su correo electrónico"
-                                    required
-                                />
-                                {errors.email && (
-                                    <p className="mt-1.5 text-xs text-red-600 font-[Outfit]">{errors.email}</p>
-                                )}
-                            </div>
-
-                            {/* Phone Field */}
-                            <div>
-                                <label htmlFor="phone" className="block text-sm font-medium text-[#1A1A1A] mb-1.5 font-[Outfit]">
-                                    Teléfono
-                                </label>
-                                <input
-                                    type="tel"
-                                    id="phone"
-                                    name="phone"
-                                    value={formData.phone}
-                                    onChange={handleInputChange}
-                                    className={`w-full rounded-xl border ${errors.phone ? 'border-red-300 focus:border-red-500 focus:ring-red-200' : 'border-[#E5E5E5] focus:border-[#5E7052] focus:ring-[#5E7052]/20'} px-4 py-3 text-sm font-[Outfit] focus:outline-none focus:ring-2 transition-colors`}
-                                    placeholder="Ingrese su número de teléfono"
-                                    required
-                                />
-                                {errors.phone && (
-                                    <p className="mt-1.5 text-xs text-red-600 font-[Outfit]">{errors.phone}</p>
-                                )}
-                            </div>
+                            <ProfileFormInput label="Nombre Completo" type="text" name="name" value={formData.name} error={errors.name} placeholder="Ingrese su nombre completo" onChange={handleInputChange} />
+                            <ProfileFormInput label="Correo Electrónico" type="email" name="email" value={formData.email} error={errors.email} placeholder="Ingrese su correo electrónico" onChange={handleInputChange} />
+                            <ProfileFormInput label="Teléfono" type="tel" name="phone" value={formData.phone} error={errors.phone} placeholder="Ingrese su número de teléfono" onChange={handleInputChange} />
                         </div>
                     </div>
 
@@ -204,5 +148,34 @@ export default function Profile({ user }: ProfileProps) {
                 </form>
             </div>
         </CustomerLayout>
+    );
+}
+
+function ProfileFormInput({ label, type, name, value, error, placeholder, onChange }: {
+    label: string;
+    type: string;
+    name: string;
+    value: string;
+    error?: string;
+    placeholder: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
+    return (
+        <div>
+            <label htmlFor={name} className="block text-sm font-medium text-[#1A1A1A] mb-1.5 font-[Outfit]">
+                {label}
+            </label>
+            <input
+                type={type}
+                id={name}
+                name={name}
+                value={value}
+                onChange={onChange}
+                className={`w-full rounded-xl border ${error ? 'border-red-300 focus:border-red-500 focus:ring-red-200' : 'border-[#E5E5E5] focus:border-[#5E7052] focus:ring-[#5E7052]/20'} px-4 py-3 text-sm font-[Outfit] focus:outline-none focus:ring-2 transition-colors`}
+                placeholder={placeholder}
+                required
+            />
+            {error && <p className="mt-1.5 text-xs text-red-600 font-[Outfit]">{error}</p>}
+        </div>
     );
 }

@@ -28,9 +28,7 @@ const tabs: { id: TabFilter; label: string }[] = [
     { id: 'low_stock', label: 'Stock bajo' },
 ];
 
-export default function Products({ products }: ProductsProps) {
-    const { auth } = usePage<PageProps>().props;
-    const user = auth.user;
+function useProductFilters(products: Product[]) {
     const [activeTab, setActiveTab] = useState<TabFilter>('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [deleteModal, setDeleteModal] = useState<{
@@ -65,6 +63,17 @@ export default function Products({ products }: ProductsProps) {
         setDeleteModal({ isOpen: false, product: null });
     };
 
+    return {
+        activeTab, setActiveTab, searchQuery, setSearchQuery,
+        deleteModal, filteredProducts, handleDelete, confirmDelete, closeModal,
+    };
+}
+
+export default function Products({ products }: ProductsProps) {
+    const { auth } = usePage<PageProps>().props;
+    const user = auth.user;
+    const pf = useProductFilters(products);
+
     return (
         <AppLayout title="Productos" active="products">
             <div className="flex flex-col gap-6 p-10 pr-12">
@@ -86,8 +95,8 @@ export default function Products({ products }: ProductsProps) {
                             <input
                                 type="text"
                                 placeholder="Buscar..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
+                                value={pf.searchQuery}
+                                onChange={(e) => pf.setSearchQuery(e.target.value)}
                                 className="flex-1 text-sm text-[#1A1A1A] placeholder-[#999999] font-[Outfit] bg-transparent border-none outline-none"
                             />
                         </div>
@@ -124,9 +133,9 @@ export default function Products({ products }: ProductsProps) {
                         {tabs.map((tab) => (
                             <button
                                 key={tab.id}
-                                onClick={() => setActiveTab(tab.id)}
+                                onClick={() => pf.setActiveTab(tab.id)}
                                 className={`px-4 py-2 rounded-md text-[13px] font-medium font-[Outfit] transition-colors ${
-                                    activeTab === tab.id
+                                    pf.activeTab === tab.id
                                         ? 'bg-[#4A5D4A] text-white'
                                         : 'text-[#666666] hover:bg-white/50'
                                 }`}
@@ -178,16 +187,16 @@ export default function Products({ products }: ProductsProps) {
 
                     {/* Table Body */}
                     <div className="divide-y divide-[#E5E5E5]">
-                        {filteredProducts.map((product) => (
-                            <ProductRow 
-                                key={product.id} 
-                                product={product} 
-                                onDelete={handleDelete}
+                        {pf.filteredProducts.map((product) => (
+                            <ProductRow
+                                key={product.id}
+                                product={product}
+                                onDelete={pf.handleDelete}
                             />
                         ))}
                     </div>
 
-                    {filteredProducts.length === 0 && (
+                    {pf.filteredProducts.length === 0 && (
                         <div className="flex flex-col items-center justify-center py-12 gap-3">
                             <Package className="w-12 h-12 text-[#999999]" />
                             <span className="text-sm text-[#999999] font-[Outfit]">
@@ -197,54 +206,55 @@ export default function Products({ products }: ProductsProps) {
                     )}
                 </div>
 
-                {/* Delete Confirmation Modal */}
-                {deleteModal.isOpen && deleteModal.product && (
-                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                        <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4 shadow-xl">
-                            <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
-                                    <AlertTriangle className="w-6 h-6 text-red-600" />
-                                </div>
-                                <div className="flex-1">
-                                    <h3 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
-                                        Archivar Producto
-                                    </h3>
-                                    <p className="text-sm text-[#666666] font-[Outfit] mt-1">
-                                        ¿Estás seguro de que quieres archivar <strong>{deleteModal.product.name}</strong>?
-                                    </p>
-                                    {deleteModal.product.has_pending_orders && (
-                                        <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                                            <p className="text-xs text-amber-700 font-[Outfit] flex items-start gap-2">
-                                                <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                                                <span>Este producto tiene pedidos pendientes. No se puede archivar hasta que todos los pedidos estén completados o cancelados.</span>
-                                            </p>
-                                        </div>
-                                    )}
-                                    <p className="text-xs text-[#999999] font-[Outfit] mt-2">
-                                        Este producto se ocultará del catálogo pero permanecerá visible en los pedidos históricos.
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="flex items-center justify-end gap-3 mt-6">
-                                <button
-                                    onClick={closeModal}
-                                    className="px-4 py-2 text-sm font-medium text-[#666666] font-[Outfit] hover:bg-gray-100 rounded-lg transition-colors"
-                                >
-                                    Cancelar
-                                </button>
-                                <button
-                                    onClick={confirmDelete}
-                                    disabled={deleteModal.product.has_pending_orders}
-                                    className="px-4 py-2 text-sm font-medium text-white font-[Outfit] bg-red-600 hover:bg-red-700 rounded-lg transition-colors disabled:bg-red-300 disabled:cursor-not-allowed"
-                                >
-                                    Archivar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                {pf.deleteModal.isOpen && pf.deleteModal.product && (
+                    <DeleteProductModal
+                        product={pf.deleteModal.product}
+                        onConfirm={pf.confirmDelete}
+                        onClose={pf.closeModal}
+                    />
                 )}
             </div>
         </AppLayout>
+    );
+}
+
+function DeleteProductModal({ product, onConfirm, onClose }: { product: Product; onConfirm: () => void; onClose: () => void }) {
+    return (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4 shadow-xl">
+                <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                        <AlertTriangle className="w-6 h-6 text-red-600" />
+                    </div>
+                    <div className="flex-1">
+                        <h3 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">Archivar Producto</h3>
+                        <p className="text-sm text-[#666666] font-[Outfit] mt-1">
+                            ¿Estás seguro de que quieres archivar <strong>{product.name}</strong>?
+                        </p>
+                        {product.has_pending_orders && (
+                            <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                                <p className="text-xs text-amber-700 font-[Outfit] flex items-start gap-2">
+                                    <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                                    <span>Este producto tiene pedidos pendientes. No se puede archivar hasta que todos los pedidos estén completados o cancelados.</span>
+                                </p>
+                            </div>
+                        )}
+                        <p className="text-xs text-[#999999] font-[Outfit] mt-2">
+                            Este producto se ocultará del catálogo pero permanecerá visible en los pedidos históricos.
+                        </p>
+                    </div>
+                </div>
+                <div className="flex items-center justify-end gap-3 mt-6">
+                    <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-[#666666] font-[Outfit] hover:bg-gray-100 rounded-lg transition-colors">
+                        Cancelar
+                    </button>
+                    <button onClick={onConfirm} disabled={product.has_pending_orders}
+                        className="px-4 py-2 text-sm font-medium text-white font-[Outfit] bg-red-600 hover:bg-red-700 rounded-lg transition-colors disabled:bg-red-300 disabled:cursor-not-allowed">
+                        Archivar
+                    </button>
+                </div>
+            </div>
+        </div>
     );
 }
 

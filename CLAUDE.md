@@ -456,21 +456,11 @@ export default () => (
 - Do not add API endpoints to be consumed by the Laravel/Inertia app implemented in this project, for that use web routes in the inertia way
 
 ## Code quality
-- Before committing, ALWAYS run auto-formatting with `qlty fmt`
-- Before finishing, ALWAYS run `qlty check --fix --level=low` and fix any lint errors
-- Before finishing, ALWAYS run `qlty smells` and fix any issues
-- Before finishing, ALWAYS run `qlty metrics --sort complexity --limit=5 app/`
-  - Max accepted cyclo: 10
-  - Max accepted cognitive/complex: 15
-  - Refactor anything above those limits to lower the complexity
-- Before finishing, ALWAYS run `qlty metrics --sort complexity --limit=5 resources/`
-    - Max accepted cyclo: 15
-    - Max accepted cognitive/complex: 20
-    - Refactor anything above those limits to lower the complexity
+- Before committing, ALWAYS run the `/quality` skill to check formatting, linting, smells, and complexity metrics
 
 ## Credentials for dev testing
-- **username**: moeric@gmail.com
-- **password**: 42ekwN8tGIMv
+- **username**: env('LOCAL_USER')
+- **password**: env('LOCAL_PASS')
 
 ## Additional context
 - Before starting, ALWAYS search supermemory to get historical context for the given question/task

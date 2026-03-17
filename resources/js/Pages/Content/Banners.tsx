@@ -39,23 +39,281 @@ const linkTypeLabels: Record<string, string> = {
     url: 'URL externa',
 };
 
-export default function Banners({ banners }: Props) {
-    const { flash } = usePage<PageProps>().props;
+type BannerFormData = {
+    title: string;
+    subtitle: string;
+    image: File | null;
+    link_type: LinkType;
+    link_value: string;
+    link_text: string;
+    is_active: boolean;
+    starts_at: string;
+    ends_at: string;
+};
+
+type BannerForm = ReturnType<typeof useForm<BannerFormData>>;
+
+function BannerFormModal({
+    form,
+    editingBanner,
+    onSubmit,
+    onClose,
+    linkValuePlaceholder,
+}: {
+    form: BannerForm;
+    editingBanner: BannerData | null;
+    onSubmit: (e: React.FormEvent) => void;
+    onClose: () => void;
+    linkValuePlaceholder: () => string;
+}) {
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <div className="bg-white rounded-2xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+                <div className="p-6 border-b border-[#E5E5E5]">
+                    <h2 className="font-[Outfit] font-semibold text-lg text-[#1A1A1A]">
+                        {editingBanner ? 'Editar Banner' : 'Nuevo Banner'}
+                    </h2>
+                </div>
+                <form onSubmit={onSubmit} className="p-6 flex flex-col gap-4">
+                    <div>
+                        <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                            Título *
+                        </label>
+                        <input
+                            type="text"
+                            value={form.data.title}
+                            onChange={(e) => form.setData('title', e.target.value)}
+                            className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                            required
+                        />
+                        {form.errors.title && (
+                            <p className="text-red-500 text-xs mt-1">{form.errors.title}</p>
+                        )}
+                    </div>
+                    <div>
+                        <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                            Subtítulo
+                        </label>
+                        <input
+                            type="text"
+                            value={form.data.subtitle}
+                            onChange={(e) => form.setData('subtitle', e.target.value)}
+                            className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                        />
+                    </div>
+                    <div>
+                        <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                            Imagen {editingBanner ? '' : '*'}
+                        </label>
+                        <input
+                            type="file"
+                            accept="image/png,image/jpeg,image/webp"
+                            onChange={(e) =>
+                                form.setData('image', e.target.files?.[0] || null)
+                            }
+                            className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                            required={!editingBanner}
+                        />
+                        {form.errors.image && (
+                            <p className="text-red-500 text-xs mt-1">{form.errors.image}</p>
+                        )}
+                    </div>
+                    <div>
+                        <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                            Tipo de enlace
+                        </label>
+                        <select
+                            value={form.data.link_type}
+                            onChange={(e) => {
+                                const value = e.target.value as LinkType;
+                                form.setData({
+                                    ...form.data,
+                                    link_type: value,
+                                    link_value: value ? form.data.link_value : '',
+                                });
+                            }}
+                            className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                        >
+                            <option value="">Ninguno</option>
+                            <option value="product">Producto</option>
+                            <option value="category">Categoría</option>
+                            <option value="url">URL externa</option>
+                        </select>
+                        {form.errors.link_type && (
+                            <p className="text-red-500 text-xs mt-1">{form.errors.link_type}</p>
+                        )}
+                    </div>
+                    {form.data.link_type && (
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                                    {linkTypeLabels[form.data.link_type]} *
+                                </label>
+                                <input
+                                    type={form.data.link_type === 'url' ? 'url' : 'text'}
+                                    placeholder={linkValuePlaceholder()}
+                                    value={form.data.link_value}
+                                    onChange={(e) => form.setData('link_value', e.target.value)}
+                                    className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                                    required
+                                />
+                                {form.errors.link_value && (
+                                    <p className="text-red-500 text-xs mt-1">{form.errors.link_value}</p>
+                                )}
+                            </div>
+                            <div>
+                                <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                                    Texto del enlace
+                                </label>
+                                <input
+                                    type="text"
+                                    value={form.data.link_text}
+                                    onChange={(e) => form.setData('link_text', e.target.value)}
+                                    className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                                />
+                            </div>
+                        </div>
+                    )}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                                Inicio
+                            </label>
+                            <input
+                                type="datetime-local"
+                                value={form.data.starts_at}
+                                onChange={(e) => form.setData('starts_at', e.target.value)}
+                                className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                            />
+                        </div>
+                        <div>
+                            <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                                Fin
+                            </label>
+                            <input
+                                type="datetime-local"
+                                value={form.data.ends_at}
+                                onChange={(e) => form.setData('ends_at', e.target.value)}
+                                className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                            />
+                        </div>
+                    </div>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                            type="checkbox"
+                            checked={form.data.is_active}
+                            onChange={(e) => form.setData('is_active', e.target.checked)}
+                            className="rounded border-[#E5E5E5]"
+                        />
+                        <span className="font-[Outfit] text-sm text-[#1A1A1A]">
+                            Activo
+                        </span>
+                    </label>
+                    <div className="flex justify-end gap-3 mt-2">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="px-4 py-2 text-sm font-[Outfit] font-medium text-[#666666] hover:text-[#1A1A1A] cursor-pointer"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            type="submit"
+                            disabled={form.processing}
+                            className="bg-[#4A5D4A] text-white px-6 py-2 rounded-lg font-[Outfit] font-medium text-sm hover:bg-[#3d4e3d] disabled:opacity-50 cursor-pointer"
+                        >
+                            {form.processing
+                                ? 'Guardando...'
+                                : editingBanner
+                                  ? 'Actualizar'
+                                  : 'Crear'}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+}
+
+function DeleteConfirmModal({
+    deleteConfirm,
+    onDelete,
+    onClose,
+}: {
+    deleteConfirm: number;
+    onDelete: (id: number) => void;
+    onClose: () => void;
+}) {
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <div className="bg-white rounded-2xl w-full max-w-sm mx-4 p-6">
+                <h3 className="font-[Outfit] font-semibold text-lg text-[#1A1A1A] mb-2">
+                    Eliminar Banner
+                </h3>
+                <p className="font-[Outfit] text-sm text-[#666666] mb-6">
+                    ¿Estás seguro de que deseas eliminar este banner? Esta acción no se
+                    puede deshacer.
+                </p>
+                <div className="flex justify-end gap-3">
+                    <button
+                        onClick={onClose}
+                        className="px-4 py-2 text-sm font-[Outfit] font-medium text-[#666666] hover:text-[#1A1A1A] cursor-pointer"
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                        onClick={() => onDelete(deleteConfirm)}
+                        className="bg-red-500 text-white px-6 py-2 rounded-lg font-[Outfit] font-medium text-sm hover:bg-red-600 cursor-pointer"
+                    >
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function buildBannerFormData(data: BannerFormData): FormData {
+    const formData = new FormData();
+    formData.append('title', data.title);
+    formData.append('subtitle', data.subtitle);
+    if (data.image) {
+        formData.append('image', data.image);
+    }
+    if (data.link_type) {
+        formData.append('link_type', data.link_type);
+        formData.append('link_value', data.link_value);
+    }
+    formData.append('link_text', data.link_text);
+    formData.append('is_active', data.is_active ? '1' : '0');
+    formData.append('starts_at', data.starts_at);
+    formData.append('ends_at', data.ends_at);
+    return formData;
+}
+
+function buildReorderPayload(banners: BannerData[], index: number, swapIndex: number) {
+    return banners.map((b, i) => {
+        if (i === index) {
+            return { id: b.id, display_order: swapIndex };
+        }
+        if (i === swapIndex) {
+            return { id: b.id, display_order: index };
+        }
+        return { id: b.id, display_order: i };
+    });
+}
+
+const LINK_PLACEHOLDERS: Record<string, string> = {
+    product: 'ID del producto',
+    category: 'ID de categoría',
+    url: 'https://ejemplo.com',
+};
+
+function useBannerFormActions() {
     const [showModal, setShowModal] = useState(false);
     const [editingBanner, setEditingBanner] = useState<BannerData | null>(null);
-    const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
 
-    const form = useForm<{
-        title: string;
-        subtitle: string;
-        image: File | null;
-        link_type: LinkType;
-        link_value: string;
-        link_text: string;
-        is_active: boolean;
-        starts_at: string;
-        ends_at: string;
-    }>({
+    const form = useForm<BannerFormData>({
         title: '',
         subtitle: '',
         image: null,
@@ -91,33 +349,29 @@ export default function Banners({ banners }: Props) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-
-        const formData = new FormData();
-        formData.append('title', form.data.title);
-        formData.append('subtitle', form.data.subtitle);
-        if (form.data.image) {
-            formData.append('image', form.data.image);
-        }
-        if (form.data.link_type) {
-            formData.append('link_type', form.data.link_type);
-            formData.append('link_value', form.data.link_value);
-        }
-        formData.append('link_text', form.data.link_text);
-        formData.append('is_active', form.data.is_active ? '1' : '0');
-        formData.append('starts_at', form.data.starts_at);
-        formData.append('ends_at', form.data.ends_at);
+        const formData = buildBannerFormData(form.data);
+        const onSuccess = () => setShowModal(false);
 
         if (editingBanner) {
             formData.append('_method', 'PUT');
-            router.post(`/admin/banners/${editingBanner.id}`, formData, {
-                onSuccess: () => setShowModal(false),
-            });
+            router.post(`/admin/banners/${editingBanner.id}`, formData, { onSuccess });
         } else {
-            router.post('/admin/banners', formData, {
-                onSuccess: () => setShowModal(false),
-            });
+            router.post('/admin/banners', formData, { onSuccess });
         }
     };
+
+    const linkValuePlaceholder = (): string => {
+        return LINK_PLACEHOLDERS[form.data.link_type] || '';
+    };
+
+    return {
+        showModal, setShowModal, editingBanner, form,
+        openCreate, openEdit, handleSubmit, linkValuePlaceholder,
+    };
+}
+
+function useBannerListActions(banners: BannerData[]) {
+    const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
 
     const handleDelete = (id: number) => {
         router.delete(`/admin/banners/${id}`, {
@@ -126,35 +380,25 @@ export default function Banners({ banners }: Props) {
     };
 
     const toggleVisibility = (banner: BannerData) => {
-        router.patch(`/admin/banners/${banner.id}/visibility`, {}, {
-            preserveScroll: true,
-        });
+        router.patch(`/admin/banners/${banner.id}/visibility`, {}, { preserveScroll: true });
     };
 
     const reorder = (index: number, direction: 'up' | 'down') => {
-        const items = [...banners];
         const swapIndex = direction === 'up' ? index - 1 : index + 1;
-        if (swapIndex < 0 || swapIndex >= items.length) return;
-
-        const reordered = items.map((b, i) => {
-            if (i === index) return { id: b.id, display_order: swapIndex };
-            if (i === swapIndex) return { id: b.id, display_order: index };
-            return { id: b.id, display_order: i };
-        });
-
-        router.post('/admin/banners/reorder', { items: reordered }, {
-            preserveScroll: true,
-        });
-    };
-
-    const linkValuePlaceholder = (): string => {
-        switch (form.data.link_type) {
-            case 'product': return 'ID del producto';
-            case 'category': return 'ID de categoría';
-            case 'url': return 'https://ejemplo.com';
-            default: return '';
+        if (swapIndex < 0 || swapIndex >= banners.length) {
+            return;
         }
+        const reordered = buildReorderPayload(banners, index, swapIndex);
+        router.post('/admin/banners/reorder', { items: reordered }, { preserveScroll: true });
     };
+
+    return { deleteConfirm, setDeleteConfirm, handleDelete, toggleVisibility, reorder };
+}
+
+export default function Banners({ banners }: Props) {
+    const { flash } = usePage<PageProps>().props;
+    const formActions = useBannerFormActions();
+    const listActions = useBannerListActions(banners);
 
     return (
         <AppLayout title="Banners" active="banners">
@@ -171,7 +415,7 @@ export default function Banners({ banners }: Props) {
                             </p>
                         </div>
                         <button
-                            onClick={openCreate}
+                            onClick={formActions.openCreate}
                             className="flex items-center gap-2 bg-[#4A5D4A] text-white px-5 py-2.5 rounded-lg font-[Outfit] font-medium text-sm hover:bg-[#3d4e3d] transition-colors cursor-pointer"
                         >
                             <Plus className="w-4 h-4" />
@@ -218,10 +462,10 @@ export default function Banners({ banners }: Props) {
                                             banner={banner}
                                             index={index}
                                             total={banners.length}
-                                            onEdit={() => openEdit(banner)}
-                                            onDelete={() => setDeleteConfirm(banner.id)}
-                                            onToggle={() => toggleVisibility(banner)}
-                                            onReorder={(dir) => reorder(index, dir)}
+                                            onEdit={() => formActions.openEdit(banner)}
+                                            onDelete={() => listActions.setDeleteConfirm(banner.id)}
+                                            onToggle={() => listActions.toggleVisibility(banner)}
+                                            onReorder={(dir) => listActions.reorder(index, dir)}
                                         />
                                     ))}
                                 </tbody>
@@ -231,202 +475,22 @@ export default function Banners({ banners }: Props) {
                 </div>
             </div>
 
-            {/* Create/Edit Modal */}
-            {showModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    <div className="bg-white rounded-2xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
-                        <div className="p-6 border-b border-[#E5E5E5]">
-                            <h2 className="font-[Outfit] font-semibold text-lg text-[#1A1A1A]">
-                                {editingBanner ? 'Editar Banner' : 'Nuevo Banner'}
-                            </h2>
-                        </div>
-                        <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-4">
-                            <div>
-                                <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
-                                    Título *
-                                </label>
-                                <input
-                                    type="text"
-                                    value={form.data.title}
-                                    onChange={(e) => form.setData('title', e.target.value)}
-                                    className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
-                                    required
-                                />
-                                {form.errors.title && (
-                                    <p className="text-red-500 text-xs mt-1">{form.errors.title}</p>
-                                )}
-                            </div>
-                            <div>
-                                <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
-                                    Subtítulo
-                                </label>
-                                <input
-                                    type="text"
-                                    value={form.data.subtitle}
-                                    onChange={(e) => form.setData('subtitle', e.target.value)}
-                                    className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
-                                />
-                            </div>
-                            <div>
-                                <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
-                                    Imagen {editingBanner ? '' : '*'}
-                                </label>
-                                <input
-                                    type="file"
-                                    accept="image/png,image/jpeg,image/webp"
-                                    onChange={(e) =>
-                                        form.setData('image', e.target.files?.[0] || null)
-                                    }
-                                    className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
-                                    required={!editingBanner}
-                                />
-                                {form.errors.image && (
-                                    <p className="text-red-500 text-xs mt-1">{form.errors.image}</p>
-                                )}
-                            </div>
-                            <div>
-                                <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
-                                    Tipo de enlace
-                                </label>
-                                <select
-                                    value={form.data.link_type}
-                                    onChange={(e) => {
-                                        const value = e.target.value as LinkType;
-                                        form.setData({
-                                            ...form.data,
-                                            link_type: value,
-                                            link_value: value ? form.data.link_value : '',
-                                        });
-                                    }}
-                                    className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
-                                >
-                                    <option value="">Ninguno</option>
-                                    <option value="product">Producto</option>
-                                    <option value="category">Categoría</option>
-                                    <option value="url">URL externa</option>
-                                </select>
-                                {form.errors.link_type && (
-                                    <p className="text-red-500 text-xs mt-1">{form.errors.link_type}</p>
-                                )}
-                            </div>
-                            {form.data.link_type && (
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
-                                            {linkTypeLabels[form.data.link_type]} *
-                                        </label>
-                                        <input
-                                            type={form.data.link_type === 'url' ? 'url' : 'text'}
-                                            placeholder={linkValuePlaceholder()}
-                                            value={form.data.link_value}
-                                            onChange={(e) => form.setData('link_value', e.target.value)}
-                                            className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
-                                            required
-                                        />
-                                        {form.errors.link_value && (
-                                            <p className="text-red-500 text-xs mt-1">{form.errors.link_value}</p>
-                                        )}
-                                    </div>
-                                    <div>
-                                        <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
-                                            Texto del enlace
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={form.data.link_text}
-                                            onChange={(e) => form.setData('link_text', e.target.value)}
-                                            className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
-                                        />
-                                    </div>
-                                </div>
-                            )}
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
-                                        Inicio
-                                    </label>
-                                    <input
-                                        type="datetime-local"
-                                        value={form.data.starts_at}
-                                        onChange={(e) => form.setData('starts_at', e.target.value)}
-                                        className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
-                                        Fin
-                                    </label>
-                                    <input
-                                        type="datetime-local"
-                                        value={form.data.ends_at}
-                                        onChange={(e) => form.setData('ends_at', e.target.value)}
-                                        className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
-                                    />
-                                </div>
-                            </div>
-                            <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="checkbox"
-                                    checked={form.data.is_active}
-                                    onChange={(e) => form.setData('is_active', e.target.checked)}
-                                    className="rounded border-[#E5E5E5]"
-                                />
-                                <span className="font-[Outfit] text-sm text-[#1A1A1A]">
-                                    Activo
-                                </span>
-                            </label>
-                            <div className="flex justify-end gap-3 mt-2">
-                                <button
-                                    type="button"
-                                    onClick={() => setShowModal(false)}
-                                    className="px-4 py-2 text-sm font-[Outfit] font-medium text-[#666666] hover:text-[#1A1A1A] cursor-pointer"
-                                >
-                                    Cancelar
-                                </button>
-                                <button
-                                    type="submit"
-                                    disabled={form.processing}
-                                    className="bg-[#4A5D4A] text-white px-6 py-2 rounded-lg font-[Outfit] font-medium text-sm hover:bg-[#3d4e3d] disabled:opacity-50 cursor-pointer"
-                                >
-                                    {form.processing
-                                        ? 'Guardando...'
-                                        : editingBanner
-                                          ? 'Actualizar'
-                                          : 'Crear'}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+            {formActions.showModal && (
+                <BannerFormModal
+                    form={formActions.form}
+                    editingBanner={formActions.editingBanner}
+                    onSubmit={formActions.handleSubmit}
+                    onClose={() => formActions.setShowModal(false)}
+                    linkValuePlaceholder={formActions.linkValuePlaceholder}
+                />
             )}
 
-            {/* Delete Confirmation */}
-            {deleteConfirm !== null && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    <div className="bg-white rounded-2xl w-full max-w-sm mx-4 p-6">
-                        <h3 className="font-[Outfit] font-semibold text-lg text-[#1A1A1A] mb-2">
-                            Eliminar Banner
-                        </h3>
-                        <p className="font-[Outfit] text-sm text-[#666666] mb-6">
-                            ¿Estás seguro de que deseas eliminar este banner? Esta acción no se
-                            puede deshacer.
-                        </p>
-                        <div className="flex justify-end gap-3">
-                            <button
-                                onClick={() => setDeleteConfirm(null)}
-                                className="px-4 py-2 text-sm font-[Outfit] font-medium text-[#666666] hover:text-[#1A1A1A] cursor-pointer"
-                            >
-                                Cancelar
-                            </button>
-                            <button
-                                onClick={() => handleDelete(deleteConfirm)}
-                                className="bg-red-500 text-white px-6 py-2 rounded-lg font-[Outfit] font-medium text-sm hover:bg-red-600 cursor-pointer"
-                            >
-                                Eliminar
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            {listActions.deleteConfirm !== null && (
+                <DeleteConfirmModal
+                    deleteConfirm={listActions.deleteConfirm}
+                    onDelete={listActions.handleDelete}
+                    onClose={() => listActions.setDeleteConfirm(null)}
+                />
             )}
         </AppLayout>
     );

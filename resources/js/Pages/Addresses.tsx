@@ -207,21 +207,11 @@ interface AddressesProps {
     addresses: Address[];
 }
 
-export default function Addresses({ addresses }: AddressesProps) {
-    const { flash } = usePage<PageProps>().props;
+function useAddressForm() {
     const [isEditing, setIsEditing] = useState(false);
     const [editingAddress, setEditingAddress] = useState<Address | null>(null);
-    const [successMessage, setSuccessMessage] = useState('');
 
     const form = useForm<AddressFormData>({ ...EMPTY_FORM });
-
-    useEffect(() => {
-        if (flash?.success) {
-            setSuccessMessage(flash.success);
-            const timer = setTimeout(() => setSuccessMessage(''), 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [flash?.success]);
 
     function openAddModal() {
         setEditingAddress(null);
@@ -274,6 +264,26 @@ export default function Addresses({ addresses }: AddressesProps) {
         }
     }
 
+    return {
+        isEditing, editingAddress, form,
+        openAddModal, openEditModal, closeModal,
+        handleInputChange, handleSubmit,
+    };
+}
+
+export default function Addresses({ addresses }: AddressesProps) {
+    const { flash } = usePage<PageProps>().props;
+    const [successMessage, setSuccessMessage] = useState('');
+    const addressForm = useAddressForm();
+
+    useEffect(() => {
+        if (flash?.success) {
+            setSuccessMessage(flash.success);
+            const timer = setTimeout(() => setSuccessMessage(''), 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [flash?.success]);
+
     return (
         <CustomerLayout title="Direcciones de Envío">
             <div className="px-6 py-8 max-w-2xl mx-auto">
@@ -298,7 +308,7 @@ export default function Addresses({ addresses }: AddressesProps) {
                     </div>
                 )}
 
-                <button onClick={openAddModal}
+                <button onClick={addressForm.openAddModal}
                     className="w-full mb-6 flex items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#5E7052] bg-[#5E7052]/5 px-4 py-4 text-sm font-medium text-[#5E7052] hover:bg-[#5E7052]/10 transition-colors font-[Outfit]">
                     <Plus className="h-5 w-5" />
                     Agregar Nueva Dirección
@@ -316,7 +326,7 @@ export default function Addresses({ addresses }: AddressesProps) {
                             <AddressCard
                                 key={address.id}
                                 address={address}
-                                onEdit={() => openEditModal(address)}
+                                onEdit={() => addressForm.openEditModal(address)}
                                 onDelete={() => {
                                     if (confirm('¿Está seguro de que desea eliminar esta dirección?')) {
                                         router.delete(`/account/addresses/${address.id}`, { preserveScroll: true });
@@ -328,13 +338,13 @@ export default function Addresses({ addresses }: AddressesProps) {
                     </div>
                 )}
 
-                {isEditing && (
+                {addressForm.isEditing && (
                     <AddressFormModal
-                        editingAddress={editingAddress}
-                        form={form}
-                        onClose={closeModal}
-                        onSubmit={handleSubmit}
-                        onInputChange={handleInputChange}
+                        editingAddress={addressForm.editingAddress}
+                        form={addressForm.form}
+                        onClose={addressForm.closeModal}
+                        onSubmit={addressForm.handleSubmit}
+                        onInputChange={addressForm.handleInputChange}
                     />
                 )}
             </div>

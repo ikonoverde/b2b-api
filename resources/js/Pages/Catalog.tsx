@@ -200,6 +200,52 @@ function ProductListCard({
     );
 }
 
+function SearchBar({ search, onSearchChange, onClear }: { search: string; onSearchChange: (value: string) => void; onClear: () => void }) {
+    return (
+        <div className="relative mb-8">
+            <Search className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-[#999999]" />
+            <input
+                type="text"
+                value={search}
+                onChange={(e) => onSearchChange(e.target.value)}
+                placeholder="Buscar producto, categoría o SKU..."
+                className="w-full h-12 pl-12 pr-10 rounded-xl border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052]/30 focus:border-transparent font-[Outfit] text-sm"
+            />
+            {search && (
+                <button onClick={onClear} className="absolute top-1/2 right-4 -translate-y-1/2 text-[#999999] hover:text-[#666666]">
+                    <X className="h-5 w-5" />
+                </button>
+            )}
+        </div>
+    );
+}
+
+function CategoryChip({ label, isSelected, onClick }: { label: string; isSelected: boolean; onClick: () => void }) {
+    return (
+        <button
+            onClick={onClick}
+            className={`shrink-0 rounded-full border px-4 py-2 font-[Outfit] text-sm font-medium transition-colors ${
+                isSelected
+                    ? 'border-[#5E7052] bg-[#5E7052] text-white'
+                    : 'border-[#E5E5E5] bg-white text-[#666666] hover:border-[#5E7052] hover:text-[#5E7052]'
+            }`}
+        >
+            {label}
+        </button>
+    );
+}
+
+function CategoryChips({ categories, selectedId, onSelect }: { categories: Category[]; selectedId: number | null; onSelect: (id: number | null) => void }) {
+    return (
+        <div className="mb-6 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+            <CategoryChip label="Todos" isSelected={!selectedId} onClick={() => onSelect(null)} />
+            {categories.map((category) => (
+                <CategoryChip key={category.id} label={category.name} isSelected={selectedId === category.id} onClick={() => onSelect(category.id)} />
+            ))}
+        </div>
+    );
+}
+
 function buildQuery(categoryId: number | null, sort: SortOption | null, search: string | null): Record<string, string> {
     const query: Record<string, string> = {};
     if (categoryId) {
@@ -269,20 +315,11 @@ function LoadingIndicator() {
     );
 }
 
-export default function Catalog({ products, categories, selectedCategoryId, selectedSort, selectedSearch }: CatalogProps) {
+function useFilters(selectedCategoryId: number | null, selectedSort: SortOption | null, selectedSearch: string | null) {
     const [search, setSearch] = useState(selectedSearch ?? '');
-    const [viewMode, setViewMode] = useLocalStorage<'grid' | 'list'>('catalog-view', 'grid');
-    const [cartStates, setCartStates] = useState<Record<number, CartState>>({});
-    const timersRef = useRef<Record<number, ReturnType<typeof setTimeout>>>({});
     const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
     const filtersRef = useRef({ categoryId: selectedCategoryId, sort: selectedSort });
     filtersRef.current = { categoryId: selectedCategoryId, sort: selectedSort };
-
-    useEffect(() => {
-        return () => {
-            Object.values(timersRef.current).forEach(clearTimeout);
-        };
-    }, []);
 
     useEffect(() => {
         if (search === (selectedSearch ?? '')) {
@@ -300,6 +337,42 @@ export default function Catalog({ products, categories, selectedCategoryId, sele
 
         return () => clearTimeout(debounceRef.current);
     }, [search, selectedSearch]);
+
+    const handleCategorySelect = useCallback(
+        (id: number | null) => {
+            router.get(window.location.pathname, buildQuery(id, selectedSort, search || null), { preserveState: true });
+        },
+        [selectedSort, search],
+    );
+
+    const handleSortSelect = useCallback(
+        (sort: SortOption) => {
+            const newSort = sort === selectedSort || sort === 'newest' ? null : sort;
+            router.get(window.location.pathname, buildQuery(selectedCategoryId, newSort, search || null), { preserveState: true });
+        },
+        [selectedSort, selectedCategoryId, search],
+    );
+
+    const handleClearSearch = useCallback(() => {
+        clearTimeout(debounceRef.current);
+        setSearch('');
+        router.get(window.location.pathname, buildQuery(selectedCategoryId, selectedSort, null), { preserveState: true });
+    }, [selectedCategoryId, selectedSort]);
+
+    return { search, setSearch, handleCategorySelect, handleSortSelect, handleClearSearch };
+}
+
+export default function Catalog({ products, categories, selectedCategoryId, selectedSort, selectedSearch }: CatalogProps) {
+    const [viewMode, setViewMode] = useLocalStorage<'grid' | 'list'>('catalog-view', 'grid');
+    const [cartStates, setCartStates] = useState<Record<number, CartState>>({});
+    const timersRef = useRef<Record<number, ReturnType<typeof setTimeout>>>({});
+    const filters = useFilters(selectedCategoryId, selectedSort, selectedSearch);
+
+    useEffect(() => {
+        return () => {
+            Object.values(timersRef.current).forEach(clearTimeout);
+        };
+    }, []);
 
     const addToCart = useCallback((e: React.MouseEvent, productId: number) => {
         e.preventDefault();
@@ -335,27 +408,6 @@ export default function Catalog({ products, categories, selectedCategoryId, sele
         );
     }, []);
 
-    const handleCategorySelect = useCallback(
-        (id: number | null) => {
-            router.get(window.location.pathname, buildQuery(id, selectedSort, search || null), { preserveState: true });
-        },
-        [selectedSort, search],
-    );
-
-    const handleSortSelect = useCallback(
-        (sort: SortOption) => {
-            const newSort = sort === selectedSort || sort === 'newest' ? null : sort;
-            router.get(window.location.pathname, buildQuery(selectedCategoryId, newSort, search || null), { preserveState: true });
-        },
-        [selectedSort, selectedCategoryId, search],
-    );
-
-    const handleClearSearch = useCallback(() => {
-        clearTimeout(debounceRef.current);
-        setSearch('');
-        router.get(window.location.pathname, buildQuery(selectedCategoryId, selectedSort, null), { preserveState: true });
-    }, [selectedCategoryId, selectedSort]);
-
     return (
         <CustomerLayout title="Catálogo">
             <div className="px-6 py-8">
@@ -388,61 +440,17 @@ export default function Catalog({ products, categories, selectedCategoryId, sele
                     </div>
                 </div>
 
-                {/* Search */}
-                <div className="relative mb-8">
-                    <Search className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-[#999999]" />
-                    <input
-                        type="text"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Buscar producto, categoría o SKU..."
-                        className="w-full h-12 pl-12 pr-10 rounded-xl border border-[#E5E5E5] bg-white text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#5E7052]/30 focus:border-transparent font-[Outfit] text-sm"
-                    />
-                    {search && (
-                        <button
-                            onClick={handleClearSearch}
-                            className="absolute top-1/2 right-4 -translate-y-1/2 text-[#999999] hover:text-[#666666]"
-                        >
-                            <X className="h-5 w-5" />
-                        </button>
-                    )}
-                </div>
+                <SearchBar search={filters.search} onSearchChange={filters.setSearch} onClear={filters.handleClearSearch} />
 
-                {/* Sort & Category Chips */}
                 <div className="mb-6 flex items-center gap-4">
-                    <SortDropdown selected={selectedSort} onSelect={handleSortSelect} />
+                    <SortDropdown selected={selectedSort} onSelect={filters.handleSortSelect} />
                 </div>
 
-                {/* Category Chips */}
-                <div className="mb-6 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-                    <button
-                        onClick={() => handleCategorySelect(null)}
-                        className={`shrink-0 rounded-full border px-4 py-2 font-[Outfit] text-sm font-medium transition-colors ${
-                            !selectedCategoryId
-                                ? 'border-[#5E7052] bg-[#5E7052] text-white'
-                                : 'border-[#E5E5E5] bg-white text-[#666666] hover:border-[#5E7052] hover:text-[#5E7052]'
-                        }`}
-                    >
-                        Todos
-                    </button>
-                    {categories.map((category) => (
-                        <button
-                            key={category.id}
-                            onClick={() => handleCategorySelect(category.id)}
-                            className={`shrink-0 rounded-full border px-4 py-2 font-[Outfit] text-sm font-medium transition-colors ${
-                                selectedCategoryId === category.id
-                                    ? 'border-[#5E7052] bg-[#5E7052] text-white'
-                                    : 'border-[#E5E5E5] bg-white text-[#666666] hover:border-[#5E7052] hover:text-[#5E7052]'
-                            }`}
-                        >
-                            {category.name}
-                        </button>
-                    ))}
-                </div>
+                <CategoryChips categories={categories} selectedId={selectedCategoryId} onSelect={filters.handleCategorySelect} />
 
                 {/* Product Grid with Infinite Scroll */}
                 {products.data.length === 0 ? (
-                    <EmptyState search={search} />
+                    <EmptyState search={filters.search} />
                 ) : (
                     <InfiniteScroll
                         data="products"
