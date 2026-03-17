@@ -455,9 +455,6 @@ export default () => (
 - All API endpoints are to be consumed by the external mobile app, always use sanctum for auth
 - Do not add API endpoints to be consumed by the Laravel/Inertia app implemented in this project, for that use web routes in the inertia way
 
-## Code quality
-- Before committing, ALWAYS run the `/quality` skill to check formatting, linting, smells, and complexity metrics
-
 ## Credentials for dev testing
 - **username**: env('LOCAL_USER')
 - **password**: env('LOCAL_PASS')
@@ -470,7 +467,3 @@ export default () => (
 
 ## Controllers
 - Controllers should be single action controllers, if you touch a controller that is not single action refactor it.
-
-## External Systems Integrations
-- Production system API documentation
-    - http://127.0.0.1:8001/docs.openapi
