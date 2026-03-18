@@ -23,7 +23,11 @@ class ShippingQuoteService
         $quotes = $this->skydropx->getQuotes($destination, $parcel);
 
         if (! empty($quotes)) {
-            $quotes = array_map(fn (array $q) => [...$q, 'shipping_method_id' => null], $quotes);
+            $quotes = array_map(fn (array $q) => [
+                ...$q,
+                'shipping_method_id' => null,
+                'price' => $this->applyMarkup($q['price']),
+            ], $quotes);
 
             return [
                 'quotes' => $this->selectRepresentativeQuotes($quotes),
@@ -72,6 +76,14 @@ class ShippingQuoteService
             ->sortBy('price')
             ->values()
             ->all();
+    }
+
+    /**
+     * Add a flat handling fee and round up to the nearest $10 increment.
+     */
+    private function applyMarkup(float $price): float
+    {
+        return ceil(($price + 10) / 10) * 10;
     }
 
     /**

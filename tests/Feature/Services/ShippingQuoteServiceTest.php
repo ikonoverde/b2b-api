@@ -92,6 +92,23 @@ test('does not duplicate when cheapest is also fastest', function () use ($desti
         ->and($ids)->toContain('q1');
 });
 
+test('applies markup to skydropx quotes: adds 10 then rounds up to next multiple of 10', function () use ($destination) {
+    $quotes = [
+        makeQuote('q1', 136.33, 3, 'FedEx'),
+        makeQuote('q2', 178.64, 1, 'Paquetexpress'),
+        makeQuote('q3', 200.00, 2, 'Estafeta'),
+    ];
+
+    $service = makeServiceWithQuotes($quotes);
+    $result = $service->getQuotes($destination, cartItemsForService());
+
+    $prices = array_column($result['quotes'], 'price');
+    // 136.33 + 10 = 146.33 → ceil to 150
+    // 178.64 + 10 = 188.64 → ceil to 190
+    // 200.00 + 10 = 210.00 → ceil to 210
+    expect($prices)->toBe([150.0, 190.0, 210.0]);
+});
+
 test('results are sorted by price ascending', function () use ($destination) {
     $quotes = [
         makeQuote('q1', 89, 3),
