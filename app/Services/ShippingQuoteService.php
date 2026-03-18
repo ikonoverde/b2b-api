@@ -26,12 +26,52 @@ class ShippingQuoteService
             $quotes = array_map(fn (array $q) => [...$q, 'shipping_method_id' => null], $quotes);
 
             return [
-                'quotes' => $quotes,
+                'quotes' => $this->selectRepresentativeQuotes($quotes),
                 'source' => 'skydropx',
             ];
         }
 
         return $this->staticFallback();
+    }
+
+    /**
+     * From all available quotes (sorted cheapest first), pick up to 3 that cover distinct roles:
+     * cheapest, fastest, and best middle-ground. This avoids showing 9 options while remaining
+     * resilient to carrier availability changes.
+     *
+     * @param  array<int, array<string, mixed>>  $quotes  Already sorted by price ascending
+     * @return array<int, array<string, mixed>>
+     */
+    private function selectRepresentativeQuotes(array $quotes): array
+    {
+        if (count($quotes) <= 3) {
+            return $quotes;
+        }
+
+        $cheapest = $quotes[0];
+
+        $fastest = collect($quotes)
+            ->sortBy([['estimated_days', 'asc'], ['price', 'asc']])
+            ->first();
+
+        $selected = collect([$cheapest, $fastest])->unique('quote_id');
+
+        $usedIds = $selected->pluck('quote_id')->all();
+
+        $middle = collect($quotes)
+            ->filter(fn (array $q) => ! in_array($q['quote_id'], $usedIds, true))
+            ->filter(fn (array $q) => $q['estimated_days'] !== $cheapest['estimated_days']
+                || $q['estimated_days'] !== $fastest['estimated_days'])
+            ->first();
+
+        if ($middle) {
+            $selected->push($middle);
+        }
+
+        return $selected
+            ->sortBy('price')
+            ->values()
+            ->all();
     }
 
     /**
