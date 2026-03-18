@@ -44,18 +44,18 @@ export default function Shipping({ cart }: ShippingProps) {
     const total = shippingCost !== null ? cart.totals.subtotal + shippingCost : null;
 
     function handleFieldChange(field: string, value: string) {
-        form.setData(field as keyof typeof form.data, value);
-
         const updated = { ...form.data, [field]: value };
 
         if (QUOTE_FIELDS.has(field) && canFetchQuotes(updated)) {
-            form.setData('shipping_quote_id', '');
+            form.setData({ ...updated, shipping_quote_id: '' });
             fetchQuotes({
                 postal_code: updated.postal_code,
                 city: updated.city,
                 state: updated.state,
                 neighborhood: updated.address_line_2,
             });
+        } else {
+            form.setData(field as keyof typeof form.data, value);
         }
     }
 
@@ -69,14 +69,14 @@ export default function Shipping({ cart }: ShippingProps) {
             <div className="px-6 py-8">
                 <CheckoutStepIndicator currentStep={1} />
 
-                <h1 className="text-2xl font-bold text-[#1A1A1A] font-[Outfit] mb-6">Dirección de Envío</h1>
+                <h1 className="text-2xl font-bold text-stripe-text font-body mb-6">Dirección de Envío</h1>
 
                 {errors.stock && (
-                    <div className="mb-4 rounded-xl border border-red-200 bg-red-50 p-4">
-                        <p className="text-sm font-medium text-red-800 font-[Outfit]">
+                    <div className="mb-5 rounded-xl border border-stripe-border bg-white p-4 shadow-[0_1px_1px_0_rgba(0,0,0,0.03)]">
+                        <p className="text-[13px] font-medium text-stripe-error font-body">
                             Algunos productos no tienen suficiente stock:
                         </p>
-                        <ul className="mt-1 list-disc pl-5 text-sm text-red-700 font-[Outfit]">
+                        <ul className="mt-1 list-disc pl-5 text-[13px] text-stripe-error font-body">
                             {(Array.isArray(errors.stock) ? errors.stock : [errors.stock]).map(
                                 (error: string, i: number) => (
                                     <li key={i}>{error}</li>
@@ -87,7 +87,7 @@ export default function Shipping({ cart }: ShippingProps) {
                 )}
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <form onSubmit={submit} className="lg:col-span-2 flex flex-col gap-4">
+                    <form onSubmit={submit} className="lg:col-span-2 flex flex-col gap-5">
                         <AddressForm
                             data={form.data}
                             errors={form.errors}
@@ -108,7 +108,7 @@ export default function Shipping({ cart }: ShippingProps) {
                         <button
                             type="submit"
                             disabled={form.processing || !form.data.shipping_quote_id}
-                            className="h-12 bg-[#5E7052] text-white font-semibold rounded-xl hover:bg-[#4d5e43] transition-colors disabled:opacity-50 font-[Outfit] mt-2"
+                            className="h-12 bg-primary text-white font-semibold rounded-xl hover:bg-[#4d5e43] transition-all disabled:opacity-50 font-body mt-1 shadow-[0_1px_1px_0_rgba(0,0,0,0.03),0_1px_3px_0_rgba(0,0,0,0.08)] hover:shadow-[0_1px_1px_0_rgba(0,0,0,0.03),0_3px_7px_0_rgba(0,0,0,0.12)]"
                         >
                             {form.processing ? (
                                 <Loader2 className="w-5 h-5 animate-spin mx-auto" />

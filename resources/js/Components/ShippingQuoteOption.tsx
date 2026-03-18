@@ -12,26 +12,28 @@ export default function ShippingQuoteOption({ quote, isSelected, onSelect }: Shi
         <button
             type="button"
             onClick={onSelect}
-            className={`flex items-center justify-between rounded-xl border-2 p-4 text-left transition-colors ${
-                isSelected ? 'border-[#5E7052] bg-[#5E7052]/5' : 'border-[#E5E5E5] hover:border-[#5E7052]/40'
+            className={`flex items-center justify-between w-full px-3 py-3.5 text-left transition-colors ${
+                isSelected ? 'bg-[#f4f7f2]' : 'hover:bg-[#fafafa]'
             }`}
         >
             <div className="flex items-center gap-3">
                 <div
-                    className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                        isSelected ? 'border-[#5E7052]' : 'border-[#CCCCCC]'
+                    className={`w-[18px] h-[18px] rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
+                        isSelected ? 'border-primary' : 'border-[#c4c4c4]'
                     }`}
                 >
-                    {isSelected && <div className="w-2 h-2 rounded-full bg-[#5E7052]" />}
+                    {isSelected && <div className="w-2 h-2 rounded-full bg-primary" />}
                 </div>
                 <div>
-                    <p className="text-sm font-semibold text-[#1A1A1A] font-[Outfit]">{quote.carrier}</p>
-                    <p className="text-xs text-[#999999] font-[Outfit]">
+                    <p className="text-[14px] font-medium text-stripe-text font-body">{quote.carrier}</p>
+                    <p className="text-[12px] text-stripe-muted font-body">
                         {quote.service} · {quote.estimated_days} día{quote.estimated_days !== 1 ? 's' : ''} hábiles
                     </p>
                 </div>
             </div>
-            <span className="text-sm font-bold text-[#1A1A1A] font-[Outfit]">{formatCurrency(quote.price)}</span>
+            <span className="text-[14px] font-semibold text-stripe-text font-body">
+                {formatCurrency(quote.price)}
+            </span>
         </button>
     );
 }

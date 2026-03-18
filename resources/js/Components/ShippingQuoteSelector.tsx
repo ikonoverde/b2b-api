@@ -22,40 +22,37 @@ export default function ShippingQuoteSelector({
     onSelect,
 }: ShippingQuoteSelectorProps) {
     return (
-        <div className="mt-2">
-            <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit] mb-2 flex items-center gap-2">
-                <Truck className="w-4 h-4" />
+        <div>
+            <p className="text-[13px] font-medium text-stripe-text font-body mb-2 flex items-center gap-1.5">
+                <Truck className="w-3.5 h-3.5" />
                 Opciones de envío
-            </label>
+            </p>
 
             {!fetched && !loading && (
-                <div className="rounded-xl border border-dashed border-[#E5E5E5] p-6 text-center">
-                    <Package className="w-8 h-8 text-[#999999] mx-auto mb-2" />
-                    <p className="text-sm text-[#999999] font-[Outfit]">
+                <div className="rounded-xl border border-dashed border-stripe-border bg-white p-6 text-center">
+                    <Package className="w-7 h-7 text-stripe-muted mx-auto mb-2" />
+                    <p className="text-[13px] text-stripe-muted font-body">
                         Ingresa tu dirección para ver las opciones de envío
                     </p>
                 </div>
             )}
 
             {loading && (
-                <div className="flex flex-col gap-3">
+                <div className="rounded-xl border border-stripe-border bg-white overflow-hidden divide-y divide-stripe-border shadow-[0_1px_1px_0_rgba(0,0,0,0.03)]">
                     {[1, 2, 3].map((i) => (
-                        <div
-                            key={i}
-                            className="h-20 rounded-xl border border-[#E5E5E5] bg-gray-50 animate-pulse"
-                        />
+                        <div key={i} className="h-[60px] animate-pulse bg-[#fafafa]" />
                     ))}
                 </div>
             )}
 
             {error && !loading && (
-                <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
-                    <p className="text-sm text-amber-800 font-[Outfit]">{error}</p>
+                <div className="rounded-xl border border-stripe-border bg-white p-4 shadow-[0_1px_1px_0_rgba(0,0,0,0.03)]">
+                    <p className="text-[13px] text-stripe-error font-body">{error}</p>
                 </div>
             )}
 
             {fetched && !loading && quotes.length > 0 && (
-                <div className="flex flex-col gap-3">
+                <div className="rounded-xl border border-stripe-border bg-white overflow-hidden divide-y divide-stripe-border shadow-[0_1px_1px_0_rgba(0,0,0,0.03)]">
                     {quotes.map((quote) => (
                         <ShippingQuoteOption
                             key={quote.quote_id}
@@ -68,7 +65,7 @@ export default function ShippingQuoteSelector({
             )}
 
             {validationError && (
-                <span className="text-sm text-red-500 font-[Outfit] mt-1">{validationError}</span>
+                <p className="text-[13px] text-stripe-error font-body mt-1.5">{validationError}</p>
             )}
         </div>
     );
