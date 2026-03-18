@@ -51,6 +51,24 @@ export interface UserActivity {
     account_age_days: number;
 }
 
+export interface ReorderUnavailableItem {
+    product_id: number;
+    product_name: string;
+    reason: 'product_unavailable' | 'out_of_stock';
+}
+
+export interface ReorderPriceChange {
+    product_id: number;
+    product_name: string;
+    original_price: number;
+    current_price: number;
+}
+
+export interface ReorderWarnings {
+    unavailable: ReorderUnavailableItem[];
+    price_changes: ReorderPriceChange[];
+}
+
 export interface PageProps {
     auth: {
         user: User | null;
@@ -59,6 +77,8 @@ export interface PageProps {
     flash: {
         success?: string;
         error?: string;
+        password_status?: string;
+        reorder_warnings?: ReorderWarnings;
     };
     [key: string]: unknown;
 }

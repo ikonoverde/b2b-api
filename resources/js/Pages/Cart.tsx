@@ -1,14 +1,13 @@
-import { Link, router } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { Minus, Plus, ShoppingCart, Trash2, X } from 'lucide-react';
+import { useState } from 'react';
+import type React from 'react';
 import CustomerLayout from '@/Layouts/CustomerLayout';
-import type { Cart, CartItem } from '@/types';
+import { formatCurrency } from '@/utils/currency';
+import type { Cart, CartItem, PageProps, ReorderWarnings } from '@/types';
 
 interface CartPageProps {
     cart: Cart;
-}
-
-function formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount);
 }
 
 function CartItemRow({ item }: { item: CartItem }) {
@@ -78,7 +77,74 @@ function CartItemRow({ item }: { item: CartItem }) {
     );
 }
 
+const reasonLabels: Record<string, string> = {
+    out_of_stock: 'Sin existencias',
+    product_unavailable: 'Producto no disponible',
+};
+
+function WarningSection<T extends { product_id: number; product_name: string }>({
+    title,
+    items,
+    renderDetail,
+}: {
+    title: string;
+    items: T[];
+    renderDetail: (item: T) => React.ReactNode;
+}) {
+    if (items.length === 0) return null;
+    return (
+        <div>
+            <p className="text-sm font-semibold text-amber-800 font-[Outfit] mb-1.5">{title}</p>
+            <ul className="flex flex-col gap-1">
+                {items.map((item) => (
+                    <li key={item.product_id} className="flex items-center gap-2 text-sm text-amber-700 font-[Outfit]">
+                        <span className="font-medium">{item.product_name}</span>
+                        <span className="text-amber-500">—</span>
+                        {renderDetail(item)}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+function ReorderWarningPanel({ warnings, onDismiss }: { warnings: ReorderWarnings; onDismiss: () => void }) {
+    return (
+        <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-4">
+            <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 flex flex-col gap-3">
+                    <WarningSection
+                        title="Productos no disponibles"
+                        items={warnings.unavailable}
+                        renderDetail={(item) => <span>{reasonLabels[item.reason] ?? item.reason}</span>}
+                    />
+                    <WarningSection
+                        title="Precios actualizados"
+                        items={warnings.price_changes}
+                        renderDetail={(item) => (
+                            <>
+                                <span className="line-through text-amber-400">{formatCurrency(item.original_price)}</span>
+                                <span>→</span>
+                                <span className="font-semibold">{formatCurrency(item.current_price)}</span>
+                            </>
+                        )}
+                    />
+                </div>
+                <button
+                    onClick={onDismiss}
+                    className="text-amber-500 hover:text-amber-700 transition-colors shrink-0"
+                    aria-label="Cerrar aviso"
+                >
+                    <X className="w-4 h-4" />
+                </button>
+            </div>
+        </div>
+    );
+}
+
 export default function CartPage({ cart }: CartPageProps) {
+    const { flash } = usePage<PageProps>().props;
+    const [warningsDismissed, setWarningsDismissed] = useState(false);
     const isEmpty = cart.items.length === 0;
 
     function clearCart() {
@@ -102,6 +168,13 @@ export default function CartPage({ cart }: CartPageProps) {
                         </button>
                     )}
                 </div>
+
+                {flash.reorder_warnings && !warningsDismissed && (
+                    <ReorderWarningPanel
+                        warnings={flash.reorder_warnings}
+                        onDismiss={() => setWarningsDismissed(true)}
+                    />
+                )}
 
                 {isEmpty ? (
                     <div className="flex flex-col items-center gap-4 py-16">

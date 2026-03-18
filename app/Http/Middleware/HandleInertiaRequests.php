@@ -46,6 +46,7 @@ class HandleInertiaRequests extends Middleware
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),
                 'password_status' => fn () => $request->session()->get('password_status'),
+                'reorder_warnings' => fn () => $request->session()->get('reorder_warnings'),
             ],
         ];
     }

@@ -65,7 +65,16 @@ class OrderController extends Controller
         $message = $this->buildReorderMessage($result);
 
         if (count($result['added']) > 0) {
-            return redirect()->route('cart')->with('success', $message);
+            $redirect = redirect()->route('cart')->with('success', $message);
+
+            if (count($result['unavailable']) > 0 || count($result['price_changes']) > 0) {
+                $redirect = $redirect->with('reorder_warnings', [
+                    'unavailable' => $result['unavailable'],
+                    'price_changes' => $result['price_changes'],
+                ]);
+            }
+
+            return $redirect;
         }
 
         return back()->with('error', $message);
