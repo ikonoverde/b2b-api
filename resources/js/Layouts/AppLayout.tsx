@@ -1,7 +1,6 @@
 import { Head } from '@inertiajs/react';
 import Sidebar from '@/Components/Sidebar';
 import type { ReactNode } from 'react';
-import { Agentation } from "agentation";
 
 interface AppLayoutProps {
     children: ReactNode;
@@ -17,7 +16,6 @@ export default function AppLayout({ children, title, active }: AppLayoutProps) {
                 <Sidebar active={active} />
                 <main className="flex-1 overflow-auto">{children}</main>
             </div>
-            <Agentation />
         </>
     );
 }
