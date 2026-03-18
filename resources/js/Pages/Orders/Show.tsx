@@ -10,6 +10,7 @@ import {
     ChevronRight,
     CheckCircle2,
     Clock,
+    CircleDollarSign,
     XCircle,
     Send,
 } from 'lucide-react';
@@ -62,7 +63,7 @@ interface Props extends PageProps {
 
 const statusIcons: Record<string, React.ReactNode> = {
     payment_pending: <Clock className="w-5 h-5" />,
-    pending: <Clock className="w-5 h-5" />,
+    pending: <CircleDollarSign className="w-5 h-5" />,
     processing: <RefreshCw className="w-5 h-5" />,
     shipped: <Send className="w-5 h-5" />,
     delivered: <CheckCircle2 className="w-5 h-5" />,

@@ -1,6 +1,6 @@
 export const statusLabels: Record<string, string> = {
     payment_pending: 'Pago Pendiente',
-    pending: 'Pendiente',
+    pending: 'Pagado',
     processing: 'Procesando',
     shipped: 'Enviado',
     delivered: 'Entregado',

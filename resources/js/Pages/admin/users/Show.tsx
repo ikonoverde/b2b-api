@@ -61,7 +61,8 @@ const paymentMethodLabels: Record<string, string> = {
 };
 
 const statusLabels: Record<string, string> = {
-    pending: 'Pendiente',
+    payment_pending: 'Pago Pendiente',
+    pending: 'Pagado',
     processing: 'Procesando',
     shipped: 'Enviado',
     delivered: 'Entregado',

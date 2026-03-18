@@ -23,6 +23,9 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+});
+
+Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/products', IndexProductsController::class)->name('products');
     Route::get('/products/create', CreateProductController::class)->name('products.create');
@@ -59,21 +62,19 @@ Route::middleware('auth')->group(function () {
     Route::put('/static-pages/{staticPage}', [StaticPagesController::class, 'update'])
         ->name('static-pages.update');
 
-    Route::middleware('role:admin,super_admin')->group(function () {
-        Route::get('/users', [UserController::class, 'index'])->name('users');
-        Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-        Route::patch('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.update-role');
-        Route::patch('/users/{user}/toggle-active', [UserController::class, 'toggleActive'])
-            ->name('users.toggle-active');
-        Route::post('/users/{user}/send-password-reset', [UserController::class, 'sendPasswordReset'])
-            ->name('users.send-password-reset');
+    Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::patch('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.update-role');
+    Route::patch('/users/{user}/toggle-active', [UserController::class, 'toggleActive'])
+        ->name('users.toggle-active');
+    Route::post('/users/{user}/send-password-reset', [UserController::class, 'sendPasswordReset'])
+        ->name('users.send-password-reset');
 
-        Route::get('/orders', [OrderController::class, 'index'])->name('orders');
-        Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
-        Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
-        Route::patch('/orders/{order}/tracking', [OrderController::class, 'updateTracking'])
-            ->name('orders.update-tracking');
-        Route::post('/orders/{order}/refund', [OrderController::class, 'createRefund'])->name('orders.create-refund');
-        Route::post('/orders/{order}/notes', [OrderController::class, 'storeNote'])->name('orders.store-note');
-    });
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
+    Route::patch('/orders/{order}/tracking', [OrderController::class, 'updateTracking'])
+        ->name('orders.update-tracking');
+    Route::post('/orders/{order}/refund', [OrderController::class, 'createRefund'])->name('orders.create-refund');
+    Route::post('/orders/{order}/notes', [OrderController::class, 'storeNote'])->name('orders.store-note');
 });
