@@ -102,7 +102,7 @@ export default function ThankYou({ order }: ThankYouProps) {
 
                     <div className="flex gap-4">
                         <Link
-                            href={`/orders/${order.id}`}
+                            href={`/account/orders/${order.id}`}
                             className="flex-1 text-center py-3 text-sm font-semibold text-[#5E7052] border border-[#5E7052] rounded-xl font-[Outfit] hover:bg-[#5E7052]/5 transition-colors"
                         >
                             Ver pedido

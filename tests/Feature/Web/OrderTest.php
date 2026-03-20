@@ -7,7 +7,7 @@ use App\Models\Product;
 use App\Models\User;
 
 it('requires authentication', function () {
-    $response = $this->get('/orders');
+    $response = $this->get('/account/orders');
 
     $response->assertRedirect('/login');
 });
@@ -16,7 +16,7 @@ it('shows orders page with paginated orders', function () {
     $user = User::factory()->create();
     Order::factory(3)->create(['user_id' => $user->id]);
 
-    $response = $this->actingAs($user)->get('/orders');
+    $response = $this->actingAs($user)->get('/account/orders');
 
     $response->assertSuccessful()
         ->assertInertia(fn ($page) => $page
@@ -33,7 +33,7 @@ it('does not show other users orders', function () {
     Order::factory(2)->create(['user_id' => $user->id]);
     Order::factory(3)->create(['user_id' => $otherUser->id]);
 
-    $response = $this->actingAs($user)->get('/orders');
+    $response = $this->actingAs($user)->get('/account/orders');
 
     $response->assertInertia(fn ($page) => $page
         ->has('orders.data', 2)
@@ -54,7 +54,7 @@ it('reorders items from a previous order', function () {
         'subtotal' => 100.00,
     ]);
 
-    $response = $this->actingAs($user)->post("/orders/{$order->id}/reorder");
+    $response = $this->actingAs($user)->post("/account/orders/{$order->id}/reorder");
 
     $response->assertRedirect(route('cart'))
         ->assertSessionHas('success');
@@ -82,10 +82,10 @@ it('redirects back with error when all products are unavailable', function () {
     ]);
 
     $response = $this->actingAs($user)
-        ->from('/orders')
-        ->post("/orders/{$order->id}/reorder");
+        ->from('/account/orders')
+        ->post("/account/orders/{$order->id}/reorder");
 
-    $response->assertRedirect('/orders')
+    $response->assertRedirect('/account/orders')
         ->assertSessionHas('error');
 });
 
@@ -94,7 +94,7 @@ it('prevents reordering another user\'s order', function () {
     $otherUser = User::factory()->create();
     $order = Order::factory()->create(['user_id' => $otherUser->id]);
 
-    $response = $this->actingAs($user)->post("/orders/{$order->id}/reorder");
+    $response = $this->actingAs($user)->post("/account/orders/{$order->id}/reorder");
 
     $response->assertForbidden();
 });
@@ -102,7 +102,7 @@ it('prevents reordering another user\'s order', function () {
 it('requires authentication for reorder', function () {
     $order = Order::factory()->create();
 
-    $response = $this->post("/orders/{$order->id}/reorder");
+    $response = $this->post("/account/orders/{$order->id}/reorder");
 
     $response->assertRedirect('/login');
 });
@@ -111,7 +111,7 @@ it('downloads invoice for own order', function () {
     $user = User::factory()->create();
     $order = Order::factory()->create(['user_id' => $user->id]);
 
-    $response = $this->actingAs($user)->get("/orders/{$order->id}/invoice");
+    $response = $this->actingAs($user)->get("/account/orders/{$order->id}/invoice");
 
     $response->assertSuccessful();
     $response->assertHeader('Content-Type', 'text/html; charset=UTF-8');
@@ -122,7 +122,7 @@ it('prevents downloading invoice for another user order', function () {
     $otherUser = User::factory()->create();
     $order = Order::factory()->create(['user_id' => $otherUser->id]);
 
-    $response = $this->actingAs($user)->get("/orders/{$order->id}/invoice");
+    $response = $this->actingAs($user)->get("/account/orders/{$order->id}/invoice");
 
     $response->assertForbidden();
 });

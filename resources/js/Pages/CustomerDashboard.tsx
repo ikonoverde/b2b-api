@@ -92,7 +92,7 @@ export default function CustomerDashboard({ featuredProducts, profile, banners }
                             <span className="text-sm font-semibold text-white font-[Outfit]">Nuevo Pedido</span>
                         </Link>
                         <Link
-                            href="/orders"
+                            href="/account/orders"
                             className="flex flex-1 flex-col items-center gap-2 rounded-2xl bg-white p-5 border border-[#E5E5E5] hover:bg-gray-50 transition-colors"
                         >
                             <ClipboardList className="h-7 w-7 text-[#5E7052]" />

@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response as HttpResponse;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -32,7 +31,7 @@ class OrderController extends Controller
                     'quantity' => $item->quantity,
                     'unit_price' => (float) $item->unit_price,
                     'subtotal' => (float) $item->subtotal,
-                    'image' => $item->image ? Storage::disk('public')->url($item->image) : null,
+                    'image' => $item->image,
                 ]),
                 'created_at' => $order->created_at?->toISOString(),
             ]);

@@ -57,7 +57,7 @@ export default function CustomerLayout({ children, title }: CustomerLayoutProps)
                                         Dashboard
                                     </Link>
                                     <Link
-                                        href="/orders"
+                                        href="/account/orders"
                                         className="text-white/80 hover:text-white font-[Outfit] text-sm font-medium transition-colors"
                                     >
                                         Pedidos
@@ -156,7 +156,7 @@ export default function CustomerLayout({ children, title }: CustomerLayoutProps)
                                             Dashboard
                                         </Link>
                                         <Link
-                                            href="/orders"
+                                            href="/account/orders"
                                             className="text-white/80 hover:text-white font-[Outfit] text-sm font-medium py-2 px-2 rounded-lg hover:bg-white/10 transition-colors"
                                         >
                                             Pedidos

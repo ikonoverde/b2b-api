@@ -116,6 +116,7 @@ export default function Account({ profile }: AccountProps) {
     }
 
     const menuItems = [
+        { icon: Package, label: 'Mis Pedidos', href: '/account/orders' },
         { icon: User, label: 'Editar Perfil', href: '/account/profile' },
         { icon: CreditCard, label: 'Datos de Facturación' },
         { icon: MapPin, label: 'Direcciones de Envío', href: '/account/addresses' },

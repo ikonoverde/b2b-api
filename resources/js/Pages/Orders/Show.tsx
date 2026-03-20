@@ -359,14 +359,14 @@ function ActionButtons({ orderId }: { orderId: number }) {
     const handleReorder = (): void => {
         setReordering(true);
 
-        router.post(`/orders/${orderId}/reorder`, {}, {
+        router.post(`/account/orders/${orderId}/reorder`, {}, {
             preserveScroll: true,
             onFinish: () => setReordering(false),
         });
     };
 
     const handleDownloadInvoice = () => {
-        window.open(`/orders/${orderId}/invoice`, '_blank');
+        window.open(`/account/orders/${orderId}/invoice`, '_blank');
     };
 
     return (
@@ -405,7 +405,7 @@ export default function OrderShow() {
         <CustomerLayout title={`Pedido #${order.id}`}>
             <div className="max-w-4xl mx-auto px-4 py-8">
                 <Link
-                    href="/orders"
+                    href="/account/orders"
                     className="inline-flex items-center gap-2 text-sm text-[#666666] hover:text-[#1A1A1A] font-[Outfit] mb-6"
                 >
                     <ArrowLeft className="w-4 h-4" />

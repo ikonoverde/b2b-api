@@ -52,7 +52,7 @@ function ReorderButton({ orderId }: { orderId: number }) {
         e.stopPropagation();
         setProcessing(true);
 
-        router.post(`/orders/${orderId}/reorder`, {}, {
+        router.post(`/account/orders/${orderId}/reorder`, {}, {
             preserveScroll: true,
             onFinish: () => setProcessing(false),
         });
@@ -76,7 +76,7 @@ function OrderCard({ order }: { order: Order }) {
 
     return (
         <Link
-            href={`/orders/${order.id}`}
+            href={`/account/orders/${order.id}`}
             className="block bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden hover:shadow-md transition-shadow"
         >
             <div className="p-6">

@@ -101,8 +101,8 @@ Route::middleware('auth')->group(function () {
         ->name('account.payment-methods.set-default');
     Route::delete('/account/payment-methods/{payment_method}', [PaymentMethodController::class, 'destroy'])
         ->name('account.payment-methods.destroy');
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders');
-    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
-    Route::post('/orders/{order}/reorder', [OrderController::class, 'reorder'])->name('orders.reorder');
-    Route::get('/orders/{order}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
+    Route::get('/account/orders', [OrderController::class, 'index'])->name('orders');
+    Route::get('/account/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('/account/orders/{order}/reorder', [OrderController::class, 'reorder'])->name('orders.reorder');
+    Route::get('/account/orders/{order}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
 });
