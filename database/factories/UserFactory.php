@@ -36,6 +36,7 @@ class UserFactory extends Factory
             'is_active' => true,
             'notify_order_updates' => true,
             'notify_promotional_emails' => false,
+            'google_id' => null,
             'notify_newsletter' => false,
         ];
     }
@@ -68,6 +69,13 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'is_active' => false,
+        ]);
+    }
+
+    public function withGoogle(?string $googleId = null): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'google_id' => $googleId ?? fake()->uuid(),
         ]);
     }
 }

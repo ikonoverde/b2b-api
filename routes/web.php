@@ -3,10 +3,14 @@
 use App\Http\Controllers\Web\AccountController;
 use App\Http\Controllers\Web\AddressesController;
 use App\Http\Controllers\Web\Auth\ForgotPasswordController;
+use App\Http\Controllers\Web\Auth\GoogleCallbackController;
+use App\Http\Controllers\Web\Auth\GoogleRedirectController;
 use App\Http\Controllers\Web\Auth\LoginController;
 use App\Http\Controllers\Web\Auth\LogoutController;
 use App\Http\Controllers\Web\Auth\RegisterController;
 use App\Http\Controllers\Web\Auth\ResetPasswordController;
+use App\Http\Controllers\Web\Auth\ShowGoogleCompleteRegistrationController;
+use App\Http\Controllers\Web\Auth\StoreGoogleCompleteRegistrationController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\CatalogController;
 use App\Http\Controllers\Web\Checkout\GetShippingQuotesController;
@@ -54,6 +58,13 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [LoginController::class, 'store']);
     Route::get('/forgot-password', fn () => Inertia::render('Auth/ForgotPassword'))->name('password.request');
     Route::post('/forgot-password', ForgotPasswordController::class)->name('password.email');
+
+    Route::get('/auth/google', GoogleRedirectController::class)->name('google.redirect');
+    Route::get('/auth/google/callback', GoogleCallbackController::class)->name('google.callback');
+    Route::get('/auth/google/complete-registration', ShowGoogleCompleteRegistrationController::class)
+        ->name('google.complete-registration');
+    Route::post('/auth/google/complete-registration', StoreGoogleCompleteRegistrationController::class)
+        ->name('google.complete-registration.store');
 });
 
 Route::middleware('auth')->group(function () {

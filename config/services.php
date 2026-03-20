@@ -47,4 +47,10 @@ return [
         'base_url' => env('SKYDROPX_BASE_URL', 'https://sb-pro.skydropx.com/api/v1'),
     ],
 
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI', '/auth/google/callback'),
+    ],
+
 ];
