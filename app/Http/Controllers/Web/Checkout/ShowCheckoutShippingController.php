@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\Checkout;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AddressResource;
 use App\Models\Cart;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -35,6 +36,12 @@ class ShowCheckoutShippingController extends Controller
 
         $subtotal = $items->sum('subtotal');
 
+        $addresses = $request->user()
+            ->addresses()
+            ->orderByDesc('is_default')
+            ->orderBy('label')
+            ->get();
+
         return Inertia::render('Checkout/Shipping', [
             'cart' => [
                 'items' => $items,
@@ -44,6 +51,7 @@ class ShowCheckoutShippingController extends Controller
                     'total' => null,
                 ],
             ],
+            'addresses' => AddressResource::collection($addresses)->resolve(),
         ]);
     }
 }

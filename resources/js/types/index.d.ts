@@ -113,7 +113,7 @@ export interface ShippingQuote {
     price: number;
     estimated_days: number;
     quote_id: string;
-    shipping_method_id: number | null;
+    rate_id: string;
 }
 
 export interface Cart {

@@ -86,7 +86,7 @@ class GetOrdersController extends Controller
      */
     public function __invoke(Request $request): AnonymousResourceCollection
     {
-        $perPage = min((int) $request->get('per_page', 15), 100);
+        $perPage = min((int) $request->query('per_page', 15), 100);
 
         $orders = Order::where('user_id', auth()->id())
             ->with(['items'])

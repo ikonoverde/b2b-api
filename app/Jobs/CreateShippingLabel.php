@@ -4,12 +4,11 @@ namespace App\Jobs;
 
 use App\Models\Order;
 use App\Services\SkydropxService;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 
-class CreateShippingLabel implements ShouldBeUnique, ShouldQueue
+class CreateShippingLabel implements ShouldQueue
 {
     use Queueable;
 
@@ -23,14 +22,11 @@ class CreateShippingLabel implements ShouldBeUnique, ShouldQueue
         $this->afterCommit();
     }
 
-    public function uniqueId(): string
-    {
-        return (string) $this->order->id;
-    }
-
     public function handle(SkydropxService $skydropx): void
     {
         if ($this->order->hasShippingLabel()) {
+            $this->order->update(['label_error' => null]);
+
             return;
         }
 
@@ -42,18 +38,21 @@ class CreateShippingLabel implements ShouldBeUnique, ShouldQueue
             return;
         }
 
-        $carrierParts = $this->parseCarrier($this->order->shipping_carrier);
+        if ($this->order->skydropx_shipment_id) {
+            $result = $skydropx->getTracking($this->order->skydropx_shipment_id);
+        } else {
+            $carrierParts = $this->parseCarrier($this->order->shipping_carrier);
 
-        if (! $carrierParts) {
-            $this->order->update(['label_error' => 'No se pudo determinar la paquetería del pedido.']);
+            if (! $carrierParts) {
+                $this->order->update(['label_error' => 'No se pudo determinar la paquetería del pedido.']);
 
-            return;
+                return;
+            }
+
+            $addressTo = $this->buildAddressTo();
+
+            $result = $skydropx->createShipment($addressTo, $this->order);
         }
-
-        $addressTo = $this->buildAddressTo();
-        $parcel = $this->order->parcel_dimensions;
-
-        $result = $skydropx->createShipment($addressTo, $parcel, $carrierParts['carrier'], $carrierParts['service']);
 
         if (! $result) {
             $this->order->update(['label_error' => 'Skydropx no pudo crear el envío. Se reintentará.']);
@@ -118,7 +117,9 @@ class CreateShippingLabel implements ShouldBeUnique, ShouldQueue
     }
 
     /**
-     * @return array{postal_code: string, city: string, state: string, neighborhood: string, name: string, street: string, phone: string, email: string}
+     * @return array{postal_code: string, city: string, state: string,
+     *               neighborhood: string, name: string, street: string,
+     *               phone: string, email: string, reference: string}
      */
     private function buildAddressTo(): array
     {
@@ -132,7 +133,8 @@ class CreateShippingLabel implements ShouldBeUnique, ShouldQueue
             'name' => $address['name'] ?? '',
             'street' => $address['address_line_1'] ?? '',
             'phone' => $address['phone'] ?? '',
-            'email' => '',
+            'email' => $this->order->user?->email ?? '',
+            'reference' => $address['reference'] ?? $address['address_line_2'] ?? '',
         ];
     }
 }

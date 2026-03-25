@@ -4,7 +4,7 @@ import type { ShippingQuote } from '@/types';
 
 interface ShippingQuoteSelectorProps {
     quotes: ShippingQuote[];
-    selectedQuoteId: string;
+    selectedRateId: string;
     loading: boolean;
     fetched: boolean;
     error: string | null;
@@ -14,7 +14,7 @@ interface ShippingQuoteSelectorProps {
 
 export default function ShippingQuoteSelector({
     quotes,
-    selectedQuoteId,
+    selectedRateId,
     loading,
     fetched,
     error,
@@ -55,9 +55,9 @@ export default function ShippingQuoteSelector({
                 <div className="rounded-xl border border-stripe-border bg-white overflow-hidden divide-y divide-stripe-border shadow-[0_1px_1px_0_rgba(0,0,0,0.03)]">
                     {quotes.map((quote) => (
                         <ShippingQuoteOption
-                            key={quote.quote_id}
+                            key={quote.rate_id}
                             quote={quote}
-                            isSelected={selectedQuoteId === quote.quote_id}
+                            isSelected={selectedRateId === quote.rate_id}
                             onSelect={() => onSelect(quote)}
                         />
                     ))}

@@ -17,14 +17,15 @@ return [
     'shipping_origin_postal_code' => env('SHOP_ORIGIN_POSTAL_CODE', '06600'),
 
     'shipping_origin' => [
-        'name' => env('SHOP_ORIGIN_NAME', 'Ikono'),
-        'street' => env('SHOP_ORIGIN_STREET', ''),
-        'phone' => env('SHOP_ORIGIN_PHONE', ''),
-        'email' => env('SHOP_ORIGIN_EMAIL', ''),
-        'postal_code' => '97130',
+        'name' => env('SHOP_ORIGIN_NAME', 'Sandra Morales Olvera'),
+        'street' => env('SHOP_ORIGIN_STREET', 'Calle 27 223A'),
+        'phone' => env('SHOP_ORIGIN_PHONE', '9995340996'),
+        'email' => env('SHOP_ORIGIN_EMAIL', 'moeric@gmail.com'),
+        'reference' => env('SHOP_ORIGIN_REFERENCE', 'Bodega'),
+        'postal_code' => '97345',
         'state' => 'Yucatán',
-        'city' => 'Mérida',
-        'neighborhood' => 'Altabrisa',
+        'city' => 'Conkal',
+        'neighborhood' => 'San Diego Cutz Dos',
     ],
 
     'default_parcel' => [

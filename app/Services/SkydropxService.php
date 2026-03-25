@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\Order;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -43,6 +46,43 @@ class SkydropxService
     }
 
     /**
+     * @return array<string, mixed>|null
+     *
+     * @throws ConnectionException
+     */
+    public function getQuote(string $quoteId): ?array
+    {
+        $token = $this->getOauthToken();
+
+        if (! $token) {
+            return null;
+        }
+
+        $response = Http::withToken($token)
+            ->timeout(10)
+            ->get("{$this->baseUrl}/quotations/{$quoteId}");
+
+        if ($response->status() === 401) {
+            Cache::forget('skydropx_access_token');
+            $token = $this->getOauthToken();
+            $response = $token
+                ? Http::withToken($token)->timeout(10)->get("{$this->baseUrl}/quotations/{$quoteId}")
+                : null;
+        }
+
+        if (! $response || $response->failed()) {
+            Log::error('Skydropx: Failed to get quotation', [
+                'quote_id' => $quoteId,
+                'status' => $response?->status(),
+            ]);
+
+            return null;
+        }
+
+        return $response->json();
+    }
+
+    /**
      * @param  array{postal_code: string, city: string, state: string, neighborhood: string}  $destination
      * @param  array{weight: float, height: float, width: float, length: float}  $parcel
      * @return array<int, array{carrier: string, service: string, price: float, estimated_days: int, quote_id: string}>
@@ -68,7 +108,7 @@ class SkydropxService
         }
     }
 
-    private function requestQuotation(array $destination, array $parcel): ?\Illuminate\Http\Client\Response
+    private function requestQuotation(array $destination, array $parcel): ?Response
     {
         $token = $this->getOauthToken();
 
@@ -124,7 +164,7 @@ class SkydropxService
         return $response;
     }
 
-    private function pollUntilCompleted(\Illuminate\Http\Client\Response $response): ?\Illuminate\Http\Client\Response
+    private function pollUntilCompleted(Response $response): ?Response
     {
         $token = Cache::get('skydropx_access_token');
         $quoteId = $response->json('id');
@@ -233,16 +273,18 @@ class SkydropxService
      */
     private function normalizeResponse(array $data): array
     {
+        $id = $data['id'] ?? null;
+
         return collect($data['rates'])
             ->filter(fn (array $rate) => ($rate['success'] ?? false) === true)
-            ->map(function (array $rate) {
+            ->map(function (array $rate) use ($id) {
                 return [
                     'carrier' => $rate['provider_display_name'] ?? 'Desconocido',
                     'service' => $rate['provider_service_name'] ?? 'Estándar',
                     'price' => (float) ($rate['total'] ?? 0),
                     'estimated_days' => (int) ($rate['days'] ?? 5),
-                    'quote_id' => 'skydropx_'.($rate['id'] ?? uniqid()),
-                    'skydropx_rate_id' => $rate['id'] ?? null,
+                    'quote_id' => $id,
+                    'rate_id' => $rate['id'] ?? null,
                 ];
             })
             ->filter(fn (array $quote) => $quote['price'] > 0)
@@ -258,7 +300,7 @@ class SkydropxService
      * @param  array{weight: float, height: float, width: float, length: float}  $parcel
      * @return array{id: string, tracking_number: string|null, tracking_url: string|null, label_url: string|null}|null
      */
-    public function createShipment(array $addressTo, array $parcel, string $carrierName, string $serviceName): ?array
+    public function createShipment(array $addressTo, Order $order): ?array
     {
         try {
             $token = $this->getOauthToken();
@@ -267,37 +309,13 @@ class SkydropxService
                 return null;
             }
 
-            $response = $this->requestQuotation($addressTo, $parcel);
-
-            if (! $response || $response->failed()) {
-                return null;
-            }
-
-            $response = $this->pollUntilCompleted($response);
-
-            if (! $response) {
-                return null;
-            }
-
-            $data = $response->json();
-            $quotationId = $data['id'] ?? null;
-            $matchedRate = $this->matchRate($data['rates'] ?? [], $carrierName, $serviceName);
-
-            if (! $matchedRate || ! $quotationId) {
-                Log::warning('Skydropx: No matching rate found for shipment', [
-                    'carrier' => $carrierName,
-                    'service' => $serviceName,
-                ]);
-
-                return null;
-            }
-
+            $rateId = $order->shipping_rate_id;
             $origin = $this->fullAddressFrom();
 
             $shipmentPayload = [
                 'shipment' => [
-                    'quotation_id' => $quotationId,
-                    'rate_id' => $matchedRate['id'],
+                    'rate_id' => $rateId,
+                    'printing_format' => 'standard',
                     'address_from' => $origin,
                     'address_to' => [
                         'country_code' => 'MX',
@@ -306,18 +324,16 @@ class SkydropxService
                         'area_level2' => $addressTo['city'],
                         'area_level3' => $addressTo['neighborhood'],
                         'name' => $addressTo['name'] ?? '',
-                        'street' => $addressTo['street'] ?? '',
+                        'street1' => $addressTo['street'] ?? '',
                         'phone' => $addressTo['phone'] ?? '',
                         'email' => $addressTo['email'] ?? '',
+                        'reference' => $addressTo['reference'] ?? 'Casa',
                     ],
-                    'parcels' => [
-                        [
-                            'length' => $parcel['length'],
-                            'width' => $parcel['width'],
-                            'height' => $parcel['height'],
-                            'weight' => $parcel['weight'],
-                        ],
-                    ],
+                    'packages' => [[
+                        'package_number' => '1',
+                        'consignment_note' => '53102400',
+                        'package_type' => '4G',
+                    ]],
                 ],
             ];
 
@@ -335,12 +351,17 @@ class SkydropxService
             }
 
             $shipmentData = $shipmentResponse->json();
+            $id = $shipmentData['data']['id'];
+            $order->skydropx_shipment_id = $id;
+            $order->save();
+
+            $trackingInfo = $this->getTrackingInfo($shipmentResponse);
 
             return [
-                'id' => (string) ($shipmentData['id'] ?? ''),
-                'tracking_number' => $shipmentData['tracking_number'] ?? null,
-                'tracking_url' => $shipmentData['tracking_url'] ?? null,
-                'label_url' => $shipmentData['label_url'] ?? null,
+                'id' => (string) ($shipmentData['data']['id'] ?? ''),
+                'tracking_number' => $trackingInfo['tracking_number'] ?? null,
+                'tracking_url' => $trackingInfo['tracking_url'] ?? null,
+                'label_url' => $trackingInfo['label_url'] ?? null,
             ];
         } catch (\Throwable $e) {
             Log::error('Skydropx: Exception creating shipment', [
@@ -349,6 +370,92 @@ class SkydropxService
 
             return null;
         }
+    }
+
+    public function getTracking(string $shipmentId): ?array
+    {
+        try {
+            $token = $this->getOauthToken();
+
+            if (! $token) {
+                return null;
+            }
+
+            $shipmentResponse = Http::withToken($token)
+                ->timeout(15)
+                ->get("{$this->baseUrl}/shipments/{$shipmentId}");
+
+            if ($shipmentResponse->failed()) {
+                Log::error('Skydropx: Failed to get shipment tracking info', [
+                    'status' => $shipmentResponse->status(),
+                    'body' => $shipmentResponse->body(),
+                ]);
+
+                return null;
+            }
+
+            $trackingInfo = $this->getTrackingInfo($shipmentResponse);
+
+            return [
+                'id' => $shipmentId,
+                'tracking_number' => $trackingInfo['tracking_number'] ?? null,
+                'tracking_url' => $trackingInfo['tracking_url'] ?? null,
+                'label_url' => $trackingInfo['label_url'] ?? null,
+            ];
+        } catch (\Throwable $e) {
+            Log::error('Skydropx: Exception getting tracking info', [
+                'message' => $e->getMessage(),
+            ]);
+
+            return null;
+        }
+    }
+
+    private function getTrackingInfo(Response $response): ?array
+    {
+        $response = $this->pollUntilTracking($response);
+
+        $data = $response->json('included');
+        $package = collect($data)->firstWhere('type', 'package');
+
+        if (! $package) {
+            return null;
+        }
+
+        $data = $package['attributes'];
+
+        return [
+            'tracking_number' => $data['tracking_number'] ?? null,
+            'tracking_url' => $data['tracking_url_provider'] ?? null,
+            'label_url' => $data['label_url'] ?? null,
+        ];
+    }
+
+    private function pollUntilTracking(Response $response): ?Response
+    {
+        $token = Cache::get('skydropx_access_token');
+
+        $data = $response->json('data');
+        $shipmentId = $data['id'];
+        $maxAttempts = $data['attributes']['workflow_status'] === 'success' ? 0 : 15;
+
+        for ($attempt = 0; $attempt < $maxAttempts; $attempt++) {
+            sleep(1);
+            $response = Http::withToken($token)->timeout(10)->get("{$this->baseUrl}/shipments/{$shipmentId}");
+            $data = $response->json('data');
+
+            if ($response->failed() || $data['attributes']['workflow_status'] === 'success') {
+                break;
+            }
+        }
+
+        if ($response->failed() || $data['attributes']['workflow_status'] !== 'success') {
+            throw new \RuntimeException(
+                "Skydropx: Tracking info polling failed or timed out for shipment {$shipmentId}"
+            );
+        }
+
+        return $response;
     }
 
     /**
@@ -398,35 +505,11 @@ class SkydropxService
             'area_level2' => $origin['city'],
             'area_level3' => $origin['neighborhood'],
             'name' => $origin['name'],
-            'street' => $origin['street'],
+            'street1' => $origin['street'],
             'phone' => $origin['phone'],
             'email' => $origin['email'],
+            'reference' => $origin['reference'] ?? 'Casa',
         ];
-    }
-
-    /**
-     * Match a rate by carrier and service name (case-insensitive contains).
-     *
-     * @param  array<int, array<string, mixed>>  $rates
-     * @return array<string, mixed>|null
-     */
-    private function matchRate(array $rates, string $carrierName, string $serviceName): ?array
-    {
-        $carrierLower = mb_strtolower($carrierName);
-        $serviceLower = mb_strtolower($serviceName);
-
-        $successRates = array_filter($rates, fn (array $rate) => ($rate['success'] ?? false) === true);
-
-        foreach ($successRates as $rate) {
-            $rateCarrier = mb_strtolower($rate['provider_display_name'] ?? '');
-            $rateService = mb_strtolower($rate['provider_service_name'] ?? '');
-
-            if (str_contains($rateCarrier, $carrierLower) && str_contains($rateService, $serviceLower)) {
-                return $rate;
-            }
-        }
-
-        return null;
     }
 
     private function addressFrom(): array
@@ -435,8 +518,8 @@ class SkydropxService
             'country_code' => 'MX',
             'postal_code' => '97130',
             'area_level1' => 'Yucatán',
-            'area_level2' => 'Mérida',
-            'area_level3' => 'Altabrisa',
+            'area_level2' => 'Conkal',
+            'area_level3' => 'San Diego Cutz Dos',
         ];
     }
 }

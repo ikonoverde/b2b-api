@@ -7,12 +7,19 @@ use App\Http\Requests\Web\CheckoutRequest;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Services\ShippingQuoteService;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Laravel\Cashier\Cashier;
+use Stripe\Exception\ApiErrorException;
 
 class StoreCheckoutShippingController extends Controller
 {
+    /**
+     * @throws \Throwable
+     * @throws ApiErrorException
+     * @throws ConnectionException
+     */
     public function __invoke(CheckoutRequest $request, ShippingQuoteService $quoteService): RedirectResponse
     {
         $cart = Cart::with(['items.product.images' => fn ($query) => $query->orderBy('position')->limit(1)])
@@ -42,7 +49,8 @@ class StoreCheckoutShippingController extends Controller
                 'total_amount' => $totalAmount,
                 'shipping_cost' => $shippingData['cost'],
                 'shipping_carrier' => $shippingData['carrier'],
-                'shipping_method_id' => $shippingData['shipping_method_id'],
+                'shipping_quote_id' => $shippingData['quote_id'],
+                'shipping_rate_id' => $shippingData['rate_id'],
                 'shipping_quote_source' => $shippingData['source'],
                 'parcel_dimensions' => $shippingData['parcel'],
                 'shipping_address' => [
@@ -88,45 +96,56 @@ class StoreCheckoutShippingController extends Controller
     /**
      * Re-validate the selected shipping quote server-side.
      *
-     * @return array{cost: float, carrier: string, shipping_method_id: int|null, source: string, parcel: array{weight: float, height: float, width: float, length: float}}
+     * @return array{cost: float, carrier: string, quote_id: string|null,
+     *               rate_id: string|null, source: string, parcel: array}
+     *
+     * @throws ConnectionException
      */
     private function resolveShipping(CheckoutRequest $request, ShippingQuoteService $quoteService, Cart $cart): array
     {
-        $result = $quoteService->getQuotes(
-            [
-                'postal_code' => $request->validated('postal_code'),
-                'city' => $request->validated('city'),
-                'state' => $request->validated('state'),
-                'neighborhood' => $request->validated('address_line_2'),
-            ],
-            $cart->items,
-        );
+        $submittedQuoteId = $request->validated('quote_id');
+        $rateId = $request->validated('rate_id');
 
-        $submittedQuoteId = $request->validated('shipping_quote_id');
+        $quote = $quoteService->getQuote($submittedQuoteId);
 
-        $matchedQuote = collect($result['quotes'])
-            ->firstWhere('quote_id', $submittedQuoteId);
-
-        if (! $matchedQuote) {
-            $matchedQuote = collect($result['quotes'])->first();
-        }
-
-        if (! $matchedQuote) {
+        if (! $quote) {
             return [
                 'cost' => (float) config('shop.shipping_cost'),
                 'carrier' => 'Envío estándar',
-                'shipping_method_id' => null,
+                'quote_id' => null,
+                'rate_id' => null,
                 'source' => 'static',
-                'parcel' => $result['parcel'],
+                'parcel' => [],
             ];
         }
 
+        $rate = collect($quote['rates'])->firstWhere('id', $rateId);
+
+        if (! $rate || empty($quote['packages'])) {
+            return [
+                'cost' => (float) config('shop.shipping_cost'),
+                'carrier' => 'Envío estándar',
+                'quote_id' => null,
+                'rate_id' => null,
+                'source' => 'static',
+                'parcel' => [],
+            ];
+        }
+
+        $package = $quote['packages'][0];
+
         return [
-            'cost' => (float) $matchedQuote['price'],
-            'carrier' => $matchedQuote['carrier'].' - '.$matchedQuote['service'],
-            'shipping_method_id' => $matchedQuote['shipping_method_id'] ?? null,
-            'source' => $result['source'],
-            'parcel' => $result['parcel'],
+            'cost' => (float) $rate['total'],
+            'carrier' => $rate['provider_display_name'].' - '.$rate['provider_service_name'],
+            'quote_id' => $submittedQuoteId,
+            'rate_id' => $rate['id'],
+            'source' => 'skydropx',
+            'parcel' => [
+                'width' => $package['width'],
+                'height' => $package['height'],
+                'length' => $package['length'],
+                'weight' => $package['weight'],
+            ],
         ];
     }
 

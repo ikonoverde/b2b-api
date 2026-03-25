@@ -21,32 +21,32 @@ class OrderController extends Controller
 
     public function index(Request $request): Response
     {
-        $sortBy = $this->resolveSortField($request->get('sort_by', 'created_at'));
-        $sortOrder = in_array($request->get('sort_order'), ['asc', 'desc'])
-            ? $request->get('sort_order')
+        $sortBy = $this->resolveSortField($request->query('sort_by', 'created_at'));
+        $sortOrder = in_array($request->query('sort_order'), ['asc', 'desc'])
+            ? $request->query('sort_order')
             : 'desc';
-        $perPage = min((int) $request->get('per_page', 15), 100);
+        $perPage = min((int) $request->query('per_page', 15), 100);
 
         $orders = Order::query()
             ->with('user')
             ->when($request->filled('status'), fn ($q) => $q
-                ->where('status', $request->get('status')))
+                ->where('status', $request->query('status')))
             ->when($request->filled('payment_status'), fn ($q) => $q
-                ->where('payment_status', $request->get('payment_status')))
+                ->where('payment_status', $request->query('payment_status')))
             ->when($request->filled('date_from'), fn ($q) => $q
-                ->whereDate('created_at', '>=', $request->get('date_from')))
+                ->whereDate('created_at', '>=', $request->query('date_from')))
             ->when($request->filled('date_to'), fn ($q) => $q
-                ->whereDate('created_at', '<=', $request->get('date_to')))
+                ->whereDate('created_at', '<=', $request->query('date_to')))
             ->when($request->filled('customer'), function ($q) use ($request) {
-                $search = $request->get('customer');
+                $search = $request->query('customer');
                 $q->whereHas('user', fn ($uq) => $uq
                     ->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%"));
             })
             ->when($request->filled('amount_min'), fn ($q) => $q
-                ->where('total_amount', '>=', $request->get('amount_min')))
+                ->where('total_amount', '>=', $request->query('amount_min')))
             ->when($request->filled('amount_max'), fn ($q) => $q
-                ->where('total_amount', '<=', $request->get('amount_max')))
+                ->where('total_amount', '<=', $request->query('amount_max')))
             ->orderBy($sortBy, $sortOrder)
             ->paginate($perPage)
             ->withQueryString();
@@ -241,13 +241,13 @@ class OrderController extends Controller
     private function buildFilterState(Request $request, string $sortBy, string $sortOrder): array
     {
         return [
-            'status' => $request->get('status', ''),
-            'payment_status' => $request->get('payment_status', ''),
-            'date_from' => $request->get('date_from', ''),
-            'date_to' => $request->get('date_to', ''),
-            'customer' => $request->get('customer', ''),
-            'amount_min' => $request->get('amount_min', ''),
-            'amount_max' => $request->get('amount_max', ''),
+            'status' => $request->query('status', ''),
+            'payment_status' => $request->query('payment_status', ''),
+            'date_from' => $request->query('date_from', ''),
+            'date_to' => $request->query('date_to', ''),
+            'customer' => $request->query('customer', ''),
+            'amount_min' => $request->query('amount_min', ''),
+            'amount_max' => $request->query('amount_max', ''),
             'sort_by' => $sortBy,
             'sort_order' => $sortOrder,
         ];

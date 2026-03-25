@@ -42,8 +42,10 @@ class Order extends Model
         'label_url',
         'skydropx_shipment_id',
         'shipping_quote_source',
+        'shipping_quote_id',
         'parcel_dimensions',
         'label_error',
+        'shipping_rate_id',
     ];
 
     protected function casts(): array

@@ -15,10 +15,10 @@ class UserController extends Controller
 {
     public function index(Request $request): Response
     {
-        $sortBy = $request->get('sort_by', 'created_at');
-        $sortOrder = $request->get('sort_order', 'desc');
-        $perPage = min((int) $request->get('per_page', 15), 100);
-        $search = $request->get('search', '');
+        $sortBy = $request->query('sort_by', 'created_at');
+        $sortOrder = $request->query('sort_order', 'desc');
+        $perPage = min((int) $request->query('per_page', 15), 100);
+        $search = $request->query('search', '');
 
         $allowedSortFields = ['name', 'email', 'role', 'created_at'];
         if (! in_array($sortBy, $allowedSortFields)) {
@@ -46,7 +46,7 @@ class UserController extends Controller
 
     public function show(Request $request, User $user): Response
     {
-        $perPage = min((int) $request->get('per_page', 15), 100);
+        $perPage = min((int) $request->query('per_page', 15), 100);
 
         $orders = $user->orders()
             ->with('items')

@@ -4,13 +4,16 @@ import type { FormEvent } from 'react';
 import CustomerLayout from '@/Layouts/CustomerLayout';
 import AddressForm from '@/Components/AddressForm';
 import CheckoutStepIndicator from '@/Components/CheckoutStepIndicator';
+import SavedAddressSelector from '@/Components/SavedAddressSelector';
 import ShippingQuoteSelector from '@/Components/ShippingQuoteSelector';
 import CheckoutSummary from '@/Components/CheckoutSummary';
+import useSavedAddress from '@/hooks/useSavedAddress';
 import useShippingQuotes from '@/hooks/useShippingQuotes';
 import type { Cart, PageProps } from '@/types';
 
 interface ShippingProps {
     cart: Cart;
+    addresses: Address[];
 }
 
 const QUOTE_FIELDS = new Set(['postal_code', 'city', 'state', 'address_line_2']);
@@ -24,7 +27,7 @@ function canFetchQuotes(data: Record<string, string>): boolean {
     );
 }
 
-export default function Shipping({ cart }: ShippingProps) {
+export default function Shipping({ cart, addresses }: ShippingProps) {
     const { errors } = usePage<PageProps & { errors: Record<string, string | string[]> }>().props;
     const { quotes, loading, error, fetched, fetch: fetchQuotes } = useShippingQuotes();
 
@@ -36,10 +39,29 @@ export default function Shipping({ cart }: ShippingProps) {
         state: '',
         postal_code: '',
         phone: '',
-        shipping_quote_id: '',
+        quote_id: '',
+        rate_id: '',
     });
 
-    const selectedQuote = quotes.find((q) => q.quote_id === form.data.shipping_quote_id) ?? null;
+    function fetchQuotesIfReady(data: Record<string, string>) {
+        if (canFetchQuotes(data)) {
+            fetchQuotes({
+                postal_code: data.postal_code,
+                city: data.city,
+                state: data.state,
+                neighborhood: data.address_line_2,
+            });
+        }
+    }
+
+    const { selectedAddressId, selectAddress, clearSelection } = useSavedAddress({
+        addresses,
+        setFormData: (data) => form.setData(data),
+        resetForm: () => form.reset(),
+        onAddressReady: fetchQuotesIfReady,
+    });
+
+    const selectedQuote = quotes.find((q) => q.rate_id === form.data.rate_id) ?? null;
     const shippingCost = selectedQuote?.price ?? null;
     const total = shippingCost !== null ? cart.totals.subtotal + shippingCost : null;
 
@@ -47,7 +69,7 @@ export default function Shipping({ cart }: ShippingProps) {
         const updated = { ...form.data, [field]: value };
 
         if (QUOTE_FIELDS.has(field) && canFetchQuotes(updated)) {
-            form.setData({ ...updated, shipping_quote_id: '' });
+            form.setData({ ...updated, quote_id: '', rate_id: '' });
             fetchQuotes({
                 postal_code: updated.postal_code,
                 city: updated.city,
@@ -88,6 +110,15 @@ export default function Shipping({ cart }: ShippingProps) {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <form onSubmit={submit} className="lg:col-span-2 flex flex-col gap-5">
+                        {addresses.length > 0 && (
+                            <SavedAddressSelector
+                                addresses={addresses}
+                                selectedAddressId={selectedAddressId}
+                                onSelect={populateFromAddress}
+                                onNewAddress={handleNewAddress}
+                            />
+                        )}
+
                         <AddressForm
                             data={form.data}
                             errors={form.errors}
@@ -97,17 +128,17 @@ export default function Shipping({ cart }: ShippingProps) {
 
                         <ShippingQuoteSelector
                             quotes={quotes}
-                            selectedQuoteId={form.data.shipping_quote_id}
+                            selectedRateId={form.data.rate_id}
                             loading={loading}
                             fetched={fetched}
                             error={error}
-                            validationError={form.errors.shipping_quote_id}
-                            onSelect={(quote) => form.setData('shipping_quote_id', quote.quote_id)}
+                            validationError={form.errors.rate_id}
+                            onSelect={(quote) => form.setData({ ...form.data, quote_id: quote.quote_id, rate_id: quote.rate_id })}
                         />
 
                         <button
                             type="submit"
-                            disabled={form.processing || !form.data.shipping_quote_id}
+                            disabled={form.processing || !form.data.rate_id}
                             className="h-12 bg-primary text-white font-semibold rounded-xl hover:bg-[#4d5e43] transition-all disabled:opacity-50 font-body mt-1 shadow-[0_1px_1px_0_rgba(0,0,0,0.03),0_1px_3px_0_rgba(0,0,0,0.08)] hover:shadow-[0_1px_1px_0_rgba(0,0,0,0.03),0_3px_7px_0_rgba(0,0,0,0.12)]"
                         >
                             {form.processing ? (

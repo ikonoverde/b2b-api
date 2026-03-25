@@ -26,7 +26,8 @@ class CheckoutRequest extends FormRequest
             'state' => ['required', 'string', self::MAX_STRING],
             'postal_code' => ['required', 'string', 'max:10'],
             'phone' => ['required', 'string', 'max:20'],
-            'shipping_quote_id' => ['required', 'string', self::MAX_STRING],
+            'quote_id' => ['required', 'string', self::MAX_STRING],
+            'rate_id' => ['required', 'string', self::MAX_STRING],
         ];
     }
 }

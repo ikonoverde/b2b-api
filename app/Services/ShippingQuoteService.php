@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\ShippingMethod;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Collection;
 
 class ShippingQuoteService
@@ -14,7 +15,8 @@ class ShippingQuoteService
     /**
      * @param  array{postal_code: string, city: string, state: string, neighborhood: string}  $destination
      * @param  Collection<int, \App\Models\CartItem>  $cartItems
-     * @return array{quotes: array<int, array<string, mixed>>, source: string, parcel: array{weight: float, height: float, width: float, length: float}}
+     * @return array{quotes: array<int, array<string, mixed>>, source: string,
+     *               parcel: array{weight: float, height: float, width: float, length: float}}
      */
     public function getQuotes(array $destination, Collection $cartItems): array
     {
@@ -40,6 +42,14 @@ class ShippingQuoteService
     }
 
     /**
+     * @throws ConnectionException
+     */
+    public function getQuote(string $quoteId): ?array
+    {
+        return $this->skydropx->getQuote($quoteId);
+    }
+
+    /**
      * From all available quotes (sorted cheapest first), pick up to 3 that cover distinct roles:
      * cheapest, fastest, and best middle-ground. This avoids showing 9 options while remaining
      * resilient to carrier availability changes.
@@ -59,12 +69,12 @@ class ShippingQuoteService
             ->sortBy([['estimated_days', 'asc'], ['price', 'asc']])
             ->first();
 
-        $selected = collect([$cheapest, $fastest])->unique('quote_id');
+        $selected = collect([$cheapest, $fastest])->unique('rate_id');
 
-        $usedIds = $selected->pluck('quote_id')->all();
+        $usedIds = $selected->pluck('rate_id')->all();
 
         $middle = collect($quotes)
-            ->filter(fn (array $q) => ! in_array($q['quote_id'], $usedIds, true))
+            ->filter(fn (array $q) => ! in_array($q['rate_id'], $usedIds, true))
             ->filter(fn (array $q) => $q['estimated_days'] !== $cheapest['estimated_days']
                 || $q['estimated_days'] !== $fastest['estimated_days'])
             ->first();
@@ -89,7 +99,8 @@ class ShippingQuoteService
 
     /**
      * @param  array{weight: float, height: float, width: float, length: float}|null  $parcel
-     * @return array{quotes: array<int, array<string, mixed>>, source: string, parcel: array{weight: float, height: float, width: float, length: float}}
+     * @return array{quotes: array<int, array<string, mixed>>, source: string,
+     *               parcel: array{weight: float, height: float, width: float, length: float}}
      */
     private function staticFallback(?array $parcel = null): array
     {
