@@ -37,6 +37,8 @@ class OrderFactory extends Factory
             'shipping_carrier' => null,
             'tracking_url' => null,
             'refunded_amount' => 0,
+            'shipping_quote_source' => null,
+            'parcel_dimensions' => null,
         ];
     }
 
@@ -78,6 +80,28 @@ class OrderFactory extends Factory
         return $this->state(fn () => [
             'status' => 'cancelled',
             'payment_status' => 'failed',
+        ]);
+    }
+
+    public function withSkydropxShipping(): static
+    {
+        return $this->state(fn () => [
+            'shipping_quote_source' => 'skydropx',
+            'shipping_carrier' => fake()->randomElement(['FedEx', 'DHL', 'Estafeta']).' - Express',
+            'parcel_dimensions' => [
+                'weight' => 2.5,
+                'height' => 30,
+                'width' => 20,
+                'length' => 15,
+            ],
+        ]);
+    }
+
+    public function withLabel(): static
+    {
+        return $this->withSkydropxShipping()->state(fn () => [
+            'label_url' => 'https://skydropx.com/labels/'.fake()->uuid().'.pdf',
+            'skydropx_shipment_id' => 'shp_'.fake()->uuid(),
         ]);
     }
 

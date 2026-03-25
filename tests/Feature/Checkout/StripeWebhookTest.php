@@ -1,11 +1,13 @@
 <?php
 
+use App\Jobs\CreateShippingLabel;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Support\Facades\Bus;
 use Laravel\Cashier\Events\WebhookReceived;
 
 function checkoutCompletedPayload(array $metadata = [], ?string $paymentIntent = 'pi_test_123'): array
@@ -406,6 +408,62 @@ it('ignores payment_intent.succeeded with missing metadata', function () {
     event(new WebhookReceived(paymentIntentSucceededPayload(metadata: [])));
 
     expect(Order::where('payment_status', 'completed')->count())->toBe(0);
+});
+
+// Shipping label dispatch
+
+it('dispatches CreateShippingLabel job for skydropx orders on checkout completed', function () {
+    Bus::fake(CreateShippingLabel::class);
+
+    $user = User::factory()->create();
+    $order = Order::factory()->withSkydropxShipping()->create([
+        'user_id' => $user->id,
+        'status' => 'pending',
+        'payment_status' => 'pending',
+    ]);
+
+    event(new WebhookReceived(checkoutCompletedPayload(
+        metadata: ['order_id' => $order->id, 'user_id' => $user->id],
+    )));
+
+    Bus::assertDispatched(CreateShippingLabel::class, fn ($job) => $job->order->id === $order->id);
+});
+
+it('does not dispatch CreateShippingLabel job for static shipping orders', function () {
+    Bus::fake(CreateShippingLabel::class);
+
+    $user = User::factory()->create();
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'pending',
+        'payment_status' => 'pending',
+        'shipping_quote_source' => 'static',
+    ]);
+
+    event(new WebhookReceived(checkoutCompletedPayload(
+        metadata: ['order_id' => $order->id, 'user_id' => $user->id],
+    )));
+
+    Bus::assertNotDispatched(CreateShippingLabel::class);
+});
+
+it('dispatches CreateShippingLabel job on payment_intent.succeeded for skydropx orders', function () {
+    Bus::fake(CreateShippingLabel::class);
+
+    $user = User::factory()->create();
+    $order = Order::factory()->withSkydropxShipping()->create([
+        'user_id' => $user->id,
+        'status' => 'payment_pending',
+        'payment_status' => 'pending',
+        'payment_intent_id' => 'pi_test_label_dispatch',
+    ]);
+
+    event(new WebhookReceived(paymentIntentSucceededPayload(
+        paymentIntentId: 'pi_test_label_dispatch',
+        metadata: ['order_id' => $order->id, 'user_id' => $user->id],
+    )));
+
+    Bus::assertDispatched(CreateShippingLabel::class, fn ($job) => $job->order->id === $order->id);
 });
 
 // Unrecognized events

@@ -261,7 +261,12 @@ export interface AdminOrder {
     refunded_amount: number;
     tracking_number: string | null;
     shipping_carrier: string | null;
+    tracking_url: string | null;
     shipping_address: Record<string, string> | null;
+    label_url: string | null;
+    label_error: string | null;
+    skydropx_shipment_id: string | null;
+    shipping_quote_source: string | null;
     created_at: string;
     updated_at: string;
     customer: AdminOrderCustomer | null;

@@ -43,6 +43,8 @@ class StoreCheckoutShippingController extends Controller
                 'shipping_cost' => $shippingData['cost'],
                 'shipping_carrier' => $shippingData['carrier'],
                 'shipping_method_id' => $shippingData['shipping_method_id'],
+                'shipping_quote_source' => $shippingData['source'],
+                'parcel_dimensions' => $shippingData['parcel'],
                 'shipping_address' => [
                     'name' => $request->validated('name'),
                     'address_line_1' => $request->validated('address_line_1'),
@@ -86,7 +88,7 @@ class StoreCheckoutShippingController extends Controller
     /**
      * Re-validate the selected shipping quote server-side.
      *
-     * @return array{cost: float, carrier: string, shipping_method_id: int|null}
+     * @return array{cost: float, carrier: string, shipping_method_id: int|null, source: string, parcel: array{weight: float, height: float, width: float, length: float}}
      */
     private function resolveShipping(CheckoutRequest $request, ShippingQuoteService $quoteService, Cart $cart): array
     {
@@ -114,6 +116,8 @@ class StoreCheckoutShippingController extends Controller
                 'cost' => (float) config('shop.shipping_cost'),
                 'carrier' => 'Envío estándar',
                 'shipping_method_id' => null,
+                'source' => 'static',
+                'parcel' => $result['parcel'],
             ];
         }
 
@@ -121,6 +125,8 @@ class StoreCheckoutShippingController extends Controller
             'cost' => (float) $matchedQuote['price'],
             'carrier' => $matchedQuote['carrier'].' - '.$matchedQuote['service'],
             'shipping_method_id' => $matchedQuote['shipping_method_id'] ?? null,
+            'source' => $result['source'],
+            'parcel' => $result['parcel'],
         ];
     }
 

@@ -242,12 +242,191 @@ class SkydropxService
                     'price' => (float) ($rate['total'] ?? 0),
                     'estimated_days' => (int) ($rate['days'] ?? 5),
                     'quote_id' => 'skydropx_'.($rate['id'] ?? uniqid()),
+                    'skydropx_rate_id' => $rate['id'] ?? null,
                 ];
             })
             ->filter(fn (array $quote) => $quote['price'] > 0)
             ->sortBy('price')
             ->values()
             ->all();
+    }
+
+    /**
+     * Create a shipment by re-quoting and matching the carrier/service.
+     *
+     * @param  array{postal_code: string, city: string, state: string, neighborhood: string}  $addressTo
+     * @param  array{weight: float, height: float, width: float, length: float}  $parcel
+     * @return array{id: string, tracking_number: string|null, tracking_url: string|null, label_url: string|null}|null
+     */
+    public function createShipment(array $addressTo, array $parcel, string $carrierName, string $serviceName): ?array
+    {
+        try {
+            $token = $this->getOauthToken();
+
+            if (! $token) {
+                return null;
+            }
+
+            $response = $this->requestQuotation($addressTo, $parcel);
+
+            if (! $response || $response->failed()) {
+                return null;
+            }
+
+            $response = $this->pollUntilCompleted($response);
+
+            if (! $response) {
+                return null;
+            }
+
+            $data = $response->json();
+            $quotationId = $data['id'] ?? null;
+            $matchedRate = $this->matchRate($data['rates'] ?? [], $carrierName, $serviceName);
+
+            if (! $matchedRate || ! $quotationId) {
+                Log::warning('Skydropx: No matching rate found for shipment', [
+                    'carrier' => $carrierName,
+                    'service' => $serviceName,
+                ]);
+
+                return null;
+            }
+
+            $origin = $this->fullAddressFrom();
+
+            $shipmentPayload = [
+                'shipment' => [
+                    'quotation_id' => $quotationId,
+                    'rate_id' => $matchedRate['id'],
+                    'address_from' => $origin,
+                    'address_to' => [
+                        'country_code' => 'MX',
+                        'postal_code' => $addressTo['postal_code'],
+                        'area_level1' => $addressTo['state'],
+                        'area_level2' => $addressTo['city'],
+                        'area_level3' => $addressTo['neighborhood'],
+                        'name' => $addressTo['name'] ?? '',
+                        'street' => $addressTo['street'] ?? '',
+                        'phone' => $addressTo['phone'] ?? '',
+                        'email' => $addressTo['email'] ?? '',
+                    ],
+                    'parcels' => [
+                        [
+                            'length' => $parcel['length'],
+                            'width' => $parcel['width'],
+                            'height' => $parcel['height'],
+                            'weight' => $parcel['weight'],
+                        ],
+                    ],
+                ],
+            ];
+
+            $shipmentResponse = Http::withToken($token)
+                ->timeout(15)
+                ->post("{$this->baseUrl}/shipments", $shipmentPayload);
+
+            if ($shipmentResponse->failed()) {
+                Log::error('Skydropx: Failed to create shipment', [
+                    'status' => $shipmentResponse->status(),
+                    'body' => $shipmentResponse->body(),
+                ]);
+
+                return null;
+            }
+
+            $shipmentData = $shipmentResponse->json();
+
+            return [
+                'id' => (string) ($shipmentData['id'] ?? ''),
+                'tracking_number' => $shipmentData['tracking_number'] ?? null,
+                'tracking_url' => $shipmentData['tracking_url'] ?? null,
+                'label_url' => $shipmentData['label_url'] ?? null,
+            ];
+        } catch (\Throwable $e) {
+            Log::error('Skydropx: Exception creating shipment', [
+                'message' => $e->getMessage(),
+            ]);
+
+            return null;
+        }
+    }
+
+    /**
+     * Retrieve a label URL for a shipment.
+     */
+    public function getLabel(string $shipmentId): ?string
+    {
+        try {
+            $token = $this->getOauthToken();
+
+            if (! $token) {
+                return null;
+            }
+
+            $response = Http::withToken($token)
+                ->timeout(10)
+                ->get("{$this->baseUrl}/shipments/{$shipmentId}/labels");
+
+            if ($response->failed()) {
+                return null;
+            }
+
+            return $response->json('label_url') ?? $response->json('url');
+        } catch (\Throwable $e) {
+            Log::error('Skydropx: Exception fetching label', [
+                'shipment_id' => $shipmentId,
+                'message' => $e->getMessage(),
+            ]);
+
+            return null;
+        }
+    }
+
+    /**
+     * Full origin address for shipment creation (includes contact info).
+     *
+     * @return array<string, string>
+     */
+    public function fullAddressFrom(): array
+    {
+        $origin = config('shop.shipping_origin');
+
+        return [
+            'country_code' => 'MX',
+            'postal_code' => $origin['postal_code'],
+            'area_level1' => $origin['state'],
+            'area_level2' => $origin['city'],
+            'area_level3' => $origin['neighborhood'],
+            'name' => $origin['name'],
+            'street' => $origin['street'],
+            'phone' => $origin['phone'],
+            'email' => $origin['email'],
+        ];
+    }
+
+    /**
+     * Match a rate by carrier and service name (case-insensitive contains).
+     *
+     * @param  array<int, array<string, mixed>>  $rates
+     * @return array<string, mixed>|null
+     */
+    private function matchRate(array $rates, string $carrierName, string $serviceName): ?array
+    {
+        $carrierLower = mb_strtolower($carrierName);
+        $serviceLower = mb_strtolower($serviceName);
+
+        $successRates = array_filter($rates, fn (array $rate) => ($rate['success'] ?? false) === true);
+
+        foreach ($successRates as $rate) {
+            $rateCarrier = mb_strtolower($rate['provider_display_name'] ?? '');
+            $rateService = mb_strtolower($rate['provider_service_name'] ?? '');
+
+            if (str_contains($rateCarrier, $carrierLower) && str_contains($rateService, $serviceLower)) {
+                return $rate;
+            }
+        }
+
+        return null;
     }
 
     private function addressFrom(): array

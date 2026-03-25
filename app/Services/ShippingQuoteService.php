@@ -14,7 +14,7 @@ class ShippingQuoteService
     /**
      * @param  array{postal_code: string, city: string, state: string, neighborhood: string}  $destination
      * @param  Collection<int, \App\Models\CartItem>  $cartItems
-     * @return array{quotes: array<int, array<string, mixed>>, source: string}
+     * @return array{quotes: array<int, array<string, mixed>>, source: string, parcel: array{weight: float, height: float, width: float, length: float}}
      */
     public function getQuotes(array $destination, Collection $cartItems): array
     {
@@ -32,10 +32,11 @@ class ShippingQuoteService
             return [
                 'quotes' => $this->selectRepresentativeQuotes($quotes),
                 'source' => 'skydropx',
+                'parcel' => $parcel,
             ];
         }
 
-        return $this->staticFallback();
+        return $this->staticFallback($parcel);
     }
 
     /**
@@ -87,9 +88,10 @@ class ShippingQuoteService
     }
 
     /**
-     * @return array{quotes: array<int, array<string, mixed>>, source: string}
+     * @param  array{weight: float, height: float, width: float, length: float}|null  $parcel
+     * @return array{quotes: array<int, array<string, mixed>>, source: string, parcel: array{weight: float, height: float, width: float, length: float}}
      */
-    private function staticFallback(): array
+    private function staticFallback(?array $parcel = null): array
     {
         $methods = ShippingMethod::where('is_active', true)
             ->orderBy('cost')
@@ -107,6 +109,7 @@ class ShippingQuoteService
         return [
             'quotes' => $quotes,
             'source' => 'static',
+            'parcel' => $parcel ?? config('shop.default_parcel'),
         ];
     }
 }

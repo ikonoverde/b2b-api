@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\Orders\RetryShippingLabelController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\Auth\LoginController;
 use App\Http\Controllers\Web\BannersController;
@@ -77,4 +78,6 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
         ->name('orders.update-tracking');
     Route::post('/orders/{order}/refund', [OrderController::class, 'createRefund'])->name('orders.create-refund');
     Route::post('/orders/{order}/notes', [OrderController::class, 'storeNote'])->name('orders.store-note');
+    Route::post('/orders/{order}/retry-label', RetryShippingLabelController::class)
+        ->name('orders.retry-label');
 });

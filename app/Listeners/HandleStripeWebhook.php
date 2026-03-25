@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Jobs\CreateShippingLabel;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
@@ -48,6 +49,12 @@ class HandleStripeWebhook implements ShouldQueue
         $paymentIntentId = $session['payment_intent'] ?? null;
 
         $this->fulfillOrder($order, (int) $order->user_id, $paymentIntentId);
+
+        $order->refresh();
+
+        if ($order->isSkydropxShipment()) {
+            CreateShippingLabel::dispatch($order);
+        }
     }
 
     /**
@@ -63,6 +70,12 @@ class HandleStripeWebhook implements ShouldQueue
         }
 
         $this->fulfillOrder($order, (int) $order->user_id);
+
+        $order->refresh();
+
+        if ($order->isSkydropxShipment()) {
+            CreateShippingLabel::dispatch($order);
+        }
     }
 
     /**

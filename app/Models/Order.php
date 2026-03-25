@@ -39,6 +39,11 @@ class Order extends Model
         'shipping_carrier',
         'tracking_url',
         'refunded_amount',
+        'label_url',
+        'skydropx_shipment_id',
+        'shipping_quote_source',
+        'parcel_dimensions',
+        'label_error',
     ];
 
     protected function casts(): array
@@ -50,7 +55,18 @@ class Order extends Model
             'shipping_cost' => 'decimal:2',
             'refunded_amount' => 'decimal:2',
             'shipping_address' => 'array',
+            'parcel_dimensions' => 'array',
         ];
+    }
+
+    public function isSkydropxShipment(): bool
+    {
+        return $this->shipping_quote_source === 'skydropx';
+    }
+
+    public function hasShippingLabel(): bool
+    {
+        return $this->label_url !== null;
     }
 
     public function canTransitionTo(string $newStatus): bool

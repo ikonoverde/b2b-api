@@ -1,4 +1,4 @@
-import { Link, usePage, useForm } from '@inertiajs/react';
+import { Link, usePage, useForm, router } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import {
     Package,
@@ -6,6 +6,9 @@ import {
     MapPin,
     Truck,
     DollarSign,
+    Printer,
+    AlertTriangle,
+    Loader2,
 } from 'lucide-react';
 import { useState, FormEvent } from 'react';
 import type { PageProps, AdminOrder } from '@/types';
@@ -178,6 +181,73 @@ function StatusManagementCard({ order, onOpenStatusModal }: { order: AdminOrder;
     );
 }
 
+function ShippingLabelCard({ order }: { order: AdminOrder }) {
+    if (order.shipping_quote_source !== 'skydropx') {
+        return null;
+    }
+
+    const [retrying, setRetrying] = useState(false);
+
+    const handleRetry = () => {
+        setRetrying(true);
+        router.post(`/admin/orders/${order.id}/retry-label`, {}, {
+            preserveScroll: true,
+            onFinish: () => setRetrying(false),
+        });
+    };
+
+    return (
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
+            <div className="px-6 py-5 border-b border-[#E5E5E5]">
+                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">Guía de Envío</h2>
+            </div>
+            <div className="p-6 flex flex-col gap-4">
+                {order.label_url ? (
+                    <>
+                        <div className="flex items-center gap-3">
+                            <Printer className="w-5 h-5 text-green-600" />
+                            <span className="text-sm text-green-700 font-medium font-[Outfit]">Guía generada</span>
+                        </div>
+                        {order.skydropx_shipment_id && (
+                            <div className="text-xs text-[#999999] font-[Outfit]">
+                                ID Envío: {order.skydropx_shipment_id}
+                            </div>
+                        )}
+                        <a
+                            href={order.label_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full px-4 py-2.5 bg-[#4A5D4A] rounded-lg text-sm font-medium text-white font-[Outfit] hover:bg-[#3d4d3d] transition-colors text-center flex items-center justify-center gap-2"
+                        >
+                            <Printer className="w-4 h-4" />
+                            Imprimir Guía
+                        </a>
+                    </>
+                ) : order.label_error ? (
+                    <>
+                        <div className="flex items-start gap-3">
+                            <AlertTriangle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                            <p className="text-sm text-red-600 font-[Outfit]">{order.label_error}</p>
+                        </div>
+                        <button
+                            onClick={handleRetry}
+                            disabled={retrying}
+                            className="w-full px-4 py-2.5 bg-orange-600 rounded-lg text-sm font-medium text-white font-[Outfit] hover:bg-orange-700 transition-colors disabled:opacity-50"
+                        >
+                            {retrying ? 'Reintentando...' : 'Reintentar Generación'}
+                        </button>
+                    </>
+                ) : (
+                    <div className="flex items-center gap-3">
+                        <Loader2 className="w-5 h-5 text-[#999999] animate-spin" />
+                        <span className="text-sm text-[#999999] font-[Outfit]">Generando guía de envío...</span>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
 function TrackingForm({ order }: { order: AdminOrder }) {
     const { data, setData, patch, processing, errors } = useForm({
         tracking_number: order.tracking_number || '',
@@ -299,6 +369,7 @@ export default function OrderShow() {
                         <OrderInfoCard order={order} />
                         <CustomerCard order={order} />
                         <ShippingCard order={order} />
+                        <ShippingLabelCard order={order} />
                         <StatusManagementCard order={order} onOpenStatusModal={() => setShowStatusModal(true)} />
                         <TrackingForm order={order} />
                         <RefundSection order={order} onOpenRefundModal={() => setShowRefundModal(true)} />
