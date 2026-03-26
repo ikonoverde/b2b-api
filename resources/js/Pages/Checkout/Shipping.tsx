@@ -114,8 +114,8 @@ export default function Shipping({ cart, addresses }: ShippingProps) {
                             <SavedAddressSelector
                                 addresses={addresses}
                                 selectedAddressId={selectedAddressId}
-                                onSelect={populateFromAddress}
-                                onNewAddress={handleNewAddress}
+                                onSelect={selectAddress}
+                                onNewAddress={clearSelection}
                             />
                         )}
 

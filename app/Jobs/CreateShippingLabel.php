@@ -56,9 +56,8 @@ class CreateShippingLabel implements ShouldQueue
 
         if (! $result) {
             $this->order->update(['label_error' => 'Skydropx no pudo crear el envío. Se reintentará.']);
-            $this->fail(new \RuntimeException('Skydropx shipment creation returned null'));
 
-            return;
+            throw new \RuntimeException('Skydropx shipment creation returned null');
         }
 
         $labelUrl = $result['label_url'];
