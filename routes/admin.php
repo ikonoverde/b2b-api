@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\Businesses\IndexBusinessesController;
+use App\Http\Controllers\Admin\Businesses\StartBusinessScrapeController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\Orders\RetryShippingLabelController;
 use App\Http\Controllers\Admin\UserController;
@@ -80,4 +82,7 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
     Route::post('/orders/{order}/notes', [OrderController::class, 'storeNote'])->name('orders.store-note');
     Route::post('/orders/{order}/retry-label', RetryShippingLabelController::class)
         ->name('orders.retry-label');
+
+    Route::get('/businesses', IndexBusinessesController::class)->name('businesses');
+    Route::post('/businesses/scrape', StartBusinessScrapeController::class)->name('businesses.scrape');
 });

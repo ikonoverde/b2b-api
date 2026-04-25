@@ -1,7 +1,0 @@
-[mcpServers.laravel-telescope]
-command = "php"
-args = ["artisan", "telescope-mcp:server"]
-cwd = "/home/eric/projects/b2b/api"
-
-[mcpServers.laravel-telescope.env]
-APP_ENV = "local"

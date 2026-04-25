@@ -53,4 +53,8 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI', '/auth/google/callback'),
     ],
 
+    'outscraper' => [
+        'api_key' => env('OUTSCRAPER_API_KEY'),
+    ],
+
 ];

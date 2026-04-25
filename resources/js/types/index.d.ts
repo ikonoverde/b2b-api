@@ -351,3 +351,34 @@ export interface AddressFormData {
     phone: string;
     is_default: boolean;
 }
+
+export interface BusinessItem {
+    id: number;
+    place_id: string;
+    name: string;
+    category_name: string | null;
+    address: string | null;
+    phone: string | null;
+    website: string | null;
+    google_maps_url: string | null;
+    rating: number | null;
+    reviews_count: number;
+    city: string | null;
+    state: string | null;
+    image_url: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface BusinessScrapeRun {
+    id: number;
+    status: string;
+    search_terms: string;
+    location: string;
+    total_found: number;
+    total_imported: number;
+    total_updated: number;
+    error_message: string | null;
+    started_at: string | null;
+    completed_at: string | null;
+}
