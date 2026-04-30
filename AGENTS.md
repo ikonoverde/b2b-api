@@ -245,11 +245,11 @@ Route::get('/users', function () {
 - Tests should test all of the happy paths, failure paths, and weird paths.
 - Tests live in the `tests/Feature` and `tests/Unit` directories.
 - Pest tests look and behave like this:
-  <code-snippet name="Basic Pest Test Example" lang="php">
-  it('is true', function () {
-  expect(true)->toBeTrue();
-  });
-  </code-snippet>
+<code-snippet name="Basic Pest Test Example" lang="php">
+it('is true', function () {
+    expect(true)->toBeTrue();
+});
+</code-snippet>
 
 ### Running Tests
 - Run the minimal number of tests using an appropriate filter before finalizing code edits.
@@ -260,13 +260,13 @@ Route::get('/users', function () {
 
 ### Pest Assertions
 - When asserting status codes on a response, use the specific method like `assertForbidden` and `assertNotFound` instead of using `assertStatus(403)` or similar, e.g.:
-  <code-snippet name="Pest Example Asserting postJson Response" lang="php">
-  it('returns all', function () {
-  $response = $this->postJson('/api/docs', []);
+<code-snippet name="Pest Example Asserting postJson Response" lang="php">
+it('returns all', function () {
+    $response = $this->postJson('/api/docs', []);
 
-  $response->assertSuccessful();
-  });
-  </code-snippet>
+    $response->assertSuccessful();
+});
+</code-snippet>
 
 ### Mocking
 - Mocking can be very helpful when appropriate.
@@ -351,19 +351,19 @@ import { Link } from '@inertiajs/react'
 import { Form } from '@inertiajs/react'
 
 export default () => (
-<Form action="/users" method="post">
-{({
-errors,
-hasErrors,
-processing,
-wasSuccessful,
-recentlySuccessful,
-clearErrors,
-resetAndClearErrors,
-defaults
-}) => (
-<>
-<input type="text" name="name" />
+    <Form action="/users" method="post">
+        {({
+            errors,
+            hasErrors,
+            processing,
+            wasSuccessful,
+            recentlySuccessful,
+            clearErrors,
+            resetAndClearErrors,
+            defaults
+        }) => (
+        <>
+        <input type="text" name="name" />
 
         {errors.name && <div>{errors.name}</div>}
 
@@ -449,7 +449,7 @@ defaults
 
 - This application uses the Laravel AI SDK (`laravel/ai`) for all AI functionality.
 - Activate the `developing-with-ai-sdk` skill when building, editing, updating, debugging, or testing AI agents, text generation, chat, streaming, structured output, tools, image generation, audio, transcription, embeddings, reranking, vector stores, files, conversation memory, or any AI provider integration (OpenAI, Anthropic, Gemini, Cohere, Groq, xAI, ElevenLabs, Jina, OpenRouter).
-  </laravel-boost-guidelines>
+</laravel-boost-guidelines>
 
 ## API Documentation
 - When adding or updating API endpoint methods, always add or update Scribe PHPDoc annotations (`@group`, `@authenticated`/`@unauthenticated`, `@response` with scenarios, `@urlParam`, etc.) in the controller docblocks. Follow the conventions used by sibling controllers.
