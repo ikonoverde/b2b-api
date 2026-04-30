@@ -245,11 +245,11 @@ Route::get('/users', function () {
 - Tests should test all of the happy paths, failure paths, and weird paths.
 - Tests live in the `tests/Feature` and `tests/Unit` directories.
 - Pest tests look and behave like this:
-<code-snippet name="Basic Pest Test Example" lang="php">
-it('is true', function () {
-    expect(true)->toBeTrue();
-});
-</code-snippet>
+  <code-snippet name="Basic Pest Test Example" lang="php">
+  it('is true', function () {
+  expect(true)->toBeTrue();
+  });
+  </code-snippet>
 
 ### Running Tests
 - Run the minimal number of tests using an appropriate filter before finalizing code edits.
@@ -260,13 +260,13 @@ it('is true', function () {
 
 ### Pest Assertions
 - When asserting status codes on a response, use the specific method like `assertForbidden` and `assertNotFound` instead of using `assertStatus(403)` or similar, e.g.:
-<code-snippet name="Pest Example Asserting postJson Response" lang="php">
-it('returns all', function () {
-    $response = $this->postJson('/api/docs', []);
+  <code-snippet name="Pest Example Asserting postJson Response" lang="php">
+  it('returns all', function () {
+  $response = $this->postJson('/api/docs', []);
 
-    $response->assertSuccessful();
-});
-</code-snippet>
+  $response->assertSuccessful();
+  });
+  </code-snippet>
 
 ### Mocking
 - Mocking can be very helpful when appropriate.
@@ -351,19 +351,19 @@ import { Link } from '@inertiajs/react'
 import { Form } from '@inertiajs/react'
 
 export default () => (
-    <Form action="/users" method="post">
-        {({
-            errors,
-            hasErrors,
-            processing,
-            wasSuccessful,
-            recentlySuccessful,
-            clearErrors,
-            resetAndClearErrors,
-            defaults
-        }) => (
-        <>
-        <input type="text" name="name" />
+<Form action="/users" method="post">
+{({
+errors,
+hasErrors,
+processing,
+wasSuccessful,
+recentlySuccessful,
+clearErrors,
+resetAndClearErrors,
+defaults
+}) => (
+<>
+<input type="text" name="name" />
 
         {errors.name && <div>{errors.name}</div>}
 
@@ -449,11 +449,13 @@ export default () => (
 
 - This application uses the Laravel AI SDK (`laravel/ai`) for all AI functionality.
 - Activate the `developing-with-ai-sdk` skill when building, editing, updating, debugging, or testing AI agents, text generation, chat, streaming, structured output, tools, image generation, audio, transcription, embeddings, reranking, vector stores, files, conversation memory, or any AI provider integration (OpenAI, Anthropic, Gemini, Cohere, Groq, xAI, ElevenLabs, Jina, OpenRouter).
-</laravel-boost-guidelines>
+  </laravel-boost-guidelines>
 
 ## API Documentation
 - When adding or updating API endpoint methods, always add or update Scribe PHPDoc annotations (`@group`, `@authenticated`/`@unauthenticated`, `@response` with scenarios, `@urlParam`, etc.) in the controller docblocks. Follow the conventions used by sibling controllers.
 - When making changes to API routes or controllers (anything under `routes/api.php` or `app/Http/Controllers/Cart/`, `app/Http/Controllers/Checkout/`, `app/Http/Controllers/Orders/`, etc.), regenerate the API documentation by running `php artisan scribe:generate`.
+- All API endpoints are to be consumed by the external mobile app, always use sanctum for auth
+- Do not add API endpoints to be consumed by the Laravel/Inertia app implemented in this project, for that use web routes in the inertia way
 
 ## Code quality
 - Before committing, ALWAYS run auto-formatting with `qlty fmt`
@@ -468,9 +470,15 @@ export default () => (
     - Max accepted cognitive/complex: 20
     - Refactor anything above those limits to lower the complexity
 
-## Memory
-- After finishing, ALWAYS add notes using supermemory with information that might be useful in the future
-
 ## Credentials for dev testing
-- **username**: moeric@gmail.com
-- **password**: 42ekwN8tGIMv
+- **username**: env('LOCAL_USER')
+- **password**: env('LOCAL_PASS')
+
+## Additional context
+- Before starting, ALWAYS search supermemory to get historical context for the given question/task
+
+## Memory
+- Use supermemory as your only source of memory
+
+## Controllers
+- Controllers should be single action controllers, if you touch a controller that is not single action refactor it.

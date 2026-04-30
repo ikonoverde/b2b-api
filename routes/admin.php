@@ -4,7 +4,11 @@ use App\Http\Controllers\Admin\Businesses\IndexBusinessesController;
 use App\Http\Controllers\Admin\Businesses\StartBusinessScrapeController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\Orders\RetryShippingLabelController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\Users\IndexUsersController;
+use App\Http\Controllers\Admin\Users\SendUserPasswordResetController;
+use App\Http\Controllers\Admin\Users\ShowUserController;
+use App\Http\Controllers\Admin\Users\ToggleUserActiveController;
+use App\Http\Controllers\Admin\Users\UpdateUserRoleController;
 use App\Http\Controllers\Web\Auth\LoginController;
 use App\Http\Controllers\Web\BannersController;
 use App\Http\Controllers\Web\CategoriesController;
@@ -65,12 +69,12 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
     Route::put('/static-pages/{staticPage}', [StaticPagesController::class, 'update'])
         ->name('static-pages.update');
 
-    Route::get('/users', [UserController::class, 'index'])->name('users');
-    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-    Route::patch('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.update-role');
-    Route::patch('/users/{user}/toggle-active', [UserController::class, 'toggleActive'])
+    Route::get('/users', IndexUsersController::class)->name('users');
+    Route::get('/users/{user}', ShowUserController::class)->name('users.show');
+    Route::patch('/users/{user}/role', UpdateUserRoleController::class)->name('users.update-role');
+    Route::patch('/users/{user}/toggle-active', ToggleUserActiveController::class)
         ->name('users.toggle-active');
-    Route::post('/users/{user}/send-password-reset', [UserController::class, 'sendPasswordReset'])
+    Route::post('/users/{user}/send-password-reset', SendUserPasswordResetController::class)
         ->name('users.send-password-reset');
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders');
