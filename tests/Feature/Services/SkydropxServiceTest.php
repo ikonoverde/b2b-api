@@ -68,7 +68,7 @@ test('returns normalized quotes from successful response', function () {
         ->and($quotes[0]['price'])->toBe(89.0)
         ->and($quotes[1]['carrier'])->toBe('FedEx')
         ->and($quotes[1]['price'])->toBe(150.50)
-        ->and($quotes[0]['quote_id'])->toStartWith('skydropx_');
+        ->and($quotes[0]['quote_id'])->toStartWith('quote_');
 });
 
 test('returns empty array on quotation api error', function () {

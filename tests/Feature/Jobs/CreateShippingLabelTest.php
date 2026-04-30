@@ -122,21 +122,13 @@ it('records label_error when carrier cannot be parsed', function () {
     expect($order->fresh()->label_error)->toBe('No se pudo determinar la paquetería del pedido.');
 });
 
-it('parses carrier and service from shipping_carrier string', function () {
+it('passes the carrier-parse guard for well-formed shipping_carrier strings', function () {
     $order = skydropxOrder(['shipping_carrier' => 'Estafeta - Terrestre']);
-
-    $capturedCarrier = null;
-    $capturedService = null;
 
     $mock = Mockery::mock(SkydropxService::class);
     $mock->shouldReceive('createShipment')
         ->once()
-        ->withArgs(function ($addr, $parcel, $carrier, $service) use (&$capturedCarrier, &$capturedService) {
-            $capturedCarrier = $carrier;
-            $capturedService = $service;
-
-            return true;
-        })
+        ->with(Mockery::type('array'), Mockery::type(\App\Models\Order::class))
         ->andReturn([
             'id' => 'shp_789',
             'tracking_number' => null,
@@ -146,6 +138,6 @@ it('parses carrier and service from shipping_carrier string', function () {
 
     (new CreateShippingLabel($order))->handle($mock);
 
-    expect($capturedCarrier)->toBe('Estafeta')
-        ->and($capturedService)->toBe('Terrestre');
+    expect($order->fresh()->label_error)->toBeNull()
+        ->and($order->fresh()->label_url)->toBe('https://labels.example.com/label.pdf');
 });

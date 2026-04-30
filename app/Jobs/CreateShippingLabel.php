@@ -8,6 +8,14 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @phpstan-type ShipmentResult array{
+ *     id: string,
+ *     tracking_number: string|null,
+ *     tracking_url: string|null,
+ *     label_url: string|null,
+ * }
+ */
 class CreateShippingLabel implements ShouldQueue
 {
     use Queueable;
@@ -30,28 +38,46 @@ class CreateShippingLabel implements ShouldQueue
             return;
         }
 
-        if (! $this->order->isSkydropxShipment()) {
+        if (! $this->order->isSkydropxShipment() || $this->order->payment_status !== 'completed') {
             return;
         }
 
-        if ($this->order->payment_status !== 'completed') {
+        $result = $this->fetchShipmentResult($skydropx);
+
+        if ($result === null) {
             return;
         }
 
+        $this->order->update($this->buildUpdateData($result, $this->resolveLabelUrl($result, $skydropx)));
+    }
+
+    /**
+     * @param  ShipmentResult  $result
+     */
+    private function resolveLabelUrl(array $result, SkydropxService $skydropx): ?string
+    {
+        if ($result['label_url']) {
+            return $result['label_url'];
+        }
+
+        return $result['id'] ? $skydropx->getLabel($result['id']) : null;
+    }
+
+    /**
+     * @return ShipmentResult|null
+     */
+    private function fetchShipmentResult(SkydropxService $skydropx): ?array
+    {
         if ($this->order->skydropx_shipment_id) {
             $result = $skydropx->getTracking($this->order->skydropx_shipment_id);
         } else {
-            $carrierParts = $this->parseCarrier($this->order->shipping_carrier);
-
-            if (! $carrierParts) {
+            if (! $this->parseCarrier($this->order->shipping_carrier)) {
                 $this->order->update(['label_error' => 'No se pudo determinar la paquetería del pedido.']);
 
-                return;
+                return null;
             }
 
-            $addressTo = $this->buildAddressTo();
-
-            $result = $skydropx->createShipment($addressTo, $this->order);
+            $result = $skydropx->createShipment($this->buildAddressTo(), $this->order);
         }
 
         if (! $result) {
@@ -60,30 +86,26 @@ class CreateShippingLabel implements ShouldQueue
             throw new \RuntimeException('Skydropx shipment creation returned null');
         }
 
-        $labelUrl = $result['label_url'];
+        return $result;
+    }
 
-        if (! $labelUrl && $result['id']) {
-            $labelUrl = $skydropx->getLabel($result['id']);
-        }
+    /**
+     * @param  ShipmentResult  $result
+     * @return array<string, mixed>
+     */
+    private function buildUpdateData(array $result, ?string $labelUrl): array
+    {
+        $optional = array_filter([
+            'label_url' => $labelUrl,
+            'tracking_number' => $result['tracking_number'],
+            'tracking_url' => $result['tracking_url'],
+        ]);
 
-        $updateData = [
+        return [
             'skydropx_shipment_id' => $result['id'],
             'label_error' => null,
+            ...$optional,
         ];
-
-        if ($labelUrl) {
-            $updateData['label_url'] = $labelUrl;
-        }
-
-        if ($result['tracking_number']) {
-            $updateData['tracking_number'] = $result['tracking_number'];
-        }
-
-        if ($result['tracking_url']) {
-            $updateData['tracking_url'] = $result['tracking_url'];
-        }
-
-        $this->order->update($updateData);
     }
 
     public function failed(\Throwable $e): void
@@ -122,18 +144,27 @@ class CreateShippingLabel implements ShouldQueue
      */
     private function buildAddressTo(): array
     {
-        $address = $this->order->shipping_address;
+        $address = ($this->order->shipping_address ?? []) + [
+            'postal_code' => '',
+            'city' => '',
+            'state' => '',
+            'address_line_1' => '',
+            'address_line_2' => '',
+            'name' => '',
+            'phone' => '',
+            'reference' => null,
+        ];
 
         return [
-            'postal_code' => $address['postal_code'] ?? '',
-            'city' => $address['city'] ?? '',
-            'state' => $address['state'] ?? '',
-            'neighborhood' => $address['address_line_2'] ?? '',
-            'name' => $address['name'] ?? '',
-            'street' => $address['address_line_1'] ?? '',
-            'phone' => $address['phone'] ?? '',
+            'postal_code' => $address['postal_code'],
+            'city' => $address['city'],
+            'state' => $address['state'],
+            'neighborhood' => $address['address_line_2'],
+            'name' => $address['name'],
+            'street' => $address['address_line_1'],
+            'phone' => $address['phone'],
             'email' => $this->order->user?->email ?? '',
-            'reference' => $address['reference'] ?? $address['address_line_2'] ?? '',
+            'reference' => $address['reference'] ?? $address['address_line_2'],
         ];
     }
 }

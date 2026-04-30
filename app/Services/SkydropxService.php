@@ -309,37 +309,11 @@ class SkydropxService
                 return null;
             }
 
-            $rateId = $order->shipping_rate_id;
-            $origin = $this->fullAddressFrom();
-
-            $shipmentPayload = [
-                'shipment' => [
-                    'rate_id' => $rateId,
-                    'printing_format' => 'standard',
-                    'address_from' => $origin,
-                    'address_to' => [
-                        'country_code' => 'MX',
-                        'postal_code' => $addressTo['postal_code'],
-                        'area_level1' => $addressTo['state'],
-                        'area_level2' => $addressTo['city'],
-                        'area_level3' => $addressTo['neighborhood'],
-                        'name' => $addressTo['name'] ?? '',
-                        'street1' => $addressTo['street'] ?? '',
-                        'phone' => $addressTo['phone'] ?? '',
-                        'email' => $addressTo['email'] ?? '',
-                        'reference' => $addressTo['reference'] ?? 'Casa',
-                    ],
-                    'packages' => [[
-                        'package_number' => '1',
-                        'consignment_note' => '53102400',
-                        'package_type' => '4G',
-                    ]],
-                ],
-            ];
+            $payload = $this->buildShipmentPayload($addressTo, $order->shipping_rate_id);
 
             $shipmentResponse = Http::withToken($token)
                 ->timeout(15)
-                ->post("{$this->baseUrl}/shipments", $shipmentPayload);
+                ->post("{$this->baseUrl}/shipments", $payload);
 
             if ($shipmentResponse->failed()) {
                 Log::error('Skydropx: Failed to create shipment', [
@@ -351,8 +325,7 @@ class SkydropxService
             }
 
             $shipmentData = $shipmentResponse->json();
-            $id = $shipmentData['data']['id'];
-            $order->skydropx_shipment_id = $id;
+            $order->skydropx_shipment_id = $shipmentData['data']['id'];
             $order->save();
 
             $trackingInfo = $this->getTrackingInfo($shipmentResponse);
@@ -370,6 +343,46 @@ class SkydropxService
 
             return null;
         }
+    }
+
+    /**
+     * @param  array<string, mixed>  $addressTo
+     * @return array<string, mixed>
+     */
+    private function buildShipmentPayload(array $addressTo, ?string $rateId): array
+    {
+        $addressTo += [
+            'name' => '',
+            'street' => '',
+            'phone' => '',
+            'email' => '',
+            'reference' => 'Casa',
+        ];
+
+        return [
+            'shipment' => [
+                'rate_id' => $rateId,
+                'printing_format' => 'standard',
+                'address_from' => $this->fullAddressFrom(),
+                'address_to' => [
+                    'country_code' => 'MX',
+                    'postal_code' => $addressTo['postal_code'],
+                    'area_level1' => $addressTo['state'],
+                    'area_level2' => $addressTo['city'],
+                    'area_level3' => $addressTo['neighborhood'],
+                    'name' => $addressTo['name'],
+                    'street1' => $addressTo['street'],
+                    'phone' => $addressTo['phone'],
+                    'email' => $addressTo['email'],
+                    'reference' => $addressTo['reference'],
+                ],
+                'packages' => [[
+                    'package_number' => '1',
+                    'consignment_note' => '53102400',
+                    'package_type' => '4G',
+                ]],
+            ],
+        ];
     }
 
     public function getTracking(string $shipmentId): ?array

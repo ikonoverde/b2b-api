@@ -25,60 +25,108 @@ class ImportBusinessResults implements ShouldQueue
 
     public function handle(OutscraperService $outscraper): void
     {
+        $items = $this->fetchItems($outscraper);
+
+        $imported = 0;
+        $updated = 0;
+
+        foreach ($items as $item) {
+            $this->importItem($item, $imported, $updated);
+        }
+
+        $this->scrapeRun->markCompleted(count($items), $imported, $updated);
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    private function fetchItems(OutscraperService $outscraper): array
+    {
         $result = $outscraper->getRequestStatus($this->scrapeRun->outscraper_request_id);
 
         if ($result === null || $result['status'] !== 'Success' || $result['items'] === null) {
             throw new \RuntimeException('Failed to fetch items from Outscraper archive');
         }
 
-        $items = $result['items'];
-        $totalFound = count($items);
-        $imported = 0;
-        $updated = 0;
+        return $result['items'];
+    }
 
-        foreach ($items as $item) {
-            $placeId = $item['place_id'] ?? null;
+    /**
+     * @param  array<string, mixed>  $item
+     */
+    private function importItem(array $item, int &$imported, int &$updated): void
+    {
+        $placeId = $item['place_id'] ?? null;
 
-            if (! $placeId) {
-                continue;
-            }
-
-            $business = Business::updateOrCreate(
-                ['place_id' => $placeId],
-                [
-                    'name' => $item['name'] ?? 'Unknown',
-                    'category_name' => $item['category'] ?? null,
-                    'address' => $item['full_address'] ?? null,
-                    'neighborhood' => $item['borough'] ?? null,
-                    'street' => $item['street'] ?? null,
-                    'city' => $item['city'] ?? null,
-                    'state' => $item['state'] ?? null,
-                    'postal_code' => $item['postal_code'] ?? null,
-                    'country_code' => $item['country_code'] ?? null,
-                    'phone' => $item['phone'] ?? null,
-                    'website' => $item['site'] ?? null,
-                    'google_maps_url' => $item['location_link'] ?? null,
-                    'rating' => $item['rating'] ?? null,
-                    'reviews_count' => $item['reviews'] ?? 0,
-                    'latitude' => $item['latitude'] ?? null,
-                    'longitude' => $item['longitude'] ?? null,
-                    'image_url' => $item['photo'] ?? null,
-                    'opening_hours' => $item['working_hours'] ?? null,
-                    'additional_info' => $item['about'] ?? null,
-                    'is_claimed' => (bool) ($item['verified'] ?? false),
-                    'is_advertisement' => false,
-                    'business_scrape_run_id' => $this->scrapeRun->id,
-                ]
-            );
-
-            if ($business->wasRecentlyCreated) {
-                $imported++;
-            } else {
-                $updated++;
-            }
+        if (! $placeId) {
+            return;
         }
 
-        $this->scrapeRun->markCompleted($totalFound, $imported, $updated);
+        $business = Business::updateOrCreate(
+            ['place_id' => $placeId],
+            $this->mapItemAttributes($item),
+        );
+
+        if ($business->wasRecentlyCreated) {
+            $imported++;
+        } else {
+            $updated++;
+        }
+    }
+
+    /**
+     * @param  array<string, mixed>  $item
+     * @return array<string, mixed>
+     */
+    private function mapItemAttributes(array $item): array
+    {
+        $item += [
+            'name' => 'Unknown',
+            'category' => null,
+            'full_address' => null,
+            'borough' => null,
+            'street' => null,
+            'city' => null,
+            'state' => null,
+            'postal_code' => null,
+            'country_code' => null,
+            'phone' => null,
+            'site' => null,
+            'location_link' => null,
+            'rating' => null,
+            'reviews' => 0,
+            'latitude' => null,
+            'longitude' => null,
+            'photo' => null,
+            'working_hours' => null,
+            'about' => null,
+            'verified' => false,
+        ];
+
+        return [
+            'name' => $item['name'],
+            'category_name' => $item['category'],
+            'address' => $item['full_address'],
+            'neighborhood' => $item['borough'],
+            'street' => $item['street'],
+            'city' => $item['city'],
+            'state' => $item['state'],
+            'postal_code' => $item['postal_code'],
+            'country_code' => $item['country_code'],
+            'phone' => $item['phone'],
+            'website' => $item['site'],
+            'google_maps_url' => $item['location_link'],
+            'rating' => $item['rating'],
+            'reviews_count' => $item['reviews'],
+            'latitude' => $item['latitude'],
+            'longitude' => $item['longitude'],
+            'image_url' => $item['photo'],
+            'opening_hours' => $item['working_hours'],
+            'additional_info' => $item['about'],
+            'is_claimed' => (bool) $item['verified'],
+            'is_advertisement' => false,
+            'business_scrape_run_id' => $this->scrapeRun->id,
+        ];
     }
 
     public function failed(\Throwable $e): void

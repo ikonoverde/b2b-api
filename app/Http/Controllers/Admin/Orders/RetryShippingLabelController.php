@@ -23,6 +23,8 @@ class RetryShippingLabelController extends Controller
             return back()->with('error', 'Este pedido ya tiene una guía generada.');
         }
 
+        $order->update(['label_error' => null]);
+
         CreateShippingLabel::dispatch($order);
 
         return back()->with('success', 'Se ha programado la generación de la guía de envío.');
