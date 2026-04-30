@@ -2,8 +2,13 @@
 
 use App\Http\Controllers\Admin\Businesses\IndexBusinessesController;
 use App\Http\Controllers\Admin\Businesses\StartBusinessScrapeController;
-use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\Orders\CreateOrderRefundController;
+use App\Http\Controllers\Admin\Orders\IndexOrdersController;
 use App\Http\Controllers\Admin\Orders\RetryShippingLabelController;
+use App\Http\Controllers\Admin\Orders\ShowOrderController;
+use App\Http\Controllers\Admin\Orders\StoreOrderNoteController;
+use App\Http\Controllers\Admin\Orders\UpdateOrderStatusController;
+use App\Http\Controllers\Admin\Orders\UpdateOrderTrackingController;
 use App\Http\Controllers\Admin\Users\IndexUsersController;
 use App\Http\Controllers\Admin\Users\SendUserPasswordResetController;
 use App\Http\Controllers\Admin\Users\ShowUserController;
@@ -77,13 +82,13 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
     Route::post('/users/{user}/send-password-reset', SendUserPasswordResetController::class)
         ->name('users.send-password-reset');
 
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders');
-    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
-    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
-    Route::patch('/orders/{order}/tracking', [OrderController::class, 'updateTracking'])
+    Route::get('/orders', IndexOrdersController::class)->name('orders');
+    Route::get('/orders/{order}', ShowOrderController::class)->name('orders.show');
+    Route::patch('/orders/{order}/status', UpdateOrderStatusController::class)->name('orders.update-status');
+    Route::patch('/orders/{order}/tracking', UpdateOrderTrackingController::class)
         ->name('orders.update-tracking');
-    Route::post('/orders/{order}/refund', [OrderController::class, 'createRefund'])->name('orders.create-refund');
-    Route::post('/orders/{order}/notes', [OrderController::class, 'storeNote'])->name('orders.store-note');
+    Route::post('/orders/{order}/refund', CreateOrderRefundController::class)->name('orders.create-refund');
+    Route::post('/orders/{order}/notes', StoreOrderNoteController::class)->name('orders.store-note');
     Route::post('/orders/{order}/retry-label', RetryShippingLabelController::class)
         ->name('orders.retry-label');
 
