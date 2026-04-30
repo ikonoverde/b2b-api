@@ -17,7 +17,7 @@ export default function PublicLayout({ title, auth, children }: PublicLayoutProp
                     <div className="max-w-6xl mx-auto flex items-center justify-between">
                         <Link href="/" className="flex flex-col">
                             <span className="text-white font-[Outfit] font-bold text-xl tracking-wider">
-                                IKONO VERDE
+                                Ikonoverde
                             </span>
                             <span className="text-[#A8B5A0] font-[Outfit] text-xs tracking-widest uppercase">
                                 PROFESIONAL
@@ -58,7 +58,7 @@ export default function PublicLayout({ title, auth, children }: PublicLayoutProp
                 <footer className="border-t border-[#E5E5E5] py-8 px-8 mt-auto">
                     <div className="max-w-6xl mx-auto flex items-center justify-between">
                         <span className="text-[#999999] font-[Outfit] text-sm">
-                            © {new Date().getFullYear()} Ikono Verde. Todos los derechos reservados.
+                            © {new Date().getFullYear()} Ikonoverde. Todos los derechos reservados.
                         </span>
                         <div className="flex items-center gap-4">
                             <Link

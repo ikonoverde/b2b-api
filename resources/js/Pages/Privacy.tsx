@@ -12,7 +12,7 @@ export default function Privacy({ auth }: PageProps) {
                     <div className="max-w-6xl mx-auto flex items-center justify-between">
                         <div className="flex flex-col">
                             <span className="text-white font-[Outfit] font-bold text-xl tracking-wider">
-                                IKONO VERDE
+                                Ikonoverde
                             </span>
                             <span className="text-[#A8B5A0] font-[Outfit] text-xs tracking-widest uppercase">
                                 PROFESIONAL
@@ -82,7 +82,7 @@ export default function Privacy({ auth }: PageProps) {
                                         1. Información que Recopilamos
                                     </h2>
                                     <p className="text-[#666666] leading-relaxed mb-4">
-                                        En Ikono Verde Profesional, recopilamos la siguiente información para
+                                        En Ikonoverde Profesional, recopilamos la siguiente información para
                                         brindarle un mejor servicio:
                                     </p>
                                     <ul className="list-disc pl-6 text-[#666666] leading-relaxed space-y-2">
@@ -122,7 +122,7 @@ export default function Privacy({ auth }: PageProps) {
                                         <li>Con proveedores de servicios de envío para realizar las entregas</li>
                                         <li>Con procesadores de pago para completar transacciones</li>
                                         <li>Cuando sea requerido por ley o por autoridades competentes</li>
-                                        <li>Para proteger los derechos, seguridad o propiedad de Ikono Verde y sus usuarios</li>
+                                        <li>Para proteger los derechos, seguridad o propiedad de Ikonoverde y sus usuarios</li>
                                     </ul>
                                 </section>
 
@@ -203,7 +203,7 @@ export default function Privacy({ auth }: PageProps) {
                                         8. Menores de Edad
                                     </h2>
                                     <p className="text-[#666666] leading-relaxed mb-4">
-                                        Ikono Verde Profesional es una plataforma B2B dirigida exclusivamente a
+                                        Ikonoverde Profesional es una plataforma B2B dirigida exclusivamente a
                                         profesionales y empresas. No recopilamos intencionalmente información de menores
                                         de 18 años. Si descubrimos que hemos recopilado datos de un menor, procederemos
                                         a eliminarlos de manera inmediata.
@@ -262,7 +262,7 @@ export default function Privacy({ auth }: PageProps) {
                 <footer className="border-t border-[#E5E5E5] py-8 px-8 mt-auto">
                     <div className="max-w-6xl mx-auto flex items-center justify-between">
                         <span className="text-[#999999] font-[Outfit] text-sm">
-                            © {new Date().getFullYear()} Ikono Verde. Todos los derechos reservados.
+                            © {new Date().getFullYear()} Ikonoverde. Todos los derechos reservados.
                         </span>
                         <div className="flex items-center gap-4">
                             <Link

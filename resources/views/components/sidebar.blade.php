@@ -4,7 +4,7 @@
     <!-- Logo Section -->
     <div>
         <div class="mb-8">
-            <h1 class="text-sidebar-text font-heading text-xl font-bold tracking-[2px]">IKONO VERDE</h1>
+            <h1 class="text-sidebar-text font-heading text-xl font-bold tracking-[2px]">Ikonoverde</h1>
             <p class="text-sidebar-muted font-heading text-[10px] font-semibold tracking-[3px]">ADMIN PANEL</p>
         </div>
 

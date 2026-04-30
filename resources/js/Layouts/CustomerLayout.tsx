@@ -32,7 +32,7 @@ export default function CustomerLayout({ children, title }: CustomerLayoutProps)
                             </div>
                             <div className="flex flex-col">
                                 <span className="text-white font-[Outfit] font-bold text-sm tracking-wider leading-none">
-                                    IKONO VERDE
+                                    Ikonoverde
                                 </span>
                                 <span className="text-[#A8B5A0] font-[Outfit] text-[9px] tracking-widest uppercase leading-none">
                                     PROFESIONAL
@@ -194,7 +194,7 @@ export default function CustomerLayout({ children, title }: CustomerLayoutProps)
                 <footer className="border-t border-[#E5E5E5] py-6 px-6 lg:px-8 mt-auto">
                     <div className="max-w-6xl mx-auto flex items-center justify-between">
                         <span className="text-[#999999] font-[Outfit] text-sm">
-                            &copy; {new Date().getFullYear()} Ikono Verde. Todos los derechos reservados.
+                            &copy; {new Date().getFullYear()} Ikonoverde. Todos los derechos reservados.
                         </span>
                         <Link
                             href="/catalog"

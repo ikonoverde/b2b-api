@@ -6,7 +6,7 @@ export function AuthMobileHeader() {
             <div className="flex items-center justify-center gap-3">
                 <div className="flex flex-col items-center">
                     <span className="text-white font-[Outfit] font-bold text-lg tracking-wider">
-                        IKONO VERDE
+                        Ikonoverde
                     </span>
                     <span className="text-[#A8B5A0] font-[Outfit] text-[10px] tracking-widest uppercase">
                         PROFESIONAL
@@ -30,7 +30,7 @@ export function AuthDesktopBrandPanel() {
             <div className="flex flex-col items-center gap-6 max-w-[400px] relative z-10">
                 <div className="flex flex-col items-center gap-1">
                     <span className="text-[36px] font-bold text-white font-[Outfit] tracking-wider">
-                        IKONO VERDE
+                        Ikonoverde
                     </span>
                     <span className="text-[#A8B5A0] font-[Outfit] text-sm tracking-[0.25em] uppercase">
                         PROFESIONAL

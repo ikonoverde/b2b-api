@@ -12,7 +12,7 @@ export default function Terms({ auth }: PageProps) {
                     <div className="max-w-6xl mx-auto flex items-center justify-between">
                         <div className="flex flex-col">
                             <span className="text-white font-[Outfit] font-bold text-xl tracking-wider">
-                                IKONO VERDE
+                                Ikonoverde
                             </span>
                             <span className="text-[#A8B5A0] font-[Outfit] text-xs tracking-widest uppercase">
                                 PROFESIONAL
@@ -82,7 +82,7 @@ export default function Terms({ auth }: PageProps) {
                                         1. Aceptación de los Términos
                                     </h2>
                                     <p className="text-[#666666] leading-relaxed mb-4">
-                                        Al acceder y utilizar la plataforma Ikono Verde Profesional, usted acepta quedar
+                                        Al acceder y utilizar la plataforma Ikonoverde Profesional, usted acepta quedar
                                         obligado por estos Términos y Condiciones. Si no está de acuerdo con alguna
                                         parte de estos términos, no podrá utilizar nuestros servicios.
                                     </p>
@@ -93,7 +93,7 @@ export default function Terms({ auth }: PageProps) {
                                         2. Uso de la Plataforma
                                     </h2>
                                     <p className="text-[#666666] leading-relaxed mb-4">
-                                        Ikono Verde Profesional es una plataforma B2B diseñada para profesionales y
+                                        Ikonoverde Profesional es una plataforma B2B diseñada para profesionales y
                                         empresas del sector. Para utilizar nuestros servicios, debe:
                                     </p>
                                     <ul className="list-disc pl-6 text-[#666666] leading-relaxed space-y-2">
@@ -109,7 +109,7 @@ export default function Terms({ auth }: PageProps) {
                                         3. Cuenta de Usuario
                                     </h2>
                                     <p className="text-[#666666] leading-relaxed mb-4">
-                                        Al crear una cuenta en Ikono Verde Profesional, usted es responsable de:
+                                        Al crear una cuenta en Ikonoverde Profesional, usted es responsable de:
                                     </p>
                                     <ul className="list-disc pl-6 text-[#666666] leading-relaxed space-y-2">
                                         <li>Proporcionar información precisa y actualizada</li>
@@ -177,7 +177,7 @@ export default function Terms({ auth }: PageProps) {
                                     </h2>
                                     <p className="text-[#666666] leading-relaxed mb-4">
                                         Todo el contenido de la plataforma, incluyendo pero no limitado a logotipos,
-                                        imágenes, textos, diseños y código, es propiedad de Ikono Verde o sus
+                                        imágenes, textos, diseños y código, es propiedad de Ikonoverde o sus
                                         licenciantes y está protegido por leyes de propiedad intelectual. Queda
                                         prohibido:
                                     </p>
@@ -194,7 +194,7 @@ export default function Terms({ auth }: PageProps) {
                                         8. Limitación de Responsabilidad
                                     </h2>
                                     <p className="text-[#666666] leading-relaxed mb-4">
-                                        Ikono Verde no será responsable por daños indirectos, incidentales, especiales,
+                                        Ikonoverde no será responsable por daños indirectos, incidentales, especiales,
                                         consecuentes o punitivos que resulten de:
                                     </p>
                                     <ul className="list-disc pl-6 text-[#666666] leading-relaxed space-y-2">
@@ -270,7 +270,7 @@ export default function Terms({ auth }: PageProps) {
                 <footer className="border-t border-[#E5E5E5] py-8 px-8 mt-auto">
                     <div className="max-w-6xl mx-auto flex items-center justify-between">
                         <span className="text-[#999999] font-[Outfit] text-sm">
-                            © {new Date().getFullYear()} Ikono Verde. Todos los derechos reservados.
+                            © {new Date().getFullYear()} Ikonoverde. Todos los derechos reservados.
                         </span>
                         <div className="flex items-center gap-4">
                             <Link

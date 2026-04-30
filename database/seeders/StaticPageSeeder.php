@@ -51,11 +51,11 @@ class StaticPageSeeder extends Seeder
         return <<<'MD'
 ## 1. Aceptación de los Términos
 
-Al acceder y utilizar la plataforma Ikono Verde Profesional, usted acepta quedar obligado por estos Términos y Condiciones. Si no está de acuerdo con alguna parte de estos términos, no podrá utilizar nuestros servicios.
+Al acceder y utilizar la plataforma Ikonoverde Profesional, usted acepta quedar obligado por estos Términos y Condiciones. Si no está de acuerdo con alguna parte de estos términos, no podrá utilizar nuestros servicios.
 
 ## 2. Uso de la Plataforma
 
-Ikono Verde Profesional es una plataforma B2B diseñada para profesionales y empresas del sector. Para utilizar nuestros servicios, debe:
+Ikonoverde Profesional es una plataforma B2B diseñada para profesionales y empresas del sector. Para utilizar nuestros servicios, debe:
 
 - Ser mayor de edad y tener capacidad legal para contratar
 - Proporcionar información veraz, precisa y completa durante el registro
@@ -64,7 +64,7 @@ Ikono Verde Profesional es una plataforma B2B diseñada para profesionales y emp
 
 ## 3. Cuenta de Usuario
 
-Al crear una cuenta en Ikono Verde Profesional, usted es responsable de:
+Al crear una cuenta en Ikonoverde Profesional, usted es responsable de:
 
 - Proporcionar información precisa y actualizada
 - Notificar cualquier uso no autorizado de su cuenta
@@ -102,7 +102,7 @@ Aceptamos devoluciones de productos en las siguientes condiciones:
 
 ## 7. Propiedad Intelectual
 
-Todo el contenido de la plataforma, incluyendo pero no limitado a logotipos, imágenes, textos, diseños y código, es propiedad de Ikono Verde o sus licenciantes y está protegido por leyes de propiedad intelectual. Queda prohibido:
+Todo el contenido de la plataforma, incluyendo pero no limitado a logotipos, imágenes, textos, diseños y código, es propiedad de Ikonoverde o sus licenciantes y está protegido por leyes de propiedad intelectual. Queda prohibido:
 
 - Copiar, reproducir o distribuir contenido sin autorización
 - Modificar o crear trabajos derivados del contenido
@@ -111,7 +111,7 @@ Todo el contenido de la plataforma, incluyendo pero no limitado a logotipos, im�
 
 ## 8. Limitación de Responsabilidad
 
-Ikono Verde no será responsable por daños indirectos, incidentales, especiales, consecuentes o punitivos que resulten de:
+Ikonoverde no será responsable por daños indirectos, incidentales, especiales, consecuentes o punitivos que resulten de:
 
 - El uso o la imposibilidad de usar la plataforma
 - Cualquier contenido obtenido de la plataforma
@@ -141,7 +141,7 @@ MD;
         return <<<'MD'
 ## 1. Información que Recopilamos
 
-En Ikono Verde Profesional, recopilamos la siguiente información para brindarle un mejor servicio:
+En Ikonoverde Profesional, recopilamos la siguiente información para brindarle un mejor servicio:
 
 - Información de registro: nombre, correo electrónico, teléfono y datos de la empresa
 - Información de facturación: dirección fiscal, RFC y datos de pago
@@ -166,7 +166,7 @@ No vendemos ni alquilamos su información personal a terceros. Podemos compartir
 - Con proveedores de servicios de envío para realizar las entregas
 - Con procesadores de pago para completar transacciones
 - Cuando sea requerido por ley o por autoridades competentes
-- Para proteger los derechos, seguridad o propiedad de Ikono Verde y sus usuarios
+- Para proteger los derechos, seguridad o propiedad de Ikonoverde y sus usuarios
 
 ## 4. Seguridad de los Datos
 
@@ -210,7 +210,7 @@ Conservamos su información personal durante el tiempo necesario para cumplir co
 
 ## 8. Menores de Edad
 
-Ikono Verde Profesional es una plataforma B2B dirigida exclusivamente a profesionales y empresas. No recopilamos intencionalmente información de menores de 18 años. Si descubrimos que hemos recopilado datos de un menor, procederemos a eliminarlos de manera inmediata.
+Ikonoverde Profesional es una plataforma B2B dirigida exclusivamente a profesionales y empresas. No recopilamos intencionalmente información de menores de 18 años. Si descubrimos que hemos recopilado datos de un menor, procederemos a eliminarlos de manera inmediata.
 
 ## 9. Cambios a esta Política
 
@@ -231,7 +231,7 @@ MD;
         return <<<'MD'
 ## Nuestra Historia
 
-Ikono Verde nació con la misión de conectar a profesionales del sector con los mejores productos a precios mayoristas. Desde nuestros inicios en Yucatán, México, hemos crecido hasta convertirnos en un referente en el mercado B2B.
+Ikonoverde nació con la misión de conectar a profesionales del sector con los mejores productos a precios mayoristas. Desde nuestros inicios en Yucatán, México, hemos crecido hasta convertirnos en un referente en el mercado B2B.
 
 ## Nuestra Misión
 
@@ -261,7 +261,7 @@ MD;
         return <<<'MD'
 ## ¿Cómo puedo registrarme?
 
-Para registrarte en Ikono Verde Profesional, haz clic en el botón "Registrarse" en la página principal. Completa el formulario con tus datos personales y de empresa. Una vez enviado, nuestro equipo revisará tu solicitud y activará tu cuenta.
+Para registrarte en Ikonoverde Profesional, haz clic en el botón "Registrarse" en la página principal. Completa el formulario con tus datos personales y de empresa. Una vez enviado, nuestro equipo revisará tu solicitud y activará tu cuenta.
 
 ## ¿Cuáles son los métodos de pago aceptados?
 
