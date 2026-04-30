@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 test('authenticated user can view edit product page', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->create();
 
     $response = $this->actingAs($user)->get("/admin/products/{$product->id}/edit");
@@ -30,7 +30,7 @@ test('unauthenticated user is redirected to login', function () {
 });
 
 test('edit page shows product data', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create(['name' => 'Fertilizantes']);
     $product = Product::factory()->create([
         'name' => 'Fertilizante Premium',
@@ -50,7 +50,7 @@ test('edit page shows product data', function () {
 });
 
 test('authenticated user can update a product', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create();
     $product = Product::factory()->create([
         'name' => 'Old Name',
@@ -82,7 +82,7 @@ test('authenticated user can update a product', function () {
 });
 
 test('authenticated user can update a product with formula_id', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create();
     $product = Product::factory()->create(['formula_id' => null]);
 
@@ -104,7 +104,7 @@ test('authenticated user can update a product with formula_id', function () {
 });
 
 test('formula_id can be cleared on update', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create();
     $product = Product::factory()->withFormula(5)->create();
 
@@ -133,7 +133,7 @@ test('edit page includes formula_id in product data', function () {
         ]),
     ]);
 
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->withFormula(3)->create();
 
     $response = $this->actingAs($user)->get("/admin/products/{$product->id}/edit");
@@ -149,7 +149,7 @@ test('edit page includes formula_id in product data', function () {
 });
 
 test('validation fails with missing required fields', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->create();
 
     $response = $this->actingAs($user)->put("/admin/products/{$product->id}", []);
@@ -158,7 +158,7 @@ test('validation fails with missing required fields', function () {
 });
 
 test('sku unique validation allows same product sku', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create();
     $product = Product::factory()->create([
         'sku' => 'SAME-001',
@@ -177,7 +177,7 @@ test('sku unique validation allows same product sku', function () {
 });
 
 test('sku unique validation rejects duplicate from other product', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Product::factory()->create(['sku' => 'EXISTING-001']);
     $product = Product::factory()->create(['sku' => 'ORIGINAL-001']);
 
@@ -195,7 +195,7 @@ test('sku unique validation rejects duplicate from other product', function () {
 test('authenticated user can update a product with images', function () {
     Storage::fake('public');
 
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->create([
         'name' => 'Old Name',
         'sku' => 'IMG-001',
@@ -225,7 +225,7 @@ test('authenticated user can update a product with images', function () {
 test('updating product can delete old images and add new ones', function () {
     Storage::fake('public');
 
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $oldImage = UploadedFile::fake()->image('old.jpg');
     $oldImagePath = $oldImage->store('products', 'public');
 
@@ -263,7 +263,7 @@ test('updating product can delete old images and add new ones', function () {
 test('image validation rejects invalid file types', function () {
     Storage::fake('public');
 
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->create(['sku' => 'INVALID-001']);
 
     $file = UploadedFile::fake()->create('document.pdf', 100, 'application/pdf');
@@ -283,7 +283,7 @@ test('image validation rejects invalid file types', function () {
 test('image validation rejects files over 5MB', function () {
     Storage::fake('public');
 
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->create(['sku' => 'BIG-001']);
 
     $file = UploadedFile::fake()->create('large.jpg', 6000, 'image/jpeg'); // 6MB

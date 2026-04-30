@@ -6,7 +6,7 @@ use App\Models\Product;
 use App\Models\User;
 
 test('authenticated user can archive a product', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->create([
         'name' => 'Product to Archive',
         'sku' => 'ARCHIVE-001',
@@ -31,7 +31,7 @@ test('unauthenticated user is redirected to login', function () {
 });
 
 test('archived product is hidden from product list', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->create(['name' => 'Archived Product']);
 
     $product->delete();
@@ -88,7 +88,7 @@ test('archived product is not accessible via api detail endpoint', function () {
 });
 
 test('archived product remains visible in historical orders', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->create(['name' => 'Historical Product']);
 
     // Create an order with this product
@@ -115,7 +115,7 @@ test('archived product remains visible in historical orders', function () {
 });
 
 test('product with pending orders shows has_pending_orders flag', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->create(['name' => 'Product with Pending']);
 
     // Create an order with pending status
@@ -143,7 +143,7 @@ test('product with pending orders shows has_pending_orders flag', function () {
 });
 
 test('product without pending orders shows has_pending_orders as false', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Product::factory()->create(['name' => 'Product without Pending']);
 
     $response = $this->actingAs($user)->get('/admin/products');
@@ -156,7 +156,7 @@ test('product without pending orders shows has_pending_orders as false', functio
 });
 
 test('cannot archive product with pending orders', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->create();
 
     // Create an order with pending status
@@ -186,7 +186,7 @@ test('cannot archive product with pending orders', function () {
 });
 
 test('can archive product when all orders are completed or cancelled', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->create();
 
     // Create a delivered order
@@ -230,7 +230,7 @@ test('can archive product when all orders are completed or cancelled', function 
 });
 
 test('cannot archive product with payment_pending orders', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->create();
 
     $order = Order::factory()->create([
@@ -253,7 +253,7 @@ test('cannot archive product with payment_pending orders', function () {
 });
 
 test('cannot archive product with processing orders', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->create();
 
     $order = Order::factory()->create([
@@ -276,7 +276,7 @@ test('cannot archive product with processing orders', function () {
 });
 
 test('cannot archive product with shipped orders', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->create();
 
     $order = Order::factory()->create([
@@ -299,7 +299,7 @@ test('cannot archive product with shipped orders', function () {
 });
 
 test('archived products remain in order items with preserved product name', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->create(['name' => 'Original Product Name']);
 
     // Create an order

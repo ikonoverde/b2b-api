@@ -46,7 +46,7 @@ test('pricing tiers are deleted when product is deleted', function () {
 });
 
 test('authenticated user can create product with pricing tiers', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
         'name' => 'Test Product',
@@ -73,7 +73,7 @@ test('authenticated user can create product with pricing tiers', function () {
 });
 
 test('authenticated user can update product with pricing tiers', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->create();
     PricingTier::factory()->create(['product_id' => $product->id]);
 
@@ -102,7 +102,7 @@ test('authenticated user can update product with pricing tiers', function () {
 });
 
 test('edit page includes pricing tiers', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->create();
     PricingTier::factory()->create([
         'product_id' => $product->id,
@@ -124,7 +124,7 @@ test('edit page includes pricing tiers', function () {
 });
 
 test('validation fails for overlapping pricing tiers', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
         'name' => 'Test Product',
@@ -142,7 +142,7 @@ test('validation fails for overlapping pricing tiers', function () {
 });
 
 test('validation fails for unlimited tier followed by another tier', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
         'name' => 'Test Product',
@@ -160,7 +160,7 @@ test('validation fails for unlimited tier followed by another tier', function ()
 });
 
 test('validation fails for pricing tier with max_qty less than min_qty', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
         'name' => 'Test Product',
@@ -177,7 +177,7 @@ test('validation fails for pricing tier with max_qty less than min_qty', functio
 });
 
 test('validation fails for pricing tier with invalid discount', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
         'name' => 'Test Product',
@@ -245,7 +245,7 @@ test('API products list endpoint does not return pricing tiers', function () {
 });
 
 test('product can be created without pricing tiers', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
         'name' => 'Test Product No Tiers',

@@ -5,7 +5,7 @@ use App\Models\Product;
 use App\Models\User;
 
 test('can store a product with dimensions', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
@@ -32,7 +32,7 @@ test('can store a product with dimensions', function () {
 });
 
 test('can store a product without dimensions', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
@@ -55,7 +55,7 @@ test('can store a product without dimensions', function () {
 });
 
 test('can update a product with dimensions', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create();
     $product = Product::factory()->create();
 
@@ -83,7 +83,7 @@ test('can update a product with dimensions', function () {
 });
 
 test('can clear dimensions on update', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create();
     $product = Product::factory()->withDimensions()->create();
 
@@ -111,7 +111,7 @@ test('can clear dimensions on update', function () {
 });
 
 test('dimension validation rejects negative values', function (string $field, float $value) {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
@@ -136,7 +136,7 @@ test('dimension validation rejects negative values', function (string $field, fl
 ]);
 
 test('dimension validation accepts valid decimal values', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
@@ -156,7 +156,7 @@ test('dimension validation accepts valid decimal values', function () {
 });
 
 test('dimension validation rejects values exceeding max', function (string $field, float $value) {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
@@ -177,7 +177,7 @@ test('dimension validation rejects values exceeding max', function (string $fiel
 ]);
 
 test('edit page returns dimension fields', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $product = Product::factory()->withDimensions()->create();
 
     $response = $this->actingAs($user)->get("/admin/products/{$product->id}/edit");

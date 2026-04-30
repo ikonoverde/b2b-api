@@ -9,7 +9,7 @@ use App\Models\User;
 it('requires authentication to view order detail page', function () {
     $order = Order::factory()->create();
 
-    $this->get("/orders/{$order->id}")
+    $this->get("/account/orders/{$order->id}")
         ->assertRedirect('/login');
 });
 
@@ -19,7 +19,7 @@ it('returns 403 when viewing another user\'s order', function () {
     $order = Order::factory()->create(['user_id' => $otherUser->id]);
 
     $this->actingAs($user)
-        ->get("/orders/{$order->id}")
+        ->get("/account/orders/{$order->id}")
         ->assertForbidden();
 });
 
@@ -58,7 +58,7 @@ it('displays order detail page with order data', function () {
         'created_at' => now(),
     ]);
 
-    $response = $this->actingAs($user)->get("/orders/{$order->id}");
+    $response = $this->actingAs($user)->get("/account/orders/{$order->id}");
 
     $response->assertSuccessful()
         ->assertInertia(fn ($page) => $page
@@ -88,7 +88,7 @@ it('displays order detail page with shipping address', function () {
 
     OrderItem::factory()->create(['order_id' => $order->id]);
 
-    $response = $this->actingAs($user)->get("/orders/{$order->id}");
+    $response = $this->actingAs($user)->get("/account/orders/{$order->id}");
 
     $response->assertInertia(fn ($page) => $page
         ->where('order.shipping_address.street', '123 Main St')
@@ -107,7 +107,7 @@ it('displays order detail page without tracking info for pending orders', functi
 
     OrderItem::factory()->create(['order_id' => $order->id]);
 
-    $response = $this->actingAs($user)->get("/orders/{$order->id}");
+    $response = $this->actingAs($user)->get("/account/orders/{$order->id}");
 
     $response->assertInertia(fn ($page) => $page
         ->where('order.status', 'pending')
@@ -119,7 +119,7 @@ it('returns 404 for non-existent order', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user)
-        ->get('/orders/99999')
+        ->get('/account/orders/99999')
         ->assertNotFound();
 });
 
@@ -136,7 +136,7 @@ it('displays cancelled order status correctly', function () {
         'to_status' => 'cancelled',
     ]);
 
-    $response = $this->actingAs($user)->get("/orders/{$order->id}");
+    $response = $this->actingAs($user)->get("/account/orders/{$order->id}");
 
     $response->assertInertia(fn ($page) => $page
         ->where('order.status', 'cancelled')
@@ -158,7 +158,7 @@ it('displays order items with images', function () {
         'image' => 'products/test-image.jpg',
     ]);
 
-    $response = $this->actingAs($user)->get("/orders/{$order->id}");
+    $response = $this->actingAs($user)->get("/account/orders/{$order->id}");
 
     $response->assertInertia(fn ($page) => $page
         ->has('order.items', 1)

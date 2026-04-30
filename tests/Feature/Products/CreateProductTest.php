@@ -4,7 +4,7 @@ use App\Models\Category;
 use App\Models\User;
 
 test('authenticated user can view create product page', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
 
     $response = $this->actingAs($user)->get('/admin/products/create');
 
@@ -22,7 +22,7 @@ test('unauthenticated user is redirected to login', function () {
 });
 
 test('create product page returns categories from database', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Category::factory(3)->create();
 
     $response = $this->actingAs($user)->get('/admin/products/create');
@@ -34,7 +34,7 @@ test('create product page returns categories from database', function () {
 });
 
 test('authenticated user can store a product', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
@@ -61,7 +61,7 @@ test('authenticated user can store a product', function () {
 });
 
 test('authenticated user can store a product with formula_id', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
@@ -83,7 +83,7 @@ test('authenticated user can store a product with formula_id', function () {
 });
 
 test('formula_id is nullable when creating a product', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
@@ -103,7 +103,7 @@ test('formula_id is nullable when creating a product', function () {
 });
 
 test('validation fails with missing required fields', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', []);
 
@@ -111,7 +111,7 @@ test('validation fails with missing required fields', function () {
 });
 
 test('validation fails with invalid price', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
@@ -126,7 +126,7 @@ test('validation fails with invalid price', function () {
 });
 
 test('validation fails with invalid stock', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create();
 
     $response = $this->actingAs($user)->post('/admin/products', [
@@ -141,7 +141,7 @@ test('validation fails with invalid stock', function () {
 });
 
 test('validation fails with duplicate sku', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     \App\Models\Product::factory()->create(['sku' => 'DUPE-001']);
 
     $response = $this->actingAs($user)->post('/admin/products', [

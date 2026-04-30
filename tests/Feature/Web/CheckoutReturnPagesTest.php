@@ -1,26 +1,37 @@
 <?php
 
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\User;
+
 describe('Checkout Return Pages', function () {
-    it('renders the success page without authentication', function () {
-        $response = $this->get('/checkout/success');
+    it('redirects unauthenticated users away from the thank-you page', function () {
+        $response = $this->get('/checkout/thank-you?order=1');
 
-        $response->assertOk();
-        $response->assertSee('Pago exitoso');
-        $response->assertSee('Puedes volver a la app para ver tu pedido.');
+        $response->assertRedirect('/login');
     });
 
-    it('renders the success page with a session_id query parameter', function () {
-        $response = $this->get('/checkout/success?session_id=cs_test_abc123');
+    it('renders the thank-you page for the order owner', function () {
+        $user = User::factory()->create();
+        $order = Order::factory()->create(['user_id' => $user->id]);
+        OrderItem::factory()->create(['order_id' => $order->id]);
 
-        $response->assertOk();
-        $response->assertSee('Pago exitoso');
+        $response = $this->actingAs($user)->get("/checkout/thank-you?order={$order->id}");
+
+        $response->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('Checkout/ThankYou')
+                ->where('order.id', $order->id)
+            );
     });
 
-    it('renders the cancel page without authentication', function () {
-        $response = $this->get('/checkout/cancel');
+    it('returns 404 when accessing another user\'s order on the thank-you page', function () {
+        $user = User::factory()->create();
+        $otherUser = User::factory()->create();
+        $order = Order::factory()->create(['user_id' => $otherUser->id]);
 
-        $response->assertOk();
-        $response->assertSee('Pago cancelado');
-        $response->assertSee('Vuelve a la app para intentar de nuevo.');
+        $response = $this->actingAs($user)->get("/checkout/thank-you?order={$order->id}");
+
+        $response->assertNotFound();
     });
 });

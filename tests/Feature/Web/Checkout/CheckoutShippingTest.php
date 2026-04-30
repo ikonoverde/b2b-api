@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\ShippingMethod;
 use App\Models\User;
 use App\Services\ShippingQuoteService;
+use Stripe\StripeClient;
 
 function createCartWithItems(User $user): Cart
 {
@@ -29,30 +30,58 @@ function validCheckoutData(array $overrides = []): array
         'state' => 'Nuevo León',
         'postal_code' => '64000',
         'phone' => '8181234567',
-        'shipping_quote_id' => 'skydropx_123',
+        'quote_id' => 'skydropx_123',
+        'rate_id' => 'rate_abc',
     ], $overrides);
+}
+
+function mockSkydropxQuote(float $price, string $providerDisplay = 'FedEx', string $providerService = 'Express', string $rateId = 'rate_abc'): void
+{
+    test()->mock(ShippingQuoteService::class)
+        ->shouldReceive('getQuote')
+        ->once()
+        ->andReturn([
+            'id' => 'skydropx_123',
+            'rates' => [
+                [
+                    'id' => $rateId,
+                    'provider_display_name' => $providerDisplay,
+                    'provider_service_name' => $providerService,
+                    'total' => $price,
+                    'days' => 2,
+                    'success' => true,
+                ],
+            ],
+            'packages' => [[
+                'width' => 10,
+                'height' => 10,
+                'length' => 10,
+                'weight' => 1,
+            ]],
+        ]);
+}
+
+function mockStripePaymentIntent(): void
+{
+    $mockPaymentIntent = new \stdClass;
+    $mockPaymentIntent->id = 'pi_test_123';
+    $mockPaymentIntent->client_secret = 'pi_test_123_secret_456';
+
+    $mockPaymentIntents = Mockery::mock(\Stripe\Service\PaymentIntentService::class);
+    $mockPaymentIntents->shouldReceive('create')->andReturn($mockPaymentIntent);
+
+    $mockStripe = Mockery::mock(StripeClient::class);
+    $mockStripe->paymentIntents = $mockPaymentIntents;
+
+    app()->bind(StripeClient::class, fn () => $mockStripe);
 }
 
 test('checkout stores order with server-validated shipping cost', function () {
     $user = User::factory()->create();
     createCartWithItems($user);
 
-    $this->mock(ShippingQuoteService::class)
-        ->shouldReceive('getQuotes')
-        ->once()
-        ->andReturn([
-            'quotes' => [
-                [
-                    'carrier' => 'FedEx',
-                    'service' => 'Express',
-                    'price' => 150.00,
-                    'estimated_days' => 2,
-                    'quote_id' => 'skydropx_123',
-                    'shipping_method_id' => null,
-                ],
-            ],
-            'source' => 'skydropx',
-        ]);
+    mockSkydropxQuote(150.00);
+    mockStripePaymentIntent();
 
     $response = $this->actingAs($user)->post('/checkout/shipping', validCheckoutData());
 
@@ -69,22 +98,8 @@ test('server re-validates price even if frontend sends different amount', functi
     $user = User::factory()->create();
     createCartWithItems($user);
 
-    $this->mock(ShippingQuoteService::class)
-        ->shouldReceive('getQuotes')
-        ->once()
-        ->andReturn([
-            'quotes' => [
-                [
-                    'carrier' => 'FedEx',
-                    'service' => 'Express',
-                    'price' => 200.00, // real price is 200, not 50
-                    'estimated_days' => 2,
-                    'quote_id' => 'skydropx_123',
-                    'shipping_method_id' => null,
-                ],
-            ],
-            'source' => 'skydropx',
-        ]);
+    mockSkydropxQuote(200.00);
+    mockStripePaymentIntent();
 
     $response = $this->actingAs($user)->post('/checkout/shipping', validCheckoutData());
 
@@ -92,82 +107,58 @@ test('server re-validates price even if frontend sends different amount', functi
 
     $this->assertDatabaseHas('orders', [
         'user_id' => $user->id,
-        'shipping_cost' => 200.00, // server used re-validated price
+        'shipping_cost' => 200.00,
     ]);
 });
 
-test('falls back to cheapest quote when submitted quote_id not found', function () {
+test('falls back to static shipping when submitted quote_id is not found', function () {
     $user = User::factory()->create();
     createCartWithItems($user);
 
     $this->mock(ShippingQuoteService::class)
-        ->shouldReceive('getQuotes')
+        ->shouldReceive('getQuote')
         ->once()
-        ->andReturn([
-            'quotes' => [
-                [
-                    'carrier' => 'Estafeta',
-                    'service' => 'Terrestre',
-                    'price' => 89.00,
-                    'estimated_days' => 5,
-                    'quote_id' => 'skydropx_999',
-                    'shipping_method_id' => null,
-                ],
-            ],
-            'source' => 'skydropx',
-        ]);
+        ->andReturnNull();
+
+    mockStripePaymentIntent();
 
     $response = $this->actingAs($user)->post('/checkout/shipping', validCheckoutData([
-        'shipping_quote_id' => 'skydropx_expired',
+        'quote_id' => 'skydropx_expired',
     ]));
 
     $response->assertRedirect();
 
     $this->assertDatabaseHas('orders', [
         'user_id' => $user->id,
-        'shipping_cost' => 89.00,
-        'shipping_carrier' => 'Estafeta - Terrestre',
+        'shipping_cost' => (float) config('shop.shipping_cost'),
+        'shipping_carrier' => 'Envío estándar',
     ]);
 });
 
-test('static fallback stores shipping_method_id', function () {
+test('static fallback stores static carrier when rate_id does not match', function () {
     $user = User::factory()->create();
     createCartWithItems($user);
 
-    $method = ShippingMethod::factory()->create([
+    ShippingMethod::factory()->create([
         'name' => 'Envío Nacional',
         'description' => 'Envío estándar',
         'cost' => 99.00,
         'estimated_delivery_days' => 7,
     ]);
 
-    $this->mock(ShippingQuoteService::class)
-        ->shouldReceive('getQuotes')
-        ->once()
-        ->andReturn([
-            'quotes' => [
-                [
-                    'carrier' => 'Envío Nacional',
-                    'service' => 'Envío estándar',
-                    'price' => 99.00,
-                    'estimated_days' => 7,
-                    'quote_id' => "static_{$method->id}",
-                    'shipping_method_id' => $method->id,
-                ],
-            ],
-            'source' => 'static',
-        ]);
+    mockSkydropxQuote(150.00, rateId: 'rate_other');
+    mockStripePaymentIntent();
 
     $response = $this->actingAs($user)->post('/checkout/shipping', validCheckoutData([
-        'shipping_quote_id' => "static_{$method->id}",
+        'rate_id' => 'rate_missing',
     ]));
 
     $response->assertRedirect();
 
     $this->assertDatabaseHas('orders', [
         'user_id' => $user->id,
-        'shipping_method_id' => $method->id,
-        'shipping_cost' => 99.00,
+        'shipping_cost' => (float) config('shop.shipping_cost'),
+        'shipping_carrier' => 'Envío estándar',
     ]);
 });
 
@@ -178,13 +169,14 @@ test('checkout requires shipping quote fields', function () {
     $response = $this->actingAs($user)->post('/checkout/shipping', [
         'name' => 'Juan',
         'address_line_1' => 'Calle 1',
+        'address_line_2' => 'Piso 1',
         'city' => 'CDMX',
         'state' => 'CDMX',
         'postal_code' => '06600',
         'phone' => '5551234567',
     ]);
 
-    $response->assertSessionHasErrors(['shipping_quote_id']);
+    $response->assertSessionHasErrors(['quote_id', 'rate_id']);
 });
 
 test('checkout with empty cart redirects to cart', function () {

@@ -24,11 +24,11 @@ describe('Authentication', function () {
         $response->assertSuccessful();
     });
 
-    it('allows authenticated non-admin users to access categories page', function () {
+    it('forbids authenticated non-admin users from accessing categories page', function () {
         $response = $this->actingAs($this->user)
             ->get('/admin/categories');
 
-        $response->assertSuccessful();
+        $response->assertForbidden();
     });
 });
 

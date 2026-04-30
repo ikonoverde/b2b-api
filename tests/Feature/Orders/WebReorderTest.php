@@ -20,7 +20,7 @@ it('redirects to cart with success flash when all items are added', function () 
     ]);
 
     $response = $this->actingAs($user)
-        ->post("/orders/{$order->id}/reorder");
+        ->post("/account/orders/{$order->id}/reorder");
 
     $response->assertRedirect(route('cart'));
     $response->assertSessionHas('success');
@@ -51,7 +51,7 @@ it('flashes reorder_warnings when some items are unavailable', function () {
     ]);
 
     $response = $this->actingAs($user)
-        ->post("/orders/{$order->id}/reorder");
+        ->post("/account/orders/{$order->id}/reorder");
 
     $response->assertRedirect(route('cart'));
     $response->assertSessionHas('success');
@@ -78,7 +78,7 @@ it('flashes reorder_warnings when price changes are detected', function () {
     ]);
 
     $response = $this->actingAs($user)
-        ->post("/orders/{$order->id}/reorder");
+        ->post("/account/orders/{$order->id}/reorder");
 
     $response->assertRedirect(route('cart'));
     $response->assertSessionHas('reorder_warnings');
@@ -104,7 +104,7 @@ it('does not flash reorder_warnings when all items added without issues', functi
     ]);
 
     $response = $this->actingAs($user)
-        ->post("/orders/{$order->id}/reorder");
+        ->post("/account/orders/{$order->id}/reorder");
 
     $response->assertSessionMissing('reorder_warnings');
 });
@@ -124,7 +124,7 @@ it('returns back with error when no items can be added', function () {
     ]);
 
     $response = $this->actingAs($user)
-        ->post("/orders/{$order->id}/reorder");
+        ->post("/account/orders/{$order->id}/reorder");
 
     $response->assertSessionHas('error');
     $response->assertSessionMissing('success');
@@ -134,7 +134,7 @@ it('returns back with error when no items can be added', function () {
 it('requires authentication to reorder via web', function () {
     $order = Order::factory()->create();
 
-    $this->post("/orders/{$order->id}/reorder")->assertRedirect('/login');
+    $this->post("/account/orders/{$order->id}/reorder")->assertRedirect('/login');
 });
 
 it('returns 403 for another user\'s order via web', function () {
@@ -143,6 +143,6 @@ it('returns 403 for another user\'s order via web', function () {
     $order = Order::factory()->create(['user_id' => $otherUser->id]);
 
     $this->actingAs($user)
-        ->post("/orders/{$order->id}/reorder")
+        ->post("/account/orders/{$order->id}/reorder")
         ->assertForbidden();
 });

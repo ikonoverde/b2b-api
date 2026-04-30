@@ -14,6 +14,7 @@ function makeQuote(string $quoteId, float $price, int $days, string $carrier = '
         'price' => $price,
         'estimated_days' => $days,
         'quote_id' => $quoteId,
+        'rate_id' => 'rate_'.$quoteId,
         'shipping_method_id' => null,
     ];
 }

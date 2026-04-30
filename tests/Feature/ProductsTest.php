@@ -4,7 +4,7 @@ use App\Models\Product;
 use App\Models\User;
 
 test('authenticated user can view products page', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
 
     $response = $this->actingAs($user)->get('/admin/products');
 
@@ -22,7 +22,7 @@ test('unauthenticated user is redirected to login', function () {
 });
 
 test('products page returns expected product data structure', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Product::factory(3)->create();
 
     $response = $this->actingAs($user)->get('/admin/products');
