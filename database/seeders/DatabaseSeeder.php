@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
+        $this->call(SuperAdminUserSeeder::class);
         $this->call(ShippingMethodSeeder::class);
 
         $categories = Category::factory(4)->create();
