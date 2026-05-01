@@ -1,6 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import type { CSSProperties } from 'react';
 import type { BannerData } from '@/Components/BannerCard';
+import Wordmark from '@/Components/Wordmark';
 import type { PageProps } from '@/types';
 
 /**
@@ -119,18 +120,7 @@ function SiteFooter() {
     );
 }
 
-/**
- * The wordmark is the only place green appears in the entire system.
- * "Ikono" renders in stone-ink; "verde" renders in --iko-verde.
- */
-function Wordmark() {
-    return (
-        <span className="font-display text-[22px] leading-none tracking-[-0.01em]">
-            <span className="text-[var(--iko-stone-ink)]">Ikono</span>
-            <span className="text-[var(--iko-verde)]">verde</span>
-        </span>
-    );
-}
+
 
 /* ─────────────────────────────────────────────────────────
  * Hero — typographic only, no imagery.

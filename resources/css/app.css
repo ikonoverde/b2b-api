@@ -52,5 +52,6 @@
     --iko-accent-hover: oklch(0.38 0.135 200);
     --iko-accent-on: oklch(0.98 0.008 200);
     --iko-accent-soft: oklch(0.45 0.13 200 / 0.1);
-    --iko-verde: oklch(0.46 0.13 150);
+    /* Brand green — exact match for the SVG mark fill (#1a9d11). */
+    --iko-verde: oklch(0.55 0.21 140);
 }

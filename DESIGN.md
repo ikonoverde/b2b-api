@@ -45,7 +45,8 @@ All tokens live in `resources/css/app.css` under `[data-iko]` and are consumed v
 - **Stone Whisper:** `oklch(0.5 0.018 200)` (`--iko-stone-whisper`). Secondary copy, captions, footer meta.
 
 ### Verde (wordmark only)
-- **Verde:** `oklch(0.46 0.13 150)` (`--iko-verde`). Used **only** to color the literal substring `verde` inside the rendered Ikonoverde wordmark. Forbidden everywhere else.
+- **Verde:** `oklch(0.55 0.21 140)` (`--iko-verde`), exact match for the SVG mark fill `#1a9d11`. Used **only** for (a) the brand mark glyph (`<IkonoverdeMark />`), and (b) the literal substring `verde` inside the rendered text wordmark. Forbidden everywhere else.
+- The mark + wordmark lockup is shipped as a single reusable component: `resources/js/Components/Wordmark.tsx`. Use it; do not re-typeset the wordmark inline.
 
 ### Semantic (use sparingly, never as the *only* signal)
 - **Caution / Warning**: a desaturated amber, far from the accent hue.
