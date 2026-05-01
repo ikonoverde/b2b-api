@@ -12,6 +12,8 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
     --font-heading: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
     --font-body: 'Outfit', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Fraunces', ui-serif, Georgia, 'Times New Roman', serif;
+    --font-spec: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
     /* Brand colors from Pencil design */
     --color-primary: #5E7052;
@@ -34,4 +36,21 @@
     --color-success: #22C55E;
     --color-warning: #F59E0B;
     --color-secondary: #8B6F47;
+}
+
+/* ─────────────────────────────────────────────────────────
+ * Ikonoverde — stone-and-glass tokens (DESIGN.md §2).
+ * Mineral accent locked to Iodine Teal.
+ * ───────────────────────────────────────────────────────── */
+[data-iko] {
+    --iko-stone-paper: oklch(0.965 0.012 200);
+    --iko-stone-mid: oklch(0.88 0.014 200);
+    --iko-stone-hairline: oklch(0.92 0.012 200);
+    --iko-stone-ink: oklch(0.22 0.02 200);
+    --iko-stone-whisper: oklch(0.5 0.018 200);
+    --iko-accent: oklch(0.45 0.13 200);
+    --iko-accent-hover: oklch(0.38 0.135 200);
+    --iko-accent-on: oklch(0.98 0.008 200);
+    --iko-accent-soft: oklch(0.45 0.13 200 / 0.1);
+    --iko-verde: oklch(0.46 0.13 150);
 }

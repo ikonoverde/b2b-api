@@ -5,32 +5,35 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\Product;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class HomeController extends Controller
 {
-    public function index(): Response
+    public function __invoke(): Response|RedirectResponse
     {
-        $featuredProducts = Product::query()
-            ->with(['category', 'images' => fn ($query) => $query->orderBy('position')->limit(1)])
-            ->whereHas('category', fn ($q) => $q->where('is_active', true))
-            ->where('is_active', true)
-            ->where('is_featured', true)
-            ->orderBy('featured_order')
-            ->limit(4)
-            ->get()
-            ->map(fn (Product $product) => [
-                'id' => $product->id,
-                'slug' => $product->slug,
-                'name' => $product->name,
-                'category' => $product->category?->name,
-                'image_url' => $product->images->first()?->image_url,
-            ]);
+        if (auth()->check()) {
+            return redirect()->route('dashboard');
+        }
 
         return Inertia::render('Home', [
-            'featuredProducts' => $featuredProducts,
+            'featuredProducts' => Product::featuredForHome()->limit(4)->get()->map(self::toCardPayload(...)),
             'banners' => Banner::resolvedActive(),
         ]);
+    }
+
+    /**
+     * @return array{id: int, slug: string, name: string, category: ?string, image_url: ?string}
+     */
+    public static function toCardPayload(Product $product): array
+    {
+        return [
+            'id' => $product->id,
+            'slug' => $product->slug,
+            'name' => $product->name,
+            'category' => $product->category?->name,
+            'image_url' => $product->images->first()?->image_url,
+        ];
     }
 }

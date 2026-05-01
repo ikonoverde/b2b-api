@@ -1,4 +1,5 @@
 <!-- SEED — re-run $impeccable document once there's code in the new direction to capture the actual tokens and components. -->
+<!-- Mineral accent locked: Iodine Teal (see §2). Decided from the temporary `/_design/home` comparison page during the home redesign. -->
 
 ---
 name: Ikonoverde
@@ -13,7 +14,7 @@ description: Storefront and account hub for Ikonoverde body care, serving both w
 
 Ikonoverde's interface should read like a single clean sheet from a modern apothecary's reference binder: a serif label at the top, precise sans-serif copy underneath, generous margin, one cold mineral accent used sparingly. The reference image is a herbarium card or a contemporary product spec insert, not a wellness landing page. Editorial restraint, not artisanal warmth. Laboratory precision, not hospital sterility.
 
-The system is **stone-and-glass**: warm-cool stone neutrals form almost the entire surface, and a single cold mineral accent (a deep iodine teal or a precise violet-ink, to be locked in implementation) carries every transactional moment — primary CTAs, validation success, focus rings, the brand wordmark. Green appears in exactly one place: the *Ikonoverde* wordmark itself. Nowhere else. The "verde" lives in the name; the surface lives in stone.
+The system is **stone-and-glass**: warm-cool stone neutrals form almost the entire surface, and a single cold mineral accent — **Iodine Teal**, locked at `oklch(0.45 0.13 200)` — carries every transactional moment: primary CTAs, validation success, focus rings, section index numbers, the brand wordmark moments. Green appears in exactly one place: the *Ikonoverde* wordmark itself. Nowhere else. The "verde" lives in the name; the surface lives in stone.
 
 This system explicitly rejects the saturated body-care category default — sage gradients, cream backgrounds, thin scripted serifs, leaf illustrations, kraft textures, "small-batch" tropes. If a new screen could be reskinned for any other wellness brand by swapping the wordmark, it has failed.
 
@@ -28,14 +29,23 @@ This system explicitly rejects the saturated body-care category default — sage
 
 A near-monochrome stone palette, lifted by a single cold mineral accent. The strategy is **restrained-committed**: most of the screen is neutral, but the one accent is saturated enough to read as deliberate, not decorative. All values to be resolved during the first scan-mode pass; the constraints are normative now.
 
-### Primary
-- **Mineral Accent** *[hex/oklch to be resolved during implementation]*: A single cold mineral hue — first-choice direction is a deep iodine teal (somewhere around `oklch(~38% 0.07 200)`); alternate direction is a precise violet-ink (`oklch(~32% 0.09 290)`). Used for primary buttons, focus rings, validation success, the wordmark. **One** of these two; never both.
+All tokens live in `resources/css/app.css` under `[data-iko]` and are consumed via `var(--iko-*)`. The home surface is the canonical reference render.
 
-### Neutral
-- **Stone Paper** *[to be resolved]*: The dominant surface. A warm-cool off-white, slightly cooler than cream, slightly warmer than paper-white. Target near `oklch(~96.5% 0.004 230)`. Never `#fff`.
-- **Stone Mid** *[to be resolved]*: Hairline borders, dividers, low-contrast labels. Around `oklch(~88% 0.005 230)`.
-- **Stone Ink** *[to be resolved]*: Body copy and primary text. A near-black tinted toward the accent's hue family. Around `oklch(~22% 0.01 230)`. Never `#000`.
-- **Stone Whisper** *[to be resolved]*: Secondary copy, captions, mono spec-data. Around `oklch(~50% 0.008 230)`.
+### Primary
+- **Mineral Accent — Iodine Teal:** `oklch(0.45 0.13 200)` (`--iko-accent`). Primary buttons, focus rings, section index numbers, eyebrow labels, hero underline mark, banner CTA labels, the wordmark moments.
+- **Accent Hover:** `oklch(0.38 0.135 200)` (`--iko-accent-hover`).
+- **Accent On (text on accent):** `oklch(0.98 0.008 200)` (`--iko-accent-on`).
+- **Accent Soft (hover wash):** `oklch(0.45 0.13 200 / 0.1)` (`--iko-accent-soft`).
+
+### Neutral (all tinted toward the accent hue, h=200)
+- **Stone Paper:** `oklch(0.965 0.012 200)` (`--iko-stone-paper`). Dominant surface. Never `#fff`.
+- **Stone Hairline:** `oklch(0.92 0.012 200)` (`--iko-stone-hairline`). Dividers, table-row borders, section underscores.
+- **Stone Mid:** `oklch(0.88 0.014 200)` (`--iko-stone-mid`). Inert image-frame backgrounds, secondary borders.
+- **Stone Ink:** `oklch(0.22 0.02 200)` (`--iko-stone-ink`). Body copy and primary text. Never `#000`.
+- **Stone Whisper:** `oklch(0.5 0.018 200)` (`--iko-stone-whisper`). Secondary copy, captions, footer meta.
+
+### Verde (wordmark only)
+- **Verde:** `oklch(0.46 0.13 150)` (`--iko-verde`). Used **only** to color the literal substring `verde` inside the rendered Ikonoverde wordmark. Forbidden everywhere else.
 
 ### Semantic (use sparingly, never as the *only* signal)
 - **Caution / Warning**: a desaturated amber, far from the accent hue.

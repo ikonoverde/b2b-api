@@ -52,13 +52,12 @@ it('does not include inactive products', function () {
     );
 });
 
-it('shows home page to authenticated users', function () {
+it('redirects authenticated users from / to the dashboard', function () {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->get('/');
 
-    $response->assertSuccessful();
-    $response->assertInertia(fn ($page) => $page->component('Home'));
+    $response->assertRedirect(route('dashboard'));
 });
 
 it('passes banners to the home page', function () {

@@ -33,7 +33,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', HomeController::class)->name('home');
 Route::get('/catalog', CatalogController::class)->name('catalog');
 
 Route::middleware('guest')->group(function () {

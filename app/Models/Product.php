@@ -102,6 +102,23 @@ class Product extends Model
     }
 
     /**
+     * Active, featured products belonging to active categories,
+     * eager-loaded with the data the public home surface needs.
+     *
+     * @param  Builder<self>  $query
+     * @return Builder<self>
+     */
+    public function scopeFeaturedForHome(Builder $query): Builder
+    {
+        return $query
+            ->with(['category', 'images' => fn ($imageQuery) => $imageQuery->orderBy('position')->limit(1)])
+            ->whereHas('category', fn ($q) => $q->where('is_active', true))
+            ->where('is_active', true)
+            ->where('is_featured', true)
+            ->orderBy('featured_order');
+    }
+
+    /**
      * @param  Builder<self>  $query
      * @return Builder<self>
      */
