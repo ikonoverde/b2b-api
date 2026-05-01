@@ -2,7 +2,7 @@
 
 ---
 name: Ikonoverde
-description: Wholesale storefront and account hub for Ikonoverde body care — clinical, precise, editorial.
+description: Storefront and account hub for Ikonoverde body care, serving both wholesale and low-quantity buyers — clinical, precise, editorial.
 ---
 
 # Design System: Ikonoverde

@@ -6,17 +6,17 @@ brand
 
 ## Users
 
-The platform serves Ikonoverde's wholesale buyers in Spanish-speaking markets. There are two distinct contexts:
+The platform serves Ikonoverde's buyers in Spanish-speaking markets. Products are sold **both at wholesale volumes and in low (single-unit / small-quantity) orders** through the same storefront — the catalog and checkout must accommodate both shapes without forcing one audience through the other's flow. There are two distinct contexts:
 
 **Primary — professional buyers (B2B).** Owners and purchasing managers at boutique hotels, spas, and massage parlors. They are repeat purchasers, not browsers. The defining job is *reordering known SKUs reliably* — the hero product is Ikonoverde's massage oil, ordered in volume on a recurring cadence. Their context is operational: between treatments, mid-shift, or at end-of-day inventory checks. Speed, predictability, and trust matter more than discovery.
 
-**Secondary — individual buyers.** People who care about body-care quality and want professional-grade products at home. They tolerate slightly more browsing, but their session shape still resembles intent rather than entertainment.
+**Secondary — individual buyers.** People who care about body-care quality and want professional-grade products at home. They purchase the same SKUs in low quantities (often a single unit) and tolerate slightly more browsing, but their session shape still resembles intent rather than entertainment. Pricing, minimums, and quantity selectors must support single-unit purchases cleanly alongside case/wholesale quantities.
 
 Both audiences share one trait: they have already chosen Ikonoverde. The interface's job is to remove friction from that choice, not to re-sell it on every screen.
 
 ## Product Purpose
 
-This is the wholesale storefront and account hub for **Ikonoverde** — a body-care brand whose hero product is a professional massage oil. The app is not the product; it is the channel through which the product is sold and reordered. Every surface carries Ikonoverde's identity, but the primary commercial goal is unambiguous: **drive recurring orders**.
+This is the storefront and account hub for **Ikonoverde** — a body-care brand whose hero product is a professional massage oil. It serves **both wholesale (B2B, case/volume) and low-quantity (individual, single-unit) orders** through a single catalog and checkout. The app is not the product; it is the channel through which the product is sold and reordered. Every surface carries Ikonoverde's identity, but the primary commercial goal is unambiguous: **drive recurring orders**, while keeping the low-quantity path frictionless for individual buyers.
 
 Success looks like: shorter reorder cycles, higher first-to-second-order conversion, larger baskets per recurring buyer, and a self-service account experience that reduces manual support load. Discovery and acquisition matter, but they are downstream of retention.
 
