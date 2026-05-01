@@ -1,119 +1,65 @@
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 import { type FormEvent } from 'react';
+import { Link, useForm, usePage } from '@inertiajs/react';
+import { CheckCircle } from 'lucide-react';
+import AuthShell from '@/Layouts/AuthShell';
 import TextInput from '@/Components/TextInput';
-import { AuthMobileHeader, AuthDesktopBrandPanel } from '@/Components/AuthBrandPanel';
 
 export default function ForgotPassword() {
-    const { flash } = usePage<{ flash: { password_status?: string } }>().props;
-    const status = flash?.password_status;
+    const { flash } = usePage() as { props: { flash: { success?: string } } };
 
-    const form = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         email: '',
     });
 
-    function submit(e: FormEvent) {
+    const handleSubmit = (e: FormEvent): void => {
         e.preventDefault();
-        form.post('/forgot-password', {
-            preserveScroll: true,
-        });
-    }
-
-    if (status === 'sent') {
-        return (
-            <>
-                <Head title="Recuperar Contraseña" />
-                <div className="flex min-h-screen flex-col lg:flex-row">
-                    <AuthMobileHeader />
-                    <AuthDesktopBrandPanel />
-
-                    {/* Right Panel - Success Message */}
-                    <div className="flex-1 lg:w-[560px] flex items-center justify-center p-8 lg:p-16 bg-[#FAF6F1]">
-                        <div className="w-full max-w-[400px] flex flex-col items-center gap-6 text-center">
-                            <div className="w-16 h-16 bg-[#5E7052] rounded-full flex items-center justify-center">
-                                <CheckCircle className="w-8 h-8 text-white" />
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <h1 className="text-[32px] font-semibold text-[#1A1A1A] font-[Outfit]">
-                                    Email Enviado
-                                </h1>
-                                <p className="text-base text-[#666666] font-[Outfit]">
-                                    Si existe una cuenta con ese email, hemos enviado un enlace para restablecer tu contraseña.
-                                </p>
-                                <p className="text-sm text-[#999999] font-[Outfit] mt-2">
-                                    Revisa tu bandeja de entrada y haz clic en el enlace del email.
-                                </p>
-                            </div>
-
-                            <Link
-                                href="/login"
-                                className="inline-flex items-center gap-2 text-[#5E7052] font-medium hover:underline font-[Outfit]"
-                            >
-                                <ArrowLeft className="w-4 h-4" />
-                                Volver al inicio de sesión
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            </>
-        );
-    }
+        post('/forgot-password');
+    };
 
     return (
-        <>
-            <Head title="Recuperar Contraseña" />
-            <div className="flex min-h-screen flex-col lg:flex-row">
-                <AuthMobileHeader />
-                <AuthDesktopBrandPanel />
-
-                {/* Right Panel - Forgot Password Form */}
-                <div className="flex-1 lg:w-[560px] flex items-center justify-center p-8 lg:p-16 bg-[#FAF6F1]">
-                    <div className="w-full max-w-[400px] flex flex-col gap-8">
-                        {/* Back Link */}
-                        <Link
-                            href="/login"
-                            className="inline-flex items-center gap-2 text-[#666666] hover:text-[#1A1A1A] font-medium font-[Outfit] transition-colors"
-                        >
-                            <ArrowLeft className="w-4 h-4" />
-                            Volver al inicio de sesión
-                        </Link>
-
-                        {/* Header */}
-                        <div className="flex flex-col gap-2">
-                            <h1 className="text-[32px] font-semibold text-[#1A1A1A] font-[Outfit]">
-                                Recuperar Contraseña
-                            </h1>
-                            <p className="text-base text-[#666666] font-[Outfit]">
-                                Ingresa tu email y te enviaremos un enlace para restablecer tu contraseña.
-                            </p>
+        <AuthShell
+            title="Restablecer contraseña"
+            eyebrow="01 · Recuperación"
+            headline="Restablecer contraseña"
+            sub="Te enviaremos un enlace al correo asociado a tu cuenta."
+        >
+            <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+                {flash?.success && (
+                    <div className="flex items-start gap-3 border border-[var(--iko-accent)] px-4 py-3 bg-[var(--iko-accent-soft)] text-[var(--iko-stone-ink)]">
+                        <CheckCircle className="w-5 h-5 text-[var(--iko-accent)] shrink-0 mt-0.5" />
+                        <div>
+                            <p className="text-[14px] font-medium">Enlace enviado</p>
+                            <p className="text-[13px] text-[var(--iko-stone-whisper)]">{flash.success}</p>
                         </div>
-
-                        {/* Form */}
-                        <form onSubmit={submit} className="flex flex-col gap-5">
-                            <TextInput
-                                id="email"
-                                label="Email"
-                                type="email"
-                                value={form.data.email}
-                                onChange={(e) => form.setData('email', e.target.value)}
-                                placeholder="Ingresa tu email"
-                                icon={Mail}
-                                error={form.errors.email}
-                                required
-                                autoFocus
-                            />
-
-                            <button
-                                type="submit"
-                                disabled={form.processing}
-                                className="h-12 bg-[#5E7052] text-white font-semibold rounded-lg hover:bg-[#4d5e43] focus:outline-none focus:ring-2 focus:ring-[#5E7052] focus:ring-offset-2 transition-colors disabled:opacity-50 font-[Outfit] mt-2"
-                            >
-                                {form.processing ? 'Enviando...' : 'Enviar Enlace'}
-                            </button>
-                        </form>
                     </div>
-                </div>
-            </div>
-        </>
+                )}
+
+                <TextInput
+                    id="email"
+                    label="Email"
+                    type="email"
+                    value={data.email}
+                    onChange={(e) => setData('email', e.target.value)}
+                    placeholder="Ingresa tu email"
+                    error={errors.email}
+                    autoFocus
+                    required
+                />
+
+                <button
+                    type="submit"
+                    disabled={processing}
+                    className="h-12 w-full bg-[var(--iko-accent)] px-6 text-[14px] font-medium text-[var(--iko-accent-on)] tracking-[0.01em] hover:bg-[var(--iko-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] transition-colors disabled:opacity-50"
+                >
+                    {processing ? 'Enviando…' : 'Enviar enlace'}
+                </button>
+
+                <p className="text-center text-[13px] text-[var(--iko-stone-whisper)]">
+                    <Link href="/login" className="font-medium text-[var(--iko-stone-ink)] hover:text-[var(--iko-accent)] transition-colors">
+                        ← Volver al inicio de sesión
+                    </Link>
+                </p>
+            </form>
+        </AuthShell>
     );
 }

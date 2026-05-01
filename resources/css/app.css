@@ -54,4 +54,5 @@
     --iko-accent-soft: oklch(0.45 0.13 200 / 0.1);
     /* Brand green — exact match for the SVG mark fill (#1a9d11). */
     --iko-verde: oklch(0.55 0.21 140);
+    --iko-error: oklch(0.55 0.18 25);
 }
