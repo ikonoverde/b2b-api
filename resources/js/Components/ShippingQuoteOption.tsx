@@ -7,31 +7,40 @@ interface ShippingQuoteOptionProps {
     onSelect: () => void;
 }
 
-export default function ShippingQuoteOption({ quote, isSelected, onSelect }: ShippingQuoteOptionProps) {
+export default function ShippingQuoteOption({
+    quote,
+    isSelected,
+    onSelect,
+}: ShippingQuoteOptionProps) {
     return (
         <button
             type="button"
             onClick={onSelect}
-            className={`flex items-center justify-between w-full px-3 py-3.5 text-left transition-colors ${
-                isSelected ? 'bg-[#f4f7f2]' : 'hover:bg-[#fafafa]'
+            aria-pressed={isSelected}
+            className={`flex w-full items-center gap-4 px-5 py-4 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-inset ${
+                isSelected
+                    ? 'bg-[var(--iko-accent-soft)]'
+                    : 'hover:bg-[var(--iko-stone-mid)]/15'
             }`}
         >
-            <div className="flex items-center gap-3">
-                <div
-                    className={`w-[18px] h-[18px] rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
-                        isSelected ? 'border-primary' : 'border-[#c4c4c4]'
-                    }`}
-                >
-                    {isSelected && <div className="w-2 h-2 rounded-full bg-primary" />}
-                </div>
-                <div>
-                    <p className="text-[14px] font-medium text-stripe-text font-body">{quote.carrier}</p>
-                    <p className="text-[12px] text-stripe-muted font-body">
-                        {quote.service} · {quote.estimated_days} día{quote.estimated_days !== 1 ? 's' : ''} hábiles
-                    </p>
-                </div>
-            </div>
-            <span className="text-[14px] font-semibold text-stripe-text font-body">
+            <span
+                aria-hidden="true"
+                className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition-colors ${
+                    isSelected
+                        ? 'border-[var(--iko-accent)]'
+                        : 'border-[var(--iko-stone-mid)]'
+                }`}
+            >
+                {isSelected && <span className="h-2 w-2 rounded-full bg-[var(--iko-accent)]" />}
+            </span>
+            <span className="flex flex-1 flex-col gap-0.5">
+                <span className="text-[14px] text-[var(--iko-stone-ink)]">{quote.carrier}</span>
+                <span className="font-spec text-[11px] tabular-nums tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
+                    {quote.service} · {quote.estimated_days}{' '}
+                    {quote.estimated_days === 1 ? 'día hábil' : 'días hábiles'}
+                </span>
+            </span>
+            <span className="font-spec text-[14px] tabular-nums text-[var(--iko-stone-ink)]">
                 {formatCurrency(quote.price)}
             </span>
         </button>

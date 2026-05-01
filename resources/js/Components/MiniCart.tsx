@@ -2,29 +2,21 @@ import { Link } from '@inertiajs/react';
 import { ShoppingCart } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { MiniCart as MiniCartType } from '@/types';
+import { formatCurrency } from '@/utils/currency';
 
 interface MiniCartProps {
     miniCart: MiniCartType;
 }
 
 export default function MiniCart({ miniCart }: MiniCartProps) {
-    const { items, subtotal, totalCount: cartItemCount } = miniCart;
+    const { items, subtotal, totalCount } = miniCart;
     const [open, setOpen] = useState(false);
-    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-    const handleBlur = () => {
-        timeoutRef.current = setTimeout(() => setOpen(false), 150);
-    };
-
-    const handleFocus = () => {
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-            timeoutRef.current = null;
-        }
-    };
+    const containerRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        if (!open) return;
+        if (!open) {
+            return;
+        }
 
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
@@ -32,108 +24,133 @@ export default function MiniCart({ miniCart }: MiniCartProps) {
             }
         };
 
+        const handleClickOutside = (e: MouseEvent) => {
+            if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+                setOpen(false);
+            }
+        };
+
         document.addEventListener('keydown', handleKeyDown);
-        return () => document.removeEventListener('keydown', handleKeyDown);
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, [open]);
 
     return (
-        <div
-            className="relative"
-            onBlur={handleBlur}
-            onFocus={handleFocus}
-        >
+        <div className="relative" ref={containerRef}>
             <button
+                type="button"
                 onClick={() => setOpen(!open)}
-                className="relative p-2 text-white/80 hover:text-white transition-colors"
+                className="inline-flex h-9 items-center gap-2 px-2 text-[var(--iko-stone-ink)] hover:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] transition-colors"
+                aria-label={`Carrito · ${totalCount} ${totalCount === 1 ? 'producto' : 'productos'}`}
+                aria-haspopup="dialog"
+                aria-expanded={open}
             >
-                <ShoppingCart className="w-5 h-5" />
-                {cartItemCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-[#D4A853] rounded-full flex items-center justify-center text-white text-[10px] font-bold">
-                        {cartItemCount}
-                    </span>
-                )}
+                <ShoppingCart className="h-4.5 w-4.5" strokeWidth={1.5} />
+                <span className="font-spec text-[12px] tabular-nums tracking-[0.02em] text-[var(--iko-stone-whisper)]">
+                    {String(totalCount).padStart(2, '0')}
+                </span>
             </button>
 
             {open && (
-                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-lg border border-[#E5E5E5] z-50">
-                    {cartItemCount === 0 ? (
-                        <div className="p-6 text-center">
-                            <ShoppingCart className="w-8 h-8 text-[#999999] mx-auto mb-2" />
-                            <p className="text-sm text-[#666666] font-[Outfit]">
-                                Tu carrito está vacío
-                            </p>
-                            <Link
-                                href="/catalog"
-                                className="inline-block mt-3 text-sm text-[#5E7052] font-[Outfit] font-medium hover:underline"
-                            >
-                                Ver Catálogo
-                            </Link>
-                        </div>
+                <div
+                    role="dialog"
+                    aria-label="Resumen del carrito"
+                    className="absolute right-0 top-full z-50 mt-3 w-80 border border-[var(--iko-stone-hairline)] bg-[var(--iko-stone-paper)] sm:w-96"
+                >
+                    {totalCount === 0 ? (
+                        <EmptyState onDismiss={() => setOpen(false)} />
                     ) : (
                         <>
-                            <div className="px-4 py-3 border-b border-[#E5E5E5]">
-                                <h3 className="text-sm font-semibold text-[#1A1A1A] font-[Outfit]">
-                                    Mi Carrito
-                                    <span className="ml-1 text-xs font-normal text-[#999999]">
-                                        ({cartItemCount} {cartItemCount === 1 ? 'producto' : 'productos'})
-                                    </span>
-                                </h3>
-                            </div>
+                            <header className="flex items-baseline justify-between border-b border-[var(--iko-stone-hairline)] px-5 py-4">
+                                <span className="font-spec text-[11px] tracking-[0.08em] text-[var(--iko-accent)] uppercase">
+                                    Carrito
+                                </span>
+                                <span className="font-spec text-[11px] tabular-nums tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
+                                    {totalCount} {totalCount === 1 ? 'producto' : 'productos'}
+                                </span>
+                            </header>
 
-                            <ul className="divide-y divide-[#E5E5E5]">
+                            <ul className="max-h-80 divide-y divide-[var(--iko-stone-hairline)] overflow-y-auto">
                                 {items.map((item) => (
-                                    <li key={item.id} className="flex items-center gap-3 px-4 py-3">
-                                        <div className="w-10 h-10 rounded-full bg-[#F5F3F0] shrink-0 overflow-hidden flex items-center justify-center">
+                                    <li key={item.id} className="flex items-center gap-3 px-5 py-3">
+                                        <div className="h-12 w-12 shrink-0 overflow-hidden bg-[var(--iko-stone-mid)]/40">
                                             {item.image ? (
                                                 <img
                                                     src={item.image}
-                                                    alt={item.name}
-                                                    className="w-full h-full object-cover"
+                                                    alt=""
+                                                    className="h-full w-full object-cover"
+                                                    loading="lazy"
                                                 />
-                                            ) : (
-                                                <ShoppingCart className="w-4 h-4 text-[#999999]" />
-                                            )}
+                                            ) : null}
                                         </div>
-                                        <div className="flex-1 min-w-0">
-                                            <p className="text-sm text-[#1A1A1A] font-[Outfit] truncate">
+                                        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                                            <span className="truncate text-[13px] leading-tight text-[var(--iko-stone-ink)]">
                                                 {item.name}
-                                            </p>
-                                            <p className="text-xs text-[#999999] font-[Outfit]">
-                                                {item.quantity} × ${item.price.toFixed(2)}
-                                            </p>
+                                            </span>
+                                            <span className="font-spec text-[11px] tabular-nums tracking-[0.02em] text-[var(--iko-stone-whisper)]">
+                                                {item.quantity} × {formatCurrency(item.price)}
+                                            </span>
                                         </div>
-                                        <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit] shrink-0">
-                                            ${item.subtotal.toFixed(2)}
+                                        <span className="shrink-0 font-spec text-[12px] tabular-nums text-[var(--iko-stone-ink)]">
+                                            {formatCurrency(item.subtotal)}
                                         </span>
                                     </li>
                                 ))}
                             </ul>
 
-                            <div className="px-4 py-3 border-t border-[#E5E5E5] flex items-center justify-between">
-                                <span className="text-sm text-[#666666] font-[Outfit]">Subtotal</span>
-                                <span className="text-sm font-semibold text-[#1A1A1A] font-[Outfit]">
-                                    ${subtotal.toFixed(2)}
+                            <div className="flex items-baseline justify-between border-t border-[var(--iko-stone-hairline)] px-5 py-4">
+                                <span className="font-spec text-[11px] tracking-[0.08em] text-[var(--iko-stone-whisper)] uppercase">
+                                    Subtotal
+                                </span>
+                                <span className="font-spec text-[14px] tabular-nums text-[var(--iko-stone-ink)]">
+                                    {formatCurrency(subtotal)}
                                 </span>
                             </div>
 
-                            <div className="px-4 pb-4 flex gap-2">
+                            <div className="flex gap-px border-t border-[var(--iko-stone-hairline)] bg-[var(--iko-stone-hairline)]">
                                 <Link
                                     href="/cart"
-                                    className="flex-1 text-center py-2 text-sm font-medium text-[#5E7052] border border-[#5E7052] rounded-lg font-[Outfit] hover:bg-[#5E7052]/5 transition-colors"
+                                    onClick={() => setOpen(false)}
+                                    className="flex-1 bg-[var(--iko-stone-paper)] py-3 text-center text-[13px] text-[var(--iko-stone-ink)] hover:bg-[var(--iko-accent-soft)]"
                                 >
-                                    Ver Carrito
+                                    Ver carrito
                                 </Link>
                                 <Link
                                     href="/checkout/shipping"
-                                    className="flex-1 text-center py-2 text-sm font-medium text-white bg-[#5E7052] rounded-lg font-[Outfit] hover:bg-[#4a5d42] transition-colors"
+                                    onClick={() => setOpen(false)}
+                                    className="flex-1 bg-[var(--iko-accent)] py-3 text-center text-[13px] font-medium text-[var(--iko-accent-on)] hover:bg-[var(--iko-accent-hover)]"
                                 >
-                                    Ir al Checkout
+                                    Realizar pedido
                                 </Link>
                             </div>
                         </>
                     )}
                 </div>
             )}
+        </div>
+    );
+}
+
+function EmptyState({ onDismiss }: { onDismiss: () => void }) {
+    return (
+        <div className="flex flex-col items-start gap-3 px-5 py-6">
+            <span className="font-spec text-[11px] tracking-[0.08em] text-[var(--iko-accent)] uppercase">
+                Carrito vacío
+            </span>
+            <p className="max-w-[26ch] text-[13px] leading-[1.55] text-[var(--iko-stone-ink)]/75">
+                Agrega productos desde el catálogo para empezar tu pedido.
+            </p>
+            <Link
+                href="/catalog"
+                onClick={onDismiss}
+                className="inline-flex items-baseline gap-2 text-[13px] font-medium text-[var(--iko-accent)] hover:text-[var(--iko-accent-hover)]"
+            >
+                Ver catálogo
+                <span aria-hidden="true">→</span>
+            </Link>
         </div>
     );
 }

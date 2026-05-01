@@ -1,7 +1,6 @@
 import { useForm, usePage } from '@inertiajs/react';
-import { Loader2 } from 'lucide-react';
 import type { FormEvent } from 'react';
-import CustomerLayout from '@/Layouts/CustomerLayout';
+import CustomerShell from '@/Layouts/CustomerShell';
 import AddressForm from '@/Components/AddressForm';
 import CheckoutStepIndicator from '@/Components/CheckoutStepIndicator';
 import SavedAddressSelector from '@/Components/SavedAddressSelector';
@@ -9,7 +8,7 @@ import ShippingQuoteSelector from '@/Components/ShippingQuoteSelector';
 import CheckoutSummary from '@/Components/CheckoutSummary';
 import useSavedAddress from '@/hooks/useSavedAddress';
 import useShippingQuotes from '@/hooks/useShippingQuotes';
-import type { Cart, PageProps } from '@/types';
+import type { Address, Cart, PageProps } from '@/types';
 
 interface ShippingProps {
     cart: Cart;
@@ -43,7 +42,7 @@ export default function Shipping({ cart, addresses }: ShippingProps) {
         rate_id: '',
     });
 
-    function fetchQuotesIfReady(data: Record<string, string>) {
+    function fetchQuotesIfReady(data: Record<string, string>): void {
         if (canFetchQuotes(data)) {
             fetchQuotes({
                 postal_code: data.postal_code,
@@ -65,7 +64,7 @@ export default function Shipping({ cart, addresses }: ShippingProps) {
     const shippingCost = selectedQuote?.price ?? null;
     const total = shippingCost !== null ? cart.totals.subtotal + shippingCost : null;
 
-    function handleFieldChange(field: string, value: string) {
+    function handleFieldChange(field: string, value: string): void {
         const updated = { ...form.data, [field]: value };
 
         if (QUOTE_FIELDS.has(field) && canFetchQuotes(updated)) {
@@ -81,84 +80,108 @@ export default function Shipping({ cart, addresses }: ShippingProps) {
         }
     }
 
-    function submit(e: FormEvent) {
+    function submit(e: FormEvent): void {
         e.preventDefault();
         form.post('/checkout/shipping');
     }
 
+    const stockErrors = errors.stock
+        ? Array.isArray(errors.stock)
+            ? errors.stock
+            : [errors.stock]
+        : null;
+
     return (
-        <CustomerLayout title="Envío - Checkout">
-            <div className="px-6 py-8">
+        <CustomerShell title="Envío · Compra">
+            <header className="flex flex-col gap-3">
+                <span className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-accent)] uppercase">
+                    Compra · Envío
+                </span>
+                <h1 className="font-display text-[clamp(2rem,4vw,2.75rem)] leading-[1.05] tracking-[-0.015em] text-[var(--iko-stone-ink)]">
+                    Dirección de envío
+                </h1>
+                <p className="max-w-[58ch] text-[15px] leading-[1.55] text-[var(--iko-stone-ink)]/75">
+                    Selecciona una dirección guardada o ingresa una nueva. Las tarifas y tiempos de
+                    entrega se calculan en tiempo real.
+                </p>
+            </header>
+
+            <div className="mt-10">
                 <CheckoutStepIndicator currentStep={1} />
-
-                <h1 className="text-2xl font-bold text-stripe-text font-body mb-6">Dirección de Envío</h1>
-
-                {errors.stock && (
-                    <div className="mb-5 rounded-xl border border-stripe-border bg-white p-4 shadow-[0_1px_1px_0_rgba(0,0,0,0.03)]">
-                        <p className="text-[13px] font-medium text-stripe-error font-body">
-                            Algunos productos no tienen suficiente stock:
-                        </p>
-                        <ul className="mt-1 list-disc pl-5 text-[13px] text-stripe-error font-body">
-                            {(Array.isArray(errors.stock) ? errors.stock : [errors.stock]).map(
-                                (error: string, i: number) => (
-                                    <li key={i}>{error}</li>
-                                ),
-                            )}
-                        </ul>
-                    </div>
-                )}
-
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <form onSubmit={submit} className="lg:col-span-2 flex flex-col gap-5">
-                        {addresses.length > 0 && (
-                            <SavedAddressSelector
-                                addresses={addresses}
-                                selectedAddressId={selectedAddressId}
-                                onSelect={selectAddress}
-                                onNewAddress={clearSelection}
-                            />
-                        )}
-
-                        <AddressForm
-                            data={form.data}
-                            errors={form.errors}
-                            disabled={form.processing}
-                            onFieldChange={handleFieldChange}
-                        />
-
-                        <ShippingQuoteSelector
-                            quotes={quotes}
-                            selectedRateId={form.data.rate_id}
-                            loading={loading}
-                            fetched={fetched}
-                            error={error}
-                            validationError={form.errors.rate_id}
-                            onSelect={(quote) => form.setData({ ...form.data, quote_id: quote.quote_id, rate_id: quote.rate_id })}
-                        />
-
-                        <button
-                            type="submit"
-                            disabled={form.processing || !form.data.rate_id}
-                            className="h-12 bg-primary text-white font-semibold rounded-xl hover:bg-[#4d5e43] transition-all disabled:opacity-50 font-body mt-1 shadow-[0_1px_1px_0_rgba(0,0,0,0.03),0_1px_3px_0_rgba(0,0,0,0.08)] hover:shadow-[0_1px_1px_0_rgba(0,0,0,0.03),0_3px_7px_0_rgba(0,0,0,0.12)]"
-                        >
-                            {form.processing ? (
-                                <Loader2 className="w-5 h-5 animate-spin mx-auto" />
-                            ) : (
-                                'Continuar al Pago'
-                            )}
-                        </button>
-                    </form>
-
-                    <div className="lg:col-span-1">
-                        <CheckoutSummary
-                            items={cart.items}
-                            subtotal={cart.totals.subtotal}
-                            shippingCost={shippingCost}
-                            total={total}
-                        />
-                    </div>
-                </div>
             </div>
-        </CustomerLayout>
+
+            {stockErrors && (
+                <div className="mt-8 border border-[var(--iko-error)]/40 bg-[var(--iko-error)]/5 px-5 py-4">
+                    <p className="font-spec text-[11px] tracking-[0.08em] text-[var(--iko-error)] uppercase">
+                        Existencias insuficientes
+                    </p>
+                    <ul className="mt-2 flex flex-col gap-1">
+                        {stockErrors.map((msg, i) => (
+                            <li key={i} className="text-[13px] text-[var(--iko-error)]">
+                                {msg}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
+            <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_22rem]">
+                <form onSubmit={submit} className="flex flex-col gap-10">
+                    {addresses.length > 0 && (
+                        <SavedAddressSelector
+                            addresses={addresses}
+                            selectedAddressId={selectedAddressId}
+                            onSelect={selectAddress}
+                            onNewAddress={clearSelection}
+                        />
+                    )}
+
+                    <AddressForm
+                        data={form.data}
+                        errors={form.errors}
+                        disabled={form.processing}
+                        onFieldChange={handleFieldChange}
+                    />
+
+                    <ShippingQuoteSelector
+                        quotes={quotes}
+                        selectedRateId={form.data.rate_id}
+                        loading={loading}
+                        fetched={fetched}
+                        error={error}
+                        validationError={form.errors.rate_id}
+                        onSelect={(quote) =>
+                            form.setData({
+                                ...form.data,
+                                quote_id: quote.quote_id,
+                                rate_id: quote.rate_id,
+                            })
+                        }
+                    />
+
+                    <button
+                        type="submit"
+                        disabled={form.processing || !form.data.rate_id}
+                        className="flex h-12 w-full items-center justify-center bg-[var(--iko-accent)] px-6 text-[14px] font-medium tracking-[0.01em] text-[var(--iko-accent-on)] transition-colors hover:bg-[var(--iko-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                        {form.processing ? (
+                            <span
+                                aria-hidden="true"
+                                className="h-4 w-4 animate-spin rounded-full border border-[var(--iko-accent-on)]/40 border-t-[var(--iko-accent-on)]"
+                            />
+                        ) : (
+                            'Continuar al pago'
+                        )}
+                    </button>
+                </form>
+
+                <CheckoutSummary
+                    items={cart.items}
+                    subtotal={cart.totals.subtotal}
+                    shippingCost={shippingCost}
+                    total={total}
+                />
+            </div>
+        </CustomerShell>
     );
 }

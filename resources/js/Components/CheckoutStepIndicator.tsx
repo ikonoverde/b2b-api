@@ -4,7 +4,7 @@ interface CheckoutStepIndicatorProps {
     currentStep: 1 | 2 | 3;
 }
 
-const steps = [
+const STEPS = [
     { label: 'Envío', step: 1 },
     { label: 'Pago', step: 2 },
     { label: 'Confirmación', step: 3 },
@@ -12,43 +12,65 @@ const steps = [
 
 export default function CheckoutStepIndicator({ currentStep }: CheckoutStepIndicatorProps) {
     return (
-        <div className="flex items-center justify-center gap-2 mb-8">
-            {steps.map(({ label, step }, index) => {
+        <ol
+            aria-label="Progreso de la compra"
+            className="flex items-stretch border-y border-[var(--iko-stone-hairline)]"
+        >
+            {STEPS.map(({ label, step }, index) => {
                 const isCompleted = currentStep > step;
                 const isActive = currentStep === step;
+                const status = isCompleted ? 'completed' : isActive ? 'active' : 'pending';
 
                 return (
-                    <div key={step} className="flex items-center gap-2">
-                        <div className="flex items-center gap-2">
-                            <div
-                                className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold font-[Outfit] ${
-                                    isCompleted
-                                        ? 'bg-[#5E7052] text-white'
-                                        : isActive
-                                          ? 'bg-[#5E7052] text-white'
-                                          : 'bg-[#E5E5E5] text-[#999999]'
+                    <li
+                        key={step}
+                        className={`flex flex-1 items-center gap-3 py-4 ${
+                            index === 0 ? '' : 'border-l border-[var(--iko-stone-hairline)] pl-5'
+                        } pr-5`}
+                        aria-current={isActive ? 'step' : undefined}
+                    >
+                        <span
+                            className={`flex h-7 w-7 shrink-0 items-center justify-center border ${
+                                status === 'completed'
+                                    ? 'border-[var(--iko-accent)] bg-[var(--iko-accent)] text-[var(--iko-accent-on)]'
+                                    : status === 'active'
+                                    ? 'border-[var(--iko-accent)] text-[var(--iko-accent)]'
+                                    : 'border-[var(--iko-stone-hairline)] text-[var(--iko-stone-mid)]'
+                            }`}
+                        >
+                            {status === 'completed' ? (
+                                <Check className="h-3.5 w-3.5" strokeWidth={2} />
+                            ) : (
+                                <span className="font-spec text-[11px] tabular-nums">
+                                    {String(step).padStart(2, '0')}
+                                </span>
+                            )}
+                        </span>
+                        <span className="flex flex-col gap-0.5">
+                            <span
+                                className={`font-spec text-[10px] tracking-[0.08em] uppercase ${
+                                    status === 'pending'
+                                        ? 'text-[var(--iko-stone-mid)]'
+                                        : 'text-[var(--iko-stone-whisper)]'
                                 }`}
                             >
-                                {isCompleted ? <Check className="h-4 w-4" /> : step}
-                            </div>
+                                Paso {step}
+                            </span>
                             <span
-                                className={`text-sm font-[Outfit] hidden sm:inline ${
-                                    isActive ? 'font-semibold text-[#1A1A1A]' : 'text-[#999999]'
+                                className={`text-[13px] ${
+                                    status === 'active'
+                                        ? 'text-[var(--iko-stone-ink)]'
+                                        : status === 'completed'
+                                        ? 'text-[var(--iko-stone-ink)]'
+                                        : 'text-[var(--iko-stone-whisper)]'
                                 }`}
                             >
                                 {label}
                             </span>
-                        </div>
-                        {index < steps.length - 1 && (
-                            <div
-                                className={`h-px w-8 sm:w-12 ${
-                                    currentStep > step ? 'bg-[#5E7052]' : 'bg-[#E5E5E5]'
-                                }`}
-                            />
-                        )}
-                    </div>
+                        </span>
+                    </li>
                 );
             })}
-        </div>
+        </ol>
     );
 }

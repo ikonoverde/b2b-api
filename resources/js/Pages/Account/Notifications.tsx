@@ -1,13 +1,8 @@
 import { Link, usePage } from '@inertiajs/react';
-import {
-    Bell,
-    ChevronLeft,
-    Loader2,
-} from 'lucide-react';
-import CustomerLayout from '@/Layouts/CustomerLayout';
-import type { PageProps } from '@/types';
+import { useState, type FormEvent } from 'react';
+import AccountShell from '@/Layouts/AccountShell';
 import { apiFetch } from '@/utils/api';
-import { useState } from 'react';
+import type { PageProps } from '@/types';
 
 interface NotificationPreferences {
     notify_order_updates: boolean;
@@ -19,152 +14,195 @@ interface NotificationsProps {
     preferences: NotificationPreferences;
 }
 
-const toggleItems = [
+interface ToggleItem {
+    key: keyof NotificationPreferences;
+    eyebrow: string;
+    label: string;
+    description: string;
+}
+
+const TOGGLE_ITEMS: ToggleItem[] = [
     {
-        key: 'notify_order_updates' as const,
-        label: 'Actualizaciones de Pedidos',
-        description: 'Reciba notificaciones sobre el estado de sus pedidos, envíos y entregas.',
+        key: 'notify_order_updates',
+        eyebrow: '01',
+        label: 'Actualizaciones de pedidos',
+        description:
+            'Confirmaciones, cambios de estado, envío y entrega. Es la única categoría que afecta tus pedidos directamente.',
     },
     {
-        key: 'notify_promotional_emails' as const,
-        label: 'Correos Promocionales',
-        description: 'Reciba ofertas especiales, descuentos y promociones exclusivas.',
+        key: 'notify_promotional_emails',
+        eyebrow: '02',
+        label: 'Promociones',
+        description:
+            'Avisos de ofertas mayoristas, cierres de mes y descuentos por volumen. Bajo volumen, sin spam.',
     },
     {
-        key: 'notify_newsletter' as const,
-        label: 'Boletín Informativo',
-        description: 'Reciba noticias, novedades y contenido relevante de nuestra empresa.',
+        key: 'notify_newsletter',
+        eyebrow: '03',
+        label: 'Boletín',
+        description:
+            'Notas sobre nuevas formulaciones, formatos y cambios en el catálogo. Mensual.',
     },
 ];
 
 export default function Notifications({ preferences }: NotificationsProps) {
     const { flash } = usePage<PageProps>().props;
-    const [formData, setFormData] = useState<NotificationPreferences>({ ...preferences });
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [successMessage, setSuccessMessage] = useState(flash?.success || '');
-    const [errorMessage, setErrorMessage] = useState('');
+    const [data, setData] = useState<NotificationPreferences>({ ...preferences });
+    const [submitting, setSubmitting] = useState(false);
+    const [success, setSuccess] = useState(flash?.success || '');
+    const [error, setError] = useState('');
 
-    function handleToggle(key: keyof NotificationPreferences) {
-        setFormData(prev => ({ ...prev, [key]: !prev[key] }));
-        if (successMessage) {
-            setSuccessMessage('');
+    function toggle(key: keyof NotificationPreferences): void {
+        setData((prev) => ({ ...prev, [key]: !prev[key] }));
+        if (success) {
+            setSuccess('');
         }
-        if (errorMessage) {
-            setErrorMessage('');
+        if (error) {
+            setError('');
         }
     }
 
-    async function handleSubmit(e: React.FormEvent) {
+    async function submit(e: FormEvent): Promise<void> {
         e.preventDefault();
-        setIsSubmitting(true);
-        setSuccessMessage('');
-        setErrorMessage('');
+        setSubmitting(true);
+        setSuccess('');
+        setError('');
 
         try {
             const response = await apiFetch('/account/notifications', {
                 method: 'PUT',
-                body: JSON.stringify(formData),
+                body: JSON.stringify(data),
             });
 
             if (response.ok) {
-                setSuccessMessage('Preferencias de notificación actualizadas exitosamente.');
+                setSuccess('Preferencias actualizadas.');
             } else {
-                setErrorMessage('Error al actualizar las preferencias.');
+                setError('No fue posible actualizar las preferencias.');
             }
         } catch {
-            setErrorMessage('Error de conexión. Por favor intente nuevamente.');
+            setError('Error de conexión. Intenta nuevamente.');
         } finally {
-            setIsSubmitting(false);
+            setSubmitting(false);
         }
     }
 
     return (
-        <CustomerLayout title="Notificaciones">
-            <div className="px-6 py-8 max-w-2xl mx-auto">
-                {/* Header */}
-                <div className="flex items-center gap-3 mb-6">
-                    <Link
-                        href="/account"
-                        className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
-                    >
-                        <ChevronLeft className="h-5 w-5 text-[#666666]" />
-                    </Link>
-                    <h1 className="text-xl font-bold text-[#1A1A1A] font-[Outfit]">Notificaciones</h1>
+        <AccountShell
+            title="Notificaciones"
+            eyebrow="Cuenta · Notificaciones"
+            headline="Notificaciones"
+            sub="Decide qué correos recibir. Las actualizaciones de pedidos están encendidas por defecto y se recomienda mantenerlas activas."
+            section="notifications"
+        >
+            {success && (
+                <div className="mb-2 border border-[var(--iko-accent)] bg-[var(--iko-accent-soft)] px-5 py-3 text-[13px] text-[var(--iko-stone-ink)]">
+                    {success}
                 </div>
+            )}
+            {(error || flash?.error) && (
+                <div className="mb-2 border border-[var(--iko-error)]/40 bg-[var(--iko-error)]/5 px-5 py-3 text-[13px] text-[var(--iko-error)]">
+                    {error || flash?.error}
+                </div>
+            )}
 
-                {/* Success Message */}
-                {successMessage && (
-                    <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl">
-                        <p className="text-sm text-green-700 font-[Outfit]">{successMessage}</p>
-                    </div>
-                )}
+            <form onSubmit={submit} className="grid grid-cols-1 gap-12 md:grid-cols-[10rem_1fr] md:gap-16">
+                <h2 className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-stone-whisper)] uppercase">
+                    Preferencias
+                </h2>
 
-                {/* Error Message */}
-                {(errorMessage || flash?.error) && (
-                    <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
-                        <p className="text-sm text-red-700 font-[Outfit]">{errorMessage || flash?.error}</p>
-                    </div>
-                )}
+                <div className="flex flex-col gap-2">
+                    <ol className="border-y border-[var(--iko-stone-hairline)]">
+                        {TOGGLE_ITEMS.map((item) => (
+                            <ToggleRow
+                                key={item.key}
+                                item={item}
+                                checked={data[item.key]}
+                                onToggle={() => toggle(item.key)}
+                            />
+                        ))}
+                    </ol>
 
-                {/* Notification Preferences Form */}
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#5E7052]/10">
-                                <Bell className="h-6 w-6 text-[#5E7052]" />
-                            </div>
-                            <div>
-                                <h2 className="text-lg font-bold text-[#1A1A1A] font-[Outfit]">Preferencias de Notificación</h2>
-                                <p className="text-sm text-[#999999] font-[Outfit]">Elija qué notificaciones desea recibir</p>
-                            </div>
-                        </div>
-
-                        <div className="space-y-4">
-                            {toggleItems.map((item) => (
-                                <label
-                                    key={item.key}
-                                    className="flex items-start gap-4 p-4 rounded-xl border border-[#E5E5E5] hover:bg-gray-50 transition-colors cursor-pointer"
-                                >
-                                    <input
-                                        type="checkbox"
-                                        checked={formData[item.key]}
-                                        onChange={() => handleToggle(item.key)}
-                                        className="mt-0.5 h-5 w-5 rounded border-[#E5E5E5] text-[#5E7052] focus:ring-[#5E7052]/20"
-                                    />
-                                    <div className="flex-1">
-                                        <span className="block text-sm font-medium text-[#1A1A1A] font-[Outfit]">{item.label}</span>
-                                        <span className="block text-sm text-[#999999] font-[Outfit] mt-0.5">{item.description}</span>
-                                    </div>
-                                </label>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex gap-3">
+                    <div className="mt-8 flex flex-wrap gap-3">
+                        <button
+                            type="submit"
+                            disabled={submitting}
+                            className="inline-flex h-12 items-center bg-[var(--iko-accent)] px-7 text-[14px] font-medium tracking-[0.01em] text-[var(--iko-accent-on)] hover:bg-[var(--iko-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] disabled:cursor-not-allowed disabled:opacity-60"
+                        >
+                            {submitting ? 'Guardando…' : 'Guardar cambios'}
+                        </button>
                         <Link
                             href="/account"
-                            className="flex-1 rounded-xl border border-[#E5E5E5] bg-white px-4 py-3.5 text-center text-sm font-medium text-[#666666] hover:bg-gray-50 transition-colors font-[Outfit]"
+                            className="inline-flex h-12 items-center border border-[var(--iko-stone-hairline)] px-7 text-[14px] text-[var(--iko-stone-ink)] hover:border-[var(--iko-accent)] hover:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)]"
                         >
                             Cancelar
                         </Link>
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="flex-1 rounded-xl bg-[#5E7052] px-4 py-3.5 text-sm font-bold text-white hover:bg-[#4A5A40] disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-[Outfit] flex items-center justify-center gap-2"
-                        >
-                            {isSubmitting ? (
-                                <>
-                                    <Loader2 className="h-4 w-4 animate-spin" />
-                                    Guardando...
-                                </>
-                            ) : (
-                                'Guardar Cambios'
-                            )}
-                        </button>
                     </div>
-                </form>
+                </div>
+            </form>
+        </AccountShell>
+    );
+}
+
+function ToggleRow({
+    item,
+    checked,
+    onToggle,
+}: {
+    item: ToggleItem;
+    checked: boolean;
+    onToggle: () => void;
+}) {
+    return (
+        <li className="grid grid-cols-[2.5rem_1fr_auto] items-start gap-4 border-b border-[var(--iko-stone-hairline)] py-6 last:border-b-0 sm:grid-cols-[3rem_1fr_auto] sm:gap-6">
+            <span className="font-spec text-[11px] tabular-nums text-[var(--iko-stone-mid)]">
+                {item.eyebrow}
+            </span>
+            <div className="flex flex-col gap-1.5">
+                <label
+                    htmlFor={`toggle-${item.key}`}
+                    className="font-display text-[1.125rem] leading-tight text-[var(--iko-stone-ink)]"
+                >
+                    {item.label}
+                </label>
+                <p className="max-w-[58ch] text-[13px] leading-[1.55] text-[var(--iko-stone-whisper)]">
+                    {item.description}
+                </p>
             </div>
-        </CustomerLayout>
+            <Toggle id={`toggle-${item.key}`} checked={checked} onChange={onToggle} />
+        </li>
+    );
+}
+
+function Toggle({
+    id,
+    checked,
+    onChange,
+}: {
+    id: string;
+    checked: boolean;
+    onChange: () => void;
+}) {
+    return (
+        <button
+            type="button"
+            id={id}
+            role="switch"
+            aria-checked={checked}
+            onClick={onChange}
+            className={`relative inline-flex h-6 w-11 shrink-0 items-center border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] ${
+                checked
+                    ? 'border-[var(--iko-accent)] bg-[var(--iko-accent)]'
+                    : 'border-[var(--iko-stone-hairline)] bg-[var(--iko-stone-paper)]'
+            }`}
+        >
+            <span
+                aria-hidden="true"
+                className={`inline-block h-4 w-4 bg-[var(--iko-accent-on)] transition-transform ${
+                    checked
+                        ? 'translate-x-[1.375rem]'
+                        : 'translate-x-[0.125rem] bg-[var(--iko-stone-mid)]'
+                }`}
+            />
+        </button>
     );
 }

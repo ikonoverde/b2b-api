@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { Loader2 } from 'lucide-react';
-import CustomerLayout from '@/Layouts/CustomerLayout';
+import CustomerShell from '@/Layouts/CustomerShell';
 import CheckoutStepIndicator from '@/Components/CheckoutStepIndicator';
 import OrderSummary from '@/Components/OrderSummary';
+import { formatCurrency } from '@/utils/currency';
 
 interface OrderItem {
     id: number;
@@ -26,8 +26,67 @@ interface PaymentProps {
     stripe_key: string;
 }
 
-function formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount);
+export default function Payment({ order, client_secret, stripe_key }: PaymentProps) {
+    const stripePromise = loadStripe(stripe_key);
+
+    return (
+        <CustomerShell title="Pago · Compra">
+            <header className="flex flex-col gap-3">
+                <span className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-accent)] uppercase">
+                    Compra · Pago
+                </span>
+                <h1 className="font-display text-[clamp(2rem,4vw,2.75rem)] leading-[1.05] tracking-[-0.015em] text-[var(--iko-stone-ink)]">
+                    Método de pago
+                </h1>
+                <p className="max-w-[58ch] text-[15px] leading-[1.55] text-[var(--iko-stone-ink)]/75">
+                    Pago procesado por Stripe. Tu información se transmite cifrada.
+                </p>
+            </header>
+
+            <div className="mt-10">
+                <CheckoutStepIndicator currentStep={2} />
+            </div>
+
+            <Elements
+                stripe={stripePromise}
+                options={{
+                    clientSecret: client_secret,
+                    appearance: {
+                        theme: 'stripe',
+                        variables: {
+                            colorPrimary: '#0c5e6f',
+                            colorText: '#0d262e',
+                            colorBackground: '#f5f3ee',
+                            borderRadius: '0px',
+                            fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+                            fontSizeBase: '15px',
+                            spacingUnit: '4px',
+                        },
+                        rules: {
+                            '.Input': {
+                                border: '1px solid #d8d6d0',
+                                boxShadow: 'none',
+                            },
+                            '.Input:focus': {
+                                borderColor: '#0c5e6f',
+                                boxShadow: '0 0 0 1px #0c5e6f',
+                            },
+                            '.Tab': {
+                                border: '1px solid #d8d6d0',
+                            },
+                            '.Tab--selected': {
+                                borderColor: '#0c5e6f',
+                                color: '#0c5e6f',
+                            },
+                        },
+                    },
+                    locale: 'es',
+                }}
+            >
+                <PaymentForm order={order} />
+            </Elements>
+        </CustomerShell>
+    );
 }
 
 function PaymentForm({ order }: { order: PaymentProps['order'] }) {
@@ -36,7 +95,7 @@ function PaymentForm({ order }: { order: PaymentProps['order'] }) {
     const [processing, setProcessing] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    async function handleSubmit(e: React.FormEvent) {
+    async function handleSubmit(e: FormEvent): Promise<void> {
         e.preventDefault();
 
         if (!stripe || !elements) {
@@ -60,69 +119,47 @@ function PaymentForm({ order }: { order: PaymentProps['order'] }) {
     }
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <form onSubmit={handleSubmit} className="lg:col-span-2 flex flex-col gap-4">
-                <div className="rounded-2xl bg-white p-5 border border-[#E5E5E5]">
+        <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_22rem]">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                <div className="border border-[var(--iko-stone-hairline)] bg-[var(--iko-stone-paper)] p-5">
                     <PaymentElement />
                 </div>
 
                 {error && (
-                    <div className="rounded-xl border border-red-200 bg-red-50 p-4">
-                        <p className="text-sm text-red-800 font-[Outfit]">{error}</p>
+                    <div className="border border-[var(--iko-error)]/40 bg-[var(--iko-error)]/5 px-5 py-4">
+                        <p className="font-spec text-[11px] tracking-[0.08em] text-[var(--iko-error)] uppercase">
+                            Pago no procesado
+                        </p>
+                        <p className="mt-1 text-[13px] text-[var(--iko-error)]">{error}</p>
                     </div>
                 )}
 
                 <button
                     type="submit"
                     disabled={processing || !stripe}
-                    className="h-12 bg-[#5E7052] text-white font-semibold rounded-xl hover:bg-[#4d5e43] transition-colors disabled:opacity-50 font-[Outfit]"
+                    className="flex h-12 w-full items-center justify-center gap-3 bg-[var(--iko-accent)] px-6 text-[14px] font-medium tracking-[0.01em] text-[var(--iko-accent-on)] transition-colors hover:bg-[var(--iko-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                     {processing ? (
-                        <Loader2 className="w-5 h-5 animate-spin mx-auto" />
+                        <span
+                            aria-hidden="true"
+                            className="h-4 w-4 animate-spin rounded-full border border-[var(--iko-accent-on)]/40 border-t-[var(--iko-accent-on)]"
+                        />
                     ) : (
-                        `Pagar ${formatCurrency(order.total_amount)}`
+                        <>
+                            Pagar
+                            <span className="font-spec tabular-nums">
+                                {formatCurrency(order.total_amount)}
+                            </span>
+                        </>
                     )}
                 </button>
             </form>
 
-            <div className="lg:col-span-1">
-                <OrderSummary
-                    items={order.items}
-                    totalAmount={order.total_amount}
-                    shippingCost={order.shipping_cost}
-                />
-            </div>
+            <OrderSummary
+                items={order.items}
+                totalAmount={order.total_amount}
+                shippingCost={order.shipping_cost}
+            />
         </div>
-    );
-}
-
-export default function Payment({ order, client_secret, stripe_key }: PaymentProps) {
-    const stripePromise = loadStripe(stripe_key);
-
-    return (
-        <CustomerLayout title="Pago - Checkout">
-            <div className="px-6 py-8">
-                <CheckoutStepIndicator currentStep={2} />
-
-                <h1 className="text-2xl font-bold text-[#1A1A1A] font-[Outfit] mb-6">Método de Pago</h1>
-
-                <Elements
-                    stripe={stripePromise}
-                    options={{
-                        clientSecret: client_secret,
-                        appearance: {
-                            theme: 'stripe',
-                            variables: {
-                                colorPrimary: '#5E7052',
-                                borderRadius: '12px',
-                            },
-                        },
-                        locale: 'es',
-                    }}
-                >
-                    <PaymentForm order={order} />
-                </Elements>
-            </div>
-        </CustomerLayout>
     );
 }

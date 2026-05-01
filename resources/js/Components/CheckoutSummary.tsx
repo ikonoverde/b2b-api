@@ -8,40 +8,78 @@ interface CheckoutSummaryProps {
     total: number | null;
 }
 
-export default function CheckoutSummary({ items, subtotal, shippingCost, total }: CheckoutSummaryProps) {
+export default function CheckoutSummary({
+    items,
+    subtotal,
+    shippingCost,
+    total,
+}: CheckoutSummaryProps) {
     return (
-        <div className="flex flex-col gap-4 rounded-2xl bg-white p-5 border border-[#E5E5E5] sticky top-20">
-            <h2 className="text-sm font-bold text-[#1A1A1A] font-[Outfit]">
-                Resumen ({items.length} productos)
-            </h2>
-            <div className="flex flex-col gap-2">
+        <aside className="border border-[var(--iko-stone-hairline)] lg:sticky lg:top-24">
+            <header className="flex items-baseline justify-between border-b border-[var(--iko-stone-hairline)] px-5 py-4">
+                <span className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-accent)] uppercase">
+                    Resumen
+                </span>
+                <span className="font-spec text-[11px] tabular-nums tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
+                    {items.length} {items.length === 1 ? 'producto' : 'productos'}
+                </span>
+            </header>
+
+            <ul className="divide-y divide-[var(--iko-stone-hairline)]">
                 {items.map((item) => (
-                    <div key={item.id} className="flex justify-between text-sm font-[Outfit]">
-                        <span className="text-[#999999]">
-                            {item.name} x{item.quantity}
+                    <li key={item.id} className="flex items-baseline justify-between gap-3 px-5 py-3">
+                        <span className="min-w-0 flex-1 truncate text-[13px] text-[var(--iko-stone-ink)]">
+                            {item.name}
+                            <span className="ml-2 font-spec text-[11px] tabular-nums text-[var(--iko-stone-whisper)]">
+                                ×{item.quantity}
+                            </span>
                         </span>
-                        <span className="font-medium text-[#1A1A1A]">{formatCurrency(item.subtotal)}</span>
-                    </div>
+                        <span className="shrink-0 font-spec text-[12px] tabular-nums text-[var(--iko-stone-ink)]">
+                            {formatCurrency(item.subtotal)}
+                        </span>
+                    </li>
                 ))}
-                <div className="border-t border-[#E5E5E5] pt-2 mt-1">
-                    <div className="flex justify-between text-sm font-[Outfit]">
-                        <span className="text-[#999999]">Subtotal</span>
-                        <span className="font-medium text-[#1A1A1A]">{formatCurrency(subtotal)}</span>
-                    </div>
-                    <div className="flex justify-between text-sm font-[Outfit]">
-                        <span className="text-[#999999]">Envío</span>
-                        <span className="font-medium text-[#1A1A1A]">
-                            {shippingCost !== null ? formatCurrency(shippingCost) : '—'}
-                        </span>
-                    </div>
-                    <div className="mt-2 flex justify-between">
-                        <span className="text-sm font-bold text-[#1A1A1A] font-[Outfit]">Total</span>
-                        <span className="text-lg font-bold text-[#8B6F47] font-[Outfit]">
-                            {total !== null ? formatCurrency(total) : '—'}
-                        </span>
-                    </div>
-                </div>
+            </ul>
+
+            <dl className="border-t border-[var(--iko-stone-hairline)] px-5 py-4">
+                <SummaryRow label="Subtotal" value={formatCurrency(subtotal)} />
+                <SummaryRow
+                    label="Envío"
+                    value={shippingCost === null ? 'A calcular' : formatCurrency(shippingCost)}
+                    muted={shippingCost === null}
+                />
+            </dl>
+            <div className="flex items-baseline justify-between border-t border-[var(--iko-stone-hairline)] px-5 py-4">
+                <dt className="font-spec text-[11px] tracking-[0.08em] text-[var(--iko-stone-whisper)] uppercase">
+                    Total
+                </dt>
+                <dd className="font-spec text-[1.125rem] tabular-nums text-[var(--iko-stone-ink)]">
+                    {total === null ? '—' : formatCurrency(total)}
+                </dd>
             </div>
+        </aside>
+    );
+}
+
+function SummaryRow({
+    label,
+    value,
+    muted = false,
+}: {
+    label: string;
+    value: string;
+    muted?: boolean;
+}) {
+    return (
+        <div className="flex items-baseline justify-between py-1.5">
+            <dt className="text-[13px] text-[var(--iko-stone-whisper)]">{label}</dt>
+            <dd
+                className={`font-spec text-[13px] tabular-nums ${
+                    muted ? 'text-[var(--iko-stone-whisper)]' : 'text-[var(--iko-stone-ink)]'
+                }`}
+            >
+                {value}
+            </dd>
         </div>
     );
 }

@@ -1,13 +1,9 @@
 import { Link, router, usePage } from '@inertiajs/react';
-import {
-    ChevronLeft,
-    Loader2,
-    User,
-} from 'lucide-react';
-import CustomerLayout from '@/Layouts/CustomerLayout';
-import type { PageProps } from '@/types';
+import { useState, type ChangeEvent, type FormEvent } from 'react';
+import AccountShell from '@/Layouts/AccountShell';
+import TextInput from '@/Components/TextInput';
 import { apiFetch } from '@/utils/api';
-import { useState } from 'react';
+import type { PageProps } from '@/types';
 
 interface ProfileProps {
     user: {
@@ -26,156 +22,127 @@ interface ProfileFormData {
 
 export default function Profile({ user }: ProfileProps) {
     const { flash } = usePage<PageProps>().props;
-    const [formData, setFormData] = useState<ProfileFormData>({
+    const [data, setData] = useState<ProfileFormData>({
         name: user.name,
         email: user.email,
         phone: user.phone || '',
     });
     const [errors, setErrors] = useState<Partial<Record<keyof ProfileFormData, string>>>({});
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [successMessage, setSuccessMessage] = useState(flash?.success || '');
+    const [submitting, setSubmitting] = useState(false);
+    const [success, setSuccess] = useState(flash?.success || '');
 
-    function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-        if (errors[name as keyof ProfileFormData]) {
-            setErrors(prev => ({ ...prev, [name]: undefined }));
+    function handleChange(e: ChangeEvent<HTMLInputElement>): void {
+        const { id, value } = e.target;
+        const field = id as keyof ProfileFormData;
+        setData((prev) => ({ ...prev, [field]: value }));
+        if (errors[field]) {
+            setErrors((prev) => ({ ...prev, [field]: undefined }));
         }
-        if (successMessage) {
-            setSuccessMessage('');
+        if (success) {
+            setSuccess('');
         }
     }
 
-    async function handleSubmit(e: React.FormEvent) {
+    async function submit(e: FormEvent): Promise<void> {
         e.preventDefault();
-        setIsSubmitting(true);
+        setSubmitting(true);
         setErrors({});
-        setSuccessMessage('');
+        setSuccess('');
 
         try {
             const response = await apiFetch('/account/profile', {
                 method: 'PUT',
-                body: JSON.stringify(formData),
+                body: JSON.stringify(data),
             });
 
             if (response.ok) {
-                setSuccessMessage('Perfil actualizado exitosamente.');
+                setSuccess('Perfil actualizado.');
                 router.reload({ only: ['user'] });
             } else if (response.status === 422) {
-                const data = await response.json();
-                setErrors(data.errors || {});
+                const body = await response.json();
+                setErrors(body.errors || {});
             } else {
-                setErrors({ name: 'Error al actualizar el perfil.' });
+                setErrors({ name: 'No fue posible actualizar el perfil.' });
             }
         } catch {
-            setErrors({ name: 'Error de conexión. Por favor intente nuevamente.' });
+            setErrors({ name: 'Error de conexión. Intenta nuevamente.' });
         } finally {
-            setIsSubmitting(false);
+            setSubmitting(false);
         }
     }
 
     return (
-        <CustomerLayout title="Editar Perfil">
-            <div className="px-6 py-8 max-w-2xl mx-auto">
-                {/* Header */}
-                <div className="flex items-center gap-3 mb-6">
-                    <Link
-                        href="/account"
-                        className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
-                    >
-                        <ChevronLeft className="h-5 w-5 text-[#666666]" />
-                    </Link>
-                    <h1 className="text-xl font-bold text-[#1A1A1A] font-[Outfit]">Editar Perfil</h1>
+        <AccountShell
+            title="Editar perfil"
+            eyebrow="Cuenta · Perfil"
+            headline="Editar perfil"
+            sub="Mantén tus datos de contacto al día. Estos datos se utilizan para confirmaciones de pedido, envíos y atención comercial."
+            section="profile"
+        >
+            {success && (
+                <div className="mb-2 border border-[var(--iko-accent)] bg-[var(--iko-accent-soft)] px-5 py-3 text-[13px] text-[var(--iko-stone-ink)]">
+                    {success}
                 </div>
+            )}
+            {flash?.error && (
+                <div className="mb-2 border border-[var(--iko-error)]/40 bg-[var(--iko-error)]/5 px-5 py-3 text-[13px] text-[var(--iko-error)]">
+                    {flash.error}
+                </div>
+            )}
 
-                {/* Success Message */}
-                {successMessage && (
-                    <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl">
-                        <p className="text-sm text-green-700 font-[Outfit]">{successMessage}</p>
-                    </div>
-                )}
+            <form onSubmit={submit} className="grid grid-cols-1 gap-12 md:grid-cols-[10rem_1fr] md:gap-16">
+                <h2 className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-stone-whisper)] uppercase">
+                    Información personal
+                </h2>
 
-                {/* Error Message */}
-                {flash?.error && (
-                    <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
-                        <p className="text-sm text-red-700 font-[Outfit]">{flash.error}</p>
-                    </div>
-                )}
+                <div className="flex flex-col gap-8">
+                    <TextInput
+                        id="name"
+                        label="Nombre completo"
+                        value={data.name}
+                        onChange={handleChange}
+                        error={errors.name}
+                        autoComplete="name"
+                        required
+                    />
+                    <TextInput
+                        id="email"
+                        label="Email"
+                        type="email"
+                        value={data.email}
+                        onChange={handleChange}
+                        error={errors.email}
+                        autoComplete="email"
+                        required
+                    />
+                    <TextInput
+                        id="phone"
+                        label="Teléfono"
+                        type="tel"
+                        value={data.phone}
+                        onChange={handleChange}
+                        error={errors.phone}
+                        autoComplete="tel"
+                        inputMode="tel"
+                    />
 
-                {/* Profile Form */}
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#5E7052]/10">
-                                <User className="h-6 w-6 text-[#5E7052]" />
-                            </div>
-                            <div>
-                                <h2 className="text-lg font-bold text-[#1A1A1A] font-[Outfit]">Información Personal</h2>
-                                <p className="text-sm text-[#999999] font-[Outfit]">Actualice sus datos de contacto</p>
-                            </div>
-                        </div>
-
-                        <div className="space-y-4">
-                            <ProfileFormInput label="Nombre Completo" type="text" name="name" value={formData.name} error={errors.name} placeholder="Ingrese su nombre completo" onChange={handleInputChange} />
-                            <ProfileFormInput label="Correo Electrónico" type="email" name="email" value={formData.email} error={errors.email} placeholder="Ingrese su correo electrónico" onChange={handleInputChange} />
-                            <ProfileFormInput label="Teléfono" type="tel" name="phone" value={formData.phone} error={errors.phone} placeholder="Ingrese su número de teléfono" onChange={handleInputChange} />
-                        </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex gap-3">
+                    <div className="mt-2 flex flex-wrap gap-3">
+                        <button
+                            type="submit"
+                            disabled={submitting}
+                            className="inline-flex h-12 items-center bg-[var(--iko-accent)] px-7 text-[14px] font-medium tracking-[0.01em] text-[var(--iko-accent-on)] hover:bg-[var(--iko-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] disabled:cursor-not-allowed disabled:opacity-60"
+                        >
+                            {submitting ? 'Guardando…' : 'Guardar cambios'}
+                        </button>
                         <Link
                             href="/account"
-                            className="flex-1 rounded-xl border border-[#E5E5E5] bg-white px-4 py-3.5 text-center text-sm font-medium text-[#666666] hover:bg-gray-50 transition-colors font-[Outfit]"
+                            className="inline-flex h-12 items-center border border-[var(--iko-stone-hairline)] px-7 text-[14px] text-[var(--iko-stone-ink)] hover:border-[var(--iko-accent)] hover:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)]"
                         >
                             Cancelar
                         </Link>
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="flex-1 rounded-xl bg-[#5E7052] px-4 py-3.5 text-sm font-bold text-white hover:bg-[#4A5A40] disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-[Outfit] flex items-center justify-center gap-2"
-                        >
-                            {isSubmitting ? (
-                                <>
-                                    <Loader2 className="h-4 w-4 animate-spin" />
-                                    Guardando...
-                                </>
-                            ) : (
-                                'Guardar Cambios'
-                            )}
-                        </button>
                     </div>
-                </form>
-            </div>
-        </CustomerLayout>
-    );
-}
-
-function ProfileFormInput({ label, type, name, value, error, placeholder, onChange }: {
-    label: string;
-    type: string;
-    name: string;
-    value: string;
-    error?: string;
-    placeholder: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}) {
-    return (
-        <div>
-            <label htmlFor={name} className="block text-sm font-medium text-[#1A1A1A] mb-1.5 font-[Outfit]">
-                {label}
-            </label>
-            <input
-                type={type}
-                id={name}
-                name={name}
-                value={value}
-                onChange={onChange}
-                className={`w-full rounded-xl border ${error ? 'border-red-300 focus:border-red-500 focus:ring-red-200' : 'border-[#E5E5E5] focus:border-[#5E7052] focus:ring-[#5E7052]/20'} px-4 py-3 text-sm font-[Outfit] focus:outline-none focus:ring-2 transition-colors`}
-                placeholder={placeholder}
-                required
-            />
-            {error && <p className="mt-1.5 text-xs text-red-600 font-[Outfit]">{error}</p>}
-        </div>
+                </div>
+            </form>
+        </AccountShell>
     );
 }
