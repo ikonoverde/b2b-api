@@ -18,7 +18,6 @@ import {
 import React, { useState } from 'react';
 import CustomerLayout from '@/Layouts/CustomerLayout';
 import type { PageProps, CustomerProfile } from '@/types';
-import { apiFetch } from '@/utils/api';
 
 interface AccountProps {
     profile: CustomerProfile;
@@ -67,22 +66,16 @@ export default function Account({ profile }: AccountProps) {
         }
     }
 
-    async function handleSubmitPasswordChange(e: React.FormEvent) {
+    function handleSubmitPasswordChange(e: React.FormEvent) {
         e.preventDefault();
         setIsSubmitting(true);
         setErrors({});
         setSuccessMessage('');
 
-        try {
-            const response = await apiFetch('/api/password', {
-                method: 'PUT',
-                body: JSON.stringify(formData),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                setSuccessMessage(data.message || 'Contraseña cambiada exitosamente.');
+        router.put('/account/password', formData, {
+            preserveScroll: true,
+            onSuccess: () => {
+                setSuccessMessage('Contraseña cambiada exitosamente.');
                 setFormData({
                     current_password: '',
                     password: '',
@@ -92,16 +85,14 @@ export default function Account({ profile }: AccountProps) {
                     setShowPasswordModal(false);
                     setSuccessMessage('');
                 }, 2000);
-            } else if (response.status === 422) {
-                setErrors(data.errors || {});
-            } else {
-                setErrors({ current_password: data.message || 'Error al cambiar la contraseña.' });
-            }
-        } catch {
-            setErrors({ current_password: 'Error de conexión. Por favor intente nuevamente.' });
-        } finally {
-            setIsSubmitting(false);
-        }
+            },
+            onError: (validationErrors) => {
+                setErrors(validationErrors as Partial<Record<keyof PasswordFormData, string>>);
+            },
+            onFinish: () => {
+                setIsSubmitting(false);
+            },
+        });
     }
 
     function closeModal() {

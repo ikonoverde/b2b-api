@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Web\AccountController;
 use App\Http\Controllers\Web\AddressesController;
+use App\Http\Controllers\Web\Auth\ChangePasswordController;
 use App\Http\Controllers\Web\Auth\ForgotPasswordController;
 use App\Http\Controllers\Web\Auth\GoogleCallbackController;
 use App\Http\Controllers\Web\Auth\GoogleRedirectController;
@@ -84,6 +85,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/account', AccountController::class)->name('account');
     Route::get('/account/profile', ProfileController::class)->name('account.profile');
     Route::put('/account/profile', UpdateProfileController::class)->name('account.profile.update');
+    Route::put('/account/password', ChangePasswordController::class)->name('account.password.update');
     Route::get('/account/addresses', [AddressesController::class, 'show'])->name('account.addresses');
     Route::post('/account/addresses', [AddressesController::class, 'store'])->name('account.addresses.store');
     Route::put('/account/addresses/{address}', [AddressesController::class, 'update'])
