@@ -36,6 +36,7 @@ class CatalogController extends Controller
                 'category' => $product->category?->name,
                 'category_id' => $product->category_id,
                 'price' => (float) $product->price,
+                'stock' => (int) $product->stock,
                 'image' => $product->images->first()?->image_url,
                 'is_featured' => $product->is_featured,
             ]);
