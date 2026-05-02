@@ -24,3 +24,7 @@ Homestead.yaml
 Thumbs.db
 .playwright-mcp
 playground/
+
+graphify-out/cache/
+graphify-out/manifest.json
+graphify-out/cost.json
