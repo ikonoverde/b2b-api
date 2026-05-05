@@ -20,13 +20,12 @@ it('shows account page', function () {
             ->has('profile', fn ($profile) => $profile
                 ->has('orders_count')
                 ->has('total_spent')
-                ->has('discount_percentage')
             )
         );
 });
 
 it('shows correct stats', function () {
-    $user = User::factory()->create(['discount_percentage' => 15]);
+    $user = User::factory()->create();
     Order::factory(2)->create(['user_id' => $user->id, 'total_amount' => 150]);
 
     $response = $this->actingAs($user)->get('/account');
@@ -34,7 +33,6 @@ it('shows correct stats', function () {
     $response->assertInertia(fn ($page) => $page
         ->where('profile.orders_count', 2)
         ->where('profile.total_spent', 300)
-        ->where('profile.discount_percentage', 15)
     );
 });
 

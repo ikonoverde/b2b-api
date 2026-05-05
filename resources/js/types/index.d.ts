@@ -177,7 +177,6 @@ export interface RelatedProduct {
 export interface CustomerProfile {
     orders_count: number;
     total_spent: number;
-    discount_percentage?: number;
 }
 
 export interface Stat {

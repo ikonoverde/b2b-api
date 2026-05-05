@@ -31,7 +31,7 @@ export default function Account({ profile }: AccountProps) {
             title="Mi cuenta"
             eyebrow="Cuenta · Resumen"
             headline={`Hola, ${user.name}`}
-            sub="Información de cuenta, descuento mayorista activo y atajos a tu actividad reciente."
+            sub="Información de cuenta y atajos a tu actividad reciente."
             section="overview"
         >
             {flash?.success && (
@@ -87,7 +87,7 @@ function StatStrip({ profile }: { profile: CustomerProfile }) {
     return (
         <section
             aria-label="Resumen comercial"
-            className="mt-10 grid grid-cols-1 border-y border-[var(--iko-stone-hairline)] sm:grid-cols-3 sm:divide-x sm:divide-[var(--iko-stone-hairline)]"
+            className="mt-10 grid grid-cols-1 border-y border-[var(--iko-stone-hairline)] sm:grid-cols-2 sm:divide-x sm:divide-[var(--iko-stone-hairline)]"
         >
             <StatItem
                 label="Pedidos realizados"
@@ -97,11 +97,6 @@ function StatStrip({ profile }: { profile: CustomerProfile }) {
             <StatItem
                 label="Total comprado"
                 value={formatCurrency(profile.total_spent)}
-            />
-            <StatItem
-                label="Descuento mayorista"
-                value={`${profile.discount_percentage ?? 0}%`}
-                hint={(profile.discount_percentage ?? 0) === 0 ? 'sin descuentos activos' : 'aplicado al total'}
             />
         </section>
     );

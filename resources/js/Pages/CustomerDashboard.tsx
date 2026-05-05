@@ -16,7 +16,6 @@ interface DashboardProduct {
 interface Profile {
     orders_count: number;
     total_spent: number;
-    discount_percentage: number;
 }
 
 interface CustomerDashboardProps {
@@ -45,7 +44,7 @@ export default function CustomerDashboard({
                 </h1>
                 <p className="max-w-[58ch] text-[15px] leading-[1.55] text-[var(--iko-stone-ink)]/75">
                     {isReturning
-                        ? 'Tu cuenta de mayorista está lista. Vuelve a pedir tus formatos habituales o explora el catálogo completo.'
+                        ? 'Vuelve a pedir tus formatos habituales o explora el catálogo completo.'
                         : 'Tu cuenta está activa. Empieza por explorar el catálogo o realizar tu primer pedido.'}
                 </p>
             </header>
@@ -106,14 +105,13 @@ function ReorderBlock({ isReturning }: { isReturning: boolean }) {
 const STAT_LABELS = {
     orders: 'Pedidos realizados',
     spent: 'Total comprado',
-    discount: 'Descuento mayorista',
 } as const;
 
 function StatStrip({ profile }: { profile: Profile }) {
     return (
         <section
             aria-label="Resumen de cuenta"
-            className="mt-12 grid grid-cols-1 border-b border-[var(--iko-stone-hairline)] sm:grid-cols-3 sm:divide-x sm:divide-[var(--iko-stone-hairline)] sm:border-y"
+            className="mt-12 grid grid-cols-1 border-b border-[var(--iko-stone-hairline)] sm:grid-cols-2 sm:divide-x sm:divide-[var(--iko-stone-hairline)] sm:border-y"
         >
             <StatItem
                 label={STAT_LABELS.orders}
@@ -123,11 +121,6 @@ function StatStrip({ profile }: { profile: Profile }) {
             <StatItem
                 label={STAT_LABELS.spent}
                 value={formatCurrency(profile.total_spent)}
-            />
-            <StatItem
-                label={STAT_LABELS.discount}
-                value={`${profile.discount_percentage}%`}
-                hint={profile.discount_percentage === 0 ? 'sin descuentos activos' : 'aplicado al total'}
             />
         </section>
     );
