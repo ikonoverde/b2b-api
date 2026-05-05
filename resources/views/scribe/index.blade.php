@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Laravel API Documentation</title>
+    <title>B2BAPI API Documentation</title>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 
@@ -30,9 +30,9 @@
         var useCsrf = Boolean();
         var csrfUrl = "/sanctum/csrf-cookie";
     </script>
-    <script src="{{ asset("/vendor/scribe/js/tryitout-5.6.0.js") }}"></script>
+    <script src="{{ asset("/vendor/scribe/js/tryitout-5.9.0.js") }}"></script>
 
-    <script src="{{ asset("/vendor/scribe/js/theme-default-5.6.0.js") }}"></script>
+    <script src="{{ asset("/vendor/scribe/js/theme-default-5.9.0.js") }}"></script>
 
 </head>
 
@@ -289,7 +289,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: March 6, 2026</li>
+        <li>Last updated: May 5, 2026</li>
     </ul>
 </div>
 
@@ -344,6 +344,7 @@ const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "GET",
@@ -500,7 +501,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"state\": \"CDMX\",
     \"postal_code\": \"06600\",
     \"phone\": \"5551234567\",
-    \"is_default\": false
+    \"is_default\": true
 }"
 </code></pre></div>
 
@@ -525,7 +526,7 @@ let body = {
     "state": "CDMX",
     "postal_code": "06600",
     "phone": "5551234567",
-    "is_default": false
+    "is_default": true
 };
 
 fetch(url, {
@@ -775,7 +776,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Set as default address. Unsets all other defaults. Example: <code>false</code></p>
+<p>Set as default address. Unsets all other defaults. Example: <code>true</code></p>
         </div>
         </form>
 
@@ -1143,6 +1144,7 @@ const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "DELETE",
@@ -2126,6 +2128,7 @@ const headers = {
     "Accept": "application/json",
 };
 
+
 fetch(url, {
     method: "POST",
     headers,
@@ -2259,6 +2262,7 @@ const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "POST",
@@ -2610,6 +2614,7 @@ const headers = {
     "Accept": "application/json",
 };
 
+
 fetch(url, {
     method: "GET",
     headers,
@@ -2744,6 +2749,7 @@ const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "GET",
@@ -3100,7 +3106,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://192.168.0.193:8000/api/cart/items/11" \
+    "http://192.168.0.193:8000/api/cart/items/13" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -3112,7 +3118,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8000/api/cart/items/11"
+    "http://192.168.0.193:8000/api/cart/items/13"
 );
 
 const headers = {
@@ -3276,10 +3282,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="item_id"                data-endpoint="PUTapi-cart-items--item_id-"
-               value="11"
+               value="13"
                data-component="url">
     <br>
-<p>The ID of the item. Example: <code>11</code></p>
+<p>The ID of the item. Example: <code>13</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>item</code></b>&nbsp;&nbsp;
@@ -3322,7 +3328,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://192.168.0.193:8000/api/cart/items/11" \
+    "http://192.168.0.193:8000/api/cart/items/13" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -3330,7 +3336,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://192.168.0.193:8000/api/cart/items/11"
+    "http://192.168.0.193:8000/api/cart/items/13"
 );
 
 const headers = {
@@ -3338,6 +3344,7 @@ const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "DELETE",
@@ -3466,10 +3473,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="item_id"                data-endpoint="DELETEapi-cart-items--item_id-"
-               value="11"
+               value="13"
                data-component="url">
     <br>
-<p>The ID of the item. Example: <code>11</code></p>
+<p>The ID of the item. Example: <code>13</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>item</code></b>&nbsp;&nbsp;
@@ -3515,6 +3522,7 @@ const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "DELETE",
@@ -3659,6 +3667,7 @@ const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "GET",
@@ -4128,6 +4137,7 @@ const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "GET",
@@ -4644,6 +4654,7 @@ const headers = {
     "Accept": "application/json",
 };
 
+
 fetch(url, {
     method: "GET",
     headers,
@@ -4779,7 +4790,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"notify_order_updates\": false,
+    \"notify_order_updates\": true,
     \"notify_promotional_emails\": false,
     \"notify_newsletter\": false
 }"
@@ -4798,7 +4809,7 @@ const headers = {
 };
 
 let body = {
-    "notify_order_updates": false,
+    "notify_order_updates": true,
     "notify_promotional_emails": false,
     "notify_newsletter": false
 };
@@ -4944,7 +4955,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Receive order status notifications. Example: <code>false</code></p>
+<p>Receive order status notifications. Example: <code>true</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>notify_promotional_emails</code></b>&nbsp;&nbsp;
@@ -5033,6 +5044,7 @@ const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "GET",
@@ -5254,6 +5266,7 @@ const headers = {
     "Accept": "application/json",
 };
 
+
 fetch(url, {
     method: "GET",
     headers,
@@ -5460,6 +5473,7 @@ const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "POST",
@@ -5682,6 +5696,7 @@ const headers = {
     "Accept": "application/json",
 };
 
+
 fetch(url, {
     method: "GET",
     headers,
@@ -5858,6 +5873,7 @@ const headers = {
     "Accept": "application/json",
 };
 
+
 fetch(url, {
     method: "GET",
     headers,
@@ -6010,6 +6026,7 @@ const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "GET",
@@ -6327,6 +6344,7 @@ const headers = {
     "Accept": "application/json",
 };
 
+
 fetch(url, {
     method: "GET",
     headers,
@@ -6641,11 +6659,7 @@ the newly added payment method details so the mobile app can confirm.</p>
     --get "http://192.168.0.193:8000/api/payment-methods/setup-verify?session_id=cs_test_abc123" \
     --header "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
     --header "Content-Type: application/json" \
-    --header "Accept: application/json" \
-    --data "{
-    \"session_id\": \"architecto\"
-}"
-</code></pre></div>
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
@@ -6665,14 +6679,10 @@ const headers = {
     "Accept": "application/json",
 };
 
-let body = {
-    "session_id": "architecto"
-};
 
 fetch(url, {
     method: "GET",
     headers,
-    body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -6825,22 +6835,9 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="cs_test_abc123"
                data-component="query">
     <br>
-<p>The Stripe Checkout Session ID. Example: <code>cs_test_abc123</code></p>
+<p>The Stripe Checkout Session ID to verify. Example: <code>cs_test_abc123</code></p>
             </div>
-                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
-        <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>session_id</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="session_id"                data-endpoint="GETapi-payment-methods-setup-verify"
-               value="architecto"
-               data-component="body">
-    <br>
-<p>Example: <code>architecto</code></p>
-        </div>
-        </form>
+                </form>
 
                     <h2 id="payment-methods-PATCHapi-payment-methods--payment_method--default">Set default payment method</h2>
 
@@ -6872,6 +6869,7 @@ const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "PATCH",
@@ -7010,6 +7008,7 @@ const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "DELETE",
@@ -7161,6 +7160,7 @@ const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "GET",
@@ -7393,6 +7393,7 @@ const headers = {
     "Accept": "application/json",
 };
 
+
 fetch(url, {
     method: "GET",
     headers,
@@ -7502,7 +7503,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>
 </p>
 
-<p>Retrieve a single product with its pricing tiers.</p>
+<p>Retrieve a single product.</p>
 
 <span id="example-requests-GETapi-products--product_id-">
 <blockquote>Example request:</blockquote>
@@ -7524,6 +7525,7 @@ const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "GET",
@@ -7560,16 +7562,6 @@ fetch(url, {
                 &quot;id&quot;: 2,
                 &quot;url&quot;: &quot;https://example.com/img2.jpg&quot;,
                 &quot;position&quot;: 1
-            }
-        ],
-        &quot;pricing_tiers&quot;: [
-            {
-                &quot;id&quot;: 1,
-                &quot;min_qty&quot;: 10,
-                &quot;max_qty&quot;: 50,
-                &quot;price&quot;: 40,
-                &quot;discount&quot;: 11.11,
-                &quot;label&quot;: &quot;Mayorista&quot;
             }
         ]
     }
@@ -7705,6 +7697,7 @@ const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "GET",
@@ -7858,6 +7851,7 @@ const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "GET",

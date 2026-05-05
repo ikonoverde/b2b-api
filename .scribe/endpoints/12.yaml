@@ -276,30 +276,18 @@ endpoints:
       session_id:
         custom: []
         name: session_id
-        description: 'The Stripe Checkout Session ID.'
+        description: 'The Stripe Checkout Session ID to verify.'
         required: true
         example: cs_test_abc123
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      session_id: cs_test_abc123
-    bodyParameters:
-      session_id:
-        custom: []
-        name: session_id
-        description: ''
-        required: true
-        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-    cleanBodyParameters:
-      session_id: architecto
+    cleanQueryParameters:
+      session_id: cs_test_abc123
+    bodyParameters: []
+    cleanBodyParameters: []
     fileParameters: []
     responses:
       -
