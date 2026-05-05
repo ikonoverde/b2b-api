@@ -24,6 +24,7 @@ Homestead.yaml
 Thumbs.db
 .playwright-mcp
 playground/
+.claude/scheduled_tasks.lock
 
 graphify-out/cache/
 graphify-out/manifest.json
