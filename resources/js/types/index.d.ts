@@ -127,14 +127,6 @@ export interface ProductImage {
     position?: number;
 }
 
-export interface PricingTier {
-    min_qty: number;
-    max_qty: number | null;
-    price: number;
-    discount: number;
-    label: string | null;
-}
-
 export interface BreadcrumbItem {
     name: string;
     slug: string | null;
@@ -153,8 +145,6 @@ export interface ProductDetail {
     };
     description: string | null;
     price: number;
-    sale_price: number | null;
-    discount_percentage: number | null;
     stock: number;
     is_active: boolean;
     weight_kg: number | null;
@@ -162,7 +152,6 @@ export interface ProductDetail {
     height_cm: number | null;
     depth_cm: number | null;
     images: ProductImage[];
-    pricing_tiers: PricingTier[];
     breadcrumbs: BreadcrumbItem[];
 }
 

@@ -15,7 +15,7 @@ class EditProductController extends Controller
 
     public function __invoke(Product $product): Response
     {
-        $product->load(['category', 'pricingTiers', 'images']);
+        $product->load(['category', 'images']);
         $categories = Category::query()->active()->orderBy('name')->get(['id', 'name']);
 
         return Inertia::render('Products/Edit', [
@@ -41,13 +41,6 @@ class EditProductController extends Controller
                     'id' => $img->id,
                     'image_url' => $img->image_url,
                     'position' => $img->position,
-                ])->values()->all(),
-                'pricing_tiers' => $product->pricingTiers->map(fn ($tier) => [
-                    'min_qty' => (string) $tier->min_qty,
-                    'max_qty' => $tier->max_qty ? (string) $tier->max_qty : '',
-                    'price' => (string) $tier->price,
-                    'discount' => (string) $tier->discount,
-                    'label' => $tier->label,
                 ])->values()->all(),
             ],
             'categories' => $categories,

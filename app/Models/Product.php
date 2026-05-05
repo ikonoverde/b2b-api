@@ -203,14 +203,6 @@ class Product extends Model
     }
 
     /**
-     * @return HasMany<PricingTier, $this>
-     */
-    public function pricingTiers(): HasMany
-    {
-        return $this->hasMany(PricingTier::class)->orderBy('min_qty');
-    }
-
-    /**
      * @return HasMany<ProductImage, $this>
      */
     public function images(): HasMany

@@ -16,16 +16,14 @@ class UpdateProductController extends Controller
     {
         DB::transaction(function () use ($request, $product) {
             $validated = $request->validated();
-            $pricingTiers = $validated['pricing_tiers'] ?? [];
             $images = $validated['images'] ?? [];
             $deleteImages = $validated['delete_images'] ?? [];
-            unset($validated['pricing_tiers'], $validated['images'], $validated['delete_images']);
+            unset($validated['images'], $validated['delete_images']);
 
             $product->update($validated);
 
             $this->deleteProductImages($product, $deleteImages);
             $this->storeNewImages($product, $images);
-            $this->syncPricingTiers($product, $pricingTiers);
         });
 
         return redirect()->route('admin.products')->with('success', 'Producto actualizado exitosamente');

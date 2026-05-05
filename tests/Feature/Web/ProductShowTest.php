@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Category;
-use App\Models\PricingTier;
 use App\Models\Product;
 use App\Models\User;
 
@@ -35,23 +34,10 @@ it('shows product details with slug', function () {
                 ->has('breadcrumbs')
                 ->has('price')
                 ->has('images')
-                ->has('pricing_tiers')
                 ->etc()
             )
             ->has('related_products')
         );
-});
-
-it('includes pricing tiers', function () {
-    $user = User::factory()->create();
-    $product = Product::factory()->create();
-    PricingTier::factory(3)->create(['product_id' => $product->id]);
-
-    $response = $this->actingAs($user)->get("/products/{$product->slug}");
-
-    $response->assertInertia(fn ($page) => $page
-        ->has('product.pricing_tiers', 3)
-    );
 });
 
 it('returns 404 for non-existent product slug', function () {
@@ -113,40 +99,6 @@ it('does not include current product in related products', function () {
 
     $response->assertInertia(fn ($page) => $page
         ->has('related_products', 0)
-    );
-});
-
-it('calculates discount percentage when sale price exists', function () {
-    $user = User::factory()->create();
-    $product = Product::factory()->create([
-        'price' => 100.00,
-    ]);
-    PricingTier::factory()->create([
-        'product_id' => $product->id,
-        'min_qty' => 1,
-        'max_qty' => null,
-        'price' => 75.00,
-    ]);
-
-    $response = $this->actingAs($user)->get("/products/{$product->slug}");
-
-    $response->assertInertia(fn ($page) => $page
-        ->where('product.sale_price', 75)
-        ->where('product.discount_percentage', 25)
-    );
-});
-
-it('does not show discount when no pricing tiers offer discount', function () {
-    $user = User::factory()->create();
-    $product = Product::factory()->create([
-        'price' => 100.00,
-    ]);
-
-    $response = $this->actingAs($user)->get("/products/{$product->slug}");
-
-    $response->assertInertia(fn ($page) => $page
-        ->where('product.sale_price', null)
-        ->where('product.discount_percentage', null)
     );
 });
 
