@@ -268,8 +268,8 @@ function EmptyCart() {
                 Tu carrito está vacío.
             </p>
             <p className="max-w-[52ch] text-[15px] leading-[1.55] text-[var(--iko-stone-ink)]/75">
-                Agrega productos desde el catálogo para empezar tu pedido — disponibles por unidad o en
-                formato mayorista.
+                Agrega productos desde el catálogo para empezar tu pedido. Compra desde una unidad, sin
+                mínimos.
             </p>
             <div>
                 <Link

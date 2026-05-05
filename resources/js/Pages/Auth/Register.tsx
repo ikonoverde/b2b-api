@@ -35,10 +35,10 @@ export default function Register() {
 
     return (
         <AuthShell
-            title="Crear cuenta mayorista"
+            title="Crear cuenta"
             eyebrow="01 · Cuenta nueva"
-            headline="Crear cuenta mayorista"
-            sub="Para spas, hoteles y centros de masaje. Acceso a precios B2B y pedido recurrente."
+            headline="Crear cuenta"
+            sub="Guarda direcciones, repite pedidos en un clic y revisa tu historial cuando quieras."
         >
             <form onSubmit={handleSubmit} className="flex flex-col gap-8">
                 {pageErrors?.google && (

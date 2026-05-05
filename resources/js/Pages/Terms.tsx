@@ -93,8 +93,8 @@ export default function Terms({ auth }: PageProps) {
                                         2. Uso de la Plataforma
                                     </h2>
                                     <p className="text-[#666666] leading-relaxed mb-4">
-                                        Ikonoverde Profesional es una plataforma B2B diseñada para profesionales y
-                                        empresas del sector. Para utilizar nuestros servicios, debe:
+                                        Ikonoverde es una tienda en línea de cuidado corporal abierta a profesionales y
+                                        a particulares por igual. Para utilizar nuestros servicios, debe:
                                     </p>
                                     <ul className="list-disc pl-6 text-[#666666] leading-relaxed space-y-2">
                                         <li>Ser mayor de edad y tener capacidad legal para contratar</li>
@@ -128,12 +128,11 @@ export default function Terms({ auth }: PageProps) {
                                         4. Pedidos y Pagos
                                     </h2>
                                     <p className="text-[#666666] leading-relaxed mb-4">
-                                        Los precios mostrados en la plataforma son exclusivos para usuarios
-                                        registrados y pueden estar sujetos a cambios sin previo aviso. Al realizar un
-                                        pedido:
+                                        Los precios mostrados aplican por igual a todos los compradores y pueden estar
+                                        sujetos a cambios sin previo aviso. Al realizar un pedido:
                                     </p>
                                     <ul className="list-disc pl-6 text-[#666666] leading-relaxed space-y-2">
-                                        <li>Los precios mostrados son precios mayoristas exclusivos</li>
+                                        <li>No requerimos cantidad mínima — puedes comprar desde una unidad</li>
                                         <li>Los pedidos están sujetos a disponibilidad de inventario</li>
                                         <li>Los envíos gratuitos aplican a pedidos superiores al monto mínimo especificado</li>
                                         <li>Los tiempos de entrega son estimados y pueden variar según la ubicación</li>

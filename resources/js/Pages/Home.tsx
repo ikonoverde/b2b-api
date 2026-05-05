@@ -137,7 +137,7 @@ function Hero() {
             <h1 className="mt-6 max-w-[22ch] font-display text-[clamp(2.5rem,6vw,4.5rem)] font-normal leading-[1.02] tracking-[-0.015em] text-[var(--iko-stone-ink)]">
                 Aceite de masaje profesional, hecho para{' '}
                 <span className="relative whitespace-nowrap">
-                    reordenar
+                    pedir
                     <span
                         aria-hidden="true"
                         className="absolute right-0 bottom-[0.08em] left-0 h-[0.08em] bg-[var(--iko-accent)]"
@@ -147,21 +147,21 @@ function Hero() {
             </h1>
 
             <p className="mt-8 max-w-[52ch] text-[17px] leading-[1.55] text-[var(--iko-stone-ink)]/80">
-                Formulado para spas, hoteles y centros de masaje. Disponible en formato mayorista o por unidad.
+                Formulado para spas, hoteles y uso personal. Compra desde una unidad, al mismo precio para todos.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
                 <Link
-                    href="/register"
+                    href="/catalog"
                     className="inline-flex items-center bg-[var(--iko-accent)] px-7 py-3.5 text-[14px] font-medium text-[var(--iko-accent-on)] tracking-[0.01em] hover:bg-[var(--iko-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] transition-colors"
                 >
-                    Crear cuenta mayorista
+                    Comprar ahora
                 </Link>
                 <Link
-                    href="/catalog"
+                    href="/register"
                     className="group inline-flex items-baseline gap-2 text-[14px] font-medium text-[var(--iko-stone-ink)] hover:text-[var(--iko-accent)] focus-visible:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] rounded-sm transition-colors"
                 >
-                    Ver catálogo
+                    Crear cuenta
                     <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
                         →
                     </span>
@@ -181,7 +181,7 @@ function Hero() {
 
 const VALUE_PROPS = [
     { label: 'Pedido mínimo', value: '1 unidad' },
-    { label: 'Plazos B2B', value: 'A medida' },
+    { label: 'Precio', value: 'Igual para todos' },
     { label: 'Envío', value: 'Coordinado por pedido' },
 ] as const;
 

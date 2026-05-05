@@ -127,6 +127,7 @@ it('includes expected product fields', function () {
             ->has('category')
             ->has('category_id')
             ->has('price')
+            ->has('stock')
             ->has('image')
             ->has('is_featured')
         )

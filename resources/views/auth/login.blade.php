@@ -9,10 +9,10 @@
                             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                         </svg>
                     </div>
-                    <span class="text-[32px] font-bold text-white font-heading">B2B Portal</span>
+                    <span class="text-[32px] font-bold text-white font-heading">Ikonoverde</span>
                 </div>
                 <p class="text-lg text-sidebar-muted text-center leading-relaxed">
-                    Streamline your business operations with our comprehensive management platform.
+                    Cuidado corporal profesional, al mismo precio para todos.
                 </p>
             </div>
         </div>

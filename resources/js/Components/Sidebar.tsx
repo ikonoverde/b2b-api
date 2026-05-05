@@ -77,7 +77,7 @@ export default function Sidebar({ active }: SidebarProps) {
                         Ikonoverde
                     </span>
                     <span className="text-[11px] text-[#999999] font-[Outfit]">
-                        B2B Platform
+                        Admin
                     </span>
                 </div>
             </div>

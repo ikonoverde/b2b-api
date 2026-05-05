@@ -203,10 +203,9 @@ export default function Privacy({ auth }: PageProps) {
                                         8. Menores de Edad
                                     </h2>
                                     <p className="text-[#666666] leading-relaxed mb-4">
-                                        Ikonoverde Profesional es una plataforma B2B dirigida exclusivamente a
-                                        profesionales y empresas. No recopilamos intencionalmente información de menores
-                                        de 18 años. Si descubrimos que hemos recopilado datos de un menor, procederemos
-                                        a eliminarlos de manera inmediata.
+                                        Ikonoverde está dirigida a personas mayores de 18 años. No recopilamos
+                                        intencionalmente información de menores de edad. Si descubrimos que hemos
+                                        recopilado datos de un menor, procederemos a eliminarlos de manera inmediata.
                                     </p>
                                 </section>
 
