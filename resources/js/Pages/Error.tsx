@@ -1,57 +1,77 @@
 import { Link } from '@inertiajs/react';
-import { Leaf } from 'lucide-react';
+import PublicShell from '@/Layouts/PublicShell';
+
+/**
+ * Error surface — 4xx / 5xx fallbacks rendered through Inertia.
+ * Specimen-sheet treatment: mono error tag, oversized serif status code with
+ * accent underline, sans description, primary accent CTA back to the catalog.
+ */
 
 interface ErrorProps {
     status: number;
 }
 
-export default function Error({ status }: ErrorProps) {
-    const title = {
-        503: '503: Servicio no disponible',
-        500: '500: Error del servidor',
-        404: '404: Pagina no encontrada',
-        403: '403: Prohibido',
-    }[status] ?? 'Error';
+const TITLE: Record<number, string> = {
+    403: 'Acceso restringido',
+    404: 'Página no encontrada',
+    500: 'Error del servidor',
+    503: 'Servicio en mantenimiento',
+};
 
-    const description = {
-        503: 'Lo sentimos, estamos realizando mantenimiento. Por favor, intenta mas tarde.',
-        500: 'Ups, algo salio mal en nuestros servidores.',
-        404: 'Lo sentimos, la pagina que buscas no pudo ser encontrada.',
-        403: 'Lo sentimos, no tienes permiso para acceder a esta pagina.',
-    }[status] ?? 'Ha ocurrido un error.';
+const DESCRIPTION: Record<number, string> = {
+    403: 'Esta sección no está disponible para tu cuenta. Si crees que es un error, contáctanos.',
+    404: 'La dirección que buscas no existe o se ha movido. Continúa en el catálogo o vuelve al inicio.',
+    500: 'Algo salió mal en nuestros servidores. Estamos trabajando para resolverlo — intenta de nuevo en unos minutos.',
+    503: 'Estamos realizando tareas de mantenimiento. Vuelve a intentarlo en unos minutos.',
+};
+
+export default function Error({ status }: ErrorProps) {
+    const title = TITLE[status] ?? 'Algo no salió como esperábamos';
+    const description = DESCRIPTION[status] ?? 'Intenta de nuevo o regresa al inicio.';
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-8 bg-white">
-            <div className="flex flex-col items-center gap-6 max-w-[500px] text-center">
-                <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-[#4A5D4A] rounded-xl flex items-center justify-center">
-                        <Leaf className="w-6 h-6 text-white" />
-                    </div>
-                    <span className="text-[32px] font-bold text-[#1A1A1A] font-[Outfit]">
-                        Ikonoverde
-                    </span>
-                </div>
+        <PublicShell title={`${status} · ${title}`}>
+            <section className="flex min-h-[calc(100vh-220px)] flex-col justify-center pt-16 pb-24 sm:pt-24">
+                <p className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-stone-whisper)] uppercase">
+                    Error · {status}
+                </p>
 
-                <h1 className="text-[72px] font-bold text-[#4A5D4A] font-[Outfit]">
-                    {status}
+                <h1 className="mt-8 font-display text-[clamp(6rem,18vw,14rem)] font-normal leading-[0.9] tracking-[-0.03em] text-[var(--iko-stone-ink)]">
+                    <span className="relative inline-block whitespace-nowrap">
+                        {status}
+                        <span
+                            aria-hidden="true"
+                            className="absolute right-0 bottom-[0.06em] left-0 h-[0.06em] bg-[var(--iko-accent)]"
+                        />
+                    </span>
                 </h1>
 
-                <div className="flex flex-col gap-2">
-                    <h2 className="text-2xl font-semibold text-[#1A1A1A] font-[Outfit]">
-                        {title}
-                    </h2>
-                    <p className="text-base text-[#666666] font-[Outfit]">
-                        {description}
-                    </p>
-                </div>
+                <h2 className="mt-12 max-w-[24ch] font-display text-[clamp(1.75rem,3.5vw,2.5rem)] font-normal leading-[1.1] tracking-[-0.015em] text-[var(--iko-stone-ink)]">
+                    {title}
+                </h2>
 
-                <Link
-                    href="/admin"
-                    className="mt-4 h-12 px-6 bg-[#4A5D4A] text-white font-semibold rounded-lg hover:bg-[#3d4d3d] focus:outline-none focus:ring-2 focus:ring-[#4A5D4A] focus:ring-offset-2 transition-colors font-[Outfit] flex items-center gap-2"
-                >
-                    Volver al inicio
-                </Link>
-            </div>
-        </div>
+                <p className="mt-6 max-w-[52ch] text-[16px] leading-[1.6] text-[var(--iko-stone-ink)]/80">
+                    {description}
+                </p>
+
+                <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
+                    <Link
+                        href="/"
+                        className="inline-flex items-center bg-[var(--iko-accent)] px-7 py-3.5 text-[14px] font-medium text-[var(--iko-accent-on)] tracking-[0.01em] hover:bg-[var(--iko-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] transition-colors"
+                    >
+                        Volver al inicio
+                    </Link>
+                    <Link
+                        href="/catalog"
+                        className="group inline-flex items-baseline gap-2 rounded-sm text-[14px] font-medium text-[var(--iko-stone-ink)] hover:text-[var(--iko-accent)] focus-visible:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] transition-colors"
+                    >
+                        Ir al catálogo
+                        <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
+                            →
+                        </span>
+                    </Link>
+                </div>
+            </section>
+        </PublicShell>
     );
 }

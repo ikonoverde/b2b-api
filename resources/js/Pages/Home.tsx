@@ -1,20 +1,14 @@
-import { Head, Link } from '@inertiajs/react';
-import type { CSSProperties } from 'react';
+import { Link } from '@inertiajs/react';
 import type { BannerData } from '@/Components/BannerCard';
-import Wordmark from '@/Components/Wordmark';
+import PublicShell from '@/Layouts/PublicShell';
 import type { PageProps } from '@/types';
 
 /**
  * Public home for Ikonoverde.
  *
- * Editorial / specimen-sheet aesthetic per DESIGN.md:
- *   • Stone-paper surface, single mineral accent ≤10% of the screen.
- *   • Display serif (Fraunces) + neutral sans (Inter) + mono spec (JetBrains Mono).
- *   • Verde-In-Wordmark Rule: green appears only inside the literal "verde" of the wordmark.
- *   • Flat by default — no resting shadows, no rounded card grids, no sage gradients.
- *
  * Authenticated users are redirected to /dashboard at the controller level
  * before this component renders, so this surface is logged-out only by design.
+ * Chrome (header, footer, stone-paper surface, fonts) is owned by PublicShell.
  */
 
 interface FeaturedProduct {
@@ -32,95 +26,15 @@ export interface HomeProps extends PageProps {
 
 export default function Home({ featuredProducts, banners }: HomeProps) {
     return (
-        <>
-            <Head title="Ikonoverde — Cuidado corporal profesional" />
-            <div
-                data-iko=""
-                className="relative min-h-screen bg-[var(--iko-stone-paper)] text-[var(--iko-stone-ink)] font-sans antialiased"
-                style={
-                    {
-                        fontFeatureSettings: '"ss01", "cv11"',
-                    } as CSSProperties
-                }
-            >
-                <SiteHeader />
-
-                <div className="px-6 sm:px-10 lg:px-16">
-                    <div className="mx-auto max-w-[72rem]">
-                        <Hero />
-                        <ValuePropStrip />
-                        <FeaturedList products={featuredProducts} />
-                        <BannersBlock banners={banners} />
-                        <SecondaryHandoff />
-                    </div>
-                </div>
-
-                <SiteFooter />
-            </div>
-        </>
+        <PublicShell title="Ikonoverde — Cuidado corporal profesional">
+            <Hero />
+            <ValuePropStrip />
+            <FeaturedList products={featuredProducts} />
+            <BannersBlock banners={banners} />
+            <SecondaryHandoff />
+        </PublicShell>
     );
 }
-
-/* ─────────────────────────────────────────────────────────
- * Header & Footer (intentionally NOT using PublicLayout —
- * that layout's sage-green header is an explicit anti-reference
- * in DESIGN.md and will be redesigned in a follow-up).
- * ───────────────────────────────────────────────────────── */
-
-function SiteHeader() {
-    return (
-        <header className="border-b border-[var(--iko-stone-hairline)]">
-            <div className="mx-auto flex max-w-[72rem] items-baseline justify-between px-6 py-6 sm:px-10 lg:px-16">
-                <Link href="/" className="group flex items-baseline" aria-label="Ikonoverde — Inicio">
-                    <Wordmark />
-                </Link>
-
-                <nav className="flex items-center gap-7 text-[13px]">
-                    <Link
-                        href="/catalog"
-                        className="text-[var(--iko-stone-ink)] hover:text-[var(--iko-accent)] focus-visible:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] rounded-sm transition-colors"
-                    >
-                        Catálogo
-                    </Link>
-                    <Link
-                        href="/login"
-                        className="text-[var(--iko-stone-ink)] hover:text-[var(--iko-accent)] focus-visible:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] rounded-sm transition-colors"
-                    >
-                        Ingresar
-                    </Link>
-                </nav>
-            </div>
-        </header>
-    );
-}
-
-function SiteFooter() {
-    return (
-        <footer className="mt-32 border-t border-[var(--iko-stone-hairline)]">
-            <div className="mx-auto flex max-w-[72rem] flex-col gap-3 px-6 py-10 sm:flex-row sm:items-baseline sm:justify-between sm:px-10 lg:px-16">
-                <span className="font-spec text-[11px] tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
-                    © {new Date().getFullYear()} Ikonoverde · Cuidado corporal profesional
-                </span>
-                <div className="flex items-center gap-6 text-[13px]">
-                    <Link
-                        href="/terms"
-                        className="text-[var(--iko-stone-whisper)] hover:text-[var(--iko-stone-ink)] transition-colors"
-                    >
-                        Términos
-                    </Link>
-                    <Link
-                        href="/privacy"
-                        className="text-[var(--iko-stone-whisper)] hover:text-[var(--iko-stone-ink)] transition-colors"
-                    >
-                        Privacidad
-                    </Link>
-                </div>
-            </div>
-        </footer>
-    );
-}
-
-
 
 /* ─────────────────────────────────────────────────────────
  * Hero — typographic only, no imagery.
