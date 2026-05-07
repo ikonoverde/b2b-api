@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react';
 import type { BannerData } from '@/Components/BannerCard';
 import PublicShell from '@/Layouts/PublicShell';
 import type { PageProps } from '@/types';
+import { formatCurrency } from '@/utils/currency';
 
 /**
  * Public home for Ikonoverde.
@@ -17,6 +18,7 @@ interface FeaturedProduct {
     name: string;
     category: string | null;
     image_url: string | null;
+    price: number;
 }
 
 export interface HomeProps extends PageProps {
@@ -38,20 +40,20 @@ export default function Home({ featuredProducts, banners }: HomeProps) {
 
 /* ─────────────────────────────────────────────────────────
  * Hero — typographic only, no imagery.
- * One accent-colored underline mark on the word "reordenar".
+ * Accent underline lands on "merecen" — the confidence beat.
  * ───────────────────────────────────────────────────────── */
 
 function Hero() {
     return (
         <section className="pt-20 pb-24 sm:pt-28 sm:pb-32">
             <p className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-stone-whisper)] uppercase">
-                Ikonoverde · Cuidado corporal profesional
+                Ikonoverde · Aceite de masaje profesional
             </p>
 
             <h1 className="mt-6 max-w-[22ch] font-display text-[clamp(2.5rem,6vw,4.5rem)] font-normal leading-[1.02] tracking-[-0.015em] text-[var(--iko-stone-ink)]">
-                Aceite de masaje profesional, hecho para{' '}
+                El aceite de masaje que tus manos{' '}
                 <span className="relative whitespace-nowrap">
-                    pedir
+                    merecen
                     <span
                         aria-hidden="true"
                         className="absolute right-0 bottom-[0.08em] left-0 h-[0.08em] bg-[var(--iko-accent)]"
@@ -61,7 +63,7 @@ function Hero() {
             </h1>
 
             <p className="mt-8 max-w-[52ch] text-[17px] leading-[1.55] text-[var(--iko-stone-ink)]/80">
-                Formulado para spas, hoteles y uso personal. Compra desde una unidad, al mismo precio para todos.
+                Formulado para spas, hoteles y uso personal. Una unidad o veinte, al mismo precio.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
@@ -69,7 +71,7 @@ function Hero() {
                     href="/catalog"
                     className="inline-flex items-center bg-[var(--iko-accent)] px-7 py-3.5 text-[14px] font-medium text-[var(--iko-accent-on)] tracking-[0.01em] hover:bg-[var(--iko-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] transition-colors"
                 >
-                    Comprar ahora
+                    Ver el catálogo
                 </Link>
                 <Link
                     href="/register"
@@ -86,17 +88,14 @@ function Hero() {
 }
 
 /* ─────────────────────────────────────────────────────────
- * Value-prop strip — mono labels + serif/sans values,
- * separated by hairline rules. Not card medallions.
- *
- * NOTE: values below are placeholders pending business confirmation.
- * Replace before wider launch.
+ * Value-prop strip — mono labels + serif values, hairline-separated.
+ * Each entry maps to a "no artificial gates" principle from PRODUCT.md.
  * ───────────────────────────────────────────────────────── */
 
 const VALUE_PROPS = [
     { label: 'Pedido mínimo', value: '1 unidad' },
     { label: 'Precio', value: 'Igual para todos' },
-    { label: 'Envío', value: 'Coordinado por pedido' },
+    { label: 'Cuenta', value: 'Opcional' },
 ] as const;
 
 function ValuePropStrip() {
@@ -121,7 +120,8 @@ function ValuePropStrip() {
 
 /* ─────────────────────────────────────────────────────────
  * Featured products — spec-sheet list, NOT a card grid.
- * Numbered rows: mono index · serif name · sans category · locked-price affordance.
+ * Numbered rows: mono index · serif name · sans category · mono price.
+ * Prices are public per PRODUCT.md — no login gate, no lock affordance.
  * ───────────────────────────────────────────────────────── */
 
 function FeaturedList({ products }: { products: FeaturedProduct[] }) {
@@ -130,11 +130,13 @@ function FeaturedList({ products }: { products: FeaturedProduct[] }) {
             <section className="py-20">
                 <SectionHeader index="01" eyebrow="Catálogo" title="Productos destacados" />
                 <p className="mt-10 max-w-[60ch] text-[15px] leading-[1.6] text-[var(--iko-stone-whisper)]">
-                    Catálogo completo disponible al{' '}
-                    <Link href="/login" className="text-[var(--iko-accent)] underline-offset-4 hover:underline">
-                        iniciar sesión
+                    Aún no hay productos destacados. El catálogo completo está disponible.{' '}
+                    <Link
+                        href="/catalog"
+                        className="text-[var(--iko-accent)] underline-offset-4 hover:underline"
+                    >
+                        Ver catálogo →
                     </Link>
-                    .
                 </p>
             </section>
         );
@@ -177,33 +179,14 @@ function FeaturedList({ products }: { products: FeaturedProduct[] }) {
                                 )}
                             </span>
 
-                            <span className="flex items-center gap-2 font-spec text-[11px] tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
-                                <LockGlyph />
-                                <span className="hidden sm:inline">Iniciar sesión para ver el precio</span>
-                                <span className="sm:hidden">Ver precio</span>
+                            <span className="font-spec text-[15px] tabular-nums text-[var(--iko-stone-ink)]">
+                                {formatCurrency(product.price)}
                             </span>
                         </Link>
                     </li>
                 ))}
             </ol>
         </section>
-    );
-}
-
-function LockGlyph() {
-    return (
-        <svg
-            width="11"
-            height="11"
-            viewBox="0 0 12 12"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.25"
-            aria-hidden="true"
-        >
-            <rect x="2.5" y="5.5" width="7" height="5" rx="0.5" />
-            <path d="M4 5.5V3.5a2 2 0 1 1 4 0v2" />
-        </svg>
     );
 }
 
@@ -286,21 +269,20 @@ function bannerHref(banner: BannerData): string | null {
 }
 
 /* ─────────────────────────────────────────────────────────
- * Footer hand-off — explicit secondary path for individual buyers.
+ * Footer hand-off — final reinforcement of the one-track buying premise.
  * ───────────────────────────────────────────────────────── */
 
 function SecondaryHandoff() {
     return (
         <section className="border-t border-[var(--iko-stone-hairline)] py-16">
             <p className="text-[15px] leading-[1.55] text-[var(--iko-stone-whisper)]">
-                ¿Compra individual?{' '}
+                Empieza por el catálogo. Una unidad o veinte, mismo trato.{' '}
                 <Link
                     href="/catalog"
                     className="text-[var(--iko-stone-ink)] underline decoration-[var(--iko-stone-mid)] underline-offset-4 transition-colors hover:text-[var(--iko-accent)] hover:decoration-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] rounded-sm"
                 >
-                    Ir al catálogo
+                    Ver catálogo →
                 </Link>
-                .
             </p>
         </section>
     );
