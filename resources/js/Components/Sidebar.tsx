@@ -10,8 +10,6 @@ import {
     Building2,
     FileText,
     Settings,
-    LifeBuoy,
-    Plus,
     Leaf,
     LogOut,
     Star,
@@ -55,7 +53,6 @@ const contentNav: NavItem[] = [
 
 const systemNav: NavItem[] = [
     { name: 'Configuracion', href: '/admin/settings', icon: Settings, id: 'settings' },
-    { name: 'Ayuda', href: '/admin/help', icon: LifeBuoy, id: 'help' },
 ];
 
 export default function Sidebar({ active }: SidebarProps) {
@@ -140,17 +137,6 @@ export default function Sidebar({ active }: SidebarProps) {
 
             {/* Spacer */}
             <div className="flex-1" />
-
-            {/* CTA Button */}
-            <div className="px-4 mb-4">
-                <Link
-                    href="/admin/products/create"
-                    className="flex items-center justify-center gap-3 w-full h-12 bg-[#D4A853] rounded-lg text-white font-medium text-sm font-[Outfit] hover:bg-[#c49a4a] transition-colors"
-                >
-                    <Plus className="w-5 h-5" />
-                    Nuevo Producto
-                </Link>
-            </div>
 
             {/* User Section */}
             {user && (
