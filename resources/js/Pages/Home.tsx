@@ -1,6 +1,7 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import type { CSSProperties } from 'react';
 import type { BannerData } from '@/Components/BannerCard';
+import MiniCart from '@/Components/MiniCart';
 import Wordmark from '@/Components/Wordmark';
 import type { PageProps } from '@/types';
 
@@ -13,8 +14,6 @@ import type { PageProps } from '@/types';
  *   • Verde-In-Wordmark Rule: green appears only inside the literal "verde" of the wordmark.
  *   • Flat by default — no resting shadows, no rounded card grids, no sage gradients.
  *
- * Authenticated users are redirected to /dashboard at the controller level
- * before this component renders, so this surface is logged-out only by design.
  */
 
 interface FeaturedProduct {
@@ -68,26 +67,56 @@ export default function Home({ featuredProducts, banners }: HomeProps) {
  * ───────────────────────────────────────────────────────── */
 
 function SiteHeader() {
+    const { auth, miniCart } = usePage<PageProps>().props;
+    const user = auth.user;
+    const { post, processing } = useForm({});
+
+    const handleLogout = (): void => {
+        post('/logout');
+    };
+
+    const navLinkClass =
+        'rounded-sm text-[var(--iko-stone-ink)] transition-colors hover:text-[var(--iko-accent)] focus-visible:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)]';
+
     return (
         <header className="border-b border-[var(--iko-stone-hairline)]">
-            <div className="mx-auto flex max-w-[72rem] items-baseline justify-between px-6 py-6 sm:px-10 lg:px-16">
-                <Link href="/" className="group flex items-baseline" aria-label="Ikonoverde — Inicio">
+            <div className="mx-auto flex max-w-[72rem] items-center justify-between px-6 py-5 sm:px-10 lg:px-16">
+                <Link href="/" className="group flex items-baseline shrink-0" aria-label="Ikonoverde — Inicio">
                     <Wordmark />
                 </Link>
 
-                <nav className="flex items-center gap-7 text-[13px]">
-                    <Link
-                        href="/catalog"
-                        className="text-[var(--iko-stone-ink)] hover:text-[var(--iko-accent)] focus-visible:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] rounded-sm transition-colors"
-                    >
+                <nav className="flex items-center gap-6 text-[13px]">
+                    <Link href="/catalog" className={navLinkClass}>
                         Catálogo
                     </Link>
-                    <Link
-                        href="/login"
-                        className="text-[var(--iko-stone-ink)] hover:text-[var(--iko-accent)] focus-visible:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] rounded-sm transition-colors"
-                    >
-                        Ingresar
-                    </Link>
+
+                    {user ? (
+                        <>
+                            <MiniCart miniCart={miniCart ?? { items: [], subtotal: 0, totalCount: 0 }} />
+                            <Link
+                                href="/account"
+                                className={`hidden h-9 items-center gap-2.5 border border-[var(--iko-stone-hairline)] px-3 text-[13px] text-[var(--iko-stone-ink)] hover:border-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] sm:inline-flex`}
+                            >
+                                <span className="font-spec text-[11px] tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
+                                    {user.initials}
+                                </span>
+                                <span>Cuenta</span>
+                            </Link>
+                            <button
+                                type="button"
+                                onClick={handleLogout}
+                                disabled={processing}
+                                className="hidden text-[13px] text-[var(--iko-stone-whisper)] transition-colors hover:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] sm:inline"
+                                aria-label="Cerrar sesión"
+                            >
+                                Salir
+                            </button>
+                        </>
+                    ) : (
+                        <Link href="/login" className={navLinkClass}>
+                            Ingresar
+                        </Link>
+                    )}
                 </nav>
             </div>
         </header>
