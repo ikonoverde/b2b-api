@@ -16,13 +16,11 @@ class StoreProductController extends Controller
     {
         DB::transaction(function () use ($request) {
             $validated = $request->validated();
-            $pricingTiers = $validated['pricing_tiers'] ?? [];
             $images = $validated['images'] ?? [];
-            unset($validated['pricing_tiers'], $validated['images']);
+            unset($validated['images']);
 
             $product = Product::create($validated);
 
-            $this->syncPricingTiers($product, $pricingTiers);
             $this->storeNewImages($product, $images);
         });
 

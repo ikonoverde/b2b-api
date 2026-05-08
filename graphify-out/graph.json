@@ -54,7 +54,7 @@
       "source_file": "Providers/AppServiceProvider.php",
       "source_location": "L1",
       "id": "providers_appserviceprovider_php",
-      "community": 49,
+      "community": 50,
       "norm_label": "appserviceprovider.php"
     },
     {
@@ -63,7 +63,7 @@
       "source_file": "Providers/AppServiceProvider.php",
       "source_location": "L11",
       "id": "providers_appserviceprovider_appserviceprovider",
-      "community": 49,
+      "community": 50,
       "norm_label": "appserviceprovider"
     },
     {
@@ -72,7 +72,7 @@
       "source_file": "Providers/AppServiceProvider.php",
       "source_location": "L16",
       "id": "providers_appserviceprovider_appserviceprovider_register",
-      "community": 49,
+      "community": 50,
       "norm_label": ".register()"
     },
     {
@@ -81,7 +81,7 @@
       "source_file": "Providers/AppServiceProvider.php",
       "source_location": "L48",
       "id": "providers_appserviceprovider_appserviceprovider_boot",
-      "community": 49,
+      "community": 50,
       "norm_label": ".boot()"
     },
     {
@@ -90,7 +90,7 @@
       "source_file": "Providers/HorizonServiceProvider.php",
       "source_location": "L1",
       "id": "providers_horizonserviceprovider_php",
-      "community": 11,
+      "community": 10,
       "norm_label": "horizonserviceprovider.php"
     },
     {
@@ -99,7 +99,7 @@
       "source_file": "Providers/HorizonServiceProvider.php",
       "source_location": "L9",
       "id": "providers_horizonserviceprovider_horizonserviceprovider",
-      "community": 11,
+      "community": 10,
       "norm_label": "horizonserviceprovider"
     },
     {
@@ -108,7 +108,7 @@
       "source_file": "Providers/HorizonServiceProvider.php",
       "source_location": "L14",
       "id": "providers_horizonserviceprovider_horizonserviceprovider_boot",
-      "community": 11,
+      "community": 10,
       "norm_label": ".boot()"
     },
     {
@@ -117,7 +117,7 @@
       "source_file": "Providers/HorizonServiceProvider.php",
       "source_location": "L28",
       "id": "providers_horizonserviceprovider_horizonserviceprovider_gate",
-      "community": 11,
+      "community": 10,
       "norm_label": ".gate()"
     },
     {
@@ -225,7 +225,7 @@
       "source_file": "Services/ProductionApiService.php",
       "source_location": "L1",
       "id": "services_productionapiservice_php",
-      "community": 20,
+      "community": 19,
       "norm_label": "productionapiservice.php"
     },
     {
@@ -234,7 +234,7 @@
       "source_file": "Services/ProductionApiService.php",
       "source_location": "L9",
       "id": "services_productionapiservice_productionapiservice",
-      "community": 20,
+      "community": 19,
       "norm_label": "productionapiservice"
     },
     {
@@ -243,7 +243,7 @@
       "source_file": "Services/ProductionApiService.php",
       "source_location": "L15",
       "id": "services_productionapiservice_productionapiservice_construct",
-      "community": 20,
+      "community": 19,
       "norm_label": ".__construct()"
     },
     {
@@ -252,7 +252,7 @@
       "source_file": "Services/ProductionApiService.php",
       "source_location": "L21",
       "id": "services_productionapiservice_productionapiservice_getaccesstoken",
-      "community": 20,
+      "community": 19,
       "norm_label": ".getaccesstoken()"
     },
     {
@@ -261,7 +261,7 @@
       "source_file": "Services/ProductionApiService.php",
       "source_location": "L54",
       "id": "services_productionapiservice_productionapiservice_getformulas",
-      "community": 20,
+      "community": 19,
       "norm_label": ".getformulas()"
     },
     {
@@ -270,7 +270,7 @@
       "source_file": "Services/ProductionApiService.php",
       "source_location": "L64",
       "id": "services_productionapiservice_productionapiservice_fetchformulas",
-      "community": 20,
+      "community": 19,
       "norm_label": ".fetchformulas()"
     },
     {
@@ -279,7 +279,7 @@
       "source_file": "Services/OutscraperService.php",
       "source_location": "L1",
       "id": "services_outscraperservice_php",
-      "community": 21,
+      "community": 20,
       "norm_label": "outscraperservice.php"
     },
     {
@@ -288,7 +288,7 @@
       "source_file": "Services/OutscraperService.php",
       "source_location": "L9",
       "id": "services_outscraperservice_outscraperservice",
-      "community": 21,
+      "community": 20,
       "norm_label": "outscraperservice"
     },
     {
@@ -297,7 +297,7 @@
       "source_file": "Services/OutscraperService.php",
       "source_location": "L11",
       "id": "services_outscraperservice_outscraperservice_construct",
-      "community": 21,
+      "community": 20,
       "norm_label": ".__construct()"
     },
     {
@@ -306,7 +306,7 @@
       "source_file": "Services/OutscraperService.php",
       "source_location": "L18",
       "id": "services_outscraperservice_outscraperservice_startsearch",
-      "community": 21,
+      "community": 20,
       "norm_label": ".startsearch()"
     },
     {
@@ -315,7 +315,7 @@
       "source_file": "Services/OutscraperService.php",
       "source_location": "L50",
       "id": "services_outscraperservice_outscraperservice_getrequeststatus",
-      "community": 21,
+      "community": 20,
       "norm_label": ".getrequeststatus()"
     },
     {
@@ -324,7 +324,7 @@
       "source_file": "Services/OutscraperService.php",
       "source_location": "L83",
       "id": "services_outscraperservice_outscraperservice_flattendata",
-      "community": 21,
+      "community": 20,
       "norm_label": ".flattendata()"
     },
     {
@@ -333,7 +333,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L1",
       "id": "services_skydropxservice_php",
-      "community": 10,
+      "community": 11,
       "norm_label": "skydropxservice.php"
     },
     {
@@ -342,7 +342,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L12",
       "id": "services_skydropxservice_skydropxservice",
-      "community": 10,
+      "community": 11,
       "norm_label": "skydropxservice"
     },
     {
@@ -351,7 +351,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L14",
       "id": "services_skydropxservice_skydropxservice_construct",
-      "community": 10,
+      "community": 11,
       "norm_label": ".__construct()"
     },
     {
@@ -360,7 +360,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L25",
       "id": "services_skydropxservice_skydropxservice_getquotes",
-      "community": 10,
+      "community": 11,
       "norm_label": ".getquotes()"
     },
     {
@@ -369,7 +369,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L53",
       "id": "services_skydropxservice_skydropxservice_getquote",
-      "community": 10,
+      "community": 11,
       "norm_label": ".getquote()"
     },
     {
@@ -378,7 +378,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L90",
       "id": "services_skydropxservice_skydropxservice_fetchquotes",
-      "community": 10,
+      "community": 11,
       "norm_label": ".fetchquotes()"
     },
     {
@@ -387,7 +387,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L111",
       "id": "services_skydropxservice_skydropxservice_requestquotation",
-      "community": 10,
+      "community": 11,
       "norm_label": ".requestquotation()"
     },
     {
@@ -396,7 +396,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L167",
       "id": "services_skydropxservice_skydropxservice_polluntilcompleted",
-      "community": 10,
+      "community": 11,
       "norm_label": ".polluntilcompleted()"
     },
     {
@@ -405,7 +405,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L191",
       "id": "services_skydropxservice_skydropxservice_getoauthtoken",
-      "community": 10,
+      "community": 11,
       "norm_label": ".getoauthtoken()"
     },
     {
@@ -414,7 +414,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L208",
       "id": "services_skydropxservice_skydropxservice_requesttokenviacredentials",
-      "community": 10,
+      "community": 11,
       "norm_label": ".requesttokenviacredentials()"
     },
     {
@@ -423,7 +423,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L227",
       "id": "services_skydropxservice_skydropxservice_requesttokenviarefresh",
-      "community": 10,
+      "community": 11,
       "norm_label": ".requesttokenviarefresh()"
     },
     {
@@ -432,7 +432,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L251",
       "id": "services_skydropxservice_skydropxservice_cachetokenresponse",
-      "community": 10,
+      "community": 11,
       "norm_label": ".cachetokenresponse()"
     },
     {
@@ -441,7 +441,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L274",
       "id": "services_skydropxservice_skydropxservice_normalizeresponse",
-      "community": 10,
+      "community": 11,
       "norm_label": ".normalizeresponse()"
     },
     {
@@ -450,7 +450,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L303",
       "id": "services_skydropxservice_skydropxservice_createshipment",
-      "community": 10,
+      "community": 11,
       "norm_label": ".createshipment()"
     },
     {
@@ -459,7 +459,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L352",
       "id": "services_skydropxservice_skydropxservice_buildshipmentpayload",
-      "community": 10,
+      "community": 11,
       "norm_label": ".buildshipmentpayload()"
     },
     {
@@ -468,7 +468,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L388",
       "id": "services_skydropxservice_skydropxservice_gettracking",
-      "community": 10,
+      "community": 11,
       "norm_label": ".gettracking()"
     },
     {
@@ -477,7 +477,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L427",
       "id": "services_skydropxservice_skydropxservice_gettrackinginfo",
-      "community": 10,
+      "community": 11,
       "norm_label": ".gettrackinginfo()"
     },
     {
@@ -486,7 +486,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L447",
       "id": "services_skydropxservice_skydropxservice_polluntiltracking",
-      "community": 10,
+      "community": 11,
       "norm_label": ".polluntiltracking()"
     },
     {
@@ -495,7 +495,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L477",
       "id": "services_skydropxservice_skydropxservice_getlabel",
-      "community": 10,
+      "community": 11,
       "norm_label": ".getlabel()"
     },
     {
@@ -504,7 +504,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L510",
       "id": "services_skydropxservice_skydropxservice_fulladdressfrom",
-      "community": 10,
+      "community": 11,
       "norm_label": ".fulladdressfrom()"
     },
     {
@@ -513,7 +513,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L528",
       "id": "services_skydropxservice_skydropxservice_addressfrom",
-      "community": 10,
+      "community": 11,
       "norm_label": ".addressfrom()"
     },
     {
@@ -612,7 +612,7 @@
       "source_file": "Models/ShippingMethod.php",
       "source_location": "L1",
       "id": "models_shippingmethod_php",
-      "community": 50,
+      "community": 51,
       "norm_label": "shippingmethod.php"
     },
     {
@@ -621,7 +621,7 @@
       "source_file": "Models/ShippingMethod.php",
       "source_location": "L9",
       "id": "models_shippingmethod_shippingmethod",
-      "community": 50,
+      "community": 51,
       "norm_label": "shippingmethod"
     },
     {
@@ -630,7 +630,7 @@
       "source_file": "Models/ShippingMethod.php",
       "source_location": "L25",
       "id": "models_shippingmethod_shippingmethod_casts",
-      "community": 50,
+      "community": 51,
       "norm_label": ".casts()"
     },
     {
@@ -639,7 +639,7 @@
       "source_file": "Models/ShippingMethod.php",
       "source_location": "L37",
       "id": "models_shippingmethod_shippingmethod_orders",
-      "community": 50,
+      "community": 51,
       "norm_label": ".orders()"
     },
     {
@@ -904,12 +904,39 @@
       "norm_label": ".casts()"
     },
     {
+      "label": "AppSettings.php",
+      "file_type": "code",
+      "source_file": "Models/AppSettings.php",
+      "source_location": "L1",
+      "id": "models_appsettings_php",
+      "community": 17,
+      "norm_label": "appsettings.php"
+    },
+    {
+      "label": "AppSettings",
+      "file_type": "code",
+      "source_file": "Models/AppSettings.php",
+      "source_location": "L7",
+      "id": "models_appsettings_appsettings",
+      "community": 17,
+      "norm_label": "appsettings"
+    },
+    {
+      "label": ".current()",
+      "file_type": "code",
+      "source_file": "Models/AppSettings.php",
+      "source_location": "L17",
+      "id": "models_appsettings_appsettings_current",
+      "community": 17,
+      "norm_label": ".current()"
+    },
+    {
       "label": "CartItem.php",
       "file_type": "code",
       "source_file": "Models/CartItem.php",
       "source_location": "L1",
       "id": "models_cartitem_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "cartitem.php"
     },
     {
@@ -918,7 +945,7 @@
       "source_file": "Models/CartItem.php",
       "source_location": "L9",
       "id": "models_cartitem_cartitem",
-      "community": 1,
+      "community": 0,
       "norm_label": "cartitem"
     },
     {
@@ -927,7 +954,7 @@
       "source_file": "Models/CartItem.php",
       "source_location": "L20",
       "id": "models_cartitem_cartitem_casts",
-      "community": 1,
+      "community": 0,
       "norm_label": ".casts()"
     },
     {
@@ -936,7 +963,7 @@
       "source_file": "Models/CartItem.php",
       "source_location": "L30",
       "id": "models_cartitem_cartitem_cart",
-      "community": 1,
+      "community": 0,
       "norm_label": ".cart()"
     },
     {
@@ -945,7 +972,7 @@
       "source_file": "Models/CartItem.php",
       "source_location": "L35",
       "id": "models_cartitem_cartitem_product",
-      "community": 1,
+      "community": 0,
       "norm_label": ".product()"
     },
     {
@@ -954,7 +981,7 @@
       "source_file": "Models/CartItem.php",
       "source_location": "L40",
       "id": "models_cartitem_cartitem_getsubtotalattribute",
-      "community": 1,
+      "community": 0,
       "norm_label": ".getsubtotalattribute()"
     },
     {
@@ -1044,7 +1071,7 @@
       "source_file": "Models/Address.php",
       "source_location": "L1",
       "id": "models_address_php",
-      "community": 7,
+      "community": 8,
       "norm_label": "address.php"
     },
     {
@@ -1053,7 +1080,7 @@
       "source_file": "Models/Address.php",
       "source_location": "L9",
       "id": "models_address_address",
-      "community": 7,
+      "community": 8,
       "norm_label": "address"
     },
     {
@@ -1062,7 +1089,7 @@
       "source_file": "Models/Address.php",
       "source_location": "L31",
       "id": "models_address_address_casts",
-      "community": 7,
+      "community": 8,
       "norm_label": ".casts()"
     },
     {
@@ -1071,7 +1098,7 @@
       "source_file": "Models/Address.php",
       "source_location": "L39",
       "id": "models_address_address_user",
-      "community": 7,
+      "community": 8,
       "norm_label": ".user()"
     },
     {
@@ -1080,7 +1107,7 @@
       "source_file": "Models/Address.php",
       "source_location": "L47",
       "id": "models_address_address_setasdefault",
-      "community": 7,
+      "community": 8,
       "norm_label": ".setasdefault()"
     },
     {
@@ -1089,7 +1116,7 @@
       "source_file": "Models/Address.php",
       "source_location": "L59",
       "id": "models_address_address_promotenextdefault",
-      "community": 7,
+      "community": 8,
       "norm_label": ".promotenextdefault()"
     },
     {
@@ -1114,7 +1141,7 @@
       "label": ".casts()",
       "file_type": "code",
       "source_file": "Models/User.php",
-      "source_location": "L53",
+      "source_location": "L52",
       "id": "models_user_user_casts",
       "community": 25,
       "norm_label": ".casts()"
@@ -1123,7 +1150,7 @@
       "label": ".orders()",
       "file_type": "code",
       "source_file": "Models/User.php",
-      "source_location": "L67",
+      "source_location": "L65",
       "id": "models_user_user_orders",
       "community": 25,
       "norm_label": ".orders()"
@@ -1132,46 +1159,10 @@
       "label": ".addresses()",
       "file_type": "code",
       "source_file": "Models/User.php",
-      "source_location": "L72",
+      "source_location": "L70",
       "id": "models_user_user_addresses",
       "community": 25,
       "norm_label": ".addresses()"
-    },
-    {
-      "label": "PricingTier.php",
-      "file_type": "code",
-      "source_file": "Models/PricingTier.php",
-      "source_location": "L1",
-      "id": "models_pricingtier_php",
-      "community": 51,
-      "norm_label": "pricingtier.php"
-    },
-    {
-      "label": "PricingTier",
-      "file_type": "code",
-      "source_file": "Models/PricingTier.php",
-      "source_location": "L9",
-      "id": "models_pricingtier_pricingtier",
-      "community": 51,
-      "norm_label": "pricingtier"
-    },
-    {
-      "label": ".casts()",
-      "file_type": "code",
-      "source_file": "Models/PricingTier.php",
-      "source_location": "L23",
-      "id": "models_pricingtier_pricingtier_casts",
-      "community": 51,
-      "norm_label": ".casts()"
-    },
-    {
-      "label": ".product()",
-      "file_type": "code",
-      "source_file": "Models/PricingTier.php",
-      "source_location": "L36",
-      "id": "models_pricingtier_pricingtier_product",
-      "community": 51,
-      "norm_label": ".product()"
     },
     {
       "label": "OrderStatusHistory.php",
@@ -1224,7 +1215,7 @@
       "source_file": "Models/Category.php",
       "source_location": "L1",
       "id": "models_category_php",
-      "community": 11,
+      "community": 10,
       "norm_label": "category.php"
     },
     {
@@ -1233,7 +1224,7 @@
       "source_file": "Models/Category.php",
       "source_location": "L11",
       "id": "models_category_category",
-      "community": 11,
+      "community": 10,
       "norm_label": "category"
     },
     {
@@ -1242,7 +1233,7 @@
       "source_file": "Models/Category.php",
       "source_location": "L28",
       "id": "models_category_category_casts",
-      "community": 11,
+      "community": 10,
       "norm_label": ".casts()"
     },
     {
@@ -1251,7 +1242,7 @@
       "source_file": "Models/Category.php",
       "source_location": "L38",
       "id": "models_category_category_products",
-      "community": 11,
+      "community": 10,
       "norm_label": ".products()"
     },
     {
@@ -1260,7 +1251,7 @@
       "source_file": "Models/Category.php",
       "source_location": "L47",
       "id": "models_category_category_scopeactive",
-      "community": 11,
+      "community": 10,
       "norm_label": ".scopeactive()"
     },
     {
@@ -1269,7 +1260,7 @@
       "source_file": "Models/Category.php",
       "source_location": "L52",
       "id": "models_category_category_parent",
-      "community": 11,
+      "community": 10,
       "norm_label": ".parent()"
     },
     {
@@ -1278,7 +1269,7 @@
       "source_file": "Models/Category.php",
       "source_location": "L57",
       "id": "models_category_category_children",
-      "community": 11,
+      "community": 10,
       "norm_label": ".children()"
     },
     {
@@ -1332,7 +1323,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L1",
       "id": "models_product_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "product.php"
     },
     {
@@ -1341,7 +1332,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L15",
       "id": "models_product_product",
-      "community": 0,
+      "community": 1,
       "norm_label": "product"
     },
     {
@@ -1350,7 +1341,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L43",
       "id": "models_product_product_casts",
-      "community": 0,
+      "community": 1,
       "norm_label": ".casts()"
     },
     {
@@ -1359,7 +1350,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L59",
       "id": "models_product_product_boot",
-      "community": 11,
+      "community": 10,
       "norm_label": ".boot()"
     },
     {
@@ -1368,7 +1359,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L76",
       "id": "models_product_product_getstatusattribute",
-      "community": 0,
+      "community": 1,
       "norm_label": ".getstatusattribute()"
     },
     {
@@ -1377,7 +1368,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L89",
       "id": "models_product_product_getimageurlattribute",
-      "community": 0,
+      "community": 1,
       "norm_label": ".getimageurlattribute()"
     },
     {
@@ -1386,7 +1377,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L99",
       "id": "models_product_product_scopefilterbycategory",
-      "community": 0,
+      "community": 1,
       "norm_label": ".scopefilterbycategory()"
     },
     {
@@ -1395,7 +1386,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L111",
       "id": "models_product_product_scopefeaturedforhome",
-      "community": 0,
+      "community": 1,
       "norm_label": ".scopefeaturedforhome()"
     },
     {
@@ -1404,7 +1395,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L125",
       "id": "models_product_product_scopefilterbypricerange",
-      "community": 0,
+      "community": 1,
       "norm_label": ".scopefilterbypricerange()"
     },
     {
@@ -1413,7 +1404,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L136",
       "id": "models_product_product_scopesearch",
-      "community": 0,
+      "community": 1,
       "norm_label": ".scopesearch()"
     },
     {
@@ -1422,7 +1413,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L151",
       "id": "models_product_product_scopesortby",
-      "community": 0,
+      "community": 1,
       "norm_label": ".scopesortby()"
     },
     {
@@ -1431,7 +1422,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L169",
       "id": "models_product_product_decrementstock",
-      "community": 0,
+      "community": 1,
       "norm_label": ".decrementstock()"
     },
     {
@@ -1440,7 +1431,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L184",
       "id": "models_product_product_restorestock",
-      "community": 0,
+      "community": 1,
       "norm_label": ".restorestock()"
     },
     {
@@ -1449,7 +1440,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L192",
       "id": "models_product_product_orderitems",
-      "community": 0,
+      "community": 1,
       "norm_label": ".orderitems()"
     },
     {
@@ -1462,21 +1453,12 @@
       "norm_label": ".category()"
     },
     {
-      "label": ".pricingTiers()",
-      "file_type": "code",
-      "source_file": "Models/Product.php",
-      "source_location": "L208",
-      "id": "models_product_product_pricingtiers",
-      "community": 0,
-      "norm_label": ".pricingtiers()"
-    },
-    {
       "label": ".images()",
       "file_type": "code",
       "source_file": "Models/Product.php",
-      "source_location": "L216",
+      "source_location": "L208",
       "id": "models_product_product_images",
-      "community": 0,
+      "community": 1,
       "norm_label": ".images()"
     },
     {
@@ -1485,7 +1467,7 @@
       "source_file": "Models/Cart.php",
       "source_location": "L1",
       "id": "models_cart_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "cart.php"
     },
     {
@@ -1494,7 +1476,7 @@
       "source_file": "Models/Cart.php",
       "source_location": "L10",
       "id": "models_cart_cart",
-      "community": 1,
+      "community": 0,
       "norm_label": "cart"
     },
     {
@@ -1503,7 +1485,7 @@
       "source_file": "Models/Cart.php",
       "source_location": "L19",
       "id": "models_cart_cart_casts",
-      "community": 1,
+      "community": 0,
       "norm_label": ".casts()"
     },
     {
@@ -1521,7 +1503,7 @@
       "source_file": "Models/Cart.php",
       "source_location": "L31",
       "id": "models_cart_cart_items",
-      "community": 1,
+      "community": 0,
       "norm_label": ".items()"
     },
     {
@@ -1530,7 +1512,7 @@
       "source_file": "Models/Cart.php",
       "source_location": "L36",
       "id": "models_cart_cart_calculatetotals",
-      "community": 1,
+      "community": 0,
       "norm_label": ".calculatetotals()"
     },
     {
@@ -1674,7 +1656,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L1",
       "id": "jobs_createshippinglabel_php",
-      "community": 8,
+      "community": 7,
       "norm_label": "createshippinglabel.php"
     },
     {
@@ -1683,7 +1665,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L19",
       "id": "jobs_createshippinglabel_createshippinglabel",
-      "community": 8,
+      "community": 7,
       "norm_label": "createshippinglabel"
     },
     {
@@ -1692,7 +1674,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L28",
       "id": "jobs_createshippinglabel_createshippinglabel_construct",
-      "community": 8,
+      "community": 7,
       "norm_label": ".__construct()"
     },
     {
@@ -1701,7 +1683,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L33",
       "id": "jobs_createshippinglabel_createshippinglabel_handle",
-      "community": 8,
+      "community": 7,
       "norm_label": ".handle()"
     },
     {
@@ -1710,7 +1692,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L57",
       "id": "jobs_createshippinglabel_createshippinglabel_resolvelabelurl",
-      "community": 8,
+      "community": 7,
       "norm_label": ".resolvelabelurl()"
     },
     {
@@ -1719,7 +1701,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L69",
       "id": "jobs_createshippinglabel_createshippinglabel_fetchshipmentresult",
-      "community": 8,
+      "community": 7,
       "norm_label": ".fetchshipmentresult()"
     },
     {
@@ -1728,7 +1710,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L96",
       "id": "jobs_createshippinglabel_createshippinglabel_buildupdatedata",
-      "community": 8,
+      "community": 7,
       "norm_label": ".buildupdatedata()"
     },
     {
@@ -1737,7 +1719,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L111",
       "id": "jobs_createshippinglabel_createshippinglabel_failed",
-      "community": 8,
+      "community": 7,
       "norm_label": ".failed()"
     },
     {
@@ -1746,7 +1728,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L126",
       "id": "jobs_createshippinglabel_createshippinglabel_parsecarrier",
-      "community": 8,
+      "community": 7,
       "norm_label": ".parsecarrier()"
     },
     {
@@ -1755,7 +1737,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L145",
       "id": "jobs_createshippinglabel_createshippinglabel_buildaddressto",
-      "community": 8,
+      "community": 7,
       "norm_label": ".buildaddressto()"
     },
     {
@@ -1863,7 +1845,7 @@
       "source_file": "Http/Controllers/ProductsController.php",
       "source_location": "L1",
       "id": "http_controllers_productscontroller_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "productscontroller.php"
     },
     {
@@ -1872,7 +1854,7 @@
       "source_file": "Http/Controllers/ProductsController.php",
       "source_location": "L15",
       "id": "controllers_productscontroller_productscontroller",
-      "community": 0,
+      "community": 1,
       "norm_label": "productscontroller"
     },
     {
@@ -1881,7 +1863,7 @@
       "source_file": "Http/Controllers/ProductsController.php",
       "source_location": "L59",
       "id": "controllers_productscontroller_productscontroller_invoke",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__invoke()"
     },
     {
@@ -1989,7 +1971,7 @@
       "source_file": "Http/Controllers/FeaturedProductsController.php",
       "source_location": "L1",
       "id": "http_controllers_featuredproductscontroller_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "featuredproductscontroller.php"
     },
     {
@@ -1998,7 +1980,7 @@
       "source_file": "Http/Controllers/FeaturedProductsController.php",
       "source_location": "L14",
       "id": "controllers_featuredproductscontroller_featuredproductscontroller",
-      "community": 0,
+      "community": 1,
       "norm_label": "featuredproductscontroller"
     },
     {
@@ -2007,7 +1989,7 @@
       "source_file": "Http/Controllers/FeaturedProductsController.php",
       "source_location": "L23",
       "id": "controllers_featuredproductscontroller_featuredproductscontroller_invoke",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__invoke()"
     },
     {
@@ -2135,6 +2117,60 @@
       "id": "concerns_buildsusershowresponse_renderusershow",
       "community": 95,
       "norm_label": "renderusershow()"
+    },
+    {
+      "label": "ShowSettingsController.php",
+      "file_type": "code",
+      "source_file": "Http/Controllers/Admin/Settings/ShowSettingsController.php",
+      "source_location": "L1",
+      "id": "http_controllers_admin_settings_showsettingscontroller_php",
+      "community": 17,
+      "norm_label": "showsettingscontroller.php"
+    },
+    {
+      "label": "ShowSettingsController",
+      "file_type": "code",
+      "source_file": "Http/Controllers/Admin/Settings/ShowSettingsController.php",
+      "source_location": "L10",
+      "id": "settings_showsettingscontroller_showsettingscontroller",
+      "community": 17,
+      "norm_label": "showsettingscontroller"
+    },
+    {
+      "label": ".__invoke()",
+      "file_type": "code",
+      "source_file": "Http/Controllers/Admin/Settings/ShowSettingsController.php",
+      "source_location": "L12",
+      "id": "settings_showsettingscontroller_showsettingscontroller_invoke",
+      "community": 17,
+      "norm_label": ".__invoke()"
+    },
+    {
+      "label": "UpdateSettingsController.php",
+      "file_type": "code",
+      "source_file": "Http/Controllers/Admin/Settings/UpdateSettingsController.php",
+      "source_location": "L1",
+      "id": "http_controllers_admin_settings_updatesettingscontroller_php",
+      "community": 17,
+      "norm_label": "updatesettingscontroller.php"
+    },
+    {
+      "label": "UpdateSettingsController",
+      "file_type": "code",
+      "source_file": "Http/Controllers/Admin/Settings/UpdateSettingsController.php",
+      "source_location": "L10",
+      "id": "settings_updatesettingscontroller_updatesettingscontroller",
+      "community": 17,
+      "norm_label": "updatesettingscontroller"
+    },
+    {
+      "label": ".__invoke()",
+      "file_type": "code",
+      "source_file": "Http/Controllers/Admin/Settings/UpdateSettingsController.php",
+      "source_location": "L12",
+      "id": "settings_updatesettingscontroller_updatesettingscontroller_invoke",
+      "community": 17,
+      "norm_label": ".__invoke()"
     },
     {
       "label": "StartBusinessScrapeController.php",
@@ -2349,7 +2385,7 @@
       "source_file": "Http/Controllers/Admin/Orders/RetryShippingLabelController.php",
       "source_location": "L1",
       "id": "http_controllers_admin_orders_retryshippinglabelcontroller_php",
-      "community": 8,
+      "community": 7,
       "norm_label": "retryshippinglabelcontroller.php"
     },
     {
@@ -2358,7 +2394,7 @@
       "source_file": "Http/Controllers/Admin/Orders/RetryShippingLabelController.php",
       "source_location": "L10",
       "id": "orders_retryshippinglabelcontroller_retryshippinglabelcontroller",
-      "community": 8,
+      "community": 7,
       "norm_label": "retryshippinglabelcontroller"
     },
     {
@@ -2367,7 +2403,7 @@
       "source_file": "Http/Controllers/Admin/Orders/RetryShippingLabelController.php",
       "source_location": "L12",
       "id": "orders_retryshippinglabelcontroller_retryshippinglabelcontroller_invoke",
-      "community": 8,
+      "community": 7,
       "norm_label": ".__invoke()"
     },
     {
@@ -2448,7 +2484,7 @@
       "source_file": "Http/Controllers/Cart/GetCartController.php",
       "source_location": "L1",
       "id": "http_controllers_cart_getcartcontroller_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "getcartcontroller.php"
     },
     {
@@ -2457,7 +2493,7 @@
       "source_file": "Http/Controllers/Cart/GetCartController.php",
       "source_location": "L15",
       "id": "cart_getcartcontroller_getcartcontroller",
-      "community": 1,
+      "community": 0,
       "norm_label": "getcartcontroller"
     },
     {
@@ -2466,7 +2502,7 @@
       "source_file": "Http/Controllers/Cart/GetCartController.php",
       "source_location": "L27",
       "id": "cart_getcartcontroller_getcartcontroller_invoke",
-      "community": 1,
+      "community": 0,
       "norm_label": ".__invoke()"
     },
     {
@@ -2475,7 +2511,7 @@
       "source_file": "Http/Controllers/Cart/ClearCartController.php",
       "source_location": "L1",
       "id": "http_controllers_cart_clearcartcontroller_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "clearcartcontroller.php"
     },
     {
@@ -2484,7 +2520,7 @@
       "source_file": "Http/Controllers/Cart/ClearCartController.php",
       "source_location": "L13",
       "id": "cart_clearcartcontroller_clearcartcontroller",
-      "community": 1,
+      "community": 0,
       "norm_label": "clearcartcontroller"
     },
     {
@@ -2493,7 +2529,7 @@
       "source_file": "Http/Controllers/Cart/ClearCartController.php",
       "source_location": "L24",
       "id": "cart_clearcartcontroller_clearcartcontroller_invoke",
-      "community": 1,
+      "community": 0,
       "norm_label": ".__invoke()"
     },
     {
@@ -2502,7 +2538,7 @@
       "source_file": "Http/Controllers/Cart/UpdateCartItemController.php",
       "source_location": "L1",
       "id": "http_controllers_cart_updatecartitemcontroller_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "updatecartitemcontroller.php"
     },
     {
@@ -2511,7 +2547,7 @@
       "source_file": "Http/Controllers/Cart/UpdateCartItemController.php",
       "source_location": "L16",
       "id": "cart_updatecartitemcontroller_updatecartitemcontroller",
-      "community": 1,
+      "community": 0,
       "norm_label": "updatecartitemcontroller"
     },
     {
@@ -2520,7 +2556,7 @@
       "source_file": "Http/Controllers/Cart/UpdateCartItemController.php",
       "source_location": "L31",
       "id": "cart_updatecartitemcontroller_updatecartitemcontroller_invoke",
-      "community": 1,
+      "community": 0,
       "norm_label": ".__invoke()"
     },
     {
@@ -2529,7 +2565,7 @@
       "source_file": "Http/Controllers/Cart/AddCartItemController.php",
       "source_location": "L1",
       "id": "http_controllers_cart_addcartitemcontroller_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "addcartitemcontroller.php"
     },
     {
@@ -2538,7 +2574,7 @@
       "source_file": "Http/Controllers/Cart/AddCartItemController.php",
       "source_location": "L17",
       "id": "cart_addcartitemcontroller_addcartitemcontroller",
-      "community": 1,
+      "community": 0,
       "norm_label": "addcartitemcontroller"
     },
     {
@@ -2547,7 +2583,7 @@
       "source_file": "Http/Controllers/Cart/AddCartItemController.php",
       "source_location": "L29",
       "id": "cart_addcartitemcontroller_addcartitemcontroller_invoke",
-      "community": 1,
+      "community": 0,
       "norm_label": ".__invoke()"
     },
     {
@@ -2556,7 +2592,7 @@
       "source_file": "Http/Controllers/Cart/RemoveCartItemController.php",
       "source_location": "L1",
       "id": "http_controllers_cart_removecartitemcontroller_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "removecartitemcontroller.php"
     },
     {
@@ -2565,7 +2601,7 @@
       "source_file": "Http/Controllers/Cart/RemoveCartItemController.php",
       "source_location": "L15",
       "id": "cart_removecartitemcontroller_removecartitemcontroller",
-      "community": 1,
+      "community": 0,
       "norm_label": "removecartitemcontroller"
     },
     {
@@ -2574,7 +2610,7 @@
       "source_file": "Http/Controllers/Cart/RemoveCartItemController.php",
       "source_location": "L29",
       "id": "cart_removecartitemcontroller_removecartitemcontroller_invoke",
-      "community": 1,
+      "community": 0,
       "norm_label": ".__invoke()"
     },
     {
@@ -2691,7 +2727,7 @@
       "source_file": "Http/Controllers/Addresses/GetAddressesController.php",
       "source_location": "L1",
       "id": "http_controllers_addresses_getaddressescontroller_php",
-      "community": 7,
+      "community": 8,
       "norm_label": "getaddressescontroller.php"
     },
     {
@@ -2700,7 +2736,7 @@
       "source_file": "Http/Controllers/Addresses/GetAddressesController.php",
       "source_location": "L14",
       "id": "addresses_getaddressescontroller_getaddressescontroller",
-      "community": 7,
+      "community": 8,
       "norm_label": "getaddressescontroller"
     },
     {
@@ -2709,7 +2745,7 @@
       "source_file": "Http/Controllers/Addresses/GetAddressesController.php",
       "source_location": "L44",
       "id": "addresses_getaddressescontroller_getaddressescontroller_invoke",
-      "community": 7,
+      "community": 8,
       "norm_label": ".__invoke()"
     },
     {
@@ -2745,7 +2781,7 @@
       "source_file": "Http/Controllers/Addresses/StoreAddressController.php",
       "source_location": "L1",
       "id": "http_controllers_addresses_storeaddresscontroller_php",
-      "community": 7,
+      "community": 8,
       "norm_label": "storeaddresscontroller.php"
     },
     {
@@ -2754,7 +2790,7 @@
       "source_file": "Http/Controllers/Addresses/StoreAddressController.php",
       "source_location": "L15",
       "id": "addresses_storeaddresscontroller_storeaddresscontroller",
-      "community": 7,
+      "community": 8,
       "norm_label": "storeaddresscontroller"
     },
     {
@@ -2763,7 +2799,7 @@
       "source_file": "Http/Controllers/Addresses/StoreAddressController.php",
       "source_location": "L46",
       "id": "addresses_storeaddresscontroller_storeaddresscontroller_invoke",
-      "community": 7,
+      "community": 8,
       "norm_label": ".__invoke()"
     },
     {
@@ -3033,7 +3069,7 @@
       "source_file": "Http/Controllers/Web/AddressesController.php",
       "source_location": "L1",
       "id": "http_controllers_web_addressescontroller_php",
-      "community": 7,
+      "community": 8,
       "norm_label": "addressescontroller.php"
     },
     {
@@ -3042,7 +3078,7 @@
       "source_file": "Http/Controllers/Web/AddressesController.php",
       "source_location": "L15",
       "id": "web_addressescontroller_addressescontroller",
-      "community": 7,
+      "community": 8,
       "norm_label": "addressescontroller"
     },
     {
@@ -3051,7 +3087,7 @@
       "source_file": "Http/Controllers/Web/AddressesController.php",
       "source_location": "L17",
       "id": "web_addressescontroller_addressescontroller_show",
-      "community": 7,
+      "community": 8,
       "norm_label": ".show()"
     },
     {
@@ -3060,7 +3096,7 @@
       "source_file": "Http/Controllers/Web/AddressesController.php",
       "source_location": "L30",
       "id": "web_addressescontroller_addressescontroller_store",
-      "community": 7,
+      "community": 8,
       "norm_label": ".store()"
     },
     {
@@ -3069,7 +3105,7 @@
       "source_file": "Http/Controllers/Web/AddressesController.php",
       "source_location": "L45",
       "id": "web_addressescontroller_addressescontroller_update",
-      "community": 7,
+      "community": 8,
       "norm_label": ".update()"
     },
     {
@@ -3078,7 +3114,7 @@
       "source_file": "Http/Controllers/Web/AddressesController.php",
       "source_location": "L60",
       "id": "web_addressescontroller_addressescontroller_destroy",
-      "community": 7,
+      "community": 8,
       "norm_label": ".destroy()"
     },
     {
@@ -3555,7 +3591,7 @@
       "source_file": "Http/Controllers/Web/ContentFeaturedProductsController.php",
       "source_location": "L1",
       "id": "http_controllers_web_contentfeaturedproductscontroller_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "contentfeaturedproductscontroller.php"
     },
     {
@@ -3564,7 +3600,7 @@
       "source_file": "Http/Controllers/Web/ContentFeaturedProductsController.php",
       "source_location": "L13",
       "id": "web_contentfeaturedproductscontroller_contentfeaturedproductscontroller",
-      "community": 0,
+      "community": 1,
       "norm_label": "contentfeaturedproductscontroller"
     },
     {
@@ -3573,7 +3609,7 @@
       "source_file": "Http/Controllers/Web/ContentFeaturedProductsController.php",
       "source_location": "L15",
       "id": "web_contentfeaturedproductscontroller_contentfeaturedproductscontroller_index",
-      "community": 0,
+      "community": 1,
       "norm_label": ".index()"
     },
     {
@@ -3582,7 +3618,7 @@
       "source_file": "Http/Controllers/Web/ContentFeaturedProductsController.php",
       "source_location": "L51",
       "id": "web_contentfeaturedproductscontroller_contentfeaturedproductscontroller_update",
-      "community": 0,
+      "community": 1,
       "norm_label": ".update()"
     },
     {
@@ -3645,7 +3681,7 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L1",
       "id": "http_controllers_web_cartcontroller_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "cartcontroller.php"
     },
     {
@@ -3654,7 +3690,7 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L14",
       "id": "web_cartcontroller_cartcontroller",
-      "community": 0,
+      "community": 1,
       "norm_label": "cartcontroller"
     },
     {
@@ -3663,7 +3699,7 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L16",
       "id": "web_cartcontroller_cartcontroller_index",
-      "community": 0,
+      "community": 1,
       "norm_label": ".index()"
     },
     {
@@ -3672,7 +3708,7 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L46",
       "id": "web_cartcontroller_cartcontroller_additem",
-      "community": 0,
+      "community": 1,
       "norm_label": ".additem()"
     },
     {
@@ -3681,7 +3717,7 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L73",
       "id": "web_cartcontroller_cartcontroller_updateitem",
-      "community": 0,
+      "community": 1,
       "norm_label": ".updateitem()"
     },
     {
@@ -3690,7 +3726,7 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L92",
       "id": "web_cartcontroller_cartcontroller_removeitem",
-      "community": 0,
+      "community": 1,
       "norm_label": ".removeitem()"
     },
     {
@@ -3699,7 +3735,7 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L105",
       "id": "web_cartcontroller_cartcontroller_clear",
-      "community": 0,
+      "community": 1,
       "norm_label": ".clear()"
     },
     {
@@ -3708,7 +3744,7 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L113",
       "id": "web_cartcontroller_cartcontroller_getorcreatecart",
-      "community": 0,
+      "community": 1,
       "norm_label": ".getorcreatecart()"
     },
     {
@@ -3780,7 +3816,7 @@
       "source_file": "Http/Controllers/Web/ProductController.php",
       "source_location": "L1",
       "id": "http_controllers_web_productcontroller_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "productcontroller.php"
     },
     {
@@ -3789,7 +3825,7 @@
       "source_file": "Http/Controllers/Web/ProductController.php",
       "source_location": "L12",
       "id": "web_productcontroller_productcontroller",
-      "community": 0,
+      "community": 1,
       "norm_label": "productcontroller"
     },
     {
@@ -3798,16 +3834,16 @@
       "source_file": "Http/Controllers/Web/ProductController.php",
       "source_location": "L14",
       "id": "web_productcontroller_productcontroller_show",
-      "community": 0,
+      "community": 1,
       "norm_label": ".show()"
     },
     {
       "label": ".buildBreadcrumbs()",
       "file_type": "code",
       "source_file": "Http/Controllers/Web/ProductController.php",
-      "source_location": "L82",
+      "source_location": "L65",
       "id": "web_productcontroller_productcontroller_buildbreadcrumbs",
-      "community": 0,
+      "community": 1,
       "norm_label": ".buildbreadcrumbs()"
     },
     {
@@ -3879,7 +3915,7 @@
       "source_file": "Http/Controllers/Web/Products/IndexProductsController.php",
       "source_location": "L1",
       "id": "http_controllers_web_products_indexproductscontroller_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "indexproductscontroller.php"
     },
     {
@@ -3888,7 +3924,7 @@
       "source_file": "Http/Controllers/Web/Products/IndexProductsController.php",
       "source_location": "L11",
       "id": "products_indexproductscontroller_indexproductscontroller",
-      "community": 0,
+      "community": 1,
       "norm_label": "indexproductscontroller"
     },
     {
@@ -3897,7 +3933,7 @@
       "source_file": "Http/Controllers/Web/Products/IndexProductsController.php",
       "source_location": "L13",
       "id": "products_indexproductscontroller_indexproductscontroller_invoke",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__invoke()"
     },
     {
@@ -3982,15 +4018,6 @@
       "norm_label": "storenewimages()"
     },
     {
-      "label": "syncPricingTiers()",
-      "file_type": "code",
-      "source_file": "Http/Controllers/Web/Products/ManagesProductData.php",
-      "source_location": "L51",
-      "id": "products_managesproductdata_syncpricingtiers",
-      "community": 13,
-      "norm_label": "syncpricingtiers()"
-    },
-    {
       "label": "EditProductController.php",
       "file_type": "code",
       "source_file": "Http/Controllers/Web/Products/EditProductController.php",
@@ -4032,7 +4059,7 @@
       "source_file": "Http/Controllers/Web/Products/StoreProductController.php",
       "source_location": "L1",
       "id": "http_controllers_web_products_storeproductcontroller_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "storeproductcontroller.php"
     },
     {
@@ -4041,7 +4068,7 @@
       "source_file": "Http/Controllers/Web/Products/StoreProductController.php",
       "source_location": "L11",
       "id": "products_storeproductcontroller_storeproductcontroller",
-      "community": 0,
+      "community": 1,
       "norm_label": "storeproductcontroller"
     },
     {
@@ -4050,7 +4077,7 @@
       "source_file": "Http/Controllers/Web/Products/StoreProductController.php",
       "source_location": "L15",
       "id": "products_storeproductcontroller_storeproductcontroller_invoke",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__invoke()"
     },
     {
@@ -4320,7 +4347,7 @@
       "source_file": "Http/Controllers/Web/Checkout/StoreCheckoutShippingController.php",
       "source_location": "L1",
       "id": "http_controllers_web_checkout_storecheckoutshippingcontroller_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "storecheckoutshippingcontroller.php"
     },
     {
@@ -4329,7 +4356,7 @@
       "source_file": "Http/Controllers/Web/Checkout/StoreCheckoutShippingController.php",
       "source_location": "L16",
       "id": "checkout_storecheckoutshippingcontroller_storecheckoutshippingcontroller",
-      "community": 1,
+      "community": 0,
       "norm_label": "storecheckoutshippingcontroller"
     },
     {
@@ -4338,7 +4365,7 @@
       "source_file": "Http/Controllers/Web/Checkout/StoreCheckoutShippingController.php",
       "source_location": "L23",
       "id": "checkout_storecheckoutshippingcontroller_storecheckoutshippingcontroller_invoke",
-      "community": 1,
+      "community": 0,
       "norm_label": ".__invoke()"
     },
     {
@@ -4347,7 +4374,7 @@
       "source_file": "Http/Controllers/Web/Checkout/StoreCheckoutShippingController.php",
       "source_location": "L104",
       "id": "checkout_storecheckoutshippingcontroller_storecheckoutshippingcontroller_resolveshipping",
-      "community": 1,
+      "community": 0,
       "norm_label": ".resolveshipping()"
     },
     {
@@ -4356,7 +4383,7 @@
       "source_file": "Http/Controllers/Web/Checkout/StoreCheckoutShippingController.php",
       "source_location": "L155",
       "id": "checkout_storecheckoutshippingcontroller_storecheckoutshippingcontroller_validatestock",
-      "community": 1,
+      "community": 0,
       "norm_label": ".validatestock()"
     },
     {
@@ -4365,7 +4392,7 @@
       "source_file": "Http/Controllers/Web/Checkout/GetShippingQuotesController.php",
       "source_location": "L1",
       "id": "http_controllers_web_checkout_getshippingquotescontroller_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "getshippingquotescontroller.php"
     },
     {
@@ -4374,7 +4401,7 @@
       "source_file": "Http/Controllers/Web/Checkout/GetShippingQuotesController.php",
       "source_location": "L11",
       "id": "checkout_getshippingquotescontroller_getshippingquotescontroller",
-      "community": 1,
+      "community": 0,
       "norm_label": "getshippingquotescontroller"
     },
     {
@@ -4383,7 +4410,7 @@
       "source_file": "Http/Controllers/Web/Checkout/GetShippingQuotesController.php",
       "source_location": "L13",
       "id": "checkout_getshippingquotescontroller_getshippingquotescontroller_invoke",
-      "community": 1,
+      "community": 0,
       "norm_label": ".__invoke()"
     },
     {
@@ -4392,7 +4419,7 @@
       "source_file": "Http/Controllers/Web/Checkout/ShowCheckoutShippingController.php",
       "source_location": "L1",
       "id": "http_controllers_web_checkout_showcheckoutshippingcontroller_php",
-      "community": 7,
+      "community": 8,
       "norm_label": "showcheckoutshippingcontroller.php"
     },
     {
@@ -4401,7 +4428,7 @@
       "source_file": "Http/Controllers/Web/Checkout/ShowCheckoutShippingController.php",
       "source_location": "L13",
       "id": "checkout_showcheckoutshippingcontroller_showcheckoutshippingcontroller",
-      "community": 7,
+      "community": 8,
       "norm_label": "showcheckoutshippingcontroller"
     },
     {
@@ -4410,7 +4437,7 @@
       "source_file": "Http/Controllers/Web/Checkout/ShowCheckoutShippingController.php",
       "source_location": "L15",
       "id": "checkout_showcheckoutshippingcontroller_showcheckoutshippingcontroller_invoke",
-      "community": 7,
+      "community": 8,
       "norm_label": ".__invoke()"
     },
     {
@@ -4626,7 +4653,7 @@
       "source_file": "Http/Controllers/Checkout/VerifyCheckoutController.php",
       "source_location": "L1",
       "id": "http_controllers_checkout_verifycheckoutcontroller_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "verifycheckoutcontroller.php"
     },
     {
@@ -4635,7 +4662,7 @@
       "source_file": "Http/Controllers/Checkout/VerifyCheckoutController.php",
       "source_location": "L19",
       "id": "checkout_verifycheckoutcontroller_verifycheckoutcontroller",
-      "community": 1,
+      "community": 0,
       "norm_label": "verifycheckoutcontroller"
     },
     {
@@ -4644,7 +4671,7 @@
       "source_file": "Http/Controllers/Checkout/VerifyCheckoutController.php",
       "source_location": "L51",
       "id": "checkout_verifycheckoutcontroller_verifycheckoutcontroller_invoke",
-      "community": 1,
+      "community": 0,
       "norm_label": ".__invoke()"
     },
     {
@@ -4653,7 +4680,7 @@
       "source_file": "Http/Controllers/Checkout/ConfirmPaymentController.php",
       "source_location": "L1",
       "id": "http_controllers_checkout_confirmpaymentcontroller_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "confirmpaymentcontroller.php"
     },
     {
@@ -4662,7 +4689,7 @@
       "source_file": "Http/Controllers/Checkout/ConfirmPaymentController.php",
       "source_location": "L18",
       "id": "checkout_confirmpaymentcontroller_confirmpaymentcontroller",
-      "community": 1,
+      "community": 0,
       "norm_label": "confirmpaymentcontroller"
     },
     {
@@ -4671,7 +4698,7 @@
       "source_file": "Http/Controllers/Checkout/ConfirmPaymentController.php",
       "source_location": "L34",
       "id": "checkout_confirmpaymentcontroller_confirmpaymentcontroller_invoke",
-      "community": 1,
+      "community": 0,
       "norm_label": ".__invoke()"
     },
     {
@@ -4680,7 +4707,7 @@
       "source_file": "Http/Controllers/Checkout/ConfirmPaymentController.php",
       "source_location": "L69",
       "id": "checkout_confirmpaymentcontroller_confirmpaymentcontroller_validatepaymentintent",
-      "community": 1,
+      "community": 0,
       "norm_label": ".validatepaymentintent()"
     },
     {
@@ -4689,7 +4716,7 @@
       "source_file": "Http/Controllers/Checkout/ConfirmPaymentController.php",
       "source_location": "L84",
       "id": "checkout_confirmpaymentcontroller_confirmpaymentcontroller_completeorder",
-      "community": 1,
+      "community": 0,
       "norm_label": ".completeorder()"
     },
     {
@@ -4846,12 +4873,57 @@
       "norm_label": ".messages()"
     },
     {
+      "label": "UpdateSettingsRequest.php",
+      "file_type": "code",
+      "source_file": "Http/Requests/Admin/Settings/UpdateSettingsRequest.php",
+      "source_location": "L1",
+      "id": "http_requests_admin_settings_updatesettingsrequest_php",
+      "community": 30,
+      "norm_label": "updatesettingsrequest.php"
+    },
+    {
+      "label": "UpdateSettingsRequest",
+      "file_type": "code",
+      "source_file": "Http/Requests/Admin/Settings/UpdateSettingsRequest.php",
+      "source_location": "L7",
+      "id": "settings_updatesettingsrequest_updatesettingsrequest",
+      "community": 30,
+      "norm_label": "updatesettingsrequest"
+    },
+    {
+      "label": ".authorize()",
+      "file_type": "code",
+      "source_file": "Http/Requests/Admin/Settings/UpdateSettingsRequest.php",
+      "source_location": "L9",
+      "id": "settings_updatesettingsrequest_updatesettingsrequest_authorize",
+      "community": 30,
+      "norm_label": ".authorize()"
+    },
+    {
+      "label": ".rules()",
+      "file_type": "code",
+      "source_file": "Http/Requests/Admin/Settings/UpdateSettingsRequest.php",
+      "source_location": "L17",
+      "id": "settings_updatesettingsrequest_updatesettingsrequest_rules",
+      "community": 30,
+      "norm_label": ".rules()"
+    },
+    {
+      "label": ".messages()",
+      "file_type": "code",
+      "source_file": "Http/Requests/Admin/Settings/UpdateSettingsRequest.php",
+      "source_location": "L29",
+      "id": "settings_updatesettingsrequest_updatesettingsrequest_messages",
+      "community": 30,
+      "norm_label": ".messages()"
+    },
+    {
       "label": "UpdateOrderStatusRequest.php",
       "file_type": "code",
       "source_file": "Http/Requests/Admin/Orders/UpdateOrderStatusRequest.php",
       "source_location": "L1",
       "id": "http_requests_admin_orders_updateorderstatusrequest_php",
-      "community": 30,
+      "community": 31,
       "norm_label": "updateorderstatusrequest.php"
     },
     {
@@ -4860,7 +4932,7 @@
       "source_file": "Http/Requests/Admin/Orders/UpdateOrderStatusRequest.php",
       "source_location": "L8",
       "id": "orders_updateorderstatusrequest_updateorderstatusrequest",
-      "community": 30,
+      "community": 31,
       "norm_label": "updateorderstatusrequest"
     },
     {
@@ -4869,7 +4941,7 @@
       "source_file": "Http/Requests/Admin/Orders/UpdateOrderStatusRequest.php",
       "source_location": "L10",
       "id": "orders_updateorderstatusrequest_updateorderstatusrequest_authorize",
-      "community": 30,
+      "community": 31,
       "norm_label": ".authorize()"
     },
     {
@@ -4878,7 +4950,7 @@
       "source_file": "Http/Requests/Admin/Orders/UpdateOrderStatusRequest.php",
       "source_location": "L20",
       "id": "orders_updateorderstatusrequest_updateorderstatusrequest_rules",
-      "community": 30,
+      "community": 31,
       "norm_label": ".rules()"
     },
     {
@@ -4887,7 +4959,7 @@
       "source_file": "Http/Requests/Admin/Orders/UpdateOrderStatusRequest.php",
       "source_location": "L30",
       "id": "orders_updateorderstatusrequest_updateorderstatusrequest_messages",
-      "community": 30,
+      "community": 31,
       "norm_label": ".messages()"
     },
     {
@@ -4896,7 +4968,7 @@
       "source_file": "Http/Requests/Admin/Orders/CreateOrderRefundRequest.php",
       "source_location": "L1",
       "id": "http_requests_admin_orders_createorderrefundrequest_php",
-      "community": 31,
+      "community": 32,
       "norm_label": "createorderrefundrequest.php"
     },
     {
@@ -4905,7 +4977,7 @@
       "source_file": "Http/Requests/Admin/Orders/CreateOrderRefundRequest.php",
       "source_location": "L7",
       "id": "orders_createorderrefundrequest_createorderrefundrequest",
-      "community": 31,
+      "community": 32,
       "norm_label": "createorderrefundrequest"
     },
     {
@@ -4914,7 +4986,7 @@
       "source_file": "Http/Requests/Admin/Orders/CreateOrderRefundRequest.php",
       "source_location": "L9",
       "id": "orders_createorderrefundrequest_createorderrefundrequest_authorize",
-      "community": 31,
+      "community": 32,
       "norm_label": ".authorize()"
     },
     {
@@ -4923,7 +4995,7 @@
       "source_file": "Http/Requests/Admin/Orders/CreateOrderRefundRequest.php",
       "source_location": "L19",
       "id": "orders_createorderrefundrequest_createorderrefundrequest_rules",
-      "community": 31,
+      "community": 32,
       "norm_label": ".rules()"
     },
     {
@@ -4932,7 +5004,7 @@
       "source_file": "Http/Requests/Admin/Orders/CreateOrderRefundRequest.php",
       "source_location": "L30",
       "id": "orders_createorderrefundrequest_createorderrefundrequest_messages",
-      "community": 31,
+      "community": 32,
       "norm_label": ".messages()"
     },
     {
@@ -4941,7 +5013,7 @@
       "source_file": "Http/Requests/Admin/Orders/UpdateOrderTrackingRequest.php",
       "source_location": "L1",
       "id": "http_requests_admin_orders_updateordertrackingrequest_php",
-      "community": 32,
+      "community": 33,
       "norm_label": "updateordertrackingrequest.php"
     },
     {
@@ -4950,7 +5022,7 @@
       "source_file": "Http/Requests/Admin/Orders/UpdateOrderTrackingRequest.php",
       "source_location": "L7",
       "id": "orders_updateordertrackingrequest_updateordertrackingrequest",
-      "community": 32,
+      "community": 33,
       "norm_label": "updateordertrackingrequest"
     },
     {
@@ -4959,7 +5031,7 @@
       "source_file": "Http/Requests/Admin/Orders/UpdateOrderTrackingRequest.php",
       "source_location": "L9",
       "id": "orders_updateordertrackingrequest_updateordertrackingrequest_authorize",
-      "community": 32,
+      "community": 33,
       "norm_label": ".authorize()"
     },
     {
@@ -4968,7 +5040,7 @@
       "source_file": "Http/Requests/Admin/Orders/UpdateOrderTrackingRequest.php",
       "source_location": "L19",
       "id": "orders_updateordertrackingrequest_updateordertrackingrequest_rules",
-      "community": 32,
+      "community": 33,
       "norm_label": ".rules()"
     },
     {
@@ -4977,7 +5049,7 @@
       "source_file": "Http/Requests/Admin/Orders/UpdateOrderTrackingRequest.php",
       "source_location": "L31",
       "id": "orders_updateordertrackingrequest_updateordertrackingrequest_messages",
-      "community": 32,
+      "community": 33,
       "norm_label": ".messages()"
     },
     {
@@ -4986,7 +5058,7 @@
       "source_file": "Http/Requests/Admin/Orders/StoreOrderNoteRequest.php",
       "source_location": "L1",
       "id": "http_requests_admin_orders_storeordernoterequest_php",
-      "community": 33,
+      "community": 34,
       "norm_label": "storeordernoterequest.php"
     },
     {
@@ -4995,7 +5067,7 @@
       "source_file": "Http/Requests/Admin/Orders/StoreOrderNoteRequest.php",
       "source_location": "L7",
       "id": "orders_storeordernoterequest_storeordernoterequest",
-      "community": 33,
+      "community": 34,
       "norm_label": "storeordernoterequest"
     },
     {
@@ -5004,7 +5076,7 @@
       "source_file": "Http/Requests/Admin/Orders/StoreOrderNoteRequest.php",
       "source_location": "L9",
       "id": "orders_storeordernoterequest_storeordernoterequest_authorize",
-      "community": 33,
+      "community": 34,
       "norm_label": ".authorize()"
     },
     {
@@ -5013,7 +5085,7 @@
       "source_file": "Http/Requests/Admin/Orders/StoreOrderNoteRequest.php",
       "source_location": "L19",
       "id": "orders_storeordernoterequest_storeordernoterequest_rules",
-      "community": 33,
+      "community": 34,
       "norm_label": ".rules()"
     },
     {
@@ -5022,7 +5094,7 @@
       "source_file": "Http/Requests/Admin/Orders/StoreOrderNoteRequest.php",
       "source_location": "L29",
       "id": "orders_storeordernoterequest_storeordernoterequest_messages",
-      "community": 33,
+      "community": 34,
       "norm_label": ".messages()"
     },
     {
@@ -5031,7 +5103,7 @@
       "source_file": "Http/Requests/Cart/AddCartItemRequest.php",
       "source_location": "L1",
       "id": "http_requests_cart_addcartitemrequest_php",
-      "community": 34,
+      "community": 35,
       "norm_label": "addcartitemrequest.php"
     },
     {
@@ -5040,7 +5112,7 @@
       "source_file": "Http/Requests/Cart/AddCartItemRequest.php",
       "source_location": "L7",
       "id": "cart_addcartitemrequest_addcartitemrequest",
-      "community": 34,
+      "community": 35,
       "norm_label": "addcartitemrequest"
     },
     {
@@ -5049,7 +5121,7 @@
       "source_file": "Http/Requests/Cart/AddCartItemRequest.php",
       "source_location": "L12",
       "id": "cart_addcartitemrequest_addcartitemrequest_authorize",
-      "community": 34,
+      "community": 35,
       "norm_label": ".authorize()"
     },
     {
@@ -5058,7 +5130,7 @@
       "source_file": "Http/Requests/Cart/AddCartItemRequest.php",
       "source_location": "L22",
       "id": "cart_addcartitemrequest_addcartitemrequest_rules",
-      "community": 34,
+      "community": 35,
       "norm_label": ".rules()"
     },
     {
@@ -5067,7 +5139,7 @@
       "source_file": "Http/Requests/Cart/AddCartItemRequest.php",
       "source_location": "L35",
       "id": "cart_addcartitemrequest_addcartitemrequest_bodyparameters",
-      "community": 34,
+      "community": 35,
       "norm_label": ".bodyparameters()"
     },
     {
@@ -5076,7 +5148,7 @@
       "source_file": "Http/Requests/Cart/UpdateCartItemRequest.php",
       "source_location": "L1",
       "id": "http_requests_cart_updatecartitemrequest_php",
-      "community": 35,
+      "community": 36,
       "norm_label": "updatecartitemrequest.php"
     },
     {
@@ -5085,7 +5157,7 @@
       "source_file": "Http/Requests/Cart/UpdateCartItemRequest.php",
       "source_location": "L7",
       "id": "cart_updatecartitemrequest_updatecartitemrequest",
-      "community": 35,
+      "community": 36,
       "norm_label": "updatecartitemrequest"
     },
     {
@@ -5094,7 +5166,7 @@
       "source_file": "Http/Requests/Cart/UpdateCartItemRequest.php",
       "source_location": "L12",
       "id": "cart_updatecartitemrequest_updatecartitemrequest_authorize",
-      "community": 35,
+      "community": 36,
       "norm_label": ".authorize()"
     },
     {
@@ -5103,7 +5175,7 @@
       "source_file": "Http/Requests/Cart/UpdateCartItemRequest.php",
       "source_location": "L22",
       "id": "cart_updatecartitemrequest_updatecartitemrequest_rules",
-      "community": 35,
+      "community": 36,
       "norm_label": ".rules()"
     },
     {
@@ -5112,7 +5184,7 @@
       "source_file": "Http/Requests/Cart/UpdateCartItemRequest.php",
       "source_location": "L34",
       "id": "cart_updatecartitemrequest_updatecartitemrequest_bodyparameters",
-      "community": 35,
+      "community": 36,
       "norm_label": ".bodyparameters()"
     },
     {
@@ -5121,7 +5193,7 @@
       "source_file": "Http/Requests/PaymentMethods/CreateSetupSessionRequest.php",
       "source_location": "L1",
       "id": "http_requests_paymentmethods_createsetupsessionrequest_php",
-      "community": 36,
+      "community": 37,
       "norm_label": "createsetupsessionrequest.php"
     },
     {
@@ -5130,7 +5202,7 @@
       "source_file": "Http/Requests/PaymentMethods/CreateSetupSessionRequest.php",
       "source_location": "L7",
       "id": "paymentmethods_createsetupsessionrequest_createsetupsessionrequest",
-      "community": 36,
+      "community": 37,
       "norm_label": "createsetupsessionrequest"
     },
     {
@@ -5139,7 +5211,7 @@
       "source_file": "Http/Requests/PaymentMethods/CreateSetupSessionRequest.php",
       "source_location": "L9",
       "id": "paymentmethods_createsetupsessionrequest_createsetupsessionrequest_authorize",
-      "community": 36,
+      "community": 37,
       "norm_label": ".authorize()"
     },
     {
@@ -5148,7 +5220,7 @@
       "source_file": "Http/Requests/PaymentMethods/CreateSetupSessionRequest.php",
       "source_location": "L17",
       "id": "paymentmethods_createsetupsessionrequest_createsetupsessionrequest_rules",
-      "community": 36,
+      "community": 37,
       "norm_label": ".rules()"
     },
     {
@@ -5157,7 +5229,7 @@
       "source_file": "Http/Requests/PaymentMethods/CreateSetupSessionRequest.php",
       "source_location": "L28",
       "id": "paymentmethods_createsetupsessionrequest_createsetupsessionrequest_bodyparameters",
-      "community": 36,
+      "community": 37,
       "norm_label": ".bodyparameters()"
     },
     {
@@ -5166,7 +5238,7 @@
       "source_file": "Http/Requests/PaymentMethods/VerifySetupSessionRequest.php",
       "source_location": "L1",
       "id": "http_requests_paymentmethods_verifysetupsessionrequest_php",
-      "community": 37,
+      "community": 38,
       "norm_label": "verifysetupsessionrequest.php"
     },
     {
@@ -5175,7 +5247,7 @@
       "source_file": "Http/Requests/PaymentMethods/VerifySetupSessionRequest.php",
       "source_location": "L7",
       "id": "paymentmethods_verifysetupsessionrequest_verifysetupsessionrequest",
-      "community": 37,
+      "community": 38,
       "norm_label": "verifysetupsessionrequest"
     },
     {
@@ -5184,7 +5256,7 @@
       "source_file": "Http/Requests/PaymentMethods/VerifySetupSessionRequest.php",
       "source_location": "L9",
       "id": "paymentmethods_verifysetupsessionrequest_verifysetupsessionrequest_authorize",
-      "community": 37,
+      "community": 38,
       "norm_label": ".authorize()"
     },
     {
@@ -5193,7 +5265,7 @@
       "source_file": "Http/Requests/PaymentMethods/VerifySetupSessionRequest.php",
       "source_location": "L17",
       "id": "paymentmethods_verifysetupsessionrequest_verifysetupsessionrequest_rules",
-      "community": 37,
+      "community": 38,
       "norm_label": ".rules()"
     },
     {
@@ -5202,7 +5274,7 @@
       "source_file": "Http/Requests/PaymentMethods/VerifySetupSessionRequest.php",
       "source_location": "L27",
       "id": "paymentmethods_verifysetupsessionrequest_verifysetupsessionrequest_queryparameters",
-      "community": 37,
+      "community": 38,
       "norm_label": ".queryparameters()"
     },
     {
@@ -5247,7 +5319,7 @@
       "source_file": "Http/Requests/Addresses/StoreAddressRequest.php",
       "source_location": "L1",
       "id": "http_requests_addresses_storeaddressrequest_php",
-      "community": 38,
+      "community": 39,
       "norm_label": "storeaddressrequest.php"
     },
     {
@@ -5256,7 +5328,7 @@
       "source_file": "Http/Requests/Addresses/StoreAddressRequest.php",
       "source_location": "L7",
       "id": "addresses_storeaddressrequest_storeaddressrequest",
-      "community": 38,
+      "community": 39,
       "norm_label": "storeaddressrequest"
     },
     {
@@ -5265,7 +5337,7 @@
       "source_file": "Http/Requests/Addresses/StoreAddressRequest.php",
       "source_location": "L11",
       "id": "addresses_storeaddressrequest_storeaddressrequest_authorize",
-      "community": 38,
+      "community": 39,
       "norm_label": ".authorize()"
     },
     {
@@ -5274,7 +5346,7 @@
       "source_file": "Http/Requests/Addresses/StoreAddressRequest.php",
       "source_location": "L19",
       "id": "addresses_storeaddressrequest_storeaddressrequest_rules",
-      "community": 38,
+      "community": 39,
       "norm_label": ".rules()"
     },
     {
@@ -5283,7 +5355,7 @@
       "source_file": "Http/Requests/Addresses/StoreAddressRequest.php",
       "source_location": "L37",
       "id": "addresses_storeaddressrequest_storeaddressrequest_bodyparameters",
-      "community": 38,
+      "community": 39,
       "norm_label": ".bodyparameters()"
     },
     {
@@ -5292,7 +5364,7 @@
       "source_file": "Http/Requests/Addresses/UpdateAddressRequest.php",
       "source_location": "L1",
       "id": "http_requests_addresses_updateaddressrequest_php",
-      "community": 39,
+      "community": 40,
       "norm_label": "updateaddressrequest.php"
     },
     {
@@ -5301,7 +5373,7 @@
       "source_file": "Http/Requests/Addresses/UpdateAddressRequest.php",
       "source_location": "L7",
       "id": "addresses_updateaddressrequest_updateaddressrequest",
-      "community": 39,
+      "community": 40,
       "norm_label": "updateaddressrequest"
     },
     {
@@ -5310,7 +5382,7 @@
       "source_file": "Http/Requests/Addresses/UpdateAddressRequest.php",
       "source_location": "L11",
       "id": "addresses_updateaddressrequest_updateaddressrequest_authorize",
-      "community": 39,
+      "community": 40,
       "norm_label": ".authorize()"
     },
     {
@@ -5319,7 +5391,7 @@
       "source_file": "Http/Requests/Addresses/UpdateAddressRequest.php",
       "source_location": "L19",
       "id": "addresses_updateaddressrequest_updateaddressrequest_rules",
-      "community": 39,
+      "community": 40,
       "norm_label": ".rules()"
     },
     {
@@ -5328,7 +5400,7 @@
       "source_file": "Http/Requests/Addresses/UpdateAddressRequest.php",
       "source_location": "L37",
       "id": "addresses_updateaddressrequest_updateaddressrequest_bodyparameters",
-      "community": 39,
+      "community": 40,
       "norm_label": ".bodyparameters()"
     },
     {
@@ -5337,7 +5409,7 @@
       "source_file": "Http/Requests/User/UpdateUserRequest.php",
       "source_location": "L1",
       "id": "http_requests_user_updateuserrequest_php",
-      "community": 40,
+      "community": 41,
       "norm_label": "updateuserrequest.php"
     },
     {
@@ -5346,7 +5418,7 @@
       "source_file": "Http/Requests/User/UpdateUserRequest.php",
       "source_location": "L8",
       "id": "user_updateuserrequest_updateuserrequest",
-      "community": 40,
+      "community": 41,
       "norm_label": "updateuserrequest"
     },
     {
@@ -5355,7 +5427,7 @@
       "source_file": "Http/Requests/User/UpdateUserRequest.php",
       "source_location": "L12",
       "id": "user_updateuserrequest_updateuserrequest_authorize",
-      "community": 40,
+      "community": 41,
       "norm_label": ".authorize()"
     },
     {
@@ -5364,7 +5436,7 @@
       "source_file": "Http/Requests/User/UpdateUserRequest.php",
       "source_location": "L20",
       "id": "user_updateuserrequest_updateuserrequest_rules",
-      "community": 40,
+      "community": 41,
       "norm_label": ".rules()"
     },
     {
@@ -5373,7 +5445,7 @@
       "source_file": "Http/Requests/User/UpdateUserRequest.php",
       "source_location": "L35",
       "id": "user_updateuserrequest_updateuserrequest_bodyparameters",
-      "community": 40,
+      "community": 41,
       "norm_label": ".bodyparameters()"
     },
     {
@@ -5382,7 +5454,7 @@
       "source_file": "Http/Requests/User/UpdateNotificationPreferencesRequest.php",
       "source_location": "L1",
       "id": "http_requests_user_updatenotificationpreferencesrequest_php",
-      "community": 41,
+      "community": 42,
       "norm_label": "updatenotificationpreferencesrequest.php"
     },
     {
@@ -5391,7 +5463,7 @@
       "source_file": "Http/Requests/User/UpdateNotificationPreferencesRequest.php",
       "source_location": "L7",
       "id": "user_updatenotificationpreferencesrequest_updatenotificationpreferencesrequest",
-      "community": 41,
+      "community": 42,
       "norm_label": "updatenotificationpreferencesrequest"
     },
     {
@@ -5400,7 +5472,7 @@
       "source_file": "Http/Requests/User/UpdateNotificationPreferencesRequest.php",
       "source_location": "L9",
       "id": "user_updatenotificationpreferencesrequest_updatenotificationpreferencesrequest_authorize",
-      "community": 41,
+      "community": 42,
       "norm_label": ".authorize()"
     },
     {
@@ -5409,7 +5481,7 @@
       "source_file": "Http/Requests/User/UpdateNotificationPreferencesRequest.php",
       "source_location": "L17",
       "id": "user_updatenotificationpreferencesrequest_updatenotificationpreferencesrequest_rules",
-      "community": 41,
+      "community": 42,
       "norm_label": ".rules()"
     },
     {
@@ -5418,7 +5490,7 @@
       "source_file": "Http/Requests/User/UpdateNotificationPreferencesRequest.php",
       "source_location": "L29",
       "id": "user_updatenotificationpreferencesrequest_updatenotificationpreferencesrequest_bodyparameters",
-      "community": 41,
+      "community": 42,
       "norm_label": ".bodyparameters()"
     },
     {
@@ -5427,7 +5499,7 @@
       "source_file": "Http/Requests/Products/ListProductsRequest.php",
       "source_location": "L1",
       "id": "http_requests_products_listproductsrequest_php",
-      "community": 42,
+      "community": 43,
       "norm_label": "listproductsrequest.php"
     },
     {
@@ -5436,7 +5508,7 @@
       "source_file": "Http/Requests/Products/ListProductsRequest.php",
       "source_location": "L7",
       "id": "products_listproductsrequest_listproductsrequest",
-      "community": 42,
+      "community": 43,
       "norm_label": "listproductsrequest"
     },
     {
@@ -5445,7 +5517,7 @@
       "source_file": "Http/Requests/Products/ListProductsRequest.php",
       "source_location": "L12",
       "id": "products_listproductsrequest_listproductsrequest_authorize",
-      "community": 42,
+      "community": 43,
       "norm_label": ".authorize()"
     },
     {
@@ -5454,7 +5526,7 @@
       "source_file": "Http/Requests/Products/ListProductsRequest.php",
       "source_location": "L22",
       "id": "products_listproductsrequest_listproductsrequest_rules",
-      "community": 42,
+      "community": 43,
       "norm_label": ".rules()"
     },
     {
@@ -5463,7 +5535,7 @@
       "source_file": "Http/Requests/Products/ListProductsRequest.php",
       "source_location": "L41",
       "id": "products_listproductsrequest_listproductsrequest_queryparameters",
-      "community": 42,
+      "community": 43,
       "norm_label": ".queryparameters()"
     },
     {
@@ -5713,7 +5785,7 @@
       "label": "UpdateProductRequest",
       "file_type": "code",
       "source_file": "Http/Requests/Web/Products/UpdateProductRequest.php",
-      "source_location": "L8",
+      "source_location": "L7",
       "id": "products_updateproductrequest_updateproductrequest",
       "community": 60,
       "norm_label": "updateproductrequest"
@@ -5722,7 +5794,7 @@
       "label": ".authorize()",
       "file_type": "code",
       "source_file": "Http/Requests/Web/Products/UpdateProductRequest.php",
-      "source_location": "L13",
+      "source_location": "L12",
       "id": "products_updateproductrequest_updateproductrequest_authorize",
       "community": 60,
       "norm_label": ".authorize()"
@@ -5731,7 +5803,7 @@
       "label": ".rules()",
       "file_type": "code",
       "source_file": "Http/Requests/Web/Products/UpdateProductRequest.php",
-      "source_location": "L23",
+      "source_location": "L22",
       "id": "products_updateproductrequest_updateproductrequest_rules",
       "community": 60,
       "norm_label": ".rules()"
@@ -5749,7 +5821,7 @@
       "label": "StoreProductRequest",
       "file_type": "code",
       "source_file": "Http/Requests/Web/Products/StoreProductRequest.php",
-      "source_location": "L8",
+      "source_location": "L7",
       "id": "products_storeproductrequest_storeproductrequest",
       "community": 61,
       "norm_label": "storeproductrequest"
@@ -5758,7 +5830,7 @@
       "label": ".authorize()",
       "file_type": "code",
       "source_file": "Http/Requests/Web/Products/StoreProductRequest.php",
-      "source_location": "L13",
+      "source_location": "L12",
       "id": "products_storeproductrequest_storeproductrequest_authorize",
       "community": 61,
       "norm_label": ".authorize()"
@@ -5767,7 +5839,7 @@
       "label": ".rules()",
       "file_type": "code",
       "source_file": "Http/Requests/Web/Products/StoreProductRequest.php",
-      "source_location": "L23",
+      "source_location": "L22",
       "id": "products_storeproductrequest_storeproductrequest_rules",
       "community": 61,
       "norm_label": ".rules()"
@@ -5778,7 +5850,7 @@
       "source_file": "Http/Requests/Web/Auth/GoogleCompleteRegistrationRequest.php",
       "source_location": "L1",
       "id": "http_requests_web_auth_googlecompleteregistrationrequest_php",
-      "community": 43,
+      "community": 44,
       "norm_label": "googlecompleteregistrationrequest.php"
     },
     {
@@ -5787,7 +5859,7 @@
       "source_file": "Http/Requests/Web/Auth/GoogleCompleteRegistrationRequest.php",
       "source_location": "L7",
       "id": "auth_googlecompleteregistrationrequest_googlecompleteregistrationrequest",
-      "community": 43,
+      "community": 44,
       "norm_label": "googlecompleteregistrationrequest"
     },
     {
@@ -5796,7 +5868,7 @@
       "source_file": "Http/Requests/Web/Auth/GoogleCompleteRegistrationRequest.php",
       "source_location": "L9",
       "id": "auth_googlecompleteregistrationrequest_googlecompleteregistrationrequest_authorize",
-      "community": 43,
+      "community": 44,
       "norm_label": ".authorize()"
     },
     {
@@ -5805,7 +5877,7 @@
       "source_file": "Http/Requests/Web/Auth/GoogleCompleteRegistrationRequest.php",
       "source_location": "L17",
       "id": "auth_googlecompleteregistrationrequest_googlecompleteregistrationrequest_rules",
-      "community": 43,
+      "community": 44,
       "norm_label": ".rules()"
     },
     {
@@ -5814,7 +5886,7 @@
       "source_file": "Http/Requests/Web/Auth/GoogleCompleteRegistrationRequest.php",
       "source_location": "L27",
       "id": "auth_googlecompleteregistrationrequest_googlecompleteregistrationrequest_messages",
-      "community": 43,
+      "community": 44,
       "norm_label": ".messages()"
     },
     {
@@ -5868,7 +5940,7 @@
       "source_file": "Http/Requests/Web/Auth/LoginRequest.php",
       "source_location": "L1",
       "id": "http_requests_web_auth_loginrequest_php",
-      "community": 22,
+      "community": 21,
       "norm_label": "loginrequest.php"
     },
     {
@@ -5877,7 +5949,7 @@
       "source_file": "Http/Requests/Auth/LoginRequest.php",
       "source_location": "L7",
       "id": "auth_loginrequest_loginrequest",
-      "community": 22,
+      "community": 21,
       "norm_label": "loginrequest"
     },
     {
@@ -5886,7 +5958,7 @@
       "source_file": "Http/Requests/Auth/LoginRequest.php",
       "source_location": "L12",
       "id": "auth_loginrequest_loginrequest_authorize",
-      "community": 22,
+      "community": 21,
       "norm_label": ".authorize()"
     },
     {
@@ -5895,7 +5967,7 @@
       "source_file": "Http/Requests/Auth/LoginRequest.php",
       "source_location": "L22",
       "id": "auth_loginrequest_loginrequest_rules",
-      "community": 22,
+      "community": 21,
       "norm_label": ".rules()"
     },
     {
@@ -5922,7 +5994,7 @@
       "source_file": "Http/Requests/Auth/LoginRequest.php",
       "source_location": "L1",
       "id": "http_requests_auth_loginrequest_php",
-      "community": 22,
+      "community": 21,
       "norm_label": "loginrequest.php"
     },
     {
@@ -5931,7 +6003,7 @@
       "source_file": "Http/Requests/Auth/LoginRequest.php",
       "source_location": "L36",
       "id": "auth_loginrequest_loginrequest_bodyparameters",
-      "community": 22,
+      "community": 21,
       "norm_label": ".bodyparameters()"
     },
     {
@@ -5940,7 +6012,7 @@
       "source_file": "Http/Requests/Checkout/VerifyCheckoutRequest.php",
       "source_location": "L1",
       "id": "http_requests_checkout_verifycheckoutrequest_php",
-      "community": 44,
+      "community": 45,
       "norm_label": "verifycheckoutrequest.php"
     },
     {
@@ -5949,7 +6021,7 @@
       "source_file": "Http/Requests/Checkout/VerifyCheckoutRequest.php",
       "source_location": "L7",
       "id": "checkout_verifycheckoutrequest_verifycheckoutrequest",
-      "community": 44,
+      "community": 45,
       "norm_label": "verifycheckoutrequest"
     },
     {
@@ -5958,7 +6030,7 @@
       "source_file": "Http/Requests/Checkout/VerifyCheckoutRequest.php",
       "source_location": "L12",
       "id": "checkout_verifycheckoutrequest_verifycheckoutrequest_authorize",
-      "community": 44,
+      "community": 45,
       "norm_label": ".authorize()"
     },
     {
@@ -5967,7 +6039,7 @@
       "source_file": "Http/Requests/Checkout/VerifyCheckoutRequest.php",
       "source_location": "L22",
       "id": "checkout_verifycheckoutrequest_verifycheckoutrequest_rules",
-      "community": 44,
+      "community": 45,
       "norm_label": ".rules()"
     },
     {
@@ -5976,7 +6048,7 @@
       "source_file": "Http/Requests/Checkout/VerifyCheckoutRequest.php",
       "source_location": "L34",
       "id": "checkout_verifycheckoutrequest_verifycheckoutrequest_queryparameters",
-      "community": 44,
+      "community": 45,
       "norm_label": ".queryparameters()"
     },
     {
@@ -5985,7 +6057,7 @@
       "source_file": "Http/Requests/Checkout/CreateCheckoutRequest.php",
       "source_location": "L1",
       "id": "http_requests_checkout_createcheckoutrequest_php",
-      "community": 45,
+      "community": 46,
       "norm_label": "createcheckoutrequest.php"
     },
     {
@@ -5994,7 +6066,7 @@
       "source_file": "Http/Requests/Checkout/CreateCheckoutRequest.php",
       "source_location": "L7",
       "id": "checkout_createcheckoutrequest_createcheckoutrequest",
-      "community": 45,
+      "community": 46,
       "norm_label": "createcheckoutrequest"
     },
     {
@@ -6003,7 +6075,7 @@
       "source_file": "Http/Requests/Checkout/CreateCheckoutRequest.php",
       "source_location": "L12",
       "id": "checkout_createcheckoutrequest_createcheckoutrequest_authorize",
-      "community": 45,
+      "community": 46,
       "norm_label": ".authorize()"
     },
     {
@@ -6012,7 +6084,7 @@
       "source_file": "Http/Requests/Checkout/CreateCheckoutRequest.php",
       "source_location": "L22",
       "id": "checkout_createcheckoutrequest_createcheckoutrequest_rules",
-      "community": 45,
+      "community": 46,
       "norm_label": ".rules()"
     },
     {
@@ -6021,7 +6093,7 @@
       "source_file": "Http/Requests/Checkout/CreateCheckoutRequest.php",
       "source_location": "L42",
       "id": "checkout_createcheckoutrequest_createcheckoutrequest_bodyparameters",
-      "community": 45,
+      "community": 46,
       "norm_label": ".bodyparameters()"
     },
     {
@@ -6030,7 +6102,7 @@
       "source_file": "Http/Requests/Checkout/ConfirmPaymentRequest.php",
       "source_location": "L1",
       "id": "http_requests_checkout_confirmpaymentrequest_php",
-      "community": 46,
+      "community": 47,
       "norm_label": "confirmpaymentrequest.php"
     },
     {
@@ -6039,7 +6111,7 @@
       "source_file": "Http/Requests/Checkout/ConfirmPaymentRequest.php",
       "source_location": "L7",
       "id": "checkout_confirmpaymentrequest_confirmpaymentrequest",
-      "community": 46,
+      "community": 47,
       "norm_label": "confirmpaymentrequest"
     },
     {
@@ -6048,7 +6120,7 @@
       "source_file": "Http/Requests/Checkout/ConfirmPaymentRequest.php",
       "source_location": "L12",
       "id": "checkout_confirmpaymentrequest_confirmpaymentrequest_authorize",
-      "community": 46,
+      "community": 47,
       "norm_label": ".authorize()"
     },
     {
@@ -6057,7 +6129,7 @@
       "source_file": "Http/Requests/Checkout/ConfirmPaymentRequest.php",
       "source_location": "L22",
       "id": "checkout_confirmpaymentrequest_confirmpaymentrequest_rules",
-      "community": 46,
+      "community": 47,
       "norm_label": ".rules()"
     },
     {
@@ -6066,7 +6138,7 @@
       "source_file": "Http/Requests/Checkout/ConfirmPaymentRequest.php",
       "source_location": "L41",
       "id": "checkout_confirmpaymentrequest_confirmpaymentrequest_bodyparameters",
-      "community": 46,
+      "community": 47,
       "norm_label": ".bodyparameters()"
     },
     {
@@ -6124,39 +6196,12 @@
       "norm_label": ".toarray()"
     },
     {
-      "label": "PricingTierResource.php",
-      "file_type": "code",
-      "source_file": "Http/Resources/PricingTierResource.php",
-      "source_location": "L1",
-      "id": "http_resources_pricingtierresource_php",
-      "community": 17,
-      "norm_label": "pricingtierresource.php"
-    },
-    {
-      "label": "PricingTierResource",
-      "file_type": "code",
-      "source_file": "Http/Resources/PricingTierResource.php",
-      "source_location": "L8",
-      "id": "resources_pricingtierresource_pricingtierresource",
-      "community": 17,
-      "norm_label": "pricingtierresource"
-    },
-    {
-      "label": ".toArray()",
-      "file_type": "code",
-      "source_file": "Http/Resources/PricingTierResource.php",
-      "source_location": "L15",
-      "id": "resources_pricingtierresource_pricingtierresource_toarray",
-      "community": 17,
-      "norm_label": ".toarray()"
-    },
-    {
       "label": "CartResource.php",
       "file_type": "code",
       "source_file": "Http/Resources/CartResource.php",
       "source_location": "L1",
       "id": "http_resources_cartresource_php",
-      "community": 23,
+      "community": 22,
       "norm_label": "cartresource.php"
     },
     {
@@ -6165,7 +6210,7 @@
       "source_file": "Http/Resources/CartResource.php",
       "source_location": "L8",
       "id": "resources_cartresource_cartresource",
-      "community": 23,
+      "community": 22,
       "norm_label": "cartresource"
     },
     {
@@ -6174,7 +6219,7 @@
       "source_file": "Http/Resources/CartResource.php",
       "source_location": "L15",
       "id": "resources_cartresource_cartresource_toarray",
-      "community": 23,
+      "community": 22,
       "norm_label": ".toarray()"
     },
     {
@@ -6210,7 +6255,7 @@
       "source_file": "Http/Resources/ProductResource.php",
       "source_location": "L1",
       "id": "http_resources_productresource_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "productresource.php"
     },
     {
@@ -6219,7 +6264,7 @@
       "source_file": "Http/Resources/ProductResource.php",
       "source_location": "L8",
       "id": "resources_productresource_productresource",
-      "community": 0,
+      "community": 1,
       "norm_label": "productresource"
     },
     {
@@ -6228,7 +6273,7 @@
       "source_file": "Http/Resources/ProductResource.php",
       "source_location": "L15",
       "id": "resources_productresource_productresource_toarray",
-      "community": 0,
+      "community": 1,
       "norm_label": ".toarray()"
     },
     {
@@ -6264,7 +6309,7 @@
       "source_file": "Http/Resources/ProductImageResource.php",
       "source_location": "L1",
       "id": "http_resources_productimageresource_php",
-      "community": 17,
+      "community": 23,
       "norm_label": "productimageresource.php"
     },
     {
@@ -6273,7 +6318,7 @@
       "source_file": "Http/Resources/ProductImageResource.php",
       "source_location": "L8",
       "id": "resources_productimageresource_productimageresource",
-      "community": 17,
+      "community": 23,
       "norm_label": "productimageresource"
     },
     {
@@ -6282,7 +6327,7 @@
       "source_file": "Http/Resources/ProductImageResource.php",
       "source_location": "L15",
       "id": "resources_productimageresource_productimageresource_toarray",
-      "community": 17,
+      "community": 23,
       "norm_label": ".toarray()"
     },
     {
@@ -6372,7 +6417,7 @@
       "source_file": "Http/Resources/AddressResource.php",
       "source_location": "L1",
       "id": "http_resources_addressresource_php",
-      "community": 7,
+      "community": 8,
       "norm_label": "addressresource.php"
     },
     {
@@ -6381,7 +6426,7 @@
       "source_file": "Http/Resources/AddressResource.php",
       "source_location": "L8",
       "id": "resources_addressresource_addressresource",
-      "community": 7,
+      "community": 8,
       "norm_label": "addressresource"
     },
     {
@@ -6390,7 +6435,7 @@
       "source_file": "Http/Resources/AddressResource.php",
       "source_location": "L13",
       "id": "resources_addressresource_addressresource_toarray",
-      "community": 7,
+      "community": 8,
       "norm_label": ".toarray()"
     },
     {
@@ -6453,7 +6498,7 @@
       "source_file": "Http/Resources/CartItemResource.php",
       "source_location": "L1",
       "id": "http_resources_cartitemresource_php",
-      "community": 23,
+      "community": 22,
       "norm_label": "cartitemresource.php"
     },
     {
@@ -6462,7 +6507,7 @@
       "source_file": "Http/Resources/CartItemResource.php",
       "source_location": "L8",
       "id": "resources_cartitemresource_cartitemresource",
-      "community": 23,
+      "community": 22,
       "norm_label": "cartitemresource"
     },
     {
@@ -6471,7 +6516,7 @@
       "source_file": "Http/Resources/CartItemResource.php",
       "source_location": "L15",
       "id": "resources_cartitemresource_cartitemresource_toarray",
-      "community": 23,
+      "community": 22,
       "norm_label": ".toarray()"
     },
     {
@@ -6480,7 +6525,7 @@
       "source_file": "Http/Resources/ProductDetailResource.php",
       "source_location": "L1",
       "id": "http_resources_productdetailresource_php",
-      "community": 17,
+      "community": 23,
       "norm_label": "productdetailresource.php"
     },
     {
@@ -6489,7 +6534,7 @@
       "source_file": "Http/Resources/ProductDetailResource.php",
       "source_location": "L8",
       "id": "resources_productdetailresource_productdetailresource",
-      "community": 17,
+      "community": 23,
       "norm_label": "productdetailresource"
     },
     {
@@ -6498,7 +6543,7 @@
       "source_file": "Http/Resources/ProductDetailResource.php",
       "source_location": "L15",
       "id": "resources_productdetailresource_productdetailresource_toarray",
-      "community": 17,
+      "community": 23,
       "norm_label": ".toarray()"
     },
     {
@@ -6534,7 +6579,7 @@
       "source_file": "Http/Middleware/HandleInertiaRequests.php",
       "source_location": "L1",
       "id": "http_middleware_handleinertiarequests_php",
-      "community": 11,
+      "community": 10,
       "norm_label": "handleinertiarequests.php"
     },
     {
@@ -6543,7 +6588,7 @@
       "source_file": "Http/Middleware/HandleInertiaRequests.php",
       "source_location": "L9",
       "id": "middleware_handleinertiarequests_handleinertiarequests",
-      "community": 11,
+      "community": 10,
       "norm_label": "handleinertiarequests"
     },
     {
@@ -6552,7 +6597,7 @@
       "source_file": "Http/Middleware/HandleInertiaRequests.php",
       "source_location": "L19",
       "id": "middleware_handleinertiarequests_handleinertiarequests_version",
-      "community": 11,
+      "community": 10,
       "norm_label": ".version()"
     },
     {
@@ -6561,7 +6606,7 @@
       "source_file": "Http/Middleware/HandleInertiaRequests.php",
       "source_location": "L29",
       "id": "middleware_handleinertiarequests_handleinertiarequests_share",
-      "community": 11,
+      "community": 10,
       "norm_label": ".share()"
     },
     {
@@ -6570,7 +6615,7 @@
       "source_file": "Http/Middleware/HandleInertiaRequests.php",
       "source_location": "L57",
       "id": "middleware_handleinertiarequests_handleinertiarequests_getminicart",
-      "community": 11,
+      "community": 10,
       "norm_label": ".getminicart()"
     },
     {
@@ -6579,7 +6624,7 @@
       "source_file": "Http/Middleware/HandleInertiaRequests.php",
       "source_location": "L87",
       "id": "middleware_handleinertiarequests_handleinertiarequests_getinitials",
-      "community": 11,
+      "community": 10,
       "norm_label": ".getinitials()"
     },
     {
@@ -6615,7 +6660,7 @@
       "source_file": "Exceptions/InsufficientStockException.php",
       "source_location": "L1",
       "id": "exceptions_insufficientstockexception_php",
-      "community": 11,
+      "community": 10,
       "norm_label": "insufficientstockexception.php"
     },
     {
@@ -6624,7 +6669,7 @@
       "source_file": "Exceptions/InsufficientStockException.php",
       "source_location": "L7",
       "id": "exceptions_insufficientstockexception_insufficientstockexception",
-      "community": 11,
+      "community": 10,
       "norm_label": "insufficientstockexception"
     },
     {
@@ -6633,7 +6678,7 @@
       "source_file": "Exceptions/InsufficientStockException.php",
       "source_location": "L9",
       "id": "exceptions_insufficientstockexception_insufficientstockexception_construct",
-      "community": 11,
+      "community": 10,
       "norm_label": ".__construct()"
     },
     {
@@ -6642,7 +6687,7 @@
       "source_file": "Notifications/Order/OrderStatusChanged.php",
       "source_location": "L1",
       "id": "notifications_order_orderstatuschanged_php",
-      "community": 47,
+      "community": 48,
       "norm_label": "orderstatuschanged.php"
     },
     {
@@ -6651,7 +6696,7 @@
       "source_file": "Notifications/Order/OrderStatusChanged.php",
       "source_location": "L11",
       "id": "order_orderstatuschanged_orderstatuschanged",
-      "community": 47,
+      "community": 48,
       "norm_label": "orderstatuschanged"
     },
     {
@@ -6660,7 +6705,7 @@
       "source_file": "Notifications/Order/OrderStatusChanged.php",
       "source_location": "L18",
       "id": "order_orderstatuschanged_orderstatuschanged_construct",
-      "community": 47,
+      "community": 48,
       "norm_label": ".__construct()"
     },
     {
@@ -6669,7 +6714,7 @@
       "source_file": "Notifications/Order/OrderStatusChanged.php",
       "source_location": "L33",
       "id": "order_orderstatuschanged_orderstatuschanged_via",
-      "community": 47,
+      "community": 48,
       "norm_label": ".via()"
     },
     {
@@ -6678,7 +6723,7 @@
       "source_file": "Notifications/Order/OrderStatusChanged.php",
       "source_location": "L41",
       "id": "order_orderstatuschanged_orderstatuschanged_tomail",
-      "community": 47,
+      "community": 48,
       "norm_label": ".tomail()"
     },
     {
@@ -6687,7 +6732,7 @@
       "source_file": "Notifications/Order/OrderConfirmation.php",
       "source_location": "L1",
       "id": "notifications_order_orderconfirmation_php",
-      "community": 48,
+      "community": 49,
       "norm_label": "orderconfirmation.php"
     },
     {
@@ -6696,7 +6741,7 @@
       "source_file": "Notifications/Order/OrderConfirmation.php",
       "source_location": "L11",
       "id": "order_orderconfirmation_orderconfirmation",
-      "community": 48,
+      "community": 49,
       "norm_label": "orderconfirmation"
     },
     {
@@ -6705,7 +6750,7 @@
       "source_file": "Notifications/Order/OrderConfirmation.php",
       "source_location": "L18",
       "id": "order_orderconfirmation_orderconfirmation_construct",
-      "community": 48,
+      "community": 49,
       "norm_label": ".__construct()"
     },
     {
@@ -6714,7 +6759,7 @@
       "source_file": "Notifications/Order/OrderConfirmation.php",
       "source_location": "L28",
       "id": "order_orderconfirmation_orderconfirmation_via",
-      "community": 48,
+      "community": 49,
       "norm_label": ".via()"
     },
     {
@@ -6723,7 +6768,7 @@
       "source_file": "Notifications/Order/OrderConfirmation.php",
       "source_location": "L36",
       "id": "order_orderconfirmation_orderconfirmation_tomail",
-      "community": 48,
+      "community": 49,
       "norm_label": ".tomail()"
     },
     {
@@ -6732,7 +6777,7 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L1",
       "id": "listeners_handlestripewebhook_php",
-      "community": 8,
+      "community": 7,
       "norm_label": "handlestripewebhook.php"
     },
     {
@@ -6741,7 +6786,7 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L14",
       "id": "listeners_handlestripewebhook_handlestripewebhook",
-      "community": 8,
+      "community": 7,
       "norm_label": "handlestripewebhook"
     },
     {
@@ -6750,7 +6795,7 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L16",
       "id": "listeners_handlestripewebhook_handlestripewebhook_handle",
-      "community": 8,
+      "community": 7,
       "norm_label": ".handle()"
     },
     {
@@ -6759,7 +6804,7 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L33",
       "id": "listeners_handlestripewebhook_handlestripewebhook_handlecheckoutcompleted",
-      "community": 8,
+      "community": 7,
       "norm_label": ".handlecheckoutcompleted()"
     },
     {
@@ -6768,7 +6813,7 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L63",
       "id": "listeners_handlestripewebhook_handlestripewebhook_handlepaymentintentsucceeded",
-      "community": 8,
+      "community": 7,
       "norm_label": ".handlepaymentintentsucceeded()"
     },
     {
@@ -6777,7 +6822,7 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L84",
       "id": "listeners_handlestripewebhook_handlestripewebhook_handlecheckoutexpired",
-      "community": 8,
+      "community": 7,
       "norm_label": ".handlecheckoutexpired()"
     },
     {
@@ -6786,7 +6831,7 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L101",
       "id": "listeners_handlestripewebhook_handlestripewebhook_handlechargerefunded",
-      "community": 8,
+      "community": 7,
       "norm_label": ".handlechargerefunded()"
     },
     {
@@ -6795,7 +6840,7 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L129",
       "id": "listeners_handlestripewebhook_handlestripewebhook_handlesetupcompleted",
-      "community": 8,
+      "community": 7,
       "norm_label": ".handlesetupcompleted()"
     },
     {
@@ -6804,7 +6849,7 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L162",
       "id": "listeners_handlestripewebhook_handlestripewebhook_findpendingorder",
-      "community": 8,
+      "community": 7,
       "norm_label": ".findpendingorder()"
     },
     {
@@ -6813,7 +6858,7 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L176",
       "id": "listeners_handlestripewebhook_handlestripewebhook_findorderbymetadata",
-      "community": 8,
+      "community": 7,
       "norm_label": ".findorderbymetadata()"
     },
     {
@@ -6822,71 +6867,8 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L190",
       "id": "listeners_handlestripewebhook_handlestripewebhook_fulfillorder",
-      "community": 8,
+      "community": 7,
       "norm_label": ".fulfillorder()"
-    },
-    {
-      "label": "NonOverlappingPricingTiers.php",
-      "file_type": "code",
-      "source_file": "Rules/NonOverlappingPricingTiers.php",
-      "source_location": "L1",
-      "id": "rules_nonoverlappingpricingtiers_php",
-      "community": 19,
-      "norm_label": "nonoverlappingpricingtiers.php"
-    },
-    {
-      "label": "NonOverlappingPricingTiers",
-      "file_type": "code",
-      "source_file": "Rules/NonOverlappingPricingTiers.php",
-      "source_location": "L8",
-      "id": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers",
-      "community": 19,
-      "norm_label": "nonoverlappingpricingtiers"
-    },
-    {
-      "label": ".validate()",
-      "file_type": "code",
-      "source_file": "Rules/NonOverlappingPricingTiers.php",
-      "source_location": "L15",
-      "id": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_validate",
-      "community": 19,
-      "norm_label": ".validate()"
-    },
-    {
-      "label": ".findOverlap()",
-      "file_type": "code",
-      "source_file": "Rules/NonOverlappingPricingTiers.php",
-      "source_location": "L33",
-      "id": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_findoverlap",
-      "community": 19,
-      "norm_label": ".findoverlap()"
-    },
-    {
-      "label": ".hasUnlimitedMax()",
-      "file_type": "code",
-      "source_file": "Rules/NonOverlappingPricingTiers.php",
-      "source_location": "L50",
-      "id": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_hasunlimitedmax",
-      "community": 19,
-      "norm_label": ".hasunlimitedmax()"
-    },
-    {
-      "label": ".rangesOverlap()",
-      "file_type": "code",
-      "source_file": "Rules/NonOverlappingPricingTiers.php",
-      "source_location": "L57",
-      "id": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_rangesoverlap",
-      "community": 19,
-      "norm_label": ".rangesoverlap()"
-    },
-    {
-      "label": ".overlapMessage()",
-      "file_type": "code",
-      "source_file": "Rules/NonOverlappingPricingTiers.php",
-      "source_location": "L65",
-      "id": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_overlapmessage",
-      "community": 19,
-      "norm_label": ".overlapmessage()"
     },
     {
       "label": "ReorderAction.php",
@@ -6894,7 +6876,7 @@
       "source_file": "Actions/ReorderAction.php",
       "source_location": "L1",
       "id": "actions_reorderaction_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "reorderaction.php"
     },
     {
@@ -6903,7 +6885,7 @@
       "source_file": "Actions/ReorderAction.php",
       "source_location": "L9",
       "id": "actions_reorderaction_reorderaction",
-      "community": 1,
+      "community": 0,
       "norm_label": "reorderaction"
     },
     {
@@ -6912,7 +6894,7 @@
       "source_file": "Actions/ReorderAction.php",
       "source_location": "L18",
       "id": "actions_reorderaction_reorderaction_execute",
-      "community": 1,
+      "community": 0,
       "norm_label": ".execute()"
     }
   ],
@@ -7092,8 +7074,8 @@
       "source_file": "Services/ShippingQuoteService.php",
       "source_location": "L23",
       "weight": 1.0,
-      "_src": "services_shippingquoteservice_shippingquoteservice_getquotes",
-      "_tgt": "services_parcelcalculator_parcelcalculator",
+      "_src": "services_parcelcalculator_parcelcalculator",
+      "_tgt": "services_shippingquoteservice_shippingquoteservice_getquotes",
       "source": "services_parcelcalculator_parcelcalculator",
       "target": "services_shippingquoteservice_shippingquoteservice_getquotes"
     },
@@ -7908,8 +7890,8 @@
       "source_file": "Http/Controllers/Web/DashboardController.php",
       "source_location": "L124",
       "weight": 1.0,
-      "_src": "web_dashboardcontroller_dashboardcontroller_gettopproducts",
-      "_tgt": "models_orderitem_orderitem",
+      "_src": "models_orderitem_orderitem",
+      "_tgt": "web_dashboardcontroller_dashboardcontroller_gettopproducts",
       "source": "models_orderitem_orderitem",
       "target": "web_dashboardcontroller_dashboardcontroller_gettopproducts"
     },
@@ -7920,8 +7902,8 @@
       "source_file": "Http/Controllers/Checkout/CreateCheckoutController.php",
       "source_location": "L173",
       "weight": 1.0,
-      "_src": "checkout_createcheckoutcontroller_createcheckoutcontroller_createorder",
-      "_tgt": "models_orderitem_orderitem",
+      "_src": "models_orderitem_orderitem",
+      "_tgt": "checkout_createcheckoutcontroller_createcheckoutcontroller_createorder",
       "source": "models_orderitem_orderitem",
       "target": "checkout_createcheckoutcontroller_createcheckoutcontroller_createorder"
     },
@@ -7980,8 +7962,8 @@
       "source_file": "Jobs/ImportBusinessResults.php",
       "source_location": "L65",
       "weight": 1.0,
-      "_src": "jobs_importbusinessresults_importbusinessresults_importitem",
-      "_tgt": "models_business_business",
+      "_src": "models_business_business",
+      "_tgt": "jobs_importbusinessresults_importbusinessresults_importitem",
       "source": "models_business_business",
       "target": "jobs_importbusinessresults_importbusinessresults_importitem"
     },
@@ -7992,8 +7974,8 @@
       "source_file": "Http/Controllers/Admin/Businesses/IndexBusinessesController.php",
       "source_location": "L16",
       "weight": 1.0,
-      "_src": "businesses_indexbusinessescontroller_indexbusinessescontroller_invoke",
-      "_tgt": "models_business_business",
+      "_src": "models_business_business",
+      "_tgt": "businesses_indexbusinessescontroller_indexbusinessescontroller_invoke",
       "source": "models_business_business",
       "target": "businesses_indexbusinessescontroller_indexbusinessescontroller_invoke"
     },
@@ -8124,8 +8106,8 @@
       "source_file": "Http/Controllers/Web/Products/ManagesProductData.php",
       "source_location": "L18",
       "weight": 1.0,
-      "_src": "products_managesproductdata_deleteproductimages",
-      "_tgt": "models_productimage_productimage",
+      "_src": "models_productimage_productimage",
+      "_tgt": "products_managesproductdata_deleteproductimages",
       "source": "models_productimage_productimage",
       "target": "products_managesproductdata_deleteproductimages"
     },
@@ -8220,8 +8202,8 @@
       "source_file": "Http/Controllers/Api/BannersController.php",
       "source_location": "L30",
       "weight": 1.0,
-      "_src": "api_bannerscontroller_bannerscontroller_invoke",
-      "_tgt": "models_banner_banner",
+      "_src": "models_banner_banner",
+      "_tgt": "api_bannerscontroller_bannerscontroller_invoke",
       "source": "models_banner_banner",
       "target": "api_bannerscontroller_bannerscontroller_invoke"
     },
@@ -8230,10 +8212,10 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "Http/Controllers/Web/CustomerDashboardController.php",
-      "source_location": "L43",
+      "source_location": "L42",
       "weight": 1.0,
-      "_src": "web_customerdashboardcontroller_customerdashboardcontroller_invoke",
-      "_tgt": "models_banner_banner",
+      "_src": "models_banner_banner",
+      "_tgt": "web_customerdashboardcontroller_customerdashboardcontroller_invoke",
       "source": "models_banner_banner",
       "target": "web_customerdashboardcontroller_customerdashboardcontroller_invoke"
     },
@@ -8244,8 +8226,8 @@
       "source_file": "Http/Controllers/Web/BannersController.php",
       "source_location": "L20",
       "weight": 1.0,
-      "_src": "web_bannerscontroller_bannerscontroller_index",
-      "_tgt": "models_banner_banner",
+      "_src": "models_banner_banner",
+      "_tgt": "web_bannerscontroller_bannerscontroller_index",
       "source": "models_banner_banner",
       "target": "web_bannerscontroller_bannerscontroller_index"
     },
@@ -8256,8 +8238,8 @@
       "source_file": "Http/Controllers/Web/BannersController.php",
       "source_location": "L49",
       "weight": 1.0,
-      "_src": "web_bannerscontroller_bannerscontroller_store",
-      "_tgt": "models_banner_banner",
+      "_src": "models_banner_banner",
+      "_tgt": "web_bannerscontroller_bannerscontroller_store",
       "source": "models_banner_banner",
       "target": "web_bannerscontroller_bannerscontroller_store"
     },
@@ -8268,8 +8250,8 @@
       "source_file": "Http/Controllers/Web/BannersController.php",
       "source_location": "L113",
       "weight": 1.0,
-      "_src": "web_bannerscontroller_bannerscontroller_reorder",
-      "_tgt": "models_banner_banner",
+      "_src": "models_banner_banner",
+      "_tgt": "web_bannerscontroller_bannerscontroller_reorder",
       "source": "models_banner_banner",
       "target": "web_bannerscontroller_bannerscontroller_reorder"
     },
@@ -8280,8 +8262,8 @@
       "source_file": "Http/Controllers/Web/HomeController.php",
       "source_location": "L22",
       "weight": 1.0,
-      "_src": "web_homecontroller_homecontroller_invoke",
-      "_tgt": "models_banner_banner",
+      "_src": "models_banner_banner",
+      "_tgt": "web_homecontroller_homecontroller_invoke",
       "source": "models_banner_banner",
       "target": "web_homecontroller_homecontroller_invoke"
     },
@@ -8424,8 +8406,8 @@
       "source_file": "Http/Controllers/ShippingMethods/GetShippingMethodsController.php",
       "source_location": "L39",
       "weight": 1.0,
-      "_src": "shippingmethods_getshippingmethodscontroller_getshippingmethodscontroller_invoke",
-      "_tgt": "models_order_order_shippingmethod",
+      "_src": "models_order_order_shippingmethod",
+      "_tgt": "shippingmethods_getshippingmethodscontroller_getshippingmethodscontroller_invoke",
       "source": "models_order_order_shippingmethod",
       "target": "shippingmethods_getshippingmethodscontroller_getshippingmethodscontroller_invoke"
     },
@@ -8436,8 +8418,8 @@
       "source_file": "Http/Controllers/Checkout/CreateCheckoutController.php",
       "source_location": "L114",
       "weight": 1.0,
-      "_src": "checkout_createcheckoutcontroller_createcheckoutcontroller_resolveshipping",
-      "_tgt": "models_order_order_shippingmethod",
+      "_src": "models_order_order_shippingmethod",
+      "_tgt": "checkout_createcheckoutcontroller_createcheckoutcontroller_resolveshipping",
       "source": "models_order_order_shippingmethod",
       "target": "checkout_createcheckoutcontroller_createcheckoutcontroller_resolveshipping"
     },
@@ -8472,8 +8454,8 @@
       "source_file": "Http/Controllers/Api/StaticPagesController.php",
       "source_location": "L32",
       "weight": 1.0,
-      "_src": "api_staticpagescontroller_staticpagescontroller_invoke",
-      "_tgt": "models_staticpage_staticpage",
+      "_src": "models_staticpage_staticpage",
+      "_tgt": "api_staticpagescontroller_staticpagescontroller_invoke",
       "source": "models_staticpage_staticpage",
       "target": "api_staticpagescontroller_staticpagescontroller_invoke"
     },
@@ -8484,8 +8466,8 @@
       "source_file": "Http/Controllers/Web/StaticPageController.php",
       "source_location": "L14",
       "weight": 1.0,
-      "_src": "web_staticpagecontroller_staticpagecontroller_show",
-      "_tgt": "models_staticpage_staticpage",
+      "_src": "models_staticpage_staticpage",
+      "_tgt": "web_staticpagecontroller_staticpagecontroller_show",
       "source": "models_staticpage_staticpage",
       "target": "web_staticpagecontroller_staticpagecontroller_show"
     },
@@ -8496,10 +8478,58 @@
       "source_file": "Http/Controllers/Web/StaticPagesController.php",
       "source_location": "L16",
       "weight": 1.0,
-      "_src": "web_staticpagescontroller_staticpagescontroller_index",
-      "_tgt": "models_staticpage_staticpage",
+      "_src": "models_staticpage_staticpage",
+      "_tgt": "web_staticpagescontroller_staticpagescontroller_index",
       "source": "models_staticpage_staticpage",
       "target": "web_staticpagescontroller_staticpagescontroller_index"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Models/AppSettings.php",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_src": "models_appsettings_php",
+      "_tgt": "models_appsettings_appsettings",
+      "source": "models_appsettings_php",
+      "target": "models_appsettings_appsettings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "Models/AppSettings.php",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_src": "models_appsettings_appsettings",
+      "_tgt": "models_appsettings_appsettings_current",
+      "source": "models_appsettings_appsettings",
+      "target": "models_appsettings_appsettings_current",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "Http/Controllers/Admin/Settings/ShowSettingsController.php",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_src": "settings_showsettingscontroller_showsettingscontroller_invoke",
+      "_tgt": "models_appsettings_appsettings",
+      "source": "models_appsettings_appsettings",
+      "target": "settings_showsettingscontroller_showsettingscontroller_invoke"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "Http/Controllers/Admin/Settings/UpdateSettingsController.php",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_src": "settings_updatesettingscontroller_updatesettingscontroller_invoke",
+      "_tgt": "models_appsettings_appsettings",
+      "source": "models_appsettings_appsettings",
+      "target": "settings_updatesettingscontroller_updatesettingscontroller_invoke"
     },
     {
       "relation": "contains",
@@ -8568,8 +8598,8 @@
       "source_file": "Http/Controllers/Cart/AddCartItemController.php",
       "source_location": "L48",
       "weight": 1.0,
-      "_src": "cart_addcartitemcontroller_addcartitemcontroller_invoke",
-      "_tgt": "models_cartitem_cartitem",
+      "_src": "models_cartitem_cartitem",
+      "_tgt": "cart_addcartitemcontroller_addcartitemcontroller_invoke",
       "source": "models_cartitem_cartitem",
       "target": "cart_addcartitemcontroller_addcartitemcontroller_invoke"
     },
@@ -8580,8 +8610,8 @@
       "source_file": "Actions/ReorderAction.php",
       "source_location": "L53",
       "weight": 1.0,
-      "_src": "actions_reorderaction_reorderaction_execute",
-      "_tgt": "models_cartitem_cartitem",
+      "_src": "models_cartitem_cartitem",
+      "_tgt": "actions_reorderaction_reorderaction_execute",
       "source": "models_cartitem_cartitem",
       "target": "actions_reorderaction_reorderaction_execute"
     },
@@ -8688,8 +8718,8 @@
       "source_file": "Http/Controllers/Admin/Businesses/StartBusinessScrapeController.php",
       "source_location": "L14",
       "weight": 1.0,
-      "_src": "businesses_startbusinessscrapecontroller_startbusinessscrapecontroller_invoke",
-      "_tgt": "models_businessscraperun_businessscraperun",
+      "_src": "models_businessscraperun_businessscraperun",
+      "_tgt": "businesses_startbusinessscrapecontroller_startbusinessscrapecontroller_invoke",
       "source": "models_businessscraperun_businessscraperun",
       "target": "businesses_startbusinessscrapecontroller_startbusinessscrapecontroller_invoke"
     },
@@ -8700,8 +8730,8 @@
       "source_file": "Http/Controllers/Admin/Businesses/IndexBusinessesController.php",
       "source_location": "L22",
       "weight": 1.0,
-      "_src": "businesses_indexbusinessescontroller_indexbusinessescontroller_invoke",
-      "_tgt": "models_businessscraperun_businessscraperun",
+      "_src": "models_businessscraperun_businessscraperun",
+      "_tgt": "businesses_indexbusinessescontroller_indexbusinessescontroller_invoke",
       "source": "models_businessscraperun_businessscraperun",
       "target": "businesses_indexbusinessescontroller_indexbusinessescontroller_invoke"
     },
@@ -8772,8 +8802,8 @@
       "source_file": "Http/Controllers/Addresses/StoreAddressController.php",
       "source_location": "L48",
       "weight": 1.0,
-      "_src": "addresses_storeaddresscontroller_storeaddresscontroller_invoke",
-      "_tgt": "models_address_address",
+      "_src": "models_address_address",
+      "_tgt": "addresses_storeaddresscontroller_storeaddresscontroller_invoke",
       "source": "models_address_address",
       "target": "addresses_storeaddresscontroller_storeaddresscontroller_invoke"
     },
@@ -8784,8 +8814,8 @@
       "source_file": "Http/Controllers/Web/AddressesController.php",
       "source_location": "L32",
       "weight": 1.0,
-      "_src": "web_addressescontroller_addressescontroller_store",
-      "_tgt": "models_address_address",
+      "_src": "models_address_address",
+      "_tgt": "web_addressescontroller_addressescontroller_store",
       "source": "models_address_address",
       "target": "web_addressescontroller_addressescontroller_store"
     },
@@ -8805,7 +8835,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "Models/User.php",
-      "source_location": "L53",
+      "source_location": "L52",
       "weight": 1.0,
       "_src": "models_user_user",
       "_tgt": "models_user_user_casts",
@@ -8817,7 +8847,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "Models/User.php",
-      "source_location": "L67",
+      "source_location": "L65",
       "weight": 1.0,
       "_src": "models_user_user",
       "_tgt": "models_user_user_orders",
@@ -8829,48 +8859,12 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "Models/User.php",
-      "source_location": "L72",
+      "source_location": "L70",
       "weight": 1.0,
       "_src": "models_user_user",
       "_tgt": "models_user_user_addresses",
       "source": "models_user_user",
       "target": "models_user_user_addresses",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "Models/PricingTier.php",
-      "source_location": "L9",
-      "weight": 1.0,
-      "_src": "models_pricingtier_php",
-      "_tgt": "models_pricingtier_pricingtier",
-      "source": "models_pricingtier_php",
-      "target": "models_pricingtier_pricingtier",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "Models/PricingTier.php",
-      "source_location": "L23",
-      "weight": 1.0,
-      "_src": "models_pricingtier_pricingtier",
-      "_tgt": "models_pricingtier_pricingtier_casts",
-      "source": "models_pricingtier_pricingtier",
-      "target": "models_pricingtier_pricingtier_casts",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "Models/PricingTier.php",
-      "source_location": "L36",
-      "weight": 1.0,
-      "_src": "models_pricingtier_pricingtier",
-      "_tgt": "models_pricingtier_pricingtier_product",
-      "source": "models_pricingtier_pricingtier",
-      "target": "models_pricingtier_pricingtier_product",
       "confidence_score": 1.0
     },
     {
@@ -9000,8 +8994,8 @@
       "source_file": "Models/Product.php",
       "source_location": "L61",
       "weight": 1.0,
-      "_src": "models_product_product_boot",
-      "_tgt": "models_category_category_parent",
+      "_src": "models_category_category_parent",
+      "_tgt": "models_product_product_boot",
       "source": "models_category_category_parent",
       "target": "models_product_product_boot"
     },
@@ -9012,8 +9006,8 @@
       "source_file": "Http/Middleware/HandleInertiaRequests.php",
       "source_location": "L21",
       "weight": 1.0,
-      "_src": "middleware_handleinertiarequests_handleinertiarequests_version",
-      "_tgt": "models_category_category_parent",
+      "_src": "models_category_category_parent",
+      "_tgt": "middleware_handleinertiarequests_handleinertiarequests_version",
       "source": "models_category_category_parent",
       "target": "middleware_handleinertiarequests_handleinertiarequests_version"
     },
@@ -9024,8 +9018,8 @@
       "source_file": "Http/Middleware/HandleInertiaRequests.php",
       "source_location": "L34",
       "weight": 1.0,
-      "_src": "middleware_handleinertiarequests_handleinertiarequests_share",
-      "_tgt": "models_category_category_parent",
+      "_src": "models_category_category_parent",
+      "_tgt": "middleware_handleinertiarequests_handleinertiarequests_share",
       "source": "models_category_category_parent",
       "target": "middleware_handleinertiarequests_handleinertiarequests_share"
     },
@@ -9036,8 +9030,8 @@
       "source_file": "Exceptions/InsufficientStockException.php",
       "source_location": "L11",
       "weight": 1.0,
-      "_src": "exceptions_insufficientstockexception_insufficientstockexception_construct",
-      "_tgt": "models_category_category_parent",
+      "_src": "models_category_category_parent",
+      "_tgt": "exceptions_insufficientstockexception_insufficientstockexception_construct",
       "source": "models_category_category_parent",
       "target": "exceptions_insufficientstockexception_insufficientstockexception_construct"
     },
@@ -9096,8 +9090,8 @@
       "source_file": "Http/Controllers/Admin/Orders/IndexOrdersController.php",
       "source_location": "L21",
       "weight": 1.0,
-      "_src": "orders_indexorderscontroller_indexorderscontroller_invoke",
-      "_tgt": "models_ordernote_ordernote_order",
+      "_src": "models_ordernote_ordernote_order",
+      "_tgt": "orders_indexorderscontroller_indexorderscontroller_invoke",
       "source": "models_ordernote_ordernote_order",
       "target": "orders_indexorderscontroller_indexorderscontroller_invoke"
     },
@@ -9108,8 +9102,8 @@
       "source_file": "Http/Controllers/Web/DashboardController.php",
       "source_location": "L67",
       "weight": 1.0,
-      "_src": "web_dashboardcontroller_dashboardcontroller_completedorderssumbetween",
-      "_tgt": "models_ordernote_ordernote_order",
+      "_src": "models_ordernote_ordernote_order",
+      "_tgt": "web_dashboardcontroller_dashboardcontroller_completedorderssumbetween",
       "source": "models_ordernote_ordernote_order",
       "target": "web_dashboardcontroller_dashboardcontroller_completedorderssumbetween"
     },
@@ -9120,8 +9114,8 @@
       "source_file": "Http/Controllers/Web/DashboardController.php",
       "source_location": "L93",
       "weight": 1.0,
-      "_src": "web_dashboardcontroller_dashboardcontroller_getordersbystatus",
-      "_tgt": "models_ordernote_ordernote_order",
+      "_src": "models_ordernote_ordernote_order",
+      "_tgt": "web_dashboardcontroller_dashboardcontroller_getordersbystatus",
       "source": "models_ordernote_ordernote_order",
       "target": "web_dashboardcontroller_dashboardcontroller_getordersbystatus"
     },
@@ -9132,8 +9126,8 @@
       "source_file": "Http/Controllers/Web/DashboardController.php",
       "source_location": "L206",
       "weight": 1.0,
-      "_src": "web_dashboardcontroller_dashboardcontroller_getrecentactivity",
-      "_tgt": "models_ordernote_ordernote_order",
+      "_src": "models_ordernote_ordernote_order",
+      "_tgt": "web_dashboardcontroller_dashboardcontroller_getrecentactivity",
       "source": "models_ordernote_ordernote_order",
       "target": "web_dashboardcontroller_dashboardcontroller_getrecentactivity"
     },
@@ -9144,8 +9138,8 @@
       "source_file": "Http/Controllers/Web/OrderController.php",
       "source_location": "L17",
       "weight": 1.0,
-      "_src": "web_ordercontroller_ordercontroller_index",
-      "_tgt": "models_ordernote_ordernote_order",
+      "_src": "models_ordernote_ordernote_order",
+      "_tgt": "web_ordercontroller_ordercontroller_index",
       "source": "models_ordernote_ordernote_order",
       "target": "web_ordercontroller_ordercontroller_index"
     },
@@ -9156,8 +9150,8 @@
       "source_file": "Http/Controllers/Web/Checkout/StoreCheckoutShippingController.php",
       "source_location": "L45",
       "weight": 1.0,
-      "_src": "checkout_storecheckoutshippingcontroller_storecheckoutshippingcontroller_invoke",
-      "_tgt": "models_ordernote_ordernote_order",
+      "_src": "models_ordernote_ordernote_order",
+      "_tgt": "checkout_storecheckoutshippingcontroller_storecheckoutshippingcontroller_invoke",
       "source": "models_ordernote_ordernote_order",
       "target": "checkout_storecheckoutshippingcontroller_storecheckoutshippingcontroller_invoke"
     },
@@ -9168,8 +9162,8 @@
       "source_file": "Http/Controllers/Web/Checkout/ShowCheckoutThankYouController.php",
       "source_location": "L15",
       "weight": 1.0,
-      "_src": "checkout_showcheckoutthankyoucontroller_showcheckoutthankyoucontroller_invoke",
-      "_tgt": "models_ordernote_ordernote_order",
+      "_src": "models_ordernote_ordernote_order",
+      "_tgt": "checkout_showcheckoutthankyoucontroller_showcheckoutthankyoucontroller_invoke",
       "source": "models_ordernote_ordernote_order",
       "target": "checkout_showcheckoutthankyoucontroller_showcheckoutthankyoucontroller_invoke"
     },
@@ -9180,8 +9174,8 @@
       "source_file": "Http/Controllers/Web/Checkout/ShowCheckoutPaymentController.php",
       "source_location": "L16",
       "weight": 1.0,
-      "_src": "checkout_showcheckoutpaymentcontroller_showcheckoutpaymentcontroller_invoke",
-      "_tgt": "models_ordernote_ordernote_order",
+      "_src": "models_ordernote_ordernote_order",
+      "_tgt": "checkout_showcheckoutpaymentcontroller_showcheckoutpaymentcontroller_invoke",
       "source": "models_ordernote_ordernote_order",
       "target": "checkout_showcheckoutpaymentcontroller_showcheckoutpaymentcontroller_invoke"
     },
@@ -9192,8 +9186,8 @@
       "source_file": "Http/Controllers/Orders/GetOrdersController.php",
       "source_location": "L91",
       "weight": 1.0,
-      "_src": "orders_getorderscontroller_getorderscontroller_invoke",
-      "_tgt": "models_ordernote_ordernote_order",
+      "_src": "models_ordernote_ordernote_order",
+      "_tgt": "orders_getorderscontroller_getorderscontroller_invoke",
       "source": "models_ordernote_ordernote_order",
       "target": "orders_getorderscontroller_getorderscontroller_invoke"
     },
@@ -9204,8 +9198,8 @@
       "source_file": "Http/Controllers/Checkout/VerifyCheckoutController.php",
       "source_location": "L57",
       "weight": 1.0,
-      "_src": "checkout_verifycheckoutcontroller_verifycheckoutcontroller_invoke",
-      "_tgt": "models_ordernote_ordernote_order",
+      "_src": "models_ordernote_ordernote_order",
+      "_tgt": "checkout_verifycheckoutcontroller_verifycheckoutcontroller_invoke",
       "source": "models_ordernote_ordernote_order",
       "target": "checkout_verifycheckoutcontroller_verifycheckoutcontroller_invoke"
     },
@@ -9216,8 +9210,8 @@
       "source_file": "Http/Controllers/Checkout/ConfirmPaymentController.php",
       "source_location": "L38",
       "weight": 1.0,
-      "_src": "checkout_confirmpaymentcontroller_confirmpaymentcontroller_invoke",
-      "_tgt": "models_ordernote_ordernote_order",
+      "_src": "models_ordernote_ordernote_order",
+      "_tgt": "checkout_confirmpaymentcontroller_confirmpaymentcontroller_invoke",
       "source": "models_ordernote_ordernote_order",
       "target": "checkout_confirmpaymentcontroller_confirmpaymentcontroller_invoke"
     },
@@ -9228,8 +9222,8 @@
       "source_file": "Http/Controllers/Checkout/CreateCheckoutController.php",
       "source_location": "L162",
       "weight": 1.0,
-      "_src": "checkout_createcheckoutcontroller_createcheckoutcontroller_createorder",
-      "_tgt": "models_ordernote_ordernote_order",
+      "_src": "models_ordernote_ordernote_order",
+      "_tgt": "checkout_createcheckoutcontroller_createcheckoutcontroller_createorder",
       "source": "models_ordernote_ordernote_order",
       "target": "checkout_createcheckoutcontroller_createcheckoutcontroller_createorder"
     },
@@ -9240,8 +9234,8 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L109",
       "weight": 1.0,
-      "_src": "listeners_handlestripewebhook_handlestripewebhook_handlechargerefunded",
-      "_tgt": "models_ordernote_ordernote_order",
+      "_src": "models_ordernote_ordernote_order",
+      "_tgt": "listeners_handlestripewebhook_handlestripewebhook_handlechargerefunded",
       "source": "models_ordernote_ordernote_order",
       "target": "listeners_handlestripewebhook_handlestripewebhook_handlechargerefunded"
     },
@@ -9252,8 +9246,8 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L185",
       "weight": 1.0,
-      "_src": "listeners_handlestripewebhook_handlestripewebhook_findorderbymetadata",
-      "_tgt": "models_ordernote_ordernote_order",
+      "_src": "models_ordernote_ordernote_order",
+      "_tgt": "listeners_handlestripewebhook_handlestripewebhook_findorderbymetadata",
       "source": "models_ordernote_ordernote_order",
       "target": "listeners_handlestripewebhook_handlestripewebhook_findorderbymetadata"
     },
@@ -9432,18 +9426,6 @@
       "source_location": "L208",
       "weight": 1.0,
       "_src": "models_product_product",
-      "_tgt": "models_product_product_pricingtiers",
-      "source": "models_product_product",
-      "target": "models_product_product_pricingtiers",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "Models/Product.php",
-      "source_location": "L216",
-      "weight": 1.0,
-      "_src": "models_product_product",
       "_tgt": "models_product_product_images",
       "source": "models_product_product",
       "target": "models_product_product_images",
@@ -9456,8 +9438,8 @@
       "source_file": "Http/Controllers/ProductsController.php",
       "source_location": "L66",
       "weight": 1.0,
-      "_src": "controllers_productscontroller_productscontroller_invoke",
-      "_tgt": "models_product_product",
+      "_src": "models_product_product",
+      "_tgt": "controllers_productscontroller_productscontroller_invoke",
       "source": "models_product_product",
       "target": "controllers_productscontroller_productscontroller_invoke"
     },
@@ -9468,8 +9450,8 @@
       "source_file": "Http/Controllers/FeaturedProductsController.php",
       "source_location": "L25",
       "weight": 1.0,
-      "_src": "controllers_featuredproductscontroller_featuredproductscontroller_invoke",
-      "_tgt": "models_product_product",
+      "_src": "models_product_product",
+      "_tgt": "controllers_featuredproductscontroller_featuredproductscontroller_invoke",
       "source": "models_product_product",
       "target": "controllers_featuredproductscontroller_featuredproductscontroller_invoke"
     },
@@ -9480,8 +9462,8 @@
       "source_file": "Http/Controllers/Cart/AddCartItemController.php",
       "source_location": "L33",
       "weight": 1.0,
-      "_src": "cart_addcartitemcontroller_addcartitemcontroller_invoke",
-      "_tgt": "models_product_product",
+      "_src": "models_product_product",
+      "_tgt": "cart_addcartitemcontroller_addcartitemcontroller_invoke",
       "source": "models_product_product",
       "target": "cart_addcartitemcontroller_addcartitemcontroller_invoke"
     },
@@ -9492,8 +9474,8 @@
       "source_file": "Http/Controllers/Web/CatalogController.php",
       "source_location": "L22",
       "weight": 1.0,
-      "_src": "web_catalogcontroller_catalogcontroller_invoke",
-      "_tgt": "models_product_product",
+      "_src": "models_product_product",
+      "_tgt": "web_catalogcontroller_catalogcontroller_invoke",
       "source": "models_product_product",
       "target": "web_catalogcontroller_catalogcontroller_invoke"
     },
@@ -9504,8 +9486,8 @@
       "source_file": "Http/Controllers/Web/DashboardController.php",
       "source_location": "L179",
       "weight": 1.0,
-      "_src": "web_dashboardcontroller_dashboardcontroller_getlowstockalerts",
-      "_tgt": "models_product_product",
+      "_src": "models_product_product",
+      "_tgt": "web_dashboardcontroller_dashboardcontroller_getlowstockalerts",
       "source": "models_product_product",
       "target": "web_dashboardcontroller_dashboardcontroller_getlowstockalerts"
     },
@@ -9516,8 +9498,8 @@
       "source_file": "Http/Controllers/Web/CustomerDashboardController.php",
       "source_location": "L18",
       "weight": 1.0,
-      "_src": "web_customerdashboardcontroller_customerdashboardcontroller_invoke",
-      "_tgt": "models_product_product",
+      "_src": "models_product_product",
+      "_tgt": "web_customerdashboardcontroller_customerdashboardcontroller_invoke",
       "source": "models_product_product",
       "target": "web_customerdashboardcontroller_customerdashboardcontroller_invoke"
     },
@@ -9528,8 +9510,8 @@
       "source_file": "Http/Controllers/Web/ContentFeaturedProductsController.php",
       "source_location": "L17",
       "weight": 1.0,
-      "_src": "web_contentfeaturedproductscontroller_contentfeaturedproductscontroller_index",
-      "_tgt": "models_product_product",
+      "_src": "models_product_product",
+      "_tgt": "web_contentfeaturedproductscontroller_contentfeaturedproductscontroller_index",
       "source": "models_product_product",
       "target": "web_contentfeaturedproductscontroller_contentfeaturedproductscontroller_index"
     },
@@ -9540,8 +9522,8 @@
       "source_file": "Http/Controllers/Web/ContentFeaturedProductsController.php",
       "source_location": "L56",
       "weight": 1.0,
-      "_src": "web_contentfeaturedproductscontroller_contentfeaturedproductscontroller_update",
-      "_tgt": "models_product_product",
+      "_src": "models_product_product",
+      "_tgt": "web_contentfeaturedproductscontroller_contentfeaturedproductscontroller_update",
       "source": "models_product_product",
       "target": "web_contentfeaturedproductscontroller_contentfeaturedproductscontroller_update"
     },
@@ -9552,8 +9534,8 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L53",
       "weight": 1.0,
-      "_src": "web_cartcontroller_cartcontroller_additem",
-      "_tgt": "models_product_product",
+      "_src": "models_product_product",
+      "_tgt": "web_cartcontroller_cartcontroller_additem",
       "source": "models_product_product",
       "target": "web_cartcontroller_cartcontroller_additem"
     },
@@ -9564,8 +9546,8 @@
       "source_file": "Http/Controllers/Web/ProductController.php",
       "source_location": "L16",
       "weight": 1.0,
-      "_src": "web_productcontroller_productcontroller_show",
-      "_tgt": "models_product_product",
+      "_src": "models_product_product",
+      "_tgt": "web_productcontroller_productcontroller_show",
       "source": "models_product_product",
       "target": "web_productcontroller_productcontroller_show"
     },
@@ -9576,8 +9558,8 @@
       "source_file": "Http/Controllers/Web/HomeController.php",
       "source_location": "L21",
       "weight": 1.0,
-      "_src": "web_homecontroller_homecontroller_invoke",
-      "_tgt": "models_product_product",
+      "_src": "models_product_product",
+      "_tgt": "web_homecontroller_homecontroller_invoke",
       "source": "models_product_product",
       "target": "web_homecontroller_homecontroller_invoke"
     },
@@ -9588,8 +9570,8 @@
       "source_file": "Http/Controllers/Web/Products/IndexProductsController.php",
       "source_location": "L15",
       "weight": 1.0,
-      "_src": "products_indexproductscontroller_indexproductscontroller_invoke",
-      "_tgt": "models_product_product",
+      "_src": "models_product_product",
+      "_tgt": "products_indexproductscontroller_indexproductscontroller_invoke",
       "source": "models_product_product",
       "target": "products_indexproductscontroller_indexproductscontroller_invoke"
     },
@@ -9598,10 +9580,10 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "Http/Controllers/Web/Products/StoreProductController.php",
-      "source_location": "L23",
+      "source_location": "L22",
       "weight": 1.0,
-      "_src": "products_storeproductcontroller_storeproductcontroller_invoke",
-      "_tgt": "models_product_product",
+      "_src": "models_product_product",
+      "_tgt": "products_storeproductcontroller_storeproductcontroller_invoke",
       "source": "models_product_product",
       "target": "products_storeproductcontroller_storeproductcontroller_invoke"
     },
@@ -9612,8 +9594,8 @@
       "source_file": "Http/Controllers/CategoriesController.php",
       "source_location": "L28",
       "weight": 1.0,
-      "_src": "controllers_categoriescontroller_categoriescontroller_invoke",
-      "_tgt": "models_product_product_category",
+      "_src": "models_product_product_category",
+      "_tgt": "controllers_categoriescontroller_categoriescontroller_invoke",
       "source": "models_product_product_category",
       "target": "controllers_categoriescontroller_categoriescontroller_invoke"
     },
@@ -9624,8 +9606,8 @@
       "source_file": "Http/Controllers/Web/CatalogController.php",
       "source_location": "L44",
       "weight": 1.0,
-      "_src": "web_catalogcontroller_catalogcontroller_invoke",
-      "_tgt": "models_product_product_category",
+      "_src": "models_product_product_category",
+      "_tgt": "web_catalogcontroller_catalogcontroller_invoke",
       "source": "models_product_product_category",
       "target": "web_catalogcontroller_catalogcontroller_invoke"
     },
@@ -9636,8 +9618,8 @@
       "source_file": "Http/Controllers/Web/CategoriesController.php",
       "source_location": "L22",
       "weight": 1.0,
-      "_src": "web_categoriescontroller_categoriescontroller_index",
-      "_tgt": "models_product_product_category",
+      "_src": "models_product_product_category",
+      "_tgt": "web_categoriescontroller_categoriescontroller_index",
       "source": "models_product_product_category",
       "target": "web_categoriescontroller_categoriescontroller_index"
     },
@@ -9648,8 +9630,8 @@
       "source_file": "Http/Controllers/Web/CategoriesController.php",
       "source_location": "L49",
       "weight": 1.0,
-      "_src": "web_categoriescontroller_categoriescontroller_store",
-      "_tgt": "models_product_product_category",
+      "_src": "models_product_product_category",
+      "_tgt": "web_categoriescontroller_categoriescontroller_store",
       "source": "models_product_product_category",
       "target": "web_categoriescontroller_categoriescontroller_store"
     },
@@ -9660,8 +9642,8 @@
       "source_file": "Http/Controllers/Web/CategoriesController.php",
       "source_location": "L152",
       "weight": 1.0,
-      "_src": "web_categoriescontroller_categoriescontroller_reorder",
-      "_tgt": "models_product_product_category",
+      "_src": "models_product_product_category",
+      "_tgt": "web_categoriescontroller_categoriescontroller_reorder",
       "source": "models_product_product_category",
       "target": "web_categoriescontroller_categoriescontroller_reorder"
     },
@@ -9672,8 +9654,8 @@
       "source_file": "Http/Controllers/Web/CategoriesController.php",
       "source_location": "L227",
       "weight": 1.0,
-      "_src": "web_categoriescontroller_categoriescontroller_isdescendant",
-      "_tgt": "models_product_product_category",
+      "_src": "models_product_product_category",
+      "_tgt": "web_categoriescontroller_categoriescontroller_isdescendant",
       "source": "models_product_product_category",
       "target": "web_categoriescontroller_categoriescontroller_isdescendant"
     },
@@ -9684,8 +9666,8 @@
       "source_file": "Http/Controllers/Web/Products/EditProductController.php",
       "source_location": "L19",
       "weight": 1.0,
-      "_src": "products_editproductcontroller_editproductcontroller_invoke",
-      "_tgt": "models_product_product_category",
+      "_src": "models_product_product_category",
+      "_tgt": "products_editproductcontroller_editproductcontroller_invoke",
       "source": "models_product_product_category",
       "target": "products_editproductcontroller_editproductcontroller_invoke"
     },
@@ -9696,8 +9678,8 @@
       "source_file": "Http/Controllers/Web/Products/CreateProductController.php",
       "source_location": "L17",
       "weight": 1.0,
-      "_src": "products_createproductcontroller_createproductcontroller_invoke",
-      "_tgt": "models_product_product_category",
+      "_src": "models_product_product_category",
+      "_tgt": "products_createproductcontroller_createproductcontroller_invoke",
       "source": "models_product_product_category",
       "target": "products_createproductcontroller_createproductcontroller_invoke"
     },
@@ -9768,8 +9750,8 @@
       "source_file": "Http/Controllers/Cart/GetCartController.php",
       "source_location": "L29",
       "weight": 1.0,
-      "_src": "cart_getcartcontroller_getcartcontroller_invoke",
-      "_tgt": "models_cart_cart",
+      "_src": "models_cart_cart",
+      "_tgt": "cart_getcartcontroller_getcartcontroller_invoke",
       "source": "models_cart_cart",
       "target": "cart_getcartcontroller_getcartcontroller_invoke"
     },
@@ -9780,8 +9762,8 @@
       "source_file": "Http/Controllers/Cart/ClearCartController.php",
       "source_location": "L26",
       "weight": 1.0,
-      "_src": "cart_clearcartcontroller_clearcartcontroller_invoke",
-      "_tgt": "models_cart_cart",
+      "_src": "models_cart_cart",
+      "_tgt": "cart_clearcartcontroller_clearcartcontroller_invoke",
       "source": "models_cart_cart",
       "target": "cart_clearcartcontroller_clearcartcontroller_invoke"
     },
@@ -9792,8 +9774,8 @@
       "source_file": "Http/Controllers/Cart/UpdateCartItemController.php",
       "source_location": "L33",
       "weight": 1.0,
-      "_src": "cart_updatecartitemcontroller_updatecartitemcontroller_invoke",
-      "_tgt": "models_cart_cart",
+      "_src": "models_cart_cart",
+      "_tgt": "cart_updatecartitemcontroller_updatecartitemcontroller_invoke",
       "source": "models_cart_cart",
       "target": "cart_updatecartitemcontroller_updatecartitemcontroller_invoke"
     },
@@ -9804,8 +9786,8 @@
       "source_file": "Http/Controllers/Cart/AddCartItemController.php",
       "source_location": "L44",
       "weight": 1.0,
-      "_src": "cart_addcartitemcontroller_addcartitemcontroller_invoke",
-      "_tgt": "models_cart_cart",
+      "_src": "models_cart_cart",
+      "_tgt": "cart_addcartitemcontroller_addcartitemcontroller_invoke",
       "source": "models_cart_cart",
       "target": "cart_addcartitemcontroller_addcartitemcontroller_invoke"
     },
@@ -9816,8 +9798,8 @@
       "source_file": "Http/Controllers/Cart/RemoveCartItemController.php",
       "source_location": "L31",
       "weight": 1.0,
-      "_src": "cart_removecartitemcontroller_removecartitemcontroller_invoke",
-      "_tgt": "models_cart_cart",
+      "_src": "models_cart_cart",
+      "_tgt": "cart_removecartitemcontroller_removecartitemcontroller_invoke",
       "source": "models_cart_cart",
       "target": "cart_removecartitemcontroller_removecartitemcontroller_invoke"
     },
@@ -9828,8 +9810,8 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L115",
       "weight": 1.0,
-      "_src": "web_cartcontroller_cartcontroller_getorcreatecart",
-      "_tgt": "models_cart_cart",
+      "_src": "models_cart_cart",
+      "_tgt": "web_cartcontroller_cartcontroller_getorcreatecart",
       "source": "models_cart_cart",
       "target": "web_cartcontroller_cartcontroller_getorcreatecart"
     },
@@ -9840,8 +9822,8 @@
       "source_file": "Http/Controllers/Web/Checkout/StoreCheckoutShippingController.php",
       "source_location": "L25",
       "weight": 1.0,
-      "_src": "checkout_storecheckoutshippingcontroller_storecheckoutshippingcontroller_invoke",
-      "_tgt": "models_cart_cart",
+      "_src": "models_cart_cart",
+      "_tgt": "checkout_storecheckoutshippingcontroller_storecheckoutshippingcontroller_invoke",
       "source": "models_cart_cart",
       "target": "checkout_storecheckoutshippingcontroller_storecheckoutshippingcontroller_invoke"
     },
@@ -9852,8 +9834,8 @@
       "source_file": "Http/Controllers/Web/Checkout/GetShippingQuotesController.php",
       "source_location": "L15",
       "weight": 1.0,
-      "_src": "checkout_getshippingquotescontroller_getshippingquotescontroller_invoke",
-      "_tgt": "models_cart_cart",
+      "_src": "models_cart_cart",
+      "_tgt": "checkout_getshippingquotescontroller_getshippingquotescontroller_invoke",
       "source": "models_cart_cart",
       "target": "checkout_getshippingquotescontroller_getshippingquotescontroller_invoke"
     },
@@ -9864,8 +9846,8 @@
       "source_file": "Http/Controllers/Web/Checkout/ShowCheckoutShippingController.php",
       "source_location": "L17",
       "weight": 1.0,
-      "_src": "checkout_showcheckoutshippingcontroller_showcheckoutshippingcontroller_invoke",
-      "_tgt": "models_cart_cart",
+      "_src": "models_cart_cart",
+      "_tgt": "checkout_showcheckoutshippingcontroller_showcheckoutshippingcontroller_invoke",
       "source": "models_cart_cart",
       "target": "checkout_showcheckoutshippingcontroller_showcheckoutshippingcontroller_invoke"
     },
@@ -9876,8 +9858,8 @@
       "source_file": "Http/Controllers/Checkout/VerifyCheckoutController.php",
       "source_location": "L82",
       "weight": 1.0,
-      "_src": "checkout_verifycheckoutcontroller_verifycheckoutcontroller_invoke",
-      "_tgt": "models_cart_cart",
+      "_src": "models_cart_cart",
+      "_tgt": "checkout_verifycheckoutcontroller_verifycheckoutcontroller_invoke",
       "source": "models_cart_cart",
       "target": "checkout_verifycheckoutcontroller_verifycheckoutcontroller_invoke"
     },
@@ -9888,8 +9870,8 @@
       "source_file": "Http/Controllers/Checkout/ConfirmPaymentController.php",
       "source_location": "L98",
       "weight": 1.0,
-      "_src": "checkout_confirmpaymentcontroller_confirmpaymentcontroller_completeorder",
-      "_tgt": "models_cart_cart",
+      "_src": "models_cart_cart",
+      "_tgt": "checkout_confirmpaymentcontroller_confirmpaymentcontroller_completeorder",
       "source": "models_cart_cart",
       "target": "checkout_confirmpaymentcontroller_confirmpaymentcontroller_completeorder"
     },
@@ -9900,8 +9882,8 @@
       "source_file": "Http/Controllers/Checkout/CreateCheckoutController.php",
       "source_location": "L54",
       "weight": 1.0,
-      "_src": "checkout_createcheckoutcontroller_createcheckoutcontroller_invoke",
-      "_tgt": "models_cart_cart",
+      "_src": "models_cart_cart",
+      "_tgt": "checkout_createcheckoutcontroller_createcheckoutcontroller_invoke",
       "source": "models_cart_cart",
       "target": "checkout_createcheckoutcontroller_createcheckoutcontroller_invoke"
     },
@@ -9912,8 +9894,8 @@
       "source_file": "Http/Middleware/HandleInertiaRequests.php",
       "source_location": "L59",
       "weight": 1.0,
-      "_src": "middleware_handleinertiarequests_handleinertiarequests_getminicart",
-      "_tgt": "models_cart_cart",
+      "_src": "models_cart_cart",
+      "_tgt": "middleware_handleinertiarequests_handleinertiarequests_getminicart",
       "source": "models_cart_cart",
       "target": "middleware_handleinertiarequests_handleinertiarequests_getminicart"
     },
@@ -9924,8 +9906,8 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L210",
       "weight": 1.0,
-      "_src": "listeners_handlestripewebhook_handlestripewebhook_fulfillorder",
-      "_tgt": "models_cart_cart",
+      "_src": "models_cart_cart",
+      "_tgt": "listeners_handlestripewebhook_handlestripewebhook_fulfillorder",
       "source": "models_cart_cart",
       "target": "listeners_handlestripewebhook_handlestripewebhook_fulfillorder"
     },
@@ -9936,8 +9918,8 @@
       "source_file": "Actions/ReorderAction.php",
       "source_location": "L26",
       "weight": 1.0,
-      "_src": "actions_reorderaction_reorderaction_execute",
-      "_tgt": "models_cart_cart",
+      "_src": "models_cart_cart",
+      "_tgt": "actions_reorderaction_reorderaction_execute",
       "source": "models_cart_cart",
       "target": "actions_reorderaction_reorderaction_execute"
     },
@@ -9948,8 +9930,8 @@
       "source_file": "Http/Controllers/Admin/Users/IndexUsersController.php",
       "source_location": "L29",
       "weight": 1.0,
-      "_src": "users_indexuserscontroller_indexuserscontroller_invoke",
-      "_tgt": "models_cart_cart_user",
+      "_src": "models_cart_cart_user",
+      "_tgt": "users_indexuserscontroller_indexuserscontroller_invoke",
       "source": "models_cart_cart_user",
       "target": "users_indexuserscontroller_indexuserscontroller_invoke"
     },
@@ -9960,8 +9942,8 @@
       "source_file": "Http/Controllers/Web/DashboardController.php",
       "source_location": "L153",
       "weight": 1.0,
-      "_src": "web_dashboardcontroller_dashboardcontroller_getnewuserscount",
-      "_tgt": "models_cart_cart_user",
+      "_src": "models_cart_cart_user",
+      "_tgt": "web_dashboardcontroller_dashboardcontroller_getnewuserscount",
       "source": "models_cart_cart_user",
       "target": "web_dashboardcontroller_dashboardcontroller_getnewuserscount"
     },
@@ -9972,8 +9954,8 @@
       "source_file": "Http/Controllers/Web/Auth/RegisterController.php",
       "source_location": "L22",
       "weight": 1.0,
-      "_src": "auth_registercontroller_registercontroller_store",
-      "_tgt": "models_cart_cart_user",
+      "_src": "models_cart_cart_user",
+      "_tgt": "auth_registercontroller_registercontroller_store",
       "source": "models_cart_cart_user",
       "target": "auth_registercontroller_registercontroller_store"
     },
@@ -9984,8 +9966,8 @@
       "source_file": "Http/Controllers/Web/Auth/GoogleCallbackController.php",
       "source_location": "L24",
       "weight": 1.0,
-      "_src": "auth_googlecallbackcontroller_googlecallbackcontroller_invoke",
-      "_tgt": "models_cart_cart_user",
+      "_src": "models_cart_cart_user",
+      "_tgt": "auth_googlecallbackcontroller_googlecallbackcontroller_invoke",
       "source": "models_cart_cart_user",
       "target": "auth_googlecallbackcontroller_googlecallbackcontroller_invoke"
     },
@@ -9996,8 +9978,8 @@
       "source_file": "Http/Controllers/Web/Auth/StoreGoogleCompleteRegistrationController.php",
       "source_location": "L21",
       "weight": 1.0,
-      "_src": "auth_storegooglecompleteregistrationcontroller_storegooglecompleteregistrationcontroller_invoke",
-      "_tgt": "models_cart_cart_user",
+      "_src": "models_cart_cart_user",
+      "_tgt": "auth_storegooglecompleteregistrationcontroller_storegooglecompleteregistrationcontroller_invoke",
       "source": "models_cart_cart_user",
       "target": "auth_storegooglecompleteregistrationcontroller_storegooglecompleteregistrationcontroller_invoke"
     },
@@ -10008,8 +9990,8 @@
       "source_file": "Http/Controllers/Auth/RegisterController.php",
       "source_location": "L30",
       "weight": 1.0,
-      "_src": "auth_registercontroller_registercontroller_invoke",
-      "_tgt": "models_cart_cart_user",
+      "_src": "models_cart_cart_user",
+      "_tgt": "auth_registercontroller_registercontroller_invoke",
       "source": "models_cart_cart_user",
       "target": "auth_registercontroller_registercontroller_invoke"
     },
@@ -10020,8 +10002,8 @@
       "source_file": "Http/Controllers/Auth/LoginController.php",
       "source_location": "L32",
       "weight": 1.0,
-      "_src": "auth_logincontroller_logincontroller_invoke",
-      "_tgt": "models_cart_cart_user",
+      "_src": "models_cart_cart_user",
+      "_tgt": "auth_logincontroller_logincontroller_invoke",
       "source": "models_cart_cart_user",
       "target": "auth_logincontroller_logincontroller_invoke"
     },
@@ -10032,8 +10014,8 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L138",
       "weight": 1.0,
-      "_src": "listeners_handlestripewebhook_handlestripewebhook_handlesetupcompleted",
-      "_tgt": "models_cart_cart_user",
+      "_src": "models_cart_cart_user",
+      "_tgt": "listeners_handlestripewebhook_handlestripewebhook_handlesetupcompleted",
       "source": "models_cart_cart_user",
       "target": "listeners_handlestripewebhook_handlestripewebhook_handlesetupcompleted"
     },
@@ -10104,8 +10086,8 @@
       "source_file": "Http/Controllers/Admin/Businesses/StartBusinessScrapeController.php",
       "source_location": "L25",
       "weight": 1.0,
-      "_src": "businesses_startbusinessscrapecontroller_startbusinessscrapecontroller_invoke",
-      "_tgt": "jobs_startbusinessscrape_startbusinessscrape",
+      "_src": "jobs_startbusinessscrape_startbusinessscrape",
+      "_tgt": "businesses_startbusinessscrapecontroller_startbusinessscrapecontroller_invoke",
       "source": "jobs_startbusinessscrape_startbusinessscrape",
       "target": "businesses_startbusinessscrapecontroller_startbusinessscrapecontroller_invoke"
     },
@@ -10176,8 +10158,8 @@
       "source_file": "Http/Controllers/Web/Products/ManagesProductData.php",
       "source_location": "L47",
       "weight": 1.0,
-      "_src": "products_managesproductdata_storenewimages",
-      "_tgt": "jobs_processproductimage_processproductimage",
+      "_src": "jobs_processproductimage_processproductimage",
+      "_tgt": "products_managesproductdata_storenewimages",
       "source": "jobs_processproductimage_processproductimage",
       "target": "products_managesproductdata_storenewimages"
     },
@@ -10356,8 +10338,8 @@
       "source_file": "Http/Controllers/Admin/Orders/RetryShippingLabelController.php",
       "source_location": "L28",
       "weight": 1.0,
-      "_src": "orders_retryshippinglabelcontroller_retryshippinglabelcontroller_invoke",
-      "_tgt": "jobs_createshippinglabel_createshippinglabel",
+      "_src": "jobs_createshippinglabel_createshippinglabel",
+      "_tgt": "orders_retryshippinglabelcontroller_retryshippinglabelcontroller_invoke",
       "source": "jobs_createshippinglabel_createshippinglabel",
       "target": "orders_retryshippinglabelcontroller_retryshippinglabelcontroller_invoke"
     },
@@ -10368,8 +10350,8 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L56",
       "weight": 1.0,
-      "_src": "listeners_handlestripewebhook_handlestripewebhook_handlecheckoutcompleted",
-      "_tgt": "jobs_createshippinglabel_createshippinglabel",
+      "_src": "jobs_createshippinglabel_createshippinglabel",
+      "_tgt": "listeners_handlestripewebhook_handlestripewebhook_handlecheckoutcompleted",
       "source": "jobs_createshippinglabel_createshippinglabel",
       "target": "listeners_handlestripewebhook_handlestripewebhook_handlecheckoutcompleted"
     },
@@ -10380,8 +10362,8 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L77",
       "weight": 1.0,
-      "_src": "listeners_handlestripewebhook_handlestripewebhook_handlepaymentintentsucceeded",
-      "_tgt": "jobs_createshippinglabel_createshippinglabel",
+      "_src": "jobs_createshippinglabel_createshippinglabel",
+      "_tgt": "listeners_handlestripewebhook_handlestripewebhook_handlepaymentintentsucceeded",
       "source": "jobs_createshippinglabel_createshippinglabel",
       "target": "listeners_handlestripewebhook_handlestripewebhook_handlepaymentintentsucceeded"
     },
@@ -10863,6 +10845,54 @@
       "_tgt": "concerns_buildsusershowresponse_renderusershow",
       "source": "http_controllers_admin_users_concerns_buildsusershowresponse_php",
       "target": "concerns_buildsusershowresponse_renderusershow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Http/Controllers/Admin/Settings/ShowSettingsController.php",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_src": "http_controllers_admin_settings_showsettingscontroller_php",
+      "_tgt": "settings_showsettingscontroller_showsettingscontroller",
+      "source": "http_controllers_admin_settings_showsettingscontroller_php",
+      "target": "settings_showsettingscontroller_showsettingscontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "Http/Controllers/Admin/Settings/ShowSettingsController.php",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_src": "settings_showsettingscontroller_showsettingscontroller",
+      "_tgt": "settings_showsettingscontroller_showsettingscontroller_invoke",
+      "source": "settings_showsettingscontroller_showsettingscontroller",
+      "target": "settings_showsettingscontroller_showsettingscontroller_invoke",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Http/Controllers/Admin/Settings/UpdateSettingsController.php",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_src": "http_controllers_admin_settings_updatesettingscontroller_php",
+      "_tgt": "settings_updatesettingscontroller_updatesettingscontroller",
+      "source": "http_controllers_admin_settings_updatesettingscontroller_php",
+      "target": "settings_updatesettingscontroller_updatesettingscontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "Http/Controllers/Admin/Settings/UpdateSettingsController.php",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_src": "settings_updatesettingscontroller_updatesettingscontroller",
+      "_tgt": "settings_updatesettingscontroller_updatesettingscontroller_invoke",
+      "source": "settings_updatesettingscontroller_updatesettingscontroller",
+      "target": "settings_updatesettingscontroller_updatesettingscontroller_invoke",
       "confidence_score": 1.0
     },
     {
@@ -11388,8 +11418,8 @@
       "source_file": "Http/Controllers/PaymentMethods/VerifySetupSessionController.php",
       "source_location": "L73",
       "weight": 1.0,
-      "_src": "paymentmethods_verifysetupsessioncontroller_verifysetupsessioncontroller_invoke",
-      "_tgt": "paymentmethods_paymentmethoddata_paymentmethoddata",
+      "_src": "paymentmethods_paymentmethoddata_paymentmethoddata",
+      "_tgt": "paymentmethods_verifysetupsessioncontroller_verifysetupsessioncontroller_invoke",
       "source": "paymentmethods_paymentmethoddata_paymentmethoddata",
       "target": "paymentmethods_verifysetupsessioncontroller_verifysetupsessioncontroller_invoke"
     },
@@ -11400,8 +11430,8 @@
       "source_file": "Http/Controllers/Web/PaymentMethodController.php",
       "source_location": "L110",
       "weight": 1.0,
-      "_src": "web_paymentmethodcontroller_paymentmethodcontroller_store",
-      "_tgt": "paymentmethods_paymentmethoddata_paymentmethoddata",
+      "_src": "paymentmethods_paymentmethoddata_paymentmethoddata",
+      "_tgt": "web_paymentmethodcontroller_paymentmethodcontroller_store",
       "source": "paymentmethods_paymentmethoddata_paymentmethoddata",
       "target": "web_paymentmethodcontroller_paymentmethodcontroller_store"
     },
@@ -11412,8 +11442,8 @@
       "source_file": "Http/Controllers/Web/PaymentMethodController.php",
       "source_location": "L303",
       "weight": 1.0,
-      "_src": "web_paymentmethodcontroller_paymentmethodcontroller_formatmethods",
-      "_tgt": "paymentmethods_paymentmethoddata_paymentmethoddata",
+      "_src": "paymentmethods_paymentmethoddata_paymentmethoddata",
+      "_tgt": "web_paymentmethodcontroller_paymentmethodcontroller_formatmethods",
       "source": "paymentmethods_paymentmethoddata_paymentmethoddata",
       "target": "web_paymentmethodcontroller_paymentmethodcontroller_formatmethods"
     },
@@ -13089,7 +13119,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "Http/Controllers/Web/ProductController.php",
-      "source_location": "L82",
+      "source_location": "L65",
       "weight": 1.0,
       "_src": "web_productcontroller_productcontroller",
       "_tgt": "web_productcontroller_productcontroller_buildbreadcrumbs",
@@ -13263,18 +13293,6 @@
       "_tgt": "products_managesproductdata_storenewimages",
       "source": "http_controllers_web_products_managesproductdata_php",
       "target": "products_managesproductdata_storenewimages",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "Http/Controllers/Web/Products/ManagesProductData.php",
-      "source_location": "L51",
-      "weight": 1.0,
-      "_src": "http_controllers_web_products_managesproductdata_php",
-      "_tgt": "products_managesproductdata_syncpricingtiers",
-      "source": "http_controllers_web_products_managesproductdata_php",
-      "target": "products_managesproductdata_syncpricingtiers",
       "confidence_score": 1.0
     },
     {
@@ -14264,6 +14282,54 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "Http/Requests/Admin/Settings/UpdateSettingsRequest.php",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_src": "http_requests_admin_settings_updatesettingsrequest_php",
+      "_tgt": "settings_updatesettingsrequest_updatesettingsrequest",
+      "source": "http_requests_admin_settings_updatesettingsrequest_php",
+      "target": "settings_updatesettingsrequest_updatesettingsrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "Http/Requests/Admin/Settings/UpdateSettingsRequest.php",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_src": "settings_updatesettingsrequest_updatesettingsrequest",
+      "_tgt": "settings_updatesettingsrequest_updatesettingsrequest_authorize",
+      "source": "settings_updatesettingsrequest_updatesettingsrequest",
+      "target": "settings_updatesettingsrequest_updatesettingsrequest_authorize",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "Http/Requests/Admin/Settings/UpdateSettingsRequest.php",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_src": "settings_updatesettingsrequest_updatesettingsrequest",
+      "_tgt": "settings_updatesettingsrequest_updatesettingsrequest_rules",
+      "source": "settings_updatesettingsrequest_updatesettingsrequest",
+      "target": "settings_updatesettingsrequest_updatesettingsrequest_rules",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "Http/Requests/Admin/Settings/UpdateSettingsRequest.php",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_src": "settings_updatesettingsrequest_updatesettingsrequest",
+      "_tgt": "settings_updatesettingsrequest_updatesettingsrequest_messages",
+      "source": "settings_updatesettingsrequest_updatesettingsrequest",
+      "target": "settings_updatesettingsrequest_updatesettingsrequest_messages",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "Http/Requests/Admin/Orders/UpdateOrderStatusRequest.php",
       "source_location": "L8",
       "weight": 1.0,
@@ -15153,7 +15219,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "Http/Requests/Web/Products/UpdateProductRequest.php",
-      "source_location": "L8",
+      "source_location": "L7",
       "weight": 1.0,
       "_src": "http_requests_web_products_updateproductrequest_php",
       "_tgt": "products_updateproductrequest_updateproductrequest",
@@ -15165,7 +15231,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "Http/Requests/Web/Products/UpdateProductRequest.php",
-      "source_location": "L13",
+      "source_location": "L12",
       "weight": 1.0,
       "_src": "products_updateproductrequest_updateproductrequest",
       "_tgt": "products_updateproductrequest_updateproductrequest_authorize",
@@ -15177,7 +15243,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "Http/Requests/Web/Products/UpdateProductRequest.php",
-      "source_location": "L23",
+      "source_location": "L22",
       "weight": 1.0,
       "_src": "products_updateproductrequest_updateproductrequest",
       "_tgt": "products_updateproductrequest_updateproductrequest_rules",
@@ -15189,7 +15255,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "Http/Requests/Web/Products/StoreProductRequest.php",
-      "source_location": "L8",
+      "source_location": "L7",
       "weight": 1.0,
       "_src": "http_requests_web_products_storeproductrequest_php",
       "_tgt": "products_storeproductrequest_storeproductrequest",
@@ -15201,7 +15267,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "Http/Requests/Web/Products/StoreProductRequest.php",
-      "source_location": "L13",
+      "source_location": "L12",
       "weight": 1.0,
       "_src": "products_storeproductrequest_storeproductrequest",
       "_tgt": "products_storeproductrequest_storeproductrequest_authorize",
@@ -15213,7 +15279,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "Http/Requests/Web/Products/StoreProductRequest.php",
-      "source_location": "L23",
+      "source_location": "L22",
       "weight": 1.0,
       "_src": "products_storeproductrequest_storeproductrequest",
       "_tgt": "products_storeproductrequest_storeproductrequest_rules",
@@ -15620,42 +15686,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "Http/Resources/PricingTierResource.php",
-      "source_location": "L8",
-      "weight": 1.0,
-      "_src": "http_resources_pricingtierresource_php",
-      "_tgt": "resources_pricingtierresource_pricingtierresource",
-      "source": "http_resources_pricingtierresource_php",
-      "target": "resources_pricingtierresource_pricingtierresource",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "Http/Resources/PricingTierResource.php",
-      "source_location": "L15",
-      "weight": 1.0,
-      "_src": "resources_pricingtierresource_pricingtierresource",
-      "_tgt": "resources_pricingtierresource_pricingtierresource_toarray",
-      "source": "resources_pricingtierresource_pricingtierresource",
-      "target": "resources_pricingtierresource_pricingtierresource_toarray",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "Http/Resources/ProductDetailResource.php",
-      "source_location": "L30",
-      "weight": 1.0,
-      "_src": "resources_productdetailresource_productdetailresource_toarray",
-      "_tgt": "resources_pricingtierresource_pricingtierresource",
-      "source": "resources_pricingtierresource_pricingtierresource",
-      "target": "resources_productdetailresource_productdetailresource_toarray"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "Http/Resources/CartResource.php",
       "source_location": "L8",
       "weight": 1.0,
@@ -15792,8 +15822,8 @@
       "source_file": "Http/Resources/ProductDetailResource.php",
       "source_location": "L29",
       "weight": 1.0,
-      "_src": "resources_productdetailresource_productdetailresource_toarray",
-      "_tgt": "resources_productimageresource_productimageresource",
+      "_src": "resources_productimageresource_productimageresource",
+      "_tgt": "resources_productdetailresource_productdetailresource_toarray",
       "source": "resources_productimageresource_productimageresource",
       "target": "resources_productdetailresource_productdetailresource_toarray"
     },
@@ -16491,126 +16521,6 @@
       "_tgt": "listeners_handlestripewebhook_handlestripewebhook_findorderbymetadata",
       "source": "listeners_handlestripewebhook_handlestripewebhook_findpendingorder",
       "target": "listeners_handlestripewebhook_handlestripewebhook_findorderbymetadata",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "Rules/NonOverlappingPricingTiers.php",
-      "source_location": "L8",
-      "weight": 1.0,
-      "_src": "rules_nonoverlappingpricingtiers_php",
-      "_tgt": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers",
-      "source": "rules_nonoverlappingpricingtiers_php",
-      "target": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "Rules/NonOverlappingPricingTiers.php",
-      "source_location": "L15",
-      "weight": 1.0,
-      "_src": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers",
-      "_tgt": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_validate",
-      "source": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers",
-      "target": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_validate",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "Rules/NonOverlappingPricingTiers.php",
-      "source_location": "L33",
-      "weight": 1.0,
-      "_src": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers",
-      "_tgt": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_findoverlap",
-      "source": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers",
-      "target": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_findoverlap",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "Rules/NonOverlappingPricingTiers.php",
-      "source_location": "L50",
-      "weight": 1.0,
-      "_src": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers",
-      "_tgt": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_hasunlimitedmax",
-      "source": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers",
-      "target": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_hasunlimitedmax",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "Rules/NonOverlappingPricingTiers.php",
-      "source_location": "L57",
-      "weight": 1.0,
-      "_src": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers",
-      "_tgt": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_rangesoverlap",
-      "source": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers",
-      "target": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_rangesoverlap",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "Rules/NonOverlappingPricingTiers.php",
-      "source_location": "L65",
-      "weight": 1.0,
-      "_src": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers",
-      "_tgt": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_overlapmessage",
-      "source": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers",
-      "target": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_overlapmessage",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "source_file": "Rules/NonOverlappingPricingTiers.php",
-      "source_location": "L24",
-      "weight": 1.0,
-      "_src": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_validate",
-      "_tgt": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_findoverlap",
-      "source": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_validate",
-      "target": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_findoverlap",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "source_file": "Rules/NonOverlappingPricingTiers.php",
-      "source_location": "L35",
-      "weight": 1.0,
-      "_src": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_findoverlap",
-      "_tgt": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_hasunlimitedmax",
-      "source": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_findoverlap",
-      "target": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_hasunlimitedmax",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "source_file": "Rules/NonOverlappingPricingTiers.php",
-      "source_location": "L36",
-      "weight": 1.0,
-      "_src": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_findoverlap",
-      "_tgt": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_overlapmessage",
-      "source": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_findoverlap",
-      "target": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_overlapmessage",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "source_file": "Rules/NonOverlappingPricingTiers.php",
-      "source_location": "L43",
-      "weight": 1.0,
-      "_src": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_findoverlap",
-      "_tgt": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_rangesoverlap",
-      "source": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_findoverlap",
-      "target": "rules_nonoverlappingpricingtiers_nonoverlappingpricingtiers_rangesoverlap",
       "confidence_score": 1.0
     },
     {

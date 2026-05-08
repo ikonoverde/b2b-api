@@ -3,12 +3,11 @@ import { useForm } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import type { PageProps } from '@/types';
 import type { Formula } from '@/Components/FormulaDropdown';
-import type { ProductFormData, Category, ExistingImage, PricingTier } from './types';
+import type { ProductFormData, Category, ExistingImage } from './types';
 import ProductFormHeader from './components/ProductFormHeader';
 import BasicInfoCard from './components/BasicInfoCard';
 import PricingInventoryCard from './components/PricingInventoryCard';
 import ShippingDimensionsCard from './components/ShippingDimensionsCard';
-import PricingTiersSection from './components/PricingTiersSection';
 import ImageSection from './components/ImageSection';
 import StatusCard from './components/StatusCard';
 
@@ -32,7 +31,6 @@ interface ProductData {
     is_featured: boolean;
     image_url?: string | null;
     images: ExistingImage[];
-    pricing_tiers: PricingTier[];
 }
 
 interface EditProductProps extends PageProps {
@@ -63,7 +61,6 @@ export default function Edit({ product, categories, formulas }: EditProductProps
         is_featured: product.is_featured,
         images: [],
         delete_images: [],
-        pricing_tiers: product.pricing_tiers || [],
         _method: 'put',
     });
 
@@ -107,12 +104,6 @@ export default function Edit({ product, categories, formulas }: EditProductProps
                             data={data}
                             setData={setData}
                             errors={errors}
-                        />
-
-                        <PricingTiersSection
-                            tiers={data.pricing_tiers}
-                            errors={errors}
-                            onTiersChange={(tiers) => setData('pricing_tiers', tiers)}
                         />
                     </div>
 

@@ -13,7 +13,7 @@ class ProductController extends Controller
 {
     public function show(Request $request, string $slug): Response
     {
-        $product = Product::with(['pricingTiers', 'images', 'category.parent'])
+        $product = Product::with(['images', 'category.parent'])
             ->where('slug', $slug)
             ->firstOrFail();
 
@@ -26,20 +26,6 @@ class ProductController extends Controller
             ->whereNull('deleted_at')
             ->limit(8)
             ->get();
-
-        $pricingTiers = $product->pricingTiers->map(fn ($tier) => [
-            'min_qty' => $tier->min_qty,
-            'max_qty' => $tier->max_qty,
-            'price' => (float) $tier->price,
-            'discount' => (float) $tier->discount,
-            'label' => $tier->label,
-        ]);
-
-        $lowestPrice = $pricingTiers->min('price') ?? $product->price;
-        $hasDiscount = $lowestPrice < $product->price;
-        $discountPercentage = $hasDiscount
-            ? round((($product->price - $lowestPrice) / $product->price) * 100)
-            : null;
 
         return Inertia::render('Product/Show', [
             'product' => [
@@ -54,8 +40,6 @@ class ProductController extends Controller
                 ],
                 'description' => Str::of($product->description)->markdown(),
                 'price' => (float) $product->price,
-                'sale_price' => $hasDiscount ? $lowestPrice : null,
-                'discount_percentage' => $discountPercentage,
                 'stock' => $product->stock,
                 'is_active' => $product->is_active,
                 'images' => $product->images->map(fn ($img) => [
@@ -63,7 +47,6 @@ class ProductController extends Controller
                     'url' => $img->image_url,
                     'position' => $img->position,
                 ]),
-                'pricing_tiers' => $pricingTiers,
                 'breadcrumbs' => $breadcrumbs,
             ],
             'related_products' => $relatedProducts->map(fn ($p) => [

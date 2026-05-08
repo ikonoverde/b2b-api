@@ -21,8 +21,8 @@ export default function GoogleCompleteRegistration() {
         <AuthShell
             title="Completar registro"
             eyebrow="01 · Completar registro"
-            headline="Datos de tu negocio"
-            sub="Para terminar de crear tu cuenta mayorista necesitamos un par de datos más."
+            headline="Un par de datos más"
+            sub="Para terminar de crear tu cuenta necesitamos un par de datos más."
         >
             <form onSubmit={handleSubmit} className="flex flex-col gap-8">
                 <div className="flex flex-col gap-6">

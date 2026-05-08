@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\Orders\ShowOrderController;
 use App\Http\Controllers\Admin\Orders\StoreOrderNoteController;
 use App\Http\Controllers\Admin\Orders\UpdateOrderStatusController;
 use App\Http\Controllers\Admin\Orders\UpdateOrderTrackingController;
+use App\Http\Controllers\Admin\Settings\ShowSettingsController;
+use App\Http\Controllers\Admin\Settings\UpdateSettingsController;
 use App\Http\Controllers\Admin\Users\IndexUsersController;
 use App\Http\Controllers\Admin\Users\SendUserPasswordResetController;
 use App\Http\Controllers\Admin\Users\ShowUserController;
@@ -94,4 +96,7 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
 
     Route::get('/businesses', IndexBusinessesController::class)->name('businesses');
     Route::post('/businesses/scrape', StartBusinessScrapeController::class)->name('businesses.scrape');
+
+    Route::get('/settings', ShowSettingsController::class)->name('settings.show');
+    Route::put('/settings', UpdateSettingsController::class)->name('settings.update');
 });

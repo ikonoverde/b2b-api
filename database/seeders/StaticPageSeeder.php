@@ -51,16 +51,16 @@ class StaticPageSeeder extends Seeder
         return <<<'MD'
 ## 1. Aceptación de los Términos
 
-Al acceder y utilizar la plataforma Ikonoverde Profesional, usted acepta quedar obligado por estos Términos y Condiciones. Si no está de acuerdo con alguna parte de estos términos, no podrá utilizar nuestros servicios.
+Al acceder y utilizar la tienda en línea de Ikonoverde, usted acepta quedar obligado por estos Términos y Condiciones. Si no está de acuerdo con alguna parte de estos términos, no podrá utilizar nuestros servicios.
 
 ## 2. Uso de la Plataforma
 
-Ikonoverde Profesional es una plataforma B2B diseñada para profesionales y empresas del sector. Para utilizar nuestros servicios, debe:
+Ikonoverde es una tienda en línea de cuidado corporal abierta a profesionales y a particulares por igual. No requerimos cantidad mínima — puede comprar desde una unidad. Para utilizar nuestros servicios, debe:
 
 - Ser mayor de edad y tener capacidad legal para contratar
 - Proporcionar información veraz, precisa y completa durante el registro
 - Mantener la confidencialidad de su cuenta y contraseña
-- Utilizar la plataforma únicamente para fines lícitos y profesionales
+- Utilizar la plataforma únicamente para fines lícitos
 
 ## 3. Cuenta de Usuario
 
@@ -75,9 +75,9 @@ Nos reservamos el derecho de suspender o terminar cuentas que violen estos térm
 
 ## 4. Pedidos y Pagos
 
-Los precios mostrados en la plataforma son exclusivos para usuarios registrados y pueden estar sujetos a cambios sin previo aviso. Al realizar un pedido:
+Los precios mostrados en la plataforma aplican por igual a todos los compradores y pueden estar sujetos a cambios sin previo aviso. Al realizar un pedido:
 
-- Los precios mostrados son precios mayoristas exclusivos
+- No requerimos cantidad mínima — puede comprar desde una unidad
 - Los pedidos están sujetos a disponibilidad de inventario
 - Los envíos gratuitos aplican a pedidos superiores al monto mínimo especificado
 - Los tiempos de entrega son estimados y pueden variar según la ubicación
@@ -210,7 +210,7 @@ Conservamos su información personal durante el tiempo necesario para cumplir co
 
 ## 8. Menores de Edad
 
-Ikonoverde Profesional es una plataforma B2B dirigida exclusivamente a profesionales y empresas. No recopilamos intencionalmente información de menores de 18 años. Si descubrimos que hemos recopilado datos de un menor, procederemos a eliminarlos de manera inmediata.
+Ikonoverde está dirigida a personas mayores de 18 años. No recopilamos intencionalmente información de menores de edad. Si descubrimos que hemos recopilado datos de un menor, procederemos a eliminarlos de manera inmediata.
 
 ## 9. Cambios a esta Política
 
@@ -231,22 +231,23 @@ MD;
         return <<<'MD'
 ## Nuestra Historia
 
-Ikonoverde nació con la misión de conectar a profesionales del sector con los mejores productos a precios mayoristas. Desde nuestros inicios en Yucatán, México, hemos crecido hasta convertirnos en un referente en el mercado B2B.
+Ikonoverde nació con la misión de hacer accesibles productos de cuidado corporal de calidad profesional para cualquier comprador, sin barreras ni cantidades mínimas. Desde nuestros inicios en Yucatán, México, atendemos por igual a spas, hoteles, centros de masaje y a quienes buscan un producto profesional para uso personal.
 
 ## Nuestra Misión
 
-Facilitar el acceso a productos de alta calidad a precios competitivos, brindando una experiencia de compra profesional, eficiente y confiable para nuestros clientes empresariales.
+Hacer que comprar productos de alta calidad sea fácil, rápido y transparente: el mismo precio para todos, desde una sola unidad, sin trámites.
 
 ## Nuestra Visión
 
-Ser la plataforma B2B líder en México, reconocida por la calidad de nuestros productos, la excelencia en el servicio y la innovación en soluciones para profesionales.
+Ser la tienda en línea de cuidado corporal de referencia en México, reconocida por la calidad de los productos, la claridad de los precios y una experiencia de compra sin fricciones.
 
 ## ¿Por qué Elegirnos?
 
-- **Precios Mayoristas**: Acceso exclusivo a precios competitivos para profesionales
-- **Catálogo Amplio**: Miles de productos de las mejores marcas
+- **Sin cantidad mínima**: Compra desde una unidad
+- **Mismo precio para todos**: Sin tarifas exclusivas ni gates de acceso
+- **Catálogo curado**: Productos seleccionados, sin relleno
 - **Envío Rápido**: Entregas eficientes en todo México
-- **Soporte Dedicado**: Equipo especializado para atender tus necesidades
+- **Soporte Dedicado**: Equipo disponible cuando lo necesitas
 
 ## Contacto
 

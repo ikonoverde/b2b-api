@@ -1,10 +1,10 @@
 import { Link, router } from '@inertiajs/react';
 import { Check, ChevronLeft, ChevronRight, Minus, Plus } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import type { ReactNode } from 'react';
 import CustomerShell from '@/Layouts/CustomerShell';
 import { formatCurrency } from '@/utils/currency';
-import type { BreadcrumbItem, PricingTier, ProductDetail, RelatedProduct } from '@/types';
+import type { BreadcrumbItem, ProductDetail, RelatedProduct } from '@/types';
 
 interface ProductShowProps {
     product: ProductDetail;
@@ -16,12 +16,7 @@ export default function ProductShow({ product, related_products }: ProductShowPr
     const [loading, setLoading] = useState(false);
     const [added, setAdded] = useState(false);
 
-    const activeTier = useMemo(
-        () => findActiveTier(product.pricing_tiers, quantity),
-        [product.pricing_tiers, quantity],
-    );
-
-    const unitPrice = activeTier?.price ?? product.sale_price ?? product.price;
+    const unitPrice = product.price;
     const totalPrice = unitPrice * quantity;
     const stockReady = product.stock > 0 && product.is_active;
 
@@ -61,7 +56,9 @@ export default function ProductShow({ product, related_products }: ProductShowPr
                             {product.name}
                         </h1>
                         <div className="mt-2 flex items-baseline gap-3">
-                            <PriceDisplay product={product} unitPrice={unitPrice} />
+                            <span className="font-spec text-[1.75rem] tabular-nums text-[var(--iko-stone-ink)]">
+                                {formatCurrency(unitPrice)}
+                            </span>
                         </div>
                     </header>
 
@@ -91,29 +88,6 @@ export default function ProductShow({ product, related_products }: ProductShowPr
                             />
                         )}
                     </SpecBlock>
-
-                    {product.pricing_tiers && product.pricing_tiers.length > 0 && (
-                        <section aria-labelledby="tiers-heading" className="flex flex-col gap-4">
-                            <SectionTitle id="tiers-heading" eyebrow="Volumen">
-                                Precios escalonados
-                            </SectionTitle>
-                            <ol className="border-t border-[var(--iko-stone-hairline)]">
-                                {product.pricing_tiers.map((tier, idx) => (
-                                    <PricingTierRow
-                                        key={idx}
-                                        tier={tier}
-                                        index={idx + 1}
-                                        isActive={activeTier === tier}
-                                    />
-                                ))}
-                            </ol>
-                            <p className="font-spec text-[11px] tabular-nums tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
-                                Tarifa actual ·{' '}
-                                <span className="text-[var(--iko-accent)]">{formatCurrency(unitPrice)}</span> /
-                                unidad
-                            </p>
-                        </section>
-                    )}
 
                     <section aria-labelledby="qty-heading" className="flex flex-col gap-4">
                         <SectionTitle id="qty-heading" eyebrow="Cantidad">
@@ -163,17 +137,6 @@ export default function ProductShow({ product, related_products }: ProductShowPr
 
             <RelatedProductsList products={related_products} />
         </CustomerShell>
-    );
-}
-
-function findActiveTier(tiers: PricingTier[] | undefined, qty: number): PricingTier | null {
-    if (!tiers?.length) {
-        return null;
-    }
-    return (
-        tiers.find(
-            (tier) => qty >= tier.min_qty && (tier.max_qty === null || qty <= tier.max_qty),
-        ) ?? null
     );
 }
 
@@ -270,30 +233,6 @@ function ImageGallery({
     );
 }
 
-function PriceDisplay({ product, unitPrice }: { product: ProductDetail; unitPrice: number }) {
-    if (product.sale_price && product.discount_percentage) {
-        return (
-            <>
-                <span className="font-spec text-[1.75rem] tabular-nums text-[var(--iko-stone-ink)]">
-                    {formatCurrency(unitPrice)}
-                </span>
-                <span className="font-spec text-[14px] tabular-nums text-[var(--iko-stone-whisper)] line-through">
-                    {formatCurrency(product.price)}
-                </span>
-                <span className="font-spec text-[11px] tracking-[0.04em] text-[var(--iko-accent)] uppercase">
-                    −{product.discount_percentage}%
-                </span>
-            </>
-        );
-    }
-
-    return (
-        <span className="font-spec text-[1.75rem] tabular-nums text-[var(--iko-stone-ink)]">
-            {formatCurrency(unitPrice)}
-        </span>
-    );
-}
-
 function SpecBlock({ children }: { children: ReactNode }) {
     return (
         <dl className="border-y border-[var(--iko-stone-hairline)]">
@@ -316,50 +255,6 @@ function SpecRow({ label, value, mono = false }: { label: string; value: string;
                 {value}
             </dd>
         </div>
-    );
-}
-
-function PricingTierRow({
-    tier,
-    index,
-    isActive,
-}: {
-    tier: PricingTier;
-    index: number;
-    isActive: boolean;
-}) {
-    const label = tier.max_qty
-        ? `${tier.min_qty}–${tier.max_qty} unidades`
-        : `${tier.min_qty}+ unidades`;
-
-    return (
-        <li
-            className={`grid grid-cols-[2.5rem_1fr_auto] items-center gap-4 border-b border-[var(--iko-stone-hairline)] py-3 transition-colors ${
-                isActive ? 'bg-[var(--iko-accent-soft)]' : ''
-            }`}
-        >
-            <span
-                className={`font-spec text-[11px] tabular-nums ${
-                    isActive ? 'text-[var(--iko-accent)]' : 'text-[var(--iko-stone-mid)]'
-                }`}
-            >
-                {String(index).padStart(2, '0')}
-            </span>
-            <span
-                className={`text-[14px] ${
-                    isActive ? 'text-[var(--iko-stone-ink)]' : 'text-[var(--iko-stone-whisper)]'
-                }`}
-            >
-                {label}
-            </span>
-            <span
-                className={`font-spec text-[14px] tabular-nums ${
-                    isActive ? 'text-[var(--iko-accent)]' : 'text-[var(--iko-stone-whisper)]'
-                }`}
-            >
-                {formatCurrency(tier.price)}
-            </span>
-        </li>
     );
 }
 

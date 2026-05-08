@@ -8,7 +8,6 @@ import ProductFormHeader from './components/ProductFormHeader';
 import BasicInfoCard from './components/BasicInfoCard';
 import PricingInventoryCard from './components/PricingInventoryCard';
 import ShippingDimensionsCard from './components/ShippingDimensionsCard';
-import PricingTiersSection from './components/PricingTiersSection';
 import ImageSection from './components/ImageSection';
 import StatusCard from './components/StatusCard';
 
@@ -36,7 +35,6 @@ export default function Create({ categories, formulas }: CreateProductProps) {
         is_active: true,
         is_featured: false,
         images: [],
-        pricing_tiers: [],
     });
 
     const handleSubmit = (e: FormEvent) => {
@@ -74,12 +72,6 @@ export default function Create({ categories, formulas }: CreateProductProps) {
                             data={data}
                             setData={setData}
                             errors={errors}
-                        />
-
-                        <PricingTiersSection
-                            tiers={data.pricing_tiers}
-                            errors={errors}
-                            onTiersChange={(tiers) => setData('pricing_tiers', tiers)}
                         />
                     </div>
 

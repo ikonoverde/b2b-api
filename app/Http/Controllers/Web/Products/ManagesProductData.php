@@ -47,13 +47,4 @@ trait ManagesProductData
             ProcessProductImage::dispatch($productImage);
         }
     }
-
-    private function syncPricingTiers(Product $product, array $pricingTiers): void
-    {
-        $product->pricingTiers()->delete();
-
-        if (! empty($pricingTiers)) {
-            $product->pricingTiers()->createMany($pricingTiers);
-        }
-    }
 }

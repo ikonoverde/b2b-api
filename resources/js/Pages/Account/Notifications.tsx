@@ -34,7 +34,7 @@ const TOGGLE_ITEMS: ToggleItem[] = [
         eyebrow: '02',
         label: 'Promociones',
         description:
-            'Avisos de ofertas mayoristas, cierres de mes y descuentos por volumen. Bajo volumen, sin spam.',
+            'Avisos de ofertas, descuentos por volumen y novedades del catálogo. Bajo volumen, sin spam.',
     },
     {
         key: 'notify_newsletter',

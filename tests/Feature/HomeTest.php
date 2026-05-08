@@ -25,7 +25,7 @@ it('passes featured products to the home page', function () {
             ->has('name')
             ->has('category')
             ->has('image_url')
-            ->missing('price')
+            ->where('price', fn ($price) => is_numeric($price))
         )
     );
 });

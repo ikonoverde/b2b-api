@@ -1,19 +1,15 @@
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import type { CSSProperties } from 'react';
+import { Link } from '@inertiajs/react';
 import type { BannerData } from '@/Components/BannerCard';
-import MiniCart from '@/Components/MiniCart';
-import Wordmark from '@/Components/Wordmark';
+import PublicShell from '@/Layouts/PublicShell';
 import type { PageProps } from '@/types';
+import { formatCurrency } from '@/utils/currency';
 
 /**
  * Public home for Ikonoverde.
  *
- * Editorial / specimen-sheet aesthetic per DESIGN.md:
- *   • Stone-paper surface, single mineral accent ≤10% of the screen.
- *   • Display serif (Fraunces) + neutral sans (Inter) + mono spec (JetBrains Mono).
- *   • Verde-In-Wordmark Rule: green appears only inside the literal "verde" of the wordmark.
- *   • Flat by default — no resting shadows, no rounded card grids, no sage gradients.
- *
+ * Renders for both anonymous and authenticated visitors. Chrome (header,
+ * footer, stone-paper surface, fonts) is owned by PublicShell, which adapts
+ * the nav for the current auth state.
  */
 
 interface FeaturedProduct {
@@ -22,6 +18,7 @@ interface FeaturedProduct {
     name: string;
     category: string | null;
     image_url: string | null;
+    price: number;
 }
 
 export interface HomeProps extends PageProps {
@@ -31,142 +28,32 @@ export interface HomeProps extends PageProps {
 
 export default function Home({ featuredProducts, banners }: HomeProps) {
     return (
-        <>
-            <Head title="Ikonoverde — Cuidado corporal profesional" />
-            <div
-                data-iko=""
-                className="relative min-h-screen bg-[var(--iko-stone-paper)] text-[var(--iko-stone-ink)] font-sans antialiased"
-                style={
-                    {
-                        fontFeatureSettings: '"ss01", "cv11"',
-                    } as CSSProperties
-                }
-            >
-                <SiteHeader />
-
-                <div className="px-6 sm:px-10 lg:px-16">
-                    <div className="mx-auto max-w-[72rem]">
-                        <Hero />
-                        <ValuePropStrip />
-                        <FeaturedList products={featuredProducts} />
-                        <BannersBlock banners={banners} />
-                        <SecondaryHandoff />
-                    </div>
-                </div>
-
-                <SiteFooter />
-            </div>
-        </>
+        <PublicShell title="Ikonoverde — Cuidado corporal profesional">
+            <Hero />
+            <ValuePropStrip />
+            <FeaturedList products={featuredProducts} />
+            <BannersBlock banners={banners} />
+            <SecondaryHandoff />
+        </PublicShell>
     );
 }
-
-/* ─────────────────────────────────────────────────────────
- * Header & Footer (intentionally NOT using PublicLayout —
- * that layout's sage-green header is an explicit anti-reference
- * in DESIGN.md and will be redesigned in a follow-up).
- * ───────────────────────────────────────────────────────── */
-
-function SiteHeader() {
-    const { auth, miniCart } = usePage<PageProps>().props;
-    const user = auth.user;
-    const { post, processing } = useForm({});
-
-    const handleLogout = (): void => {
-        post('/logout');
-    };
-
-    const navLinkClass =
-        'rounded-sm text-[var(--iko-stone-ink)] transition-colors hover:text-[var(--iko-accent)] focus-visible:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)]';
-
-    return (
-        <header className="border-b border-[var(--iko-stone-hairline)]">
-            <div className="mx-auto flex max-w-[72rem] items-center justify-between px-6 py-5 sm:px-10 lg:px-16">
-                <Link href="/" className="group flex items-baseline shrink-0" aria-label="Ikonoverde — Inicio">
-                    <Wordmark />
-                </Link>
-
-                <nav className="flex items-center gap-6 text-[13px]">
-                    <Link href="/catalog" className={navLinkClass}>
-                        Catálogo
-                    </Link>
-
-                    {user ? (
-                        <>
-                            <MiniCart miniCart={miniCart ?? { items: [], subtotal: 0, totalCount: 0 }} />
-                            <Link
-                                href="/account"
-                                className={`hidden h-9 items-center gap-2.5 border border-[var(--iko-stone-hairline)] px-3 text-[13px] text-[var(--iko-stone-ink)] hover:border-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] sm:inline-flex`}
-                            >
-                                <span className="font-spec text-[11px] tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
-                                    {user.initials}
-                                </span>
-                                <span>Cuenta</span>
-                            </Link>
-                            <button
-                                type="button"
-                                onClick={handleLogout}
-                                disabled={processing}
-                                className="hidden text-[13px] text-[var(--iko-stone-whisper)] transition-colors hover:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] sm:inline"
-                                aria-label="Cerrar sesión"
-                            >
-                                Salir
-                            </button>
-                        </>
-                    ) : (
-                        <Link href="/login" className={navLinkClass}>
-                            Ingresar
-                        </Link>
-                    )}
-                </nav>
-            </div>
-        </header>
-    );
-}
-
-function SiteFooter() {
-    return (
-        <footer className="mt-32 border-t border-[var(--iko-stone-hairline)]">
-            <div className="mx-auto flex max-w-[72rem] flex-col gap-3 px-6 py-10 sm:flex-row sm:items-baseline sm:justify-between sm:px-10 lg:px-16">
-                <span className="font-spec text-[11px] tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
-                    © {new Date().getFullYear()} Ikonoverde · Cuidado corporal profesional
-                </span>
-                <div className="flex items-center gap-6 text-[13px]">
-                    <Link
-                        href="/terms"
-                        className="text-[var(--iko-stone-whisper)] hover:text-[var(--iko-stone-ink)] transition-colors"
-                    >
-                        Términos
-                    </Link>
-                    <Link
-                        href="/privacy"
-                        className="text-[var(--iko-stone-whisper)] hover:text-[var(--iko-stone-ink)] transition-colors"
-                    >
-                        Privacidad
-                    </Link>
-                </div>
-            </div>
-        </footer>
-    );
-}
-
-
 
 /* ─────────────────────────────────────────────────────────
  * Hero — typographic only, no imagery.
- * One accent-colored underline mark on the word "reordenar".
+ * Accent underline lands on "merecen" — the confidence beat.
  * ───────────────────────────────────────────────────────── */
 
 function Hero() {
     return (
         <section className="pt-20 pb-24 sm:pt-28 sm:pb-32">
             <p className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-stone-whisper)] uppercase">
-                Ikonoverde · Cuidado corporal profesional
+                Ikonoverde · Aceite de masaje profesional
             </p>
 
             <h1 className="mt-6 max-w-[22ch] font-display text-[clamp(2.5rem,6vw,4.5rem)] font-normal leading-[1.02] tracking-[-0.015em] text-[var(--iko-stone-ink)]">
-                Aceite de masaje profesional, hecho para{' '}
+                El aceite de masaje que tus manos{' '}
                 <span className="relative whitespace-nowrap">
-                    reordenar
+                    merecen
                     <span
                         aria-hidden="true"
                         className="absolute right-0 bottom-[0.08em] left-0 h-[0.08em] bg-[var(--iko-accent)]"
@@ -176,21 +63,21 @@ function Hero() {
             </h1>
 
             <p className="mt-8 max-w-[52ch] text-[17px] leading-[1.55] text-[var(--iko-stone-ink)]/80">
-                Formulado para spas, hoteles y centros de masaje. Disponible en formato mayorista o por unidad.
+                Formulado para spas, hoteles y uso personal. Una unidad o veinte, al mismo precio.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
                 <Link
-                    href="/register"
+                    href="/catalog"
                     className="inline-flex items-center bg-[var(--iko-accent)] px-7 py-3.5 text-[14px] font-medium text-[var(--iko-accent-on)] tracking-[0.01em] hover:bg-[var(--iko-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] transition-colors"
                 >
-                    Crear cuenta mayorista
+                    Ver el catálogo
                 </Link>
                 <Link
-                    href="/catalog"
+                    href="/register"
                     className="group inline-flex items-baseline gap-2 text-[14px] font-medium text-[var(--iko-stone-ink)] hover:text-[var(--iko-accent)] focus-visible:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] rounded-sm transition-colors"
                 >
-                    Ver catálogo
+                    Crear cuenta
                     <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
                         →
                     </span>
@@ -201,17 +88,14 @@ function Hero() {
 }
 
 /* ─────────────────────────────────────────────────────────
- * Value-prop strip — mono labels + serif/sans values,
- * separated by hairline rules. Not card medallions.
- *
- * NOTE: values below are placeholders pending business confirmation.
- * Replace before wider launch.
+ * Value-prop strip — mono labels + serif values, hairline-separated.
+ * Each entry maps to a "no artificial gates" principle from PRODUCT.md.
  * ───────────────────────────────────────────────────────── */
 
 const VALUE_PROPS = [
     { label: 'Pedido mínimo', value: '1 unidad' },
-    { label: 'Plazos B2B', value: 'A medida' },
-    { label: 'Envío', value: 'Coordinado por pedido' },
+    { label: 'Precio', value: 'Igual para todos' },
+    { label: 'Cuenta', value: 'Opcional' },
 ] as const;
 
 function ValuePropStrip() {
@@ -236,7 +120,8 @@ function ValuePropStrip() {
 
 /* ─────────────────────────────────────────────────────────
  * Featured products — spec-sheet list, NOT a card grid.
- * Numbered rows: mono index · serif name · sans category · locked-price affordance.
+ * Numbered rows: mono index · serif name · sans category · mono price.
+ * Prices are public per PRODUCT.md — no login gate, no lock affordance.
  * ───────────────────────────────────────────────────────── */
 
 function FeaturedList({ products }: { products: FeaturedProduct[] }) {
@@ -245,11 +130,13 @@ function FeaturedList({ products }: { products: FeaturedProduct[] }) {
             <section className="py-20">
                 <SectionHeader index="01" eyebrow="Catálogo" title="Productos destacados" />
                 <p className="mt-10 max-w-[60ch] text-[15px] leading-[1.6] text-[var(--iko-stone-whisper)]">
-                    Catálogo completo disponible al{' '}
-                    <Link href="/login" className="text-[var(--iko-accent)] underline-offset-4 hover:underline">
-                        iniciar sesión
+                    Aún no hay productos destacados. El catálogo completo está disponible.{' '}
+                    <Link
+                        href="/catalog"
+                        className="text-[var(--iko-accent)] underline-offset-4 hover:underline"
+                    >
+                        Ver catálogo →
                     </Link>
-                    .
                 </p>
             </section>
         );
@@ -292,33 +179,14 @@ function FeaturedList({ products }: { products: FeaturedProduct[] }) {
                                 )}
                             </span>
 
-                            <span className="flex items-center gap-2 font-spec text-[11px] tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
-                                <LockGlyph />
-                                <span className="hidden sm:inline">Iniciar sesión para ver el precio</span>
-                                <span className="sm:hidden">Ver precio</span>
+                            <span className="font-spec text-[15px] tabular-nums text-[var(--iko-stone-ink)]">
+                                {formatCurrency(product.price)}
                             </span>
                         </Link>
                     </li>
                 ))}
             </ol>
         </section>
-    );
-}
-
-function LockGlyph() {
-    return (
-        <svg
-            width="11"
-            height="11"
-            viewBox="0 0 12 12"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.25"
-            aria-hidden="true"
-        >
-            <rect x="2.5" y="5.5" width="7" height="5" rx="0.5" />
-            <path d="M4 5.5V3.5a2 2 0 1 1 4 0v2" />
-        </svg>
     );
 }
 
@@ -401,21 +269,20 @@ function bannerHref(banner: BannerData): string | null {
 }
 
 /* ─────────────────────────────────────────────────────────
- * Footer hand-off — explicit secondary path for individual buyers.
+ * Footer hand-off — final reinforcement of the one-track buying premise.
  * ───────────────────────────────────────────────────────── */
 
 function SecondaryHandoff() {
     return (
         <section className="border-t border-[var(--iko-stone-hairline)] py-16">
             <p className="text-[15px] leading-[1.55] text-[var(--iko-stone-whisper)]">
-                ¿Compra individual?{' '}
+                Empieza por el catálogo. Una unidad o veinte, mismo trato.{' '}
                 <Link
                     href="/catalog"
                     className="text-[var(--iko-stone-ink)] underline decoration-[var(--iko-stone-mid)] underline-offset-4 transition-colors hover:text-[var(--iko-accent)] hover:decoration-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] rounded-sm"
                 >
-                    Ir al catálogo
+                    Ver catálogo →
                 </Link>
-                .
             </p>
         </section>
     );

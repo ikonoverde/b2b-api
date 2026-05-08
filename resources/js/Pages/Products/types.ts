@@ -1,11 +1,3 @@
-export interface PricingTier {
-    min_qty: string;
-    max_qty: string;
-    price: string;
-    discount: string;
-    label: string;
-}
-
 export interface Category {
     id: number;
     name: string;
@@ -36,5 +28,4 @@ export interface ProductFormData {
     depth_cm: string;
     images: File[];
     delete_images?: number[];
-    pricing_tiers: PricingTier[];
 }

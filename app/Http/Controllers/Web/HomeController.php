@@ -19,7 +19,7 @@ class HomeController extends Controller
     }
 
     /**
-     * @return array{id: int, slug: string, name: string, category: ?string, image_url: ?string}
+     * @return array{id: int, slug: string, name: string, category: ?string, image_url: ?string, price: float}
      */
     public static function toCardPayload(Product $product): array
     {
@@ -29,6 +29,7 @@ class HomeController extends Controller
             'name' => $product->name,
             'category' => $product->category?->name,
             'image_url' => $product->images->first()?->image_url,
+            'price' => (float) $product->price,
         ];
     }
 }
