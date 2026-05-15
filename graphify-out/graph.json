@@ -4,6 +4,33 @@
   "graph": {},
   "nodes": [
     {
+      "label": "GenerateImageCommand.php",
+      "file_type": "code",
+      "source_file": "Console/Commands/GenerateImageCommand.php",
+      "source_location": "L1",
+      "id": "console_commands_generateimagecommand_php",
+      "community": 62,
+      "norm_label": "generateimagecommand.php"
+    },
+    {
+      "label": "GenerateImageCommand",
+      "file_type": "code",
+      "source_file": "Console/Commands/GenerateImageCommand.php",
+      "source_location": "L13",
+      "id": "commands_generateimagecommand_generateimagecommand",
+      "community": 62,
+      "norm_label": "generateimagecommand"
+    },
+    {
+      "label": ".handle()",
+      "file_type": "code",
+      "source_file": "Console/Commands/GenerateImageCommand.php",
+      "source_location": "L41",
+      "id": "commands_generateimagecommand_generateimagecommand_handle",
+      "community": 62,
+      "norm_label": ".handle()"
+    },
+    {
       "label": "TelescopeServiceProvider.php",
       "file_type": "code",
       "source_file": "Providers/TelescopeServiceProvider.php",
@@ -90,7 +117,7 @@
       "source_file": "Providers/HorizonServiceProvider.php",
       "source_location": "L1",
       "id": "providers_horizonserviceprovider_php",
-      "community": 10,
+      "community": 11,
       "norm_label": "horizonserviceprovider.php"
     },
     {
@@ -99,7 +126,7 @@
       "source_file": "Providers/HorizonServiceProvider.php",
       "source_location": "L9",
       "id": "providers_horizonserviceprovider_horizonserviceprovider",
-      "community": 10,
+      "community": 11,
       "norm_label": "horizonserviceprovider"
     },
     {
@@ -108,7 +135,7 @@
       "source_file": "Providers/HorizonServiceProvider.php",
       "source_location": "L14",
       "id": "providers_horizonserviceprovider_horizonserviceprovider_boot",
-      "community": 10,
+      "community": 11,
       "norm_label": ".boot()"
     },
     {
@@ -117,7 +144,7 @@
       "source_file": "Providers/HorizonServiceProvider.php",
       "source_location": "L28",
       "id": "providers_horizonserviceprovider_horizonserviceprovider_gate",
-      "community": 10,
+      "community": 11,
       "norm_label": ".gate()"
     },
     {
@@ -333,7 +360,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L1",
       "id": "services_skydropxservice_php",
-      "community": 11,
+      "community": 10,
       "norm_label": "skydropxservice.php"
     },
     {
@@ -342,7 +369,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L12",
       "id": "services_skydropxservice_skydropxservice",
-      "community": 11,
+      "community": 10,
       "norm_label": "skydropxservice"
     },
     {
@@ -351,7 +378,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L14",
       "id": "services_skydropxservice_skydropxservice_construct",
-      "community": 11,
+      "community": 10,
       "norm_label": ".__construct()"
     },
     {
@@ -360,7 +387,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L25",
       "id": "services_skydropxservice_skydropxservice_getquotes",
-      "community": 11,
+      "community": 10,
       "norm_label": ".getquotes()"
     },
     {
@@ -369,7 +396,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L53",
       "id": "services_skydropxservice_skydropxservice_getquote",
-      "community": 11,
+      "community": 10,
       "norm_label": ".getquote()"
     },
     {
@@ -378,7 +405,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L90",
       "id": "services_skydropxservice_skydropxservice_fetchquotes",
-      "community": 11,
+      "community": 10,
       "norm_label": ".fetchquotes()"
     },
     {
@@ -387,7 +414,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L111",
       "id": "services_skydropxservice_skydropxservice_requestquotation",
-      "community": 11,
+      "community": 10,
       "norm_label": ".requestquotation()"
     },
     {
@@ -396,7 +423,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L167",
       "id": "services_skydropxservice_skydropxservice_polluntilcompleted",
-      "community": 11,
+      "community": 10,
       "norm_label": ".polluntilcompleted()"
     },
     {
@@ -405,7 +432,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L191",
       "id": "services_skydropxservice_skydropxservice_getoauthtoken",
-      "community": 11,
+      "community": 10,
       "norm_label": ".getoauthtoken()"
     },
     {
@@ -414,7 +441,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L208",
       "id": "services_skydropxservice_skydropxservice_requesttokenviacredentials",
-      "community": 11,
+      "community": 10,
       "norm_label": ".requesttokenviacredentials()"
     },
     {
@@ -423,7 +450,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L227",
       "id": "services_skydropxservice_skydropxservice_requesttokenviarefresh",
-      "community": 11,
+      "community": 10,
       "norm_label": ".requesttokenviarefresh()"
     },
     {
@@ -432,7 +459,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L251",
       "id": "services_skydropxservice_skydropxservice_cachetokenresponse",
-      "community": 11,
+      "community": 10,
       "norm_label": ".cachetokenresponse()"
     },
     {
@@ -441,7 +468,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L274",
       "id": "services_skydropxservice_skydropxservice_normalizeresponse",
-      "community": 11,
+      "community": 10,
       "norm_label": ".normalizeresponse()"
     },
     {
@@ -450,7 +477,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L303",
       "id": "services_skydropxservice_skydropxservice_createshipment",
-      "community": 11,
+      "community": 10,
       "norm_label": ".createshipment()"
     },
     {
@@ -459,7 +486,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L352",
       "id": "services_skydropxservice_skydropxservice_buildshipmentpayload",
-      "community": 11,
+      "community": 10,
       "norm_label": ".buildshipmentpayload()"
     },
     {
@@ -468,7 +495,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L388",
       "id": "services_skydropxservice_skydropxservice_gettracking",
-      "community": 11,
+      "community": 10,
       "norm_label": ".gettracking()"
     },
     {
@@ -477,7 +504,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L427",
       "id": "services_skydropxservice_skydropxservice_gettrackinginfo",
-      "community": 11,
+      "community": 10,
       "norm_label": ".gettrackinginfo()"
     },
     {
@@ -486,7 +513,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L447",
       "id": "services_skydropxservice_skydropxservice_polluntiltracking",
-      "community": 11,
+      "community": 10,
       "norm_label": ".polluntiltracking()"
     },
     {
@@ -495,7 +522,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L477",
       "id": "services_skydropxservice_skydropxservice_getlabel",
-      "community": 11,
+      "community": 10,
       "norm_label": ".getlabel()"
     },
     {
@@ -504,7 +531,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L510",
       "id": "services_skydropxservice_skydropxservice_fulladdressfrom",
-      "community": 11,
+      "community": 10,
       "norm_label": ".fulladdressfrom()"
     },
     {
@@ -513,7 +540,7 @@
       "source_file": "Services/SkydropxService.php",
       "source_location": "L528",
       "id": "services_skydropxservice_skydropxservice_addressfrom",
-      "community": 11,
+      "community": 10,
       "norm_label": ".addressfrom()"
     },
     {
@@ -1215,7 +1242,7 @@
       "source_file": "Models/Category.php",
       "source_location": "L1",
       "id": "models_category_php",
-      "community": 10,
+      "community": 11,
       "norm_label": "category.php"
     },
     {
@@ -1224,7 +1251,7 @@
       "source_file": "Models/Category.php",
       "source_location": "L11",
       "id": "models_category_category",
-      "community": 10,
+      "community": 11,
       "norm_label": "category"
     },
     {
@@ -1233,7 +1260,7 @@
       "source_file": "Models/Category.php",
       "source_location": "L28",
       "id": "models_category_category_casts",
-      "community": 10,
+      "community": 11,
       "norm_label": ".casts()"
     },
     {
@@ -1242,7 +1269,7 @@
       "source_file": "Models/Category.php",
       "source_location": "L38",
       "id": "models_category_category_products",
-      "community": 10,
+      "community": 11,
       "norm_label": ".products()"
     },
     {
@@ -1251,7 +1278,7 @@
       "source_file": "Models/Category.php",
       "source_location": "L47",
       "id": "models_category_category_scopeactive",
-      "community": 10,
+      "community": 11,
       "norm_label": ".scopeactive()"
     },
     {
@@ -1260,7 +1287,7 @@
       "source_file": "Models/Category.php",
       "source_location": "L52",
       "id": "models_category_category_parent",
-      "community": 10,
+      "community": 11,
       "norm_label": ".parent()"
     },
     {
@@ -1269,7 +1296,7 @@
       "source_file": "Models/Category.php",
       "source_location": "L57",
       "id": "models_category_category_children",
-      "community": 10,
+      "community": 11,
       "norm_label": ".children()"
     },
     {
@@ -1350,7 +1377,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L59",
       "id": "models_product_product_boot",
-      "community": 10,
+      "community": 11,
       "norm_label": ".boot()"
     },
     {
@@ -1818,7 +1845,7 @@
       "source_file": "Http/Controllers/ProductDetailController.php",
       "source_location": "L1",
       "id": "http_controllers_productdetailcontroller_php",
-      "community": 62,
+      "community": 63,
       "norm_label": "productdetailcontroller.php"
     },
     {
@@ -1827,7 +1854,7 @@
       "source_file": "Http/Controllers/ProductDetailController.php",
       "source_location": "L13",
       "id": "controllers_productdetailcontroller_productdetailcontroller",
-      "community": 62,
+      "community": 63,
       "norm_label": "productdetailcontroller"
     },
     {
@@ -1836,7 +1863,7 @@
       "source_file": "Http/Controllers/ProductDetailController.php",
       "source_location": "L23",
       "id": "controllers_productdetailcontroller_productdetailcontroller_invoke",
-      "community": 62,
+      "community": 63,
       "norm_label": ".__invoke()"
     },
     {
@@ -1872,7 +1899,7 @@
       "source_file": "Http/Controllers/UpdateUserController.php",
       "source_location": "L1",
       "id": "http_controllers_updateusercontroller_php",
-      "community": 63,
+      "community": 64,
       "norm_label": "updateusercontroller.php"
     },
     {
@@ -1881,7 +1908,7 @@
       "source_file": "Http/Controllers/UpdateUserController.php",
       "source_location": "L13",
       "id": "controllers_updateusercontroller_updateusercontroller",
-      "community": 63,
+      "community": 64,
       "norm_label": "updateusercontroller"
     },
     {
@@ -1890,7 +1917,7 @@
       "source_file": "Http/Controllers/UpdateUserController.php",
       "source_location": "L32",
       "id": "controllers_updateusercontroller_updateusercontroller_invoke",
-      "community": 63,
+      "community": 64,
       "norm_label": ".__invoke()"
     },
     {
@@ -1926,7 +1953,7 @@
       "source_file": "Http/Controllers/Controller.php",
       "source_location": "L1",
       "id": "http_controllers_controller_php",
-      "community": 94,
+      "community": 95,
       "norm_label": "controller.php"
     },
     {
@@ -1935,7 +1962,7 @@
       "source_file": "Http/Controllers/Controller.php",
       "source_location": "L5",
       "id": "controllers_controller_controller",
-      "community": 94,
+      "community": 95,
       "norm_label": "controller"
     },
     {
@@ -1944,7 +1971,7 @@
       "source_file": "Http/Controllers/UserController.php",
       "source_location": "L1",
       "id": "http_controllers_usercontroller_php",
-      "community": 64,
+      "community": 65,
       "norm_label": "usercontroller.php"
     },
     {
@@ -1953,7 +1980,7 @@
       "source_file": "Http/Controllers/UserController.php",
       "source_location": "L13",
       "id": "controllers_usercontroller_usercontroller",
-      "community": 64,
+      "community": 65,
       "norm_label": "usercontroller"
     },
     {
@@ -1962,7 +1989,7 @@
       "source_file": "Http/Controllers/UserController.php",
       "source_location": "L25",
       "id": "controllers_usercontroller_usercontroller_invoke",
-      "community": 64,
+      "community": 65,
       "norm_label": ".__invoke()"
     },
     {
@@ -1998,7 +2025,7 @@
       "source_file": "Http/Controllers/Admin/Users/ToggleUserActiveController.php",
       "source_location": "L1",
       "id": "http_controllers_admin_users_toggleuseractivecontroller_php",
-      "community": 65,
+      "community": 66,
       "norm_label": "toggleuseractivecontroller.php"
     },
     {
@@ -2007,7 +2034,7 @@
       "source_file": "Http/Controllers/Admin/Users/ToggleUserActiveController.php",
       "source_location": "L11",
       "id": "users_toggleuseractivecontroller_toggleuseractivecontroller",
-      "community": 65,
+      "community": 66,
       "norm_label": "toggleuseractivecontroller"
     },
     {
@@ -2016,7 +2043,7 @@
       "source_file": "Http/Controllers/Admin/Users/ToggleUserActiveController.php",
       "source_location": "L15",
       "id": "users_toggleuseractivecontroller_toggleuseractivecontroller_invoke",
-      "community": 65,
+      "community": 66,
       "norm_label": ".__invoke()"
     },
     {
@@ -2052,7 +2079,7 @@
       "source_file": "Http/Controllers/Admin/Users/ShowUserController.php",
       "source_location": "L1",
       "id": "http_controllers_admin_users_showusercontroller_php",
-      "community": 66,
+      "community": 67,
       "norm_label": "showusercontroller.php"
     },
     {
@@ -2061,7 +2088,7 @@
       "source_file": "Http/Controllers/Admin/Users/ShowUserController.php",
       "source_location": "L11",
       "id": "users_showusercontroller_showusercontroller",
-      "community": 66,
+      "community": 67,
       "norm_label": "showusercontroller"
     },
     {
@@ -2070,7 +2097,7 @@
       "source_file": "Http/Controllers/Admin/Users/ShowUserController.php",
       "source_location": "L15",
       "id": "users_showusercontroller_showusercontroller_invoke",
-      "community": 66,
+      "community": 67,
       "norm_label": ".__invoke()"
     },
     {
@@ -2079,7 +2106,7 @@
       "source_file": "Http/Controllers/Admin/Users/UpdateUserRoleController.php",
       "source_location": "L1",
       "id": "http_controllers_admin_users_updateuserrolecontroller_php",
-      "community": 67,
+      "community": 68,
       "norm_label": "updateuserrolecontroller.php"
     },
     {
@@ -2088,7 +2115,7 @@
       "source_file": "Http/Controllers/Admin/Users/UpdateUserRoleController.php",
       "source_location": "L11",
       "id": "users_updateuserrolecontroller_updateuserrolecontroller",
-      "community": 67,
+      "community": 68,
       "norm_label": "updateuserrolecontroller"
     },
     {
@@ -2097,7 +2124,7 @@
       "source_file": "Http/Controllers/Admin/Users/UpdateUserRoleController.php",
       "source_location": "L15",
       "id": "users_updateuserrolecontroller_updateuserrolecontroller_invoke",
-      "community": 67,
+      "community": 68,
       "norm_label": ".__invoke()"
     },
     {
@@ -2106,7 +2133,7 @@
       "source_file": "Http/Controllers/Admin/Users/Concerns/BuildsUserShowResponse.php",
       "source_location": "L1",
       "id": "http_controllers_admin_users_concerns_buildsusershowresponse_php",
-      "community": 95,
+      "community": 96,
       "norm_label": "buildsusershowresponse.php"
     },
     {
@@ -2115,7 +2142,7 @@
       "source_file": "Http/Controllers/Admin/Users/Concerns/BuildsUserShowResponse.php",
       "source_location": "L14",
       "id": "concerns_buildsusershowresponse_renderusershow",
-      "community": 95,
+      "community": 96,
       "norm_label": "renderusershow()"
     },
     {
@@ -2232,7 +2259,7 @@
       "source_file": "Http/Controllers/Admin/Orders/ShowOrderController.php",
       "source_location": "L1",
       "id": "http_controllers_admin_orders_showordercontroller_php",
-      "community": 68,
+      "community": 69,
       "norm_label": "showordercontroller.php"
     },
     {
@@ -2241,7 +2268,7 @@
       "source_file": "Http/Controllers/Admin/Orders/ShowOrderController.php",
       "source_location": "L10",
       "id": "orders_showordercontroller_showordercontroller",
-      "community": 68,
+      "community": 69,
       "norm_label": "showordercontroller"
     },
     {
@@ -2250,7 +2277,7 @@
       "source_file": "Http/Controllers/Admin/Orders/ShowOrderController.php",
       "source_location": "L14",
       "id": "orders_showordercontroller_showordercontroller_invoke",
-      "community": 68,
+      "community": 69,
       "norm_label": ".__invoke()"
     },
     {
@@ -2304,7 +2331,7 @@
       "source_file": "Http/Controllers/Admin/Orders/UpdateOrderTrackingController.php",
       "source_location": "L1",
       "id": "http_controllers_admin_orders_updateordertrackingcontroller_php",
-      "community": 69,
+      "community": 70,
       "norm_label": "updateordertrackingcontroller.php"
     },
     {
@@ -2313,7 +2340,7 @@
       "source_file": "Http/Controllers/Admin/Orders/UpdateOrderTrackingController.php",
       "source_location": "L13",
       "id": "orders_updateordertrackingcontroller_updateordertrackingcontroller",
-      "community": 69,
+      "community": 70,
       "norm_label": "updateordertrackingcontroller"
     },
     {
@@ -2322,7 +2349,7 @@
       "source_file": "Http/Controllers/Admin/Orders/UpdateOrderTrackingController.php",
       "source_location": "L17",
       "id": "orders_updateordertrackingcontroller_updateordertrackingcontroller_invoke",
-      "community": 69,
+      "community": 70,
       "norm_label": ".__invoke()"
     },
     {
@@ -2331,7 +2358,7 @@
       "source_file": "Http/Controllers/Admin/Orders/UpdateOrderStatusController.php",
       "source_location": "L1",
       "id": "http_controllers_admin_orders_updateorderstatuscontroller_php",
-      "community": 70,
+      "community": 71,
       "norm_label": "updateorderstatuscontroller.php"
     },
     {
@@ -2340,7 +2367,7 @@
       "source_file": "Http/Controllers/Admin/Orders/UpdateOrderStatusController.php",
       "source_location": "L13",
       "id": "orders_updateorderstatuscontroller_updateorderstatuscontroller",
-      "community": 70,
+      "community": 71,
       "norm_label": "updateorderstatuscontroller"
     },
     {
@@ -2349,7 +2376,7 @@
       "source_file": "Http/Controllers/Admin/Orders/UpdateOrderStatusController.php",
       "source_location": "L17",
       "id": "orders_updateorderstatuscontroller_updateorderstatuscontroller_invoke",
-      "community": 70,
+      "community": 71,
       "norm_label": ".__invoke()"
     },
     {
@@ -2358,7 +2385,7 @@
       "source_file": "Http/Controllers/Admin/Orders/StoreOrderNoteController.php",
       "source_location": "L1",
       "id": "http_controllers_admin_orders_storeordernotecontroller_php",
-      "community": 71,
+      "community": 72,
       "norm_label": "storeordernotecontroller.php"
     },
     {
@@ -2367,7 +2394,7 @@
       "source_file": "Http/Controllers/Admin/Orders/StoreOrderNoteController.php",
       "source_location": "L11",
       "id": "orders_storeordernotecontroller_storeordernotecontroller",
-      "community": 71,
+      "community": 72,
       "norm_label": "storeordernotecontroller"
     },
     {
@@ -2376,7 +2403,7 @@
       "source_file": "Http/Controllers/Admin/Orders/StoreOrderNoteController.php",
       "source_location": "L15",
       "id": "orders_storeordernotecontroller_storeordernotecontroller_invoke",
-      "community": 71,
+      "community": 72,
       "norm_label": ".__invoke()"
     },
     {
@@ -2457,7 +2484,7 @@
       "source_file": "Http/Controllers/Admin/Orders/Concerns/BuildsOrderShowResponse.php",
       "source_location": "L1",
       "id": "http_controllers_admin_orders_concerns_buildsordershowresponse_php",
-      "community": 72,
+      "community": 73,
       "norm_label": "buildsordershowresponse.php"
     },
     {
@@ -2466,7 +2493,7 @@
       "source_file": "Http/Controllers/Admin/Orders/Concerns/BuildsOrderShowResponse.php",
       "source_location": "L13",
       "id": "concerns_buildsordershowresponse_renderordershow",
-      "community": 72,
+      "community": 73,
       "norm_label": "renderordershow()"
     },
     {
@@ -2475,7 +2502,7 @@
       "source_file": "Http/Controllers/Admin/Orders/Concerns/BuildsOrderShowResponse.php",
       "source_location": "L38",
       "id": "concerns_buildsordershowresponse_formatorder",
-      "community": 72,
+      "community": 73,
       "norm_label": "formatorder()"
     },
     {
@@ -2619,7 +2646,7 @@
       "source_file": "Http/Controllers/PaymentMethods/CreateSetupSessionController.php",
       "source_location": "L1",
       "id": "http_controllers_paymentmethods_createsetupsessioncontroller_php",
-      "community": 73,
+      "community": 74,
       "norm_label": "createsetupsessioncontroller.php"
     },
     {
@@ -2628,7 +2655,7 @@
       "source_file": "Http/Controllers/PaymentMethods/CreateSetupSessionController.php",
       "source_location": "L13",
       "id": "paymentmethods_createsetupsessioncontroller_createsetupsessioncontroller",
-      "community": 73,
+      "community": 74,
       "norm_label": "createsetupsessioncontroller"
     },
     {
@@ -2637,7 +2664,7 @@
       "source_file": "Http/Controllers/PaymentMethods/CreateSetupSessionController.php",
       "source_location": "L32",
       "id": "paymentmethods_createsetupsessioncontroller_createsetupsessioncontroller_invoke",
-      "community": 73,
+      "community": 74,
       "norm_label": ".__invoke()"
     },
     {
@@ -2754,7 +2781,7 @@
       "source_file": "Http/Controllers/Addresses/DestroyAddressController.php",
       "source_location": "L1",
       "id": "http_controllers_addresses_destroyaddresscontroller_php",
-      "community": 74,
+      "community": 75,
       "norm_label": "destroyaddresscontroller.php"
     },
     {
@@ -2763,7 +2790,7 @@
       "source_file": "Http/Controllers/Addresses/DestroyAddressController.php",
       "source_location": "L13",
       "id": "addresses_destroyaddresscontroller_destroyaddresscontroller",
-      "community": 74,
+      "community": 75,
       "norm_label": "destroyaddresscontroller"
     },
     {
@@ -2772,7 +2799,7 @@
       "source_file": "Http/Controllers/Addresses/DestroyAddressController.php",
       "source_location": "L29",
       "id": "addresses_destroyaddresscontroller_destroyaddresscontroller_invoke",
-      "community": 74,
+      "community": 75,
       "norm_label": ".__invoke()"
     },
     {
@@ -2808,7 +2835,7 @@
       "source_file": "Http/Controllers/Addresses/UpdateAddressController.php",
       "source_location": "L1",
       "id": "http_controllers_addresses_updateaddresscontroller_php",
-      "community": 75,
+      "community": 76,
       "norm_label": "updateaddresscontroller.php"
     },
     {
@@ -2817,7 +2844,7 @@
       "source_file": "Http/Controllers/Addresses/UpdateAddressController.php",
       "source_location": "L15",
       "id": "addresses_updateaddresscontroller_updateaddresscontroller",
-      "community": 75,
+      "community": 76,
       "norm_label": "updateaddresscontroller"
     },
     {
@@ -2826,7 +2853,7 @@
       "source_file": "Http/Controllers/Addresses/UpdateAddressController.php",
       "source_location": "L46",
       "id": "addresses_updateaddresscontroller_updateaddresscontroller_invoke",
-      "community": 75,
+      "community": 76,
       "norm_label": ".__invoke()"
     },
     {
@@ -2835,7 +2862,7 @@
       "source_file": "Http/Controllers/NotificationPreferences/GetNotificationPreferencesController.php",
       "source_location": "L1",
       "id": "http_controllers_notificationpreferences_getnotificationpreferencescontroller_php",
-      "community": 76,
+      "community": 77,
       "norm_label": "getnotificationpreferencescontroller.php"
     },
     {
@@ -2844,7 +2871,7 @@
       "source_file": "Http/Controllers/NotificationPreferences/GetNotificationPreferencesController.php",
       "source_location": "L14",
       "id": "notificationpreferences_getnotificationpreferencescontroller_getnotificationpreferencescontroller",
-      "community": 76,
+      "community": 77,
       "norm_label": "getnotificationpreferencescontroller"
     },
     {
@@ -2853,7 +2880,7 @@
       "source_file": "Http/Controllers/NotificationPreferences/GetNotificationPreferencesController.php",
       "source_location": "L32",
       "id": "notificationpreferences_getnotificationpreferencescontroller_getnotificationpreferencescontroller_invoke",
-      "community": 76,
+      "community": 77,
       "norm_label": ".__invoke()"
     },
     {
@@ -2862,7 +2889,7 @@
       "source_file": "Http/Controllers/NotificationPreferences/UpdateNotificationPreferencesController.php",
       "source_location": "L1",
       "id": "http_controllers_notificationpreferences_updatenotificationpreferencescontroller_php",
-      "community": 77,
+      "community": 78,
       "norm_label": "updatenotificationpreferencescontroller.php"
     },
     {
@@ -2871,7 +2898,7 @@
       "source_file": "Http/Controllers/NotificationPreferences/UpdateNotificationPreferencesController.php",
       "source_location": "L14",
       "id": "notificationpreferences_updatenotificationpreferencescontroller_updatenotificationpreferencescontroller",
-      "community": 77,
+      "community": 78,
       "norm_label": "updatenotificationpreferencescontroller"
     },
     {
@@ -2880,7 +2907,7 @@
       "source_file": "Http/Controllers/NotificationPreferences/UpdateNotificationPreferencesController.php",
       "source_location": "L39",
       "id": "notificationpreferences_updatenotificationpreferencescontroller_updatenotificationpreferencescontroller_invoke",
-      "community": 77,
+      "community": 78,
       "norm_label": ".__invoke()"
     },
     {
@@ -3276,7 +3303,7 @@
       "source_file": "Http/Controllers/Web/AccountController.php",
       "source_location": "L1",
       "id": "http_controllers_web_accountcontroller_php",
-      "community": 78,
+      "community": 79,
       "norm_label": "accountcontroller.php"
     },
     {
@@ -3285,7 +3312,7 @@
       "source_file": "Http/Controllers/Web/AccountController.php",
       "source_location": "L10",
       "id": "web_accountcontroller_accountcontroller",
-      "community": 78,
+      "community": 79,
       "norm_label": "accountcontroller"
     },
     {
@@ -3294,7 +3321,7 @@
       "source_file": "Http/Controllers/Web/AccountController.php",
       "source_location": "L12",
       "id": "web_accountcontroller_accountcontroller_invoke",
-      "community": 78,
+      "community": 79,
       "norm_label": ".__invoke()"
     },
     {
@@ -3330,7 +3357,7 @@
       "source_file": "Http/Controllers/Web/UpdateProfileController.php",
       "source_location": "L1",
       "id": "http_controllers_web_updateprofilecontroller_php",
-      "community": 79,
+      "community": 80,
       "norm_label": "updateprofilecontroller.php"
     },
     {
@@ -3339,7 +3366,7 @@
       "source_file": "Http/Controllers/Web/UpdateProfileController.php",
       "source_location": "L10",
       "id": "web_updateprofilecontroller_updateprofilecontroller",
-      "community": 79,
+      "community": 80,
       "norm_label": "updateprofilecontroller"
     },
     {
@@ -3348,7 +3375,7 @@
       "source_file": "Http/Controllers/Web/UpdateProfileController.php",
       "source_location": "L12",
       "id": "web_updateprofilecontroller_updateprofilecontroller_invoke",
-      "community": 79,
+      "community": 80,
       "norm_label": ".__invoke()"
     },
     {
@@ -3627,7 +3654,7 @@
       "source_file": "Http/Controllers/Web/ProfileController.php",
       "source_location": "L1",
       "id": "http_controllers_web_profilecontroller_php",
-      "community": 80,
+      "community": 81,
       "norm_label": "profilecontroller.php"
     },
     {
@@ -3636,7 +3663,7 @@
       "source_file": "Http/Controllers/Web/ProfileController.php",
       "source_location": "L10",
       "id": "web_profilecontroller_profilecontroller",
-      "community": 80,
+      "community": 81,
       "norm_label": "profilecontroller"
     },
     {
@@ -3645,7 +3672,7 @@
       "source_file": "Http/Controllers/Web/ProfileController.php",
       "source_location": "L12",
       "id": "web_profilecontroller_profilecontroller_invoke",
-      "community": 80,
+      "community": 81,
       "norm_label": ".__invoke()"
     },
     {
@@ -3654,7 +3681,7 @@
       "source_file": "Http/Controllers/Web/NotificationPreferencesController.php",
       "source_location": "L1",
       "id": "http_controllers_web_notificationpreferencescontroller_php",
-      "community": 81,
+      "community": 82,
       "norm_label": "notificationpreferencescontroller.php"
     },
     {
@@ -3663,7 +3690,7 @@
       "source_file": "Http/Controllers/Web/NotificationPreferencesController.php",
       "source_location": "L10",
       "id": "web_notificationpreferencescontroller_notificationpreferencescontroller",
-      "community": 81,
+      "community": 82,
       "norm_label": "notificationpreferencescontroller"
     },
     {
@@ -3672,7 +3699,7 @@
       "source_file": "Http/Controllers/Web/NotificationPreferencesController.php",
       "source_location": "L12",
       "id": "web_notificationpreferencescontroller_notificationpreferencescontroller_invoke",
-      "community": 81,
+      "community": 82,
       "norm_label": ".__invoke()"
     },
     {
@@ -3852,7 +3879,7 @@
       "source_file": "Http/Controllers/Web/UpdateNotificationPreferencesController.php",
       "source_location": "L1",
       "id": "http_controllers_web_updatenotificationpreferencescontroller_php",
-      "community": 82,
+      "community": 83,
       "norm_label": "updatenotificationpreferencescontroller.php"
     },
     {
@@ -3861,7 +3888,7 @@
       "source_file": "Http/Controllers/Web/UpdateNotificationPreferencesController.php",
       "source_location": "L10",
       "id": "web_updatenotificationpreferencescontroller_updatenotificationpreferencescontroller",
-      "community": 82,
+      "community": 83,
       "norm_label": "updatenotificationpreferencescontroller"
     },
     {
@@ -3870,7 +3897,7 @@
       "source_file": "Http/Controllers/Web/UpdateNotificationPreferencesController.php",
       "source_location": "L12",
       "id": "web_updatenotificationpreferencescontroller_updatenotificationpreferencescontroller_invoke",
-      "community": 82,
+      "community": 83,
       "norm_label": ".__invoke()"
     },
     {
@@ -3886,7 +3913,7 @@
       "label": "HomeController",
       "file_type": "code",
       "source_file": "Http/Controllers/Web/HomeController.php",
-      "source_location": "L12",
+      "source_location": "L11",
       "id": "web_homecontroller_homecontroller",
       "community": 4,
       "norm_label": "homecontroller"
@@ -3895,7 +3922,7 @@
       "label": ".__invoke()",
       "file_type": "code",
       "source_file": "Http/Controllers/Web/HomeController.php",
-      "source_location": "L14",
+      "source_location": "L13",
       "id": "web_homecontroller_homecontroller_invoke",
       "community": 4,
       "norm_label": ".__invoke()"
@@ -3904,7 +3931,7 @@
       "label": ".toCardPayload()",
       "file_type": "code",
       "source_file": "Http/Controllers/Web/HomeController.php",
-      "source_location": "L29",
+      "source_location": "L24",
       "id": "web_homecontroller_homecontroller_tocardpayload",
       "community": 4,
       "norm_label": ".tocardpayload()"
@@ -3942,7 +3969,7 @@
       "source_file": "Http/Controllers/Web/Products/UpdateProductController.php",
       "source_location": "L1",
       "id": "http_controllers_web_products_updateproductcontroller_php",
-      "community": 83,
+      "community": 84,
       "norm_label": "updateproductcontroller.php"
     },
     {
@@ -3951,7 +3978,7 @@
       "source_file": "Http/Controllers/Web/Products/UpdateProductController.php",
       "source_location": "L11",
       "id": "products_updateproductcontroller_updateproductcontroller",
-      "community": 83,
+      "community": 84,
       "norm_label": "updateproductcontroller"
     },
     {
@@ -3960,7 +3987,7 @@
       "source_file": "Http/Controllers/Web/Products/UpdateProductController.php",
       "source_location": "L15",
       "id": "products_updateproductcontroller_updateproductcontroller_invoke",
-      "community": 83,
+      "community": 84,
       "norm_label": ".__invoke()"
     },
     {
@@ -3969,7 +3996,7 @@
       "source_file": "Http/Controllers/Web/Products/DestroyProductController.php",
       "source_location": "L1",
       "id": "http_controllers_web_products_destroyproductcontroller_php",
-      "community": 84,
+      "community": 85,
       "norm_label": "destroyproductcontroller.php"
     },
     {
@@ -3978,7 +4005,7 @@
       "source_file": "Http/Controllers/Web/Products/DestroyProductController.php",
       "source_location": "L10",
       "id": "products_destroyproductcontroller_destroyproductcontroller",
-      "community": 84,
+      "community": 85,
       "norm_label": "destroyproductcontroller"
     },
     {
@@ -3987,7 +4014,7 @@
       "source_file": "Http/Controllers/Web/Products/DestroyProductController.php",
       "source_location": "L12",
       "id": "products_destroyproductcontroller_destroyproductcontroller_invoke",
-      "community": 84,
+      "community": 85,
       "norm_label": ".__invoke()"
     },
     {
@@ -4221,7 +4248,7 @@
       "source_file": "Http/Controllers/Web/Auth/ShowGoogleCompleteRegistrationController.php",
       "source_location": "L1",
       "id": "http_controllers_web_auth_showgooglecompleteregistrationcontroller_php",
-      "community": 85,
+      "community": 86,
       "norm_label": "showgooglecompleteregistrationcontroller.php"
     },
     {
@@ -4230,7 +4257,7 @@
       "source_file": "Http/Controllers/Web/Auth/ShowGoogleCompleteRegistrationController.php",
       "source_location": "L10",
       "id": "auth_showgooglecompleteregistrationcontroller_showgooglecompleteregistrationcontroller",
-      "community": 85,
+      "community": 86,
       "norm_label": "showgooglecompleteregistrationcontroller"
     },
     {
@@ -4239,7 +4266,7 @@
       "source_file": "Http/Controllers/Web/Auth/ShowGoogleCompleteRegistrationController.php",
       "source_location": "L12",
       "id": "auth_showgooglecompleteregistrationcontroller_showgooglecompleteregistrationcontroller_invoke",
-      "community": 85,
+      "community": 86,
       "norm_label": ".__invoke()"
     },
     {
@@ -4248,7 +4275,7 @@
       "source_file": "Http/Controllers/Web/Auth/GoogleRedirectController.php",
       "source_location": "L1",
       "id": "http_controllers_web_auth_googleredirectcontroller_php",
-      "community": 86,
+      "community": 87,
       "norm_label": "googleredirectcontroller.php"
     },
     {
@@ -4257,7 +4284,7 @@
       "source_file": "Http/Controllers/Web/Auth/GoogleRedirectController.php",
       "source_location": "L9",
       "id": "auth_googleredirectcontroller_googleredirectcontroller",
-      "community": 86,
+      "community": 87,
       "norm_label": "googleredirectcontroller"
     },
     {
@@ -4266,7 +4293,7 @@
       "source_file": "Http/Controllers/Web/Auth/GoogleRedirectController.php",
       "source_location": "L11",
       "id": "auth_googleredirectcontroller_googleredirectcontroller_invoke",
-      "community": 86,
+      "community": 87,
       "norm_label": ".__invoke()"
     },
     {
@@ -4545,7 +4572,7 @@
       "source_file": "Http/Controllers/Orders/GetOrderController.php",
       "source_location": "L1",
       "id": "http_controllers_orders_getordercontroller_php",
-      "community": 87,
+      "community": 88,
       "norm_label": "getordercontroller.php"
     },
     {
@@ -4554,7 +4581,7 @@
       "source_file": "Http/Controllers/Orders/GetOrderController.php",
       "source_location": "L16",
       "id": "orders_getordercontroller_getordercontroller",
-      "community": 87,
+      "community": 88,
       "norm_label": "getordercontroller"
     },
     {
@@ -4563,7 +4590,7 @@
       "source_file": "Http/Controllers/Orders/GetOrderController.php",
       "source_location": "L31",
       "id": "orders_getordercontroller_getordercontroller_invoke",
-      "community": 87,
+      "community": 88,
       "norm_label": ".__invoke()"
     },
     {
@@ -4572,7 +4599,7 @@
       "source_file": "Http/Controllers/Orders/DownloadInvoiceController.php",
       "source_location": "L1",
       "id": "http_controllers_orders_downloadinvoicecontroller_php",
-      "community": 88,
+      "community": 89,
       "norm_label": "downloadinvoicecontroller.php"
     },
     {
@@ -4581,7 +4608,7 @@
       "source_file": "Http/Controllers/Orders/DownloadInvoiceController.php",
       "source_location": "L16",
       "id": "orders_downloadinvoicecontroller_downloadinvoicecontroller",
-      "community": 88,
+      "community": 89,
       "norm_label": "downloadinvoicecontroller"
     },
     {
@@ -4590,7 +4617,7 @@
       "source_file": "Http/Controllers/Orders/DownloadInvoiceController.php",
       "source_location": "L32",
       "id": "orders_downloadinvoicecontroller_downloadinvoicecontroller_invoke",
-      "community": 88,
+      "community": 89,
       "norm_label": ".__invoke()"
     },
     {
@@ -4626,7 +4653,7 @@
       "source_file": "Http/Controllers/Orders/ReorderController.php",
       "source_location": "L1",
       "id": "http_controllers_orders_reordercontroller_php",
-      "community": 89,
+      "community": 90,
       "norm_label": "reordercontroller.php"
     },
     {
@@ -4635,7 +4662,7 @@
       "source_file": "Http/Controllers/Orders/ReorderController.php",
       "source_location": "L16",
       "id": "orders_reordercontroller_reordercontroller",
-      "community": 89,
+      "community": 90,
       "norm_label": "reordercontroller"
     },
     {
@@ -4644,7 +4671,7 @@
       "source_file": "Http/Controllers/Orders/ReorderController.php",
       "source_location": "L45",
       "id": "orders_reordercontroller_reordercontroller_invoke",
-      "community": 89,
+      "community": 90,
       "norm_label": ".__invoke()"
     },
     {
@@ -5760,7 +5787,7 @@
       "source_file": "Http/Requests/Web/Content/Concerns/HasBannerLinkValidation.php",
       "source_location": "L1",
       "id": "http_requests_web_content_concerns_hasbannerlinkvalidation_php",
-      "community": 96,
+      "community": 97,
       "norm_label": "hasbannerlinkvalidation.php"
     },
     {
@@ -5769,7 +5796,7 @@
       "source_file": "Http/Requests/Web/Content/Concerns/HasBannerLinkValidation.php",
       "source_location": "L7",
       "id": "concerns_hasbannerlinkvalidation_linkvaluerule",
-      "community": 96,
+      "community": 97,
       "norm_label": "linkvaluerule()"
     },
     {
@@ -6282,7 +6309,7 @@
       "source_file": "Http/Resources/NotificationPreferencesResource.php",
       "source_location": "L1",
       "id": "http_resources_notificationpreferencesresource_php",
-      "community": 90,
+      "community": 91,
       "norm_label": "notificationpreferencesresource.php"
     },
     {
@@ -6291,7 +6318,7 @@
       "source_file": "Http/Resources/NotificationPreferencesResource.php",
       "source_location": "L8",
       "id": "resources_notificationpreferencesresource_notificationpreferencesresource",
-      "community": 90,
+      "community": 91,
       "norm_label": "notificationpreferencesresource"
     },
     {
@@ -6300,7 +6327,7 @@
       "source_file": "Http/Resources/NotificationPreferencesResource.php",
       "source_location": "L13",
       "id": "resources_notificationpreferencesresource_notificationpreferencesresource_toarray",
-      "community": 90,
+      "community": 91,
       "norm_label": ".toarray()"
     },
     {
@@ -6336,7 +6363,7 @@
       "source_file": "Http/Resources/UserResource.php",
       "source_location": "L1",
       "id": "http_resources_userresource_php",
-      "community": 91,
+      "community": 92,
       "norm_label": "userresource.php"
     },
     {
@@ -6345,7 +6372,7 @@
       "source_file": "Http/Resources/UserResource.php",
       "source_location": "L8",
       "id": "resources_userresource_userresource",
-      "community": 91,
+      "community": 92,
       "norm_label": "userresource"
     },
     {
@@ -6354,7 +6381,7 @@
       "source_file": "Http/Resources/UserResource.php",
       "source_location": "L15",
       "id": "resources_userresource_userresource_toarray",
-      "community": 91,
+      "community": 92,
       "norm_label": ".toarray()"
     },
     {
@@ -6471,7 +6498,7 @@
       "source_file": "Http/Resources/StaticPageResource.php",
       "source_location": "L1",
       "id": "http_resources_staticpageresource_php",
-      "community": 92,
+      "community": 93,
       "norm_label": "staticpageresource.php"
     },
     {
@@ -6480,7 +6507,7 @@
       "source_file": "Http/Resources/StaticPageResource.php",
       "source_location": "L8",
       "id": "resources_staticpageresource_staticpageresource",
-      "community": 92,
+      "community": 93,
       "norm_label": "staticpageresource"
     },
     {
@@ -6489,7 +6516,7 @@
       "source_file": "Http/Resources/StaticPageResource.php",
       "source_location": "L13",
       "id": "resources_staticpageresource_staticpageresource_toarray",
-      "community": 92,
+      "community": 93,
       "norm_label": ".toarray()"
     },
     {
@@ -6579,7 +6606,7 @@
       "source_file": "Http/Middleware/HandleInertiaRequests.php",
       "source_location": "L1",
       "id": "http_middleware_handleinertiarequests_php",
-      "community": 10,
+      "community": 11,
       "norm_label": "handleinertiarequests.php"
     },
     {
@@ -6588,7 +6615,7 @@
       "source_file": "Http/Middleware/HandleInertiaRequests.php",
       "source_location": "L9",
       "id": "middleware_handleinertiarequests_handleinertiarequests",
-      "community": 10,
+      "community": 11,
       "norm_label": "handleinertiarequests"
     },
     {
@@ -6597,7 +6624,7 @@
       "source_file": "Http/Middleware/HandleInertiaRequests.php",
       "source_location": "L19",
       "id": "middleware_handleinertiarequests_handleinertiarequests_version",
-      "community": 10,
+      "community": 11,
       "norm_label": ".version()"
     },
     {
@@ -6606,7 +6633,7 @@
       "source_file": "Http/Middleware/HandleInertiaRequests.php",
       "source_location": "L29",
       "id": "middleware_handleinertiarequests_handleinertiarequests_share",
-      "community": 10,
+      "community": 11,
       "norm_label": ".share()"
     },
     {
@@ -6615,7 +6642,7 @@
       "source_file": "Http/Middleware/HandleInertiaRequests.php",
       "source_location": "L57",
       "id": "middleware_handleinertiarequests_handleinertiarequests_getminicart",
-      "community": 10,
+      "community": 11,
       "norm_label": ".getminicart()"
     },
     {
@@ -6624,7 +6651,7 @@
       "source_file": "Http/Middleware/HandleInertiaRequests.php",
       "source_location": "L87",
       "id": "middleware_handleinertiarequests_handleinertiarequests_getinitials",
-      "community": 10,
+      "community": 11,
       "norm_label": ".getinitials()"
     },
     {
@@ -6633,7 +6660,7 @@
       "source_file": "Http/Middleware/RoleMiddleware.php",
       "source_location": "L1",
       "id": "http_middleware_rolemiddleware_php",
-      "community": 93,
+      "community": 94,
       "norm_label": "rolemiddleware.php"
     },
     {
@@ -6642,7 +6669,7 @@
       "source_file": "Http/Middleware/RoleMiddleware.php",
       "source_location": "L9",
       "id": "middleware_rolemiddleware_rolemiddleware",
-      "community": 93,
+      "community": 94,
       "norm_label": "rolemiddleware"
     },
     {
@@ -6651,7 +6678,7 @@
       "source_file": "Http/Middleware/RoleMiddleware.php",
       "source_location": "L16",
       "id": "middleware_rolemiddleware_rolemiddleware_handle",
-      "community": 93,
+      "community": 94,
       "norm_label": ".handle()"
     },
     {
@@ -6660,7 +6687,7 @@
       "source_file": "Exceptions/InsufficientStockException.php",
       "source_location": "L1",
       "id": "exceptions_insufficientstockexception_php",
-      "community": 10,
+      "community": 11,
       "norm_label": "insufficientstockexception.php"
     },
     {
@@ -6669,7 +6696,7 @@
       "source_file": "Exceptions/InsufficientStockException.php",
       "source_location": "L7",
       "id": "exceptions_insufficientstockexception_insufficientstockexception",
-      "community": 10,
+      "community": 11,
       "norm_label": "insufficientstockexception"
     },
     {
@@ -6678,7 +6705,7 @@
       "source_file": "Exceptions/InsufficientStockException.php",
       "source_location": "L9",
       "id": "exceptions_insufficientstockexception_insufficientstockexception_construct",
-      "community": 10,
+      "community": 11,
       "norm_label": ".__construct()"
     },
     {
@@ -6899,6 +6926,30 @@
     }
   ],
   "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Console/Commands/GenerateImageCommand.php",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_src": "console_commands_generateimagecommand_php",
+      "_tgt": "commands_generateimagecommand_generateimagecommand",
+      "source": "console_commands_generateimagecommand_php",
+      "target": "commands_generateimagecommand_generateimagecommand",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "Console/Commands/GenerateImageCommand.php",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_src": "commands_generateimagecommand_generateimagecommand",
+      "_tgt": "commands_generateimagecommand_generateimagecommand_handle",
+      "source": "commands_generateimagecommand_generateimagecommand",
+      "target": "commands_generateimagecommand_generateimagecommand_handle",
+      "confidence_score": 1.0
+    },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
@@ -8514,8 +8565,8 @@
       "source_file": "Http/Controllers/Admin/Settings/ShowSettingsController.php",
       "source_location": "L14",
       "weight": 1.0,
-      "_src": "settings_showsettingscontroller_showsettingscontroller_invoke",
-      "_tgt": "models_appsettings_appsettings",
+      "_src": "models_appsettings_appsettings",
+      "_tgt": "settings_showsettingscontroller_showsettingscontroller_invoke",
       "source": "models_appsettings_appsettings",
       "target": "settings_showsettingscontroller_showsettingscontroller_invoke"
     },
@@ -8526,8 +8577,8 @@
       "source_file": "Http/Controllers/Admin/Settings/UpdateSettingsController.php",
       "source_location": "L14",
       "weight": 1.0,
-      "_src": "settings_updatesettingscontroller_updatesettingscontroller_invoke",
-      "_tgt": "models_appsettings_appsettings",
+      "_src": "models_appsettings_appsettings",
+      "_tgt": "settings_updatesettingscontroller_updatesettingscontroller_invoke",
       "source": "models_appsettings_appsettings",
       "target": "settings_updatesettingscontroller_updatesettingscontroller_invoke"
     },
@@ -13167,7 +13218,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "Http/Controllers/Web/HomeController.php",
-      "source_location": "L12",
+      "source_location": "L11",
       "weight": 1.0,
       "_src": "http_controllers_web_homecontroller_php",
       "_tgt": "web_homecontroller_homecontroller",
@@ -13179,7 +13230,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "Http/Controllers/Web/HomeController.php",
-      "source_location": "L14",
+      "source_location": "L13",
       "weight": 1.0,
       "_src": "web_homecontroller_homecontroller",
       "_tgt": "web_homecontroller_homecontroller_invoke",
@@ -13191,7 +13242,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "Http/Controllers/Web/HomeController.php",
-      "source_location": "L29",
+      "source_location": "L24",
       "weight": 1.0,
       "_src": "web_homecontroller_homecontroller",
       "_tgt": "web_homecontroller_homecontroller_tocardpayload",
