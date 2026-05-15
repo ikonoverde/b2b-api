@@ -24,6 +24,8 @@ class Product extends Model
         'category_id',
         'formula_id',
         'description',
+        'active_ingredients',
+        'recommendations',
         'price',
         'cost',
         'stock',
