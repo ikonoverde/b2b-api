@@ -26,6 +26,7 @@ Thumbs.db
 playground/
 .claude/scheduled_tasks.lock
 
+!graphify-out/
 graphify-out/cache/
 graphify-out/manifest.json
 graphify-out/cost.json
