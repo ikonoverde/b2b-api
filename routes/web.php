@@ -35,6 +35,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
 Route::get('/catalog', CatalogController::class)->name('catalog');
+Route::get('/products/{slug}', [ProductController::class, 'show'])->name('product.show');
 
 Route::get('/terms', [StaticPageController::class, 'show'])->defaults('slug', 'terms')->name('terms');
 Route::get('/privacy', [StaticPageController::class, 'show'])->defaults('slug', 'privacy')->name('privacy');
@@ -63,7 +64,6 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', LogoutController::class)->name('logout');
     Route::get('/dashboard', CustomerDashboardController::class)->name('dashboard');
-    Route::get('/products/{slug}', [ProductController::class, 'show'])->name('product.show');
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::post('/cart/items', [CartController::class, 'addItem'])->name('cart.addItem');
     Route::post('/cart/items/{cartItem}', [CartController::class, 'updateItem'])->name('cart.updateItem');

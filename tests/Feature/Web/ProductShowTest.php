@@ -4,12 +4,13 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 
-it('requires authentication', function () {
+it('is accessible to guests', function () {
     $product = Product::factory()->create();
 
     $response = $this->get("/products/{$product->slug}");
 
-    $response->assertRedirect('/login');
+    $response->assertSuccessful()
+        ->assertInertia(fn ($page) => $page->component('Product/Show'));
 });
 
 it('shows product details with slug', function () {
