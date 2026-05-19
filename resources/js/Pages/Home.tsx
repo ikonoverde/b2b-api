@@ -39,49 +39,67 @@ export default function Home({ featuredProducts, banners }: HomeProps) {
 }
 
 /* ─────────────────────────────────────────────────────────
- * Hero — typographic only, no imagery.
- * Accent underline lands on "merecen" — the confidence beat.
+ * Hero — full-bleed photographic section with a contained
+ * specimen card. The image bleeds to both viewport edges;
+ * a solid stone-paper card on the left holds the type, like
+ * an exhibition label sitting on a poster. Mobile stacks
+ * the image on top, card below — no overlay.
+ * Accent underline lands on "sin condiciones".
  * ───────────────────────────────────────────────────────── */
 
 function Hero() {
     return (
-        <section className="pt-20 pb-24 sm:pt-28 sm:pb-32">
-            <p className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-stone-whisper)] uppercase">
-                Ikonoverde · Aceite de masaje profesional
-            </p>
+        <section className="relative left-1/2 w-screen -translate-x-1/2 bg-[var(--iko-stone-paper)]">
+            <img
+                src="/images/hero-hands-oil.webp"
+                srcSet="/images/hero-hands-oil-mobile.webp 1280w, /images/hero-hands-oil.webp 2400w"
+                sizes="100vw"
+                alt="Aceite de masaje Ikonoverde vertido en la palma de una mano"
+                fetchPriority="high"
+                decoding="async"
+                className="pointer-events-none block h-[38vh] w-full object-cover object-[60%_50%] sm:absolute sm:inset-0 sm:h-full"
+            />
 
-            <h1 className="mt-6 max-w-[22ch] font-display text-[clamp(2.5rem,6vw,4.5rem)] font-normal leading-[1.02] tracking-[-0.015em] text-[var(--iko-stone-ink)]">
-                El aceite de masaje que tus manos{' '}
-                <span className="relative whitespace-nowrap">
-                    merecen
-                    <span
-                        aria-hidden="true"
-                        className="absolute right-0 bottom-[0.08em] left-0 h-[0.08em] bg-[var(--iko-accent)]"
-                    />
-                </span>
-                .
-            </h1>
+            <div className="relative mx-auto max-w-[72rem] px-6 sm:flex sm:min-h-[clamp(34rem,80vh,46rem)] sm:items-center sm:px-10 lg:px-16">
+                <div className="border-t border-[var(--iko-stone-hairline)] bg-[var(--iko-stone-paper)] py-12 sm:max-w-[32rem] sm:border-b sm:px-10 lg:px-12 lg:py-14">
+                    <p className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-stone-whisper)] uppercase">
+                        Ikonoverde · Cuidado corporal
+                    </p>
 
-            <p className="mt-8 max-w-[52ch] text-[17px] leading-[1.55] text-[var(--iko-stone-ink)]/80">
-                Formulado para spas, hoteles y uso personal. Una unidad o veinte, al mismo precio.
-            </p>
+                    <h1 className="mt-6 max-w-[17ch] font-display text-[clamp(2.25rem,4.4vw,3.5rem)] font-normal leading-[1.04] tracking-[-0.015em] text-[var(--iko-stone-ink)]">
+                        Aceite de masaje profesional,{' '}
+                        <span className="relative whitespace-nowrap">
+                            sin condiciones
+                            <span
+                                aria-hidden="true"
+                                className="absolute right-0 bottom-[0.08em] left-0 h-[0.08em] bg-[var(--iko-accent)]"
+                            />
+                        </span>
+                        .
+                    </h1>
 
-            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
-                <Link
-                    href="/catalog"
-                    className="inline-flex items-center bg-[var(--iko-accent)] px-7 py-3.5 text-[14px] font-medium text-[var(--iko-accent-on)] tracking-[0.01em] hover:bg-[var(--iko-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] transition-colors"
-                >
-                    Ver el catálogo
-                </Link>
-                <Link
-                    href="/register"
-                    className="group inline-flex items-baseline gap-2 text-[14px] font-medium text-[var(--iko-stone-ink)] hover:text-[var(--iko-accent)] focus-visible:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] rounded-sm transition-colors"
-                >
-                    Crear cuenta
-                    <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
-                        →
-                    </span>
-                </Link>
+                    <p className="mt-7 max-w-[42ch] text-[16px] leading-[1.55] text-[var(--iko-stone-ink)]/80">
+                        Formulado para spas, hoteles y uso personal. Sin pedido mínimo, sin cuenta obligatoria.
+                    </p>
+
+                    <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3">
+                        <Link
+                            href="/catalog"
+                            className="inline-flex items-center bg-[var(--iko-accent)] px-7 py-3.5 text-[14px] font-medium text-[var(--iko-accent-on)] tracking-[0.01em] hover:bg-[var(--iko-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] transition-colors"
+                        >
+                            Ver el catálogo
+                        </Link>
+                        <Link
+                            href="/register"
+                            className="group inline-flex items-baseline gap-2 text-[14px] font-medium text-[var(--iko-stone-ink)] hover:text-[var(--iko-accent)] focus-visible:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] rounded-sm transition-colors"
+                        >
+                            Crear cuenta
+                            <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
+                                →
+                            </span>
+                        </Link>
+                    </div>
+                </div>
             </div>
         </section>
     );

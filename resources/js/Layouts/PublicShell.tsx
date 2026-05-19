@@ -26,7 +26,7 @@ export default function PublicShell({ title, children }: PublicShellProps) {
             <Head title={title} />
             <div
                 data-iko=""
-                className="relative flex min-h-screen flex-col bg-[var(--iko-stone-paper)] text-[var(--iko-stone-ink)] font-sans antialiased"
+                className="relative flex min-h-screen flex-col overflow-x-clip bg-[var(--iko-stone-paper)] text-[var(--iko-stone-ink)] font-sans antialiased"
                 style={
                     {
                         fontFeatureSettings: '"ss01", "cv11"',
