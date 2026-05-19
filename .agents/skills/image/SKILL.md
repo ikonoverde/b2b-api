@@ -220,24 +220,44 @@ Every image on your site affects page speed, which affects SEO and conversions.
 - [ ] **Use a CDN** with auto-optimization (Cloudflare, Vercel, Imgix, Cloudinary)
 - [ ] **Add alt text** — descriptive, keyword-relevant, not stuffed
 
-### Quick Optimization Commands
+### The `image:optimize` Command
+
+Resize, recompress, and convert images with the `image:optimize` Artisan command.
 
 ```bash
-# Convert to WebP (using cwebp)
-cwebp -q 80 input.png -o output.webp
+php artisan image:optimize "<path>" [options]
+```
 
-# Batch convert with ImageMagick
-mogrify -format webp -quality 80 *.png
+| Option | Default | Description |
+|--------|---------|-------------|
+| `path` (argument) | — | Image file to optimize, or a directory to optimize every image within |
+| `--format` | keep source | Convert output to `webp`, `jpeg`, or `png` |
+| `--quality` | `80` | Encoding quality (1-100) for lossy formats |
+| `--max-width` | — | Downscale images wider than this many pixels, preserving aspect ratio |
+| `--cover` | — | Resize and center-crop to exact `WIDTHxHEIGHT` (e.g. `1200x630`) |
+| `--disk` | — | Filesystem disk to read from and write to; omit for local filesystem paths |
+| `--output` | in place | Destination path for a single file |
 
-# Optimize JPEG (using jpegoptim)
-jpegoptim --max=80 --strip-all *.jpg
+Same-format optimization overwrites the file in place; changing `--format` writes a new file alongside the source. `--cover` and `--max-width` cannot be combined.
+
+```bash
+# Convert a single image to WebP at quality 80
+php artisan image:optimize ai-images/blog/hero.png --format=webp --disk=public
+
+# Batch-convert every image in a directory to WebP
+php artisan image:optimize ai-images/blog --format=webp --disk=public
+
+# Recompress a JPEG at lower quality, in place
+php artisan image:optimize photos/banner.jpg --quality=75 --disk=public
 
 # Crop a generated 3:2 image to an exact OG size (1200x630)
-magick input.png -resize 1200x800^ -gravity center -extent 1200x630 og-image.png
+php artisan image:optimize ai-images/blog/hero.png --cover=1200x630 --format=webp --disk=public
 
-# Check image sizes on a page
-curl -s https://yoursite.com | grep -oP 'src="[^"]+\.(jpg|png|webp)"' | head -20
+# Downscale oversized uploads to a 1600px-wide cap
+php artisan image:optimize uploads --max-width=1600 --disk=public
 ```
+
+> **AVIF & lossless tuning:** the command handles WebP/JPEG/PNG via the GD driver with no setup. For AVIF output or lossless JPEG/PNG optimization, install the `imagick` PHP extension and set `IMAGE_DRIVER=imagick` — the command picks it up with no code change. For production *delivery*, prefer a CDN with auto-optimization (see the checklist above).
 
 ---
 
@@ -269,7 +289,7 @@ For pages with dynamic content (blog posts, profiles), generate a small set of r
 ## Common Mistakes
 
 1. **Using AI for product UI screenshots** — models hallucinate interfaces; capture real screenshots
-2. **Calling other image services or provider APIs directly** — always use `php artisan image:generate`
+2. **Calling other image services, provider APIs, or CLI tools directly** — always use `php artisan image:generate` to create images and `php artisan image:optimize` to optimize them
 3. **Skipping image optimization** — unoptimized images are the #1 page speed killer
 4. **No OG image** — shared links look broken without a preview image
 5. **Wrong aspect ratio** — the command supports `1:1`, `3:2`, `2:3`; pick the closest and crop
