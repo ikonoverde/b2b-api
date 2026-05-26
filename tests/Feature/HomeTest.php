@@ -10,6 +10,26 @@ it('renders the home page for guests', function () {
     $response->assertInertia(fn ($page) => $page->component('Home'));
 });
 
+it('shows the homepage benefit copy', function () {
+    $homePage = file_get_contents(resource_path('js/Pages/Home.tsx'));
+
+    expect($homePage)
+        ->toContain('SIN MÍNIMO')
+        ->toContain('Desde 1 unidad')
+        ->toContain('PRECIO CLARO')
+        ->toContain('Visible para todos')
+        ->toContain('CUENTA OPCIONAL')
+        ->toContain('Compra sin registrarte');
+});
+
+it('shows the homepage footer handoff copy', function () {
+    $homePage = file_get_contents(resource_path('js/Pages/Home.tsx'));
+
+    expect($homePage)
+        ->toContain('Cuidado corporal profesional hecho en México para spas, hoteles y salas de masaje')
+        ->toContain('Explorar productos →');
+});
+
 it('passes featured products to the home page', function () {
     Product::factory(3)->create(['is_active' => true, 'is_featured' => true]);
     Product::factory(2)->create(['is_active' => false]);

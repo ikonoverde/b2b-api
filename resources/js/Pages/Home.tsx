@@ -67,9 +67,9 @@ function Hero() {
                     </p>
 
                     <h1 className="mt-6 max-w-[17ch] font-display text-[clamp(2.25rem,4.4vw,3.5rem)] font-normal leading-[1.04] tracking-[-0.015em] text-[var(--iko-stone-ink)]">
-                        Aceite de masaje profesional,{' '}
+                        Aceite de masaje{' '}
                         <span className="relative whitespace-nowrap">
-                            sin condiciones
+                            profesional
                             <span
                                 aria-hidden="true"
                                 className="absolute right-0 bottom-[0.08em] left-0 h-[0.08em] bg-[var(--iko-accent)]"
@@ -111,9 +111,9 @@ function Hero() {
  * ───────────────────────────────────────────────────────── */
 
 const VALUE_PROPS = [
-    { label: 'Pedido mínimo', value: '1 unidad' },
-    { label: 'Precio', value: 'Igual para todos' },
-    { label: 'Cuenta', value: 'Opcional' },
+    { label: 'SIN MÍNIMO', value: 'Desde 1 unidad' },
+    { label: 'PRECIO CLARO', value: 'Visible para todos' },
+    { label: 'CUENTA OPCIONAL', value: 'Compra sin registrarte' },
 ] as const;
 
 function ValuePropStrip() {
@@ -294,12 +294,12 @@ function SecondaryHandoff() {
     return (
         <section className="border-t border-[var(--iko-stone-hairline)] py-16">
             <p className="text-[15px] leading-[1.55] text-[var(--iko-stone-whisper)]">
-                Empieza por el catálogo. Una unidad o veinte, mismo trato.{' '}
+                Cuidado corporal profesional hecho en México para spas, hoteles y salas de masaje.{' '}
                 <Link
                     href="/catalog"
                     className="text-[var(--iko-stone-ink)] underline decoration-[var(--iko-stone-mid)] underline-offset-4 transition-colors hover:text-[var(--iko-accent)] hover:decoration-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] rounded-sm"
                 >
-                    Ver catálogo →
+                    Explorar productos →
                 </Link>
             </p>
         </section>
