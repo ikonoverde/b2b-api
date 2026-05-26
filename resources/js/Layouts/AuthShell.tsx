@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import type { PropsWithChildren } from 'react';
+import SiteFooter from '@/Components/SiteFooter';
 import Wordmark from '@/Components/Wordmark';
 
 /**
@@ -32,7 +33,7 @@ export default function AuthShell({
             >
                 <header className="border-b border-[var(--iko-stone-hairline)]">
                     <div className="mx-auto flex max-w-[72rem] items-baseline justify-between px-6 py-6 sm:px-10 lg:px-16">
-                        <Link href="/" aria-label="Ikonoverde — Inicio">
+                        <Link href="/" aria-label="Ikonoverde, inicio">
                             <Wordmark size="md" />
                         </Link>
                         <nav className="flex items-center gap-7 text-[13px]">
@@ -64,27 +65,7 @@ export default function AuthShell({
                     </div>
                 </main>
 
-                <footer className="border-t border-[var(--iko-stone-hairline)]">
-                    <div className="mx-auto flex max-w-[72rem] flex-col gap-3 px-6 py-10 sm:flex-row sm:items-baseline sm:justify-between sm:px-10 lg:px-16">
-                        <span className="font-spec text-[11px] tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
-                            © {new Date().getFullYear()} Ikonoverde · Cuidado corporal profesional
-                        </span>
-                        <div className="flex items-center gap-6 text-[13px]">
-                            <Link
-                                href="/terms"
-                                className="text-[var(--iko-stone-whisper)] hover:text-[var(--iko-stone-ink)] transition-colors"
-                            >
-                                Términos
-                            </Link>
-                            <Link
-                                href="/privacy"
-                                className="text-[var(--iko-stone-whisper)] hover:text-[var(--iko-stone-ink)] transition-colors"
-                            >
-                                Privacidad
-                            </Link>
-                        </div>
-                    </div>
-                </footer>
+                <SiteFooter />
             </div>
         </>
     );

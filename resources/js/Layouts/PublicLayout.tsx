@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import type { PropsWithChildren } from 'react';
+import SiteFooter from '@/Components/SiteFooter';
 import type { PageProps } from '@/types';
 
 interface PublicLayoutProps extends PropsWithChildren {
@@ -11,7 +12,7 @@ export default function PublicLayout({ title, auth, children }: PublicLayoutProp
     return (
         <>
             <Head title={title} />
-            <div className="min-h-screen bg-[#FAF6F1] flex flex-col">
+            <div data-iko="" className="min-h-screen bg-[#FAF6F1] flex flex-col">
                 {/* Header */}
                 <header className="bg-[#5E7052] px-8 py-4">
                     <div className="max-w-6xl mx-auto flex items-center justify-between">
@@ -54,28 +55,7 @@ export default function PublicLayout({ title, auth, children }: PublicLayoutProp
 
                 {children}
 
-                {/* Footer */}
-                <footer className="border-t border-[#E5E5E5] py-8 px-8 mt-auto">
-                    <div className="max-w-6xl mx-auto flex items-center justify-between">
-                        <span className="text-[#999999] font-[Outfit] text-sm">
-                            © {new Date().getFullYear()} Ikonoverde. Todos los derechos reservados.
-                        </span>
-                        <div className="flex items-center gap-4">
-                            <Link
-                                href="/terms"
-                                className="text-[#5E7052] font-[Outfit] text-sm font-medium hover:underline"
-                            >
-                                Términos
-                            </Link>
-                            <Link
-                                href="/privacy"
-                                className="text-[#5E7052] font-[Outfit] text-sm font-medium hover:underline"
-                            >
-                                Privacidad
-                            </Link>
-                        </div>
-                    </div>
-                </footer>
+                <SiteFooter className="mt-auto" />
             </div>
         </>
     );

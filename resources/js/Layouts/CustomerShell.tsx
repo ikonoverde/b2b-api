@@ -3,6 +3,7 @@ import { useState, type ReactNode } from 'react';
 import { LogOut, Menu, X } from 'lucide-react';
 import Wordmark from '@/Components/Wordmark';
 import MiniCart from '@/Components/MiniCart';
+import SiteFooter from '@/Components/SiteFooter';
 import type { PageProps } from '@/types';
 
 interface CustomerShellProps {
@@ -37,7 +38,7 @@ export default function CustomerShell({ title, children }: CustomerShellProps) {
             >
                 <header className="sticky top-0 z-40 border-b border-[var(--iko-stone-hairline)] bg-[var(--iko-stone-paper)]">
                     <div className="mx-auto flex max-w-[72rem] items-center justify-between gap-6 px-6 py-5 sm:px-10 lg:px-16">
-                        <Link href="/dashboard" aria-label="Ikonoverde — Inicio" className="shrink-0">
+                        <Link href="/dashboard" aria-label="Ikonoverde, inicio" className="shrink-0">
                             <Wordmark size="md" />
                         </Link>
 
@@ -120,27 +121,7 @@ export default function CustomerShell({ title, children }: CustomerShellProps) {
                     </div>
                 </main>
 
-                <footer className="mt-16 border-t border-[var(--iko-stone-hairline)]">
-                    <div className="mx-auto flex max-w-[72rem] flex-col gap-3 px-6 py-10 sm:flex-row sm:items-baseline sm:justify-between sm:px-10 lg:px-16">
-                        <span className="font-spec text-[11px] tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
-                            © {new Date().getFullYear()} Ikonoverde · Cuidado corporal profesional
-                        </span>
-                        <div className="flex items-center gap-6 text-[13px]">
-                            <Link
-                                href="/terms"
-                                className="text-[var(--iko-stone-whisper)] transition-colors hover:text-[var(--iko-stone-ink)]"
-                            >
-                                Términos
-                            </Link>
-                            <Link
-                                href="/privacy"
-                                className="text-[var(--iko-stone-whisper)] transition-colors hover:text-[var(--iko-stone-ink)]"
-                            >
-                                Privacidad
-                            </Link>
-                        </div>
-                    </div>
-                </footer>
+                <SiteFooter className="mt-16" />
             </div>
         </>
     );

@@ -1,5 +1,6 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import type { CSSProperties, PropsWithChildren } from 'react';
+import SiteFooter from '@/Components/SiteFooter';
 import Wordmark from '@/Components/Wordmark';
 import type { PageProps } from '@/types';
 
@@ -37,7 +38,7 @@ export default function PublicShell({ title, children }: PublicShellProps) {
                 <div className="flex-1 px-6 sm:px-10 lg:px-16">
                     <div className="mx-auto max-w-[72rem]">{children}</div>
                 </div>
-                <SiteFooter />
+                <SiteFooter className="mt-32" />
             </div>
         </>
     );
@@ -51,7 +52,7 @@ function SiteHeader() {
     return (
         <header className="border-b border-[var(--iko-stone-hairline)]">
             <div className="mx-auto flex max-w-[72rem] items-baseline justify-between px-6 py-6 sm:px-10 lg:px-16">
-                <Link href="/" className="group flex items-baseline" aria-label="Ikonoverde — Inicio">
+                <Link href="/" className="group flex items-baseline" aria-label="Ikonoverde, inicio">
                     <Wordmark />
                 </Link>
 
@@ -71,31 +72,5 @@ function SiteHeader() {
                 </nav>
             </div>
         </header>
-    );
-}
-
-function SiteFooter() {
-    return (
-        <footer className="mt-32 border-t border-[var(--iko-stone-hairline)]">
-            <div className="mx-auto flex max-w-[72rem] flex-col gap-3 px-6 py-10 sm:flex-row sm:items-baseline sm:justify-between sm:px-10 lg:px-16">
-                <span className="font-spec text-[11px] tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
-                    © {new Date().getFullYear()} Ikonoverde · Cuidado corporal profesional
-                </span>
-                <div className="flex items-center gap-6 text-[13px]">
-                    <Link
-                        href="/terms"
-                        className="text-[var(--iko-stone-whisper)] hover:text-[var(--iko-stone-ink)] transition-colors"
-                    >
-                        Términos
-                    </Link>
-                    <Link
-                        href="/privacy"
-                        className="text-[var(--iko-stone-whisper)] hover:text-[var(--iko-stone-ink)] transition-colors"
-                    >
-                        Privacidad
-                    </Link>
-                </div>
-            </div>
-        </footer>
     );
 }

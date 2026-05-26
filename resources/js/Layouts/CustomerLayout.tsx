@@ -3,6 +3,7 @@ import { Leaf, Menu, ShoppingCart, User, X, LogOut } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 import type { PageProps } from '@/types';
 import MiniCart from '@/Components/MiniCart';
+import SiteFooter from '@/Components/SiteFooter';
 
 interface CustomerLayoutProps {
     children: ReactNode;
@@ -21,7 +22,7 @@ export default function CustomerLayout({ children, title }: CustomerLayoutProps)
     return (
         <>
             <Head title={title} />
-            <div className="min-h-screen bg-[#FAF6F1] flex flex-col">
+            <div data-iko="" className="min-h-screen bg-[#FAF6F1] flex flex-col">
                 {/* Header */}
                 <header className="bg-[#5E7052] px-6 lg:px-8 py-3 sticky top-0 z-50">
                     <div className="max-w-6xl mx-auto flex items-center justify-between">
@@ -190,20 +191,7 @@ export default function CustomerLayout({ children, title }: CustomerLayoutProps)
                     </div>
                 </main>
 
-                {/* Footer */}
-                <footer className="border-t border-[#E5E5E5] py-6 px-6 lg:px-8 mt-auto">
-                    <div className="max-w-6xl mx-auto flex items-center justify-between">
-                        <span className="text-[#999999] font-[Outfit] text-sm">
-                            &copy; {new Date().getFullYear()} Ikonoverde. Todos los derechos reservados.
-                        </span>
-                        <Link
-                            href="/catalog"
-                            className="text-[#5E7052] font-[Outfit] text-sm font-medium hover:underline"
-                        >
-                            Ver Catálogo
-                        </Link>
-                    </div>
-                </footer>
+                <SiteFooter className="mt-auto" />
             </div>
         </>
     );
