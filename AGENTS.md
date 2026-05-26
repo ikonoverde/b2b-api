@@ -461,8 +461,5 @@ export default () => (
 - **username**: env('LOCAL_USER')
 - **password**: env('LOCAL_PASS')
 
-## Additional context
-- Before starting, ALWAYS search supermemory to get historical context for the given question/task
-
 ## Controllers
 - Controllers should be single action controllers, if you touch a controller that is not single action refactor it.

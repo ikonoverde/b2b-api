@@ -40,7 +40,13 @@ export default function useSavedAddress({
     resetForm,
     onAddressReady,
 }: UseSavedAddressOptions) {
-    const [selectedAddressId, setSelectedAddressId] = useState<number | null>(null);
+    const [selectedAddressId, setSelectedAddressId] = useState<number | null>(() => {
+        if (addresses.length === 0) {
+            return null;
+        }
+
+        return (addresses.find((address) => address.is_default) ?? addresses[0]).id;
+    });
     const initialized = useRef(false);
 
     function selectAddress(address: Address) {

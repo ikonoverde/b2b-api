@@ -18,7 +18,19 @@ export default function useShippingQuotes() {
     const debounceRef = useRef<ReturnType<typeof setTimeout>>(null);
     const abortRef = useRef<AbortController>(null);
 
-    function fetch(address: QuoteAddress) {
+    function reset(): void {
+        if (debounceRef.current) {
+            clearTimeout(debounceRef.current);
+        }
+
+        abortRef.current?.abort();
+        setQuotes([]);
+        setLoading(false);
+        setError(null);
+        setFetched(false);
+    }
+
+    function fetch(address: QuoteAddress): void {
         if (debounceRef.current) {
             clearTimeout(debounceRef.current);
         }
@@ -57,5 +69,5 @@ export default function useShippingQuotes() {
         }, 600);
     }
 
-    return { quotes, loading, error, fetched, fetch };
+    return { quotes, loading, error, fetched, fetch, reset };
 }

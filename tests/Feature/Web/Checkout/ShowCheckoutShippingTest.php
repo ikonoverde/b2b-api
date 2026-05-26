@@ -65,6 +65,46 @@ it('includes saved addresses in the response', function () {
         );
 });
 
+it('serializes saved address details for checkout selection', function () {
+    $user = User::factory()->create();
+    $cart = Cart::factory()->create(['user_id' => $user->id]);
+    $product = Product::factory()->create(['price' => 100]);
+    CartItem::factory()->create([
+        'cart_id' => $cart->id,
+        'product_id' => $product->id,
+        'quantity' => 1,
+        'unit_price' => 100,
+    ]);
+
+    Address::factory()->create([
+        'user_id' => $user->id,
+        'label' => 'Casa',
+        'name' => 'Juan Perez',
+        'address_line_1' => 'Calle 123',
+        'address_line_2' => 'Roma Norte',
+        'city' => 'CDMX',
+        'state' => 'CDMX',
+        'postal_code' => '06600',
+        'phone' => '5551234567',
+        'is_default' => true,
+    ]);
+
+    $this->actingAs($user)->get('/checkout/shipping')
+        ->assertSuccessful()
+        ->assertInertia(fn ($page) => $page
+            ->component('Checkout/Shipping')
+            ->where('addresses.0.label', 'Casa')
+            ->where('addresses.0.name', 'Juan Perez')
+            ->where('addresses.0.address_line_1', 'Calle 123')
+            ->where('addresses.0.address_line_2', 'Roma Norte')
+            ->where('addresses.0.city', 'CDMX')
+            ->where('addresses.0.state', 'CDMX')
+            ->where('addresses.0.postal_code', '06600')
+            ->where('addresses.0.phone', '5551234567')
+            ->where('addresses.0.is_default', true)
+        );
+});
+
 it('returns empty addresses when user has none', function () {
     $user = User::factory()->create();
     $cart = Cart::factory()->create(['user_id' => $user->id]);

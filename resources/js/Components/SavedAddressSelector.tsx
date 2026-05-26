@@ -24,11 +24,12 @@ export default function SavedAddressSelector({
                     Direcciones guardadas
                 </h3>
                 <span className="font-spec text-[11px] tabular-nums tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
-                    {String(addresses.length).padStart(2, '0')} {addresses.length === 1 ? 'guardada' : 'guardadas'}
+                    {String(addresses.length).padStart(2, '0')}{' '}
+                    {addresses.length === 1 ? 'guardada' : 'guardadas'}
                 </span>
             </div>
 
-            <div className="grid grid-cols-1 gap-px bg-[var(--iko-stone-hairline)] sm:grid-cols-2">
+            <div className="border border-[var(--iko-stone-hairline)] divide-y divide-[var(--iko-stone-hairline)]">
                 {addresses.map((address) => (
                     <SelectableAddressRow
                         key={address.id}
@@ -42,14 +43,22 @@ export default function SavedAddressSelector({
                     type="button"
                     onClick={onNewAddress}
                     aria-pressed={selectedAddressId === null}
-                    className={`flex items-center justify-center gap-2 bg-[var(--iko-stone-paper)] px-4 py-5 text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-inset ${
+                    className={`flex w-full items-center gap-4 px-5 py-4 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-inset ${
                         selectedAddressId === null
-                            ? 'text-[var(--iko-accent)]'
-                            : 'text-[var(--iko-stone-whisper)] hover:text-[var(--iko-stone-ink)]'
+                            ? 'bg-[var(--iko-accent-soft)]'
+                            : 'hover:bg-[var(--iko-stone-mid)]/15'
                     }`}
                 >
-                    <Plus className="h-4 w-4" strokeWidth={1.5} />
-                    Nueva dirección
+                    <SelectionMark selected={selectedAddressId === null} />
+                    <span className="flex flex-1 flex-col gap-0.5">
+                        <span className="flex items-center gap-2 text-[14px] text-[var(--iko-stone-ink)]">
+                            <Plus className="h-4 w-4" strokeWidth={1.5} />
+                            Agregar nueva dirección
+                        </span>
+                        <span className="font-spec text-[11px] tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
+                            Mostrar formulario
+                        </span>
+                    </span>
                 </button>
             </div>
         </section>
@@ -70,40 +79,54 @@ function SelectableAddressRow({
             type="button"
             onClick={onSelect}
             aria-pressed={selected}
-            className={`flex flex-col gap-1.5 bg-[var(--iko-stone-paper)] px-5 py-4 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-inset ${
-                selected
-                    ? 'bg-[var(--iko-accent-soft)]'
-                    : 'hover:bg-[var(--iko-stone-mid)]/15'
+            className={`flex w-full items-start gap-4 px-5 py-4 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-inset ${
+                selected ? 'bg-[var(--iko-accent-soft)]' : 'hover:bg-[var(--iko-stone-mid)]/15'
             }`}
         >
-            <span className="flex items-baseline gap-3">
-                <span
-                    className={`font-spec text-[11px] tracking-[0.08em] uppercase ${
-                        selected ? 'text-[var(--iko-accent)]' : 'text-[var(--iko-stone-whisper)]'
-                    }`}
-                >
-                    {address.label}
+            <SelectionMark selected={selected} />
+            <span className="flex flex-1 flex-col gap-1.5">
+                <span className="flex items-baseline gap-3">
+                    <span
+                        className={`font-spec text-[11px] tracking-[0.08em] uppercase ${
+                            selected ? 'text-[var(--iko-accent)]' : 'text-[var(--iko-stone-whisper)]'
+                        }`}
+                    >
+                        {address.label}
+                    </span>
+                    {address.is_default && (
+                        <span className="font-spec text-[10px] tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
+                            · Predeterminada
+                        </span>
+                    )}
                 </span>
-                {address.is_default && (
-                    <span className="font-spec text-[10px] tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
-                        · Predeterminada
+                <span className="text-[14px] leading-snug text-[var(--iko-stone-ink)]">
+                    {address.name}
+                </span>
+                <span className="text-[13px] leading-[1.5] text-[var(--iko-stone-whisper)]">
+                    {address.address_line_1}
+                    {address.address_line_2 && `, ${address.address_line_2}`}
+                    <br />
+                    {address.city}, {address.state} {address.postal_code}
+                </span>
+                {address.phone && (
+                    <span className="font-spec text-[11px] tabular-nums tracking-[0.02em] text-[var(--iko-stone-whisper)]">
+                        Tel · {address.phone}
                     </span>
                 )}
             </span>
-            <span className="text-[14px] leading-snug text-[var(--iko-stone-ink)]">
-                {address.name}
-            </span>
-            <span className="text-[13px] leading-[1.5] text-[var(--iko-stone-whisper)]">
-                {address.address_line_1}
-                {address.address_line_2 && `, ${address.address_line_2}`}
-                <br />
-                {address.city}, {address.state} {address.postal_code}
-            </span>
-            {address.phone && (
-                <span className="font-spec text-[11px] tabular-nums tracking-[0.02em] text-[var(--iko-stone-whisper)]">
-                    Tel · {address.phone}
-                </span>
-            )}
         </button>
+    );
+}
+
+function SelectionMark({ selected }: { selected: boolean }) {
+    return (
+        <span
+            aria-hidden="true"
+            className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition-colors ${
+                selected ? 'border-[var(--iko-accent)]' : 'border-[var(--iko-stone-mid)]'
+            }`}
+        >
+            {selected && <span className="h-2 w-2 rounded-full bg-[var(--iko-accent)]" />}
+        </span>
     );
 }

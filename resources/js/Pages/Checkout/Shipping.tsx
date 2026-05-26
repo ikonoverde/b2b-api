@@ -28,7 +28,14 @@ function canFetchQuotes(data: Record<string, string>): boolean {
 
 export default function Shipping({ cart, addresses }: ShippingProps) {
     const { errors } = usePage<PageProps & { errors: Record<string, string | string[]> }>().props;
-    const { quotes, loading, error, fetched, fetch: fetchQuotes } = useShippingQuotes();
+    const {
+        quotes,
+        loading,
+        error,
+        fetched,
+        fetch: fetchQuotes,
+        reset: resetQuotes,
+    } = useShippingQuotes();
 
     const form = useForm({
         name: '',
@@ -67,17 +74,25 @@ export default function Shipping({ cart, addresses }: ShippingProps) {
     function handleFieldChange(field: string, value: string): void {
         const updated = { ...form.data, [field]: value };
 
-        if (QUOTE_FIELDS.has(field) && canFetchQuotes(updated)) {
-            form.setData({ ...updated, quote_id: '', rate_id: '' });
-            fetchQuotes({
-                postal_code: updated.postal_code,
-                city: updated.city,
-                state: updated.state,
-                neighborhood: updated.address_line_2,
-            });
-        } else {
-            form.setData(field as keyof typeof form.data, value);
+        if (QUOTE_FIELDS.has(field)) {
+            const dataWithoutQuote = { ...updated, quote_id: '', rate_id: '' };
+
+            form.setData(dataWithoutQuote);
+            resetQuotes();
+
+            if (canFetchQuotes(dataWithoutQuote)) {
+                fetchQuotes({
+                    postal_code: dataWithoutQuote.postal_code,
+                    city: dataWithoutQuote.city,
+                    state: dataWithoutQuote.state,
+                    neighborhood: dataWithoutQuote.address_line_2,
+                });
+            }
+
+            return;
         }
+
+        form.setData(field as keyof typeof form.data, value);
     }
 
     function submit(e: FormEvent): void {
@@ -131,17 +146,25 @@ export default function Shipping({ cart, addresses }: ShippingProps) {
                         <SavedAddressSelector
                             addresses={addresses}
                             selectedAddressId={selectedAddressId}
-                            onSelect={selectAddress}
-                            onNewAddress={clearSelection}
+                            onSelect={(address) => {
+                                resetQuotes();
+                                selectAddress(address);
+                            }}
+                            onNewAddress={() => {
+                                resetQuotes();
+                                clearSelection();
+                            }}
                         />
                     )}
 
-                    <AddressForm
-                        data={form.data}
-                        errors={form.errors}
-                        disabled={form.processing}
-                        onFieldChange={handleFieldChange}
-                    />
+                    {selectedAddressId === null && (
+                        <AddressForm
+                            data={form.data}
+                            errors={form.errors}
+                            disabled={form.processing}
+                            onFieldChange={handleFieldChange}
+                        />
+                    )}
 
                     <ShippingQuoteSelector
                         quotes={quotes}
