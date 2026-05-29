@@ -9,6 +9,14 @@ export interface ExistingImage {
     position: number;
 }
 
+export interface ShippingPackageFormData {
+    quantity: string;
+    weight_kg: string;
+    width_cm: string;
+    height_cm: string;
+    depth_cm: string;
+}
+
 export interface ProductFormData {
     name: string;
     slug: string;
@@ -26,6 +34,7 @@ export interface ProductFormData {
     width_cm: string;
     height_cm: string;
     depth_cm: string;
+    shipping_packages: ShippingPackageFormData[];
     images: File[];
     delete_images?: number[];
 }

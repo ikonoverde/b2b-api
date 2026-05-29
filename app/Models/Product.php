@@ -37,6 +37,7 @@ class Product extends Model
         'width_cm',
         'height_cm',
         'depth_cm',
+        'shipping_packages',
     ];
 
     /**
@@ -55,6 +56,7 @@ class Product extends Model
             'width_cm' => 'decimal:2',
             'height_cm' => 'decimal:2',
             'depth_cm' => 'decimal:2',
+            'shipping_packages' => 'array',
         ];
     }
 

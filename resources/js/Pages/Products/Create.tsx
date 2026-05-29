@@ -32,6 +32,7 @@ export default function Create({ categories, formulas }: CreateProductProps) {
         width_cm: '',
         height_cm: '',
         depth_cm: '',
+        shipping_packages: [],
         is_active: true,
         is_featured: false,
         images: [],

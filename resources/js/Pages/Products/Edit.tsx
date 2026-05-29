@@ -3,7 +3,7 @@ import { useForm } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import type { PageProps } from '@/types';
 import type { Formula } from '@/Components/FormulaDropdown';
-import type { ProductFormData, Category, ExistingImage } from './types';
+import type { ProductFormData, Category, ExistingImage, ShippingPackageFormData } from './types';
 import ProductFormHeader from './components/ProductFormHeader';
 import BasicInfoCard from './components/BasicInfoCard';
 import PricingInventoryCard from './components/PricingInventoryCard';
@@ -16,7 +16,7 @@ interface ProductData {
     name: string;
     slug: string;
     sku: string;
-    category_id: string;
+    category_id: number;
     formula_id: number | null;
     description: string;
     price: string;
@@ -27,9 +27,9 @@ interface ProductData {
     width_cm: string;
     height_cm: string;
     depth_cm: string;
+    shipping_packages: ShippingPackageFormData[];
     is_active: boolean;
     is_featured: boolean;
-    image_url?: string | null;
     images: ExistingImage[];
 }
 
@@ -40,7 +40,7 @@ interface EditProductProps extends PageProps {
 }
 
 export default function Edit({ product, categories, formulas }: EditProductProps) {
-    const [existingImages, setExistingImages] = useState<ExistingImage[]>(product.images || []);
+    const [existingImages, setExistingImages] = useState<ExistingImage[]>(product.images);
 
     const { data, setData, post, processing, errors } = useForm<ProductFormData & { _method: string }>({
         name: product.name,
@@ -53,10 +53,11 @@ export default function Edit({ product, categories, formulas }: EditProductProps
         cost: product.cost,
         stock: product.stock,
         min_stock: product.min_stock,
-        weight_kg: product.weight_kg ?? '',
-        width_cm: product.width_cm ?? '',
-        height_cm: product.height_cm ?? '',
-        depth_cm: product.depth_cm ?? '',
+        weight_kg: product.weight_kg,
+        width_cm: product.width_cm,
+        height_cm: product.height_cm,
+        depth_cm: product.depth_cm,
+        shipping_packages: product.shipping_packages,
         is_active: product.is_active,
         is_featured: product.is_featured,
         images: [],

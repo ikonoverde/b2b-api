@@ -35,6 +35,10 @@ class EditProductController extends Controller
                 'width_cm' => $product->width_cm !== null ? (string) $product->width_cm : '',
                 'height_cm' => $product->height_cm !== null ? (string) $product->height_cm : '',
                 'depth_cm' => $product->depth_cm !== null ? (string) $product->depth_cm : '',
+                'shipping_packages' => collect($product->shipping_packages ?? [])
+                    ->map(fn (array $package): array => $this->formatShippingPackage($package))
+                    ->values()
+                    ->all(),
                 'is_active' => $product->is_active,
                 'is_featured' => $product->is_featured,
                 'images' => $product->images->map(fn ($img) => [
@@ -46,5 +50,20 @@ class EditProductController extends Controller
             'categories' => $categories,
             'formulas' => Inertia::defer(fn () => $this->productionApi->getFormulas()),
         ]);
+    }
+
+    /**
+     * @param  array<string, mixed>  $package
+     * @return array{quantity: string, weight_kg: string, width_cm: string, height_cm: string, depth_cm: string}
+     */
+    private function formatShippingPackage(array $package): array
+    {
+        return [
+            'quantity' => (string) ($package['quantity'] ?? ''),
+            'weight_kg' => (string) ($package['weight_kg'] ?? ''),
+            'width_cm' => (string) ($package['width_cm'] ?? ''),
+            'height_cm' => (string) ($package['height_cm'] ?? ''),
+            'depth_cm' => (string) ($package['depth_cm'] ?? ''),
+        ];
     }
 }

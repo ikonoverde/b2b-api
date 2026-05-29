@@ -33,19 +33,20 @@ class ProductFactory extends Factory
             'width_cm' => fake()->optional(0.7)->randomFloat(2, 1, 100),
             'height_cm' => fake()->optional(0.7)->randomFloat(2, 1, 100),
             'depth_cm' => fake()->optional(0.7)->randomFloat(2, 1, 100),
+            'shipping_packages' => null,
         ];
     }
 
     public function inactive(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state([
             'is_active' => false,
         ]);
     }
 
     public function lowStock(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state([
             'stock' => 5,
             'min_stock' => 10,
         ]);
@@ -61,7 +62,7 @@ class ProductFactory extends Factory
 
     public function outOfStock(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state([
             'stock' => 0,
             'min_stock' => 10,
         ]);
@@ -77,9 +78,16 @@ class ProductFactory extends Factory
         ]);
     }
 
+    public function withShippingPackages(array $packages): static
+    {
+        return $this->state([
+            'shipping_packages' => $packages,
+        ]);
+    }
+
     public function withFormula(int $formulaId = 1): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state([
             'formula_id' => $formulaId,
         ]);
     }

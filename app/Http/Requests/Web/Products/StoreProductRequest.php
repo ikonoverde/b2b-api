@@ -2,16 +2,24 @@
 
 namespace App\Http\Requests\Web\Products;
 
+use App\Http\Requests\Web\Products\Concerns\NormalizesProductShippingPackages;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreProductRequest extends FormRequest
 {
+    use NormalizesProductShippingPackages;
+
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
         return true;
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->prepareShippingPackagesForValidation();
     }
 
     /**
@@ -36,6 +44,7 @@ class StoreProductRequest extends FormRequest
             ...array_fill_keys(['width_cm', 'height_cm', 'depth_cm'], ['nullable', 'numeric', 'min:0.1', 'max:9999']),
             'is_active' => ['boolean'],
             'is_featured' => ['boolean'],
+            ...$this->shippingPackageRules(),
             'images' => ['nullable', 'array', 'max:4'],
             'images.*' => ['image', 'mimes:png,jpg,jpeg,webp', 'max:5120'],
         ];
