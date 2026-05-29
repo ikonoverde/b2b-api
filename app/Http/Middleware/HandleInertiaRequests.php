@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use App\Models\Cart;
+use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -29,6 +31,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $user = $request->user();
+        $canAccessAdmin = $this->canAccessAdmin($user);
 
         return [
             ...parent::share($request),
@@ -40,8 +43,9 @@ class HandleInertiaRequests extends Middleware
                     'role' => $user->role,
                     'initials' => $this->getInitials($user->name),
                 ] : null,
-                'canAccessAdmin' => $user && in_array($user->role, ['admin', 'super_admin'], true),
+                'canAccessAdmin' => $canAccessAdmin,
             ],
+            'adminNavigation' => fn () => $this->getAdminNavigation($request),
             'miniCart' => fn () => $user ? $this->getMiniCart($user) : null,
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
@@ -53,9 +57,33 @@ class HandleInertiaRequests extends Middleware
     }
 
     /**
+     * Determine if the user can access the admin area.
+     */
+    private function canAccessAdmin(?User $user): bool
+    {
+        return $user !== null && in_array($user->role, ['admin', 'super_admin'], true);
+    }
+
+    /**
+     * Get admin navigation data for the sidebar.
+     *
+     * @return array{ordersCount: int}|null
+     */
+    private function getAdminNavigation(Request $request): ?array
+    {
+        if (! ($request->is('admin') || $request->is('admin/*')) || ! $this->canAccessAdmin($request->user())) {
+            return null;
+        }
+
+        return [
+            'ordersCount' => Order::query()->count(),
+        ];
+    }
+
+    /**
      * Get mini cart data for the header dropdown.
      */
-    private function getMiniCart(\App\Models\User $user): array
+    private function getMiniCart(User $user): array
     {
         $cart = Cart::where('user_id', $user->id)
             ->where('status', 'active')

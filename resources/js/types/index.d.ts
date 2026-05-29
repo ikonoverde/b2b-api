@@ -74,6 +74,9 @@ export interface PageProps {
         user: User | null;
         canAccessAdmin: boolean;
     };
+    adminNavigation: {
+        ordersCount: number;
+    } | null;
     miniCart: MiniCart | null;
     flash: {
         success?: string;

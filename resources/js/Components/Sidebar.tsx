@@ -37,7 +37,7 @@ const mainNav: NavItem[] = [
 ];
 
 const managementNav: NavItem[] = [
-    { name: 'Pedidos', href: '/admin/orders', icon: ShoppingCart, id: 'orders', badge: 12 },
+    { name: 'Pedidos', href: '/admin/orders', icon: ShoppingCart, id: 'orders' },
     { name: 'Productos', href: '/admin/products', icon: Package, id: 'products' },
     { name: 'Categorías', href: '/admin/categories', icon: Folder, id: 'categories' },
     { name: 'Envios', href: '/admin/shipments', icon: Truck, id: 'shipments' },
@@ -56,8 +56,10 @@ const systemNav: NavItem[] = [
 ];
 
 export default function Sidebar({ active }: SidebarProps) {
-    const { auth } = usePage<PageProps>().props;
+    const { auth, adminNavigation } = usePage<PageProps>().props;
     const user = auth.user;
+    const ordersCount = adminNavigation?.ordersCount ?? 0;
+    const managementItems = managementNav.map((item) => item.id === 'orders' ? { ...item, badge: ordersCount } : item);
     const { post, processing } = useForm({});
 
     const handleLogout = () => post('/admin/logout');
@@ -98,7 +100,7 @@ export default function Sidebar({ active }: SidebarProps) {
                 <span className="text-[11px] font-medium text-[#999999] tracking-wider px-4 mb-1 font-[Outfit]">
                     GESTION
                 </span>
-                {managementNav.map((item) => (
+                {managementItems.map((item) => (
                     <NavLink
                         key={item.id}
                         item={item}
@@ -198,8 +200,8 @@ function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
                     {item.name}
                 </span>
             </div>
-            {item.badge && (
-                <span className="w-7 h-[22px] bg-[#4A5D4A] rounded-full flex items-center justify-center text-white text-[11px] font-medium">
+            {typeof item.badge === 'number' && (
+                <span className="flex h-[22px] min-w-7 items-center justify-center rounded-full bg-[#4A5D4A] px-2 text-[11px] font-medium text-white">
                     {item.badge}
                 </span>
             )}
