@@ -62,6 +62,25 @@ function mockStripePaymentIntentCreate(): void
     app()->bind(StripeClient::class, fn () => $mockStripe);
 }
 
+function mockStripePaymentIntentCreateForCustomer(string $customerId): void
+{
+    $mockPaymentIntent = new \stdClass;
+    $mockPaymentIntent->id = 'pi_test_123';
+    $mockPaymentIntent->client_secret = 'pi_test_123_secret_456';
+
+    $mockPaymentIntents = Mockery::mock(\Stripe\Service\PaymentIntentService::class);
+    $mockPaymentIntents->shouldReceive('create')
+        ->once()
+        ->with(Mockery::on(fn (array $payload) => ($payload['customer'] ?? null) === $customerId
+            && $payload['automatic_payment_methods'] === ['enabled' => true]))
+        ->andReturn($mockPaymentIntent);
+
+    $mockStripe = Mockery::mock(StripeClient::class);
+    $mockStripe->paymentIntents = $mockPaymentIntents;
+
+    app()->bind(StripeClient::class, fn () => $mockStripe);
+}
+
 it('validates required fields', function () {
     $user = User::factory()->create();
     $cart = Cart::factory()->create(['user_id' => $user->id]);
@@ -157,6 +176,24 @@ it('redirects to payment page', function () {
 
     $order = \App\Models\Order::where('user_id', $user->id)->latest()->first();
     $response->assertRedirect(route('checkout.payment', ['order' => $order->id]));
+});
+
+it('creates payment intent for the stripe customer when available', function () {
+    $user = User::factory()->create(['stripe_id' => 'cus_test_123']);
+    $cart = Cart::factory()->create(['user_id' => $user->id]);
+    $product = Product::factory()->withDimensions()->create(['price' => 100, 'stock' => 50]);
+    CartItem::factory()->create([
+        'cart_id' => $cart->id,
+        'product_id' => $product->id,
+        'quantity' => 1,
+        'unit_price' => 100,
+    ]);
+
+    mockShippingQuoteForStore();
+    mockStripePaymentIntentCreateForCustomer('cus_test_123');
+
+    $this->actingAs($user)->post('/checkout/shipping', validShippingData())
+        ->assertRedirect();
 });
 
 it('returns stock errors for insufficient stock', function () {

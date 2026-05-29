@@ -78,7 +78,7 @@ class StoreCheckoutShippingController extends Controller
             return $order;
         });
 
-        $paymentIntent = Cashier::stripe()->paymentIntents->create([
+        $paymentIntentData = [
             'amount' => (int) ($totalAmount * 100),
             'currency' => 'mxn',
             'metadata' => [
@@ -86,7 +86,13 @@ class StoreCheckoutShippingController extends Controller
                 'user_id' => $request->user()->id,
             ],
             'automatic_payment_methods' => ['enabled' => true],
-        ]);
+        ];
+
+        if ($request->user()->stripe_id) {
+            $paymentIntentData['customer'] = $request->user()->stripe_id;
+        }
+
+        $paymentIntent = Cashier::stripe()->paymentIntents->create($paymentIntentData);
 
         $order->update(['payment_intent_id' => $paymentIntent->id]);
 
