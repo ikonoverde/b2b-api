@@ -162,9 +162,9 @@ export default function Products({ products }: ProductsProps) {
                 </div>
 
                 {/* Products Table */}
-                <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
+                <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-visible">
                     {/* Table Header */}
-                    <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_80px] gap-4 px-6 py-4 border-b border-[#E5E5E5] bg-[#FAFAFA]">
+                    <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_80px] gap-4 rounded-t-2xl border-b border-[#E5E5E5] bg-[#FAFAFA] px-6 py-4">
                         <span className="text-[13px] font-medium text-[#666666] font-[Outfit]">
                             Producto
                         </span>
@@ -340,7 +340,7 @@ function ProductRow({ product, onDelete }: { product: Product; onDelete: (produc
                     <MoreHorizontal className="w-5 h-5 text-[#999999]" />
                 </button>
                 {menuOpen && (
-                    <div className="absolute right-0 top-full mt-1 bg-white rounded-lg border border-[#E5E5E5] shadow-lg z-10 min-w-[140px]">
+                    <div className="absolute right-0 top-full z-10 mt-1 min-w-[140px] overflow-hidden rounded-lg border border-[#E5E5E5] bg-white shadow-lg">
                         <Link
                             href={`/admin/products/${product.id}/edit`}
                             className="block px-4 py-2.5 text-sm text-[#1A1A1A] font-[Outfit] hover:bg-[#F5F3F0] transition-colors"
