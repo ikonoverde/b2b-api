@@ -61,9 +61,16 @@ function SiteHeader() {
                         Catálogo
                     </Link>
                     {auth.user ? (
-                        <Link href="/dashboard" className={linkClass}>
-                            Mi cuenta
-                        </Link>
+                        <>
+                            {auth.canAccessAdmin && (
+                                <Link href="/admin" className={linkClass}>
+                                    Admin
+                                </Link>
+                            )}
+                            <Link href="/dashboard" className={linkClass}>
+                                Mi cuenta
+                            </Link>
+                        </>
                     ) : (
                         <Link href="/login" className={linkClass}>
                             Ingresar

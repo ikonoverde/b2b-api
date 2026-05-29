@@ -40,6 +40,7 @@ class HandleInertiaRequests extends Middleware
                     'role' => $user->role,
                     'initials' => $this->getInitials($user->name),
                 ] : null,
+                'canAccessAdmin' => $user && in_array($user->role, ['admin', 'super_admin'], true),
             ],
             'miniCart' => fn () => $user ? $this->getMiniCart($user) : null,
             'flash' => [

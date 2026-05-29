@@ -72,6 +72,7 @@ export interface ReorderWarnings {
 export interface PageProps {
     auth: {
         user: User | null;
+        canAccessAdmin: boolean;
     };
     miniCart: MiniCart | null;
     flash: {

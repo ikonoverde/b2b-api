@@ -22,6 +22,7 @@ interface CustomerShellProps {
 export default function CustomerShell({ title, children }: CustomerShellProps) {
     const { auth, miniCart } = usePage<PageProps>().props;
     const user = auth.user;
+    const canAccessAdmin = auth.canAccessAdmin;
     const [mobileOpen, setMobileOpen] = useState(false);
     const { post, processing } = useForm({});
 
@@ -44,6 +45,7 @@ export default function CustomerShell({ title, children }: CustomerShellProps) {
 
                         <nav className="hidden items-center gap-7 text-[13px] md:flex">
                             <NavLink href="/catalog">Catálogo</NavLink>
+                            {canAccessAdmin && <NavLink href="/admin">Admin</NavLink>}
                             <NavLink href="/account/orders">Pedidos</NavLink>
                         </nav>
 
@@ -96,6 +98,11 @@ export default function CustomerShell({ title, children }: CustomerShellProps) {
                                 <MobileLink href="/account/orders" onSelect={() => setMobileOpen(false)}>
                                     Pedidos
                                 </MobileLink>
+                                {canAccessAdmin && (
+                                    <MobileLink href="/admin" onSelect={() => setMobileOpen(false)}>
+                                        Admin
+                                    </MobileLink>
+                                )}
                                 <MobileLink href="/account" onSelect={() => setMobileOpen(false)}>
                                     Mi cuenta
                                 </MobileLink>
