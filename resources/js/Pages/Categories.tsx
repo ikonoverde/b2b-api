@@ -242,7 +242,7 @@ function CategoryActions({ category, onAddSubcategory, onEdit, onDelete }: Categ
                 <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#E5E5E5] transition-colors">
                     <MoreHorizontal className="w-5 h-5 text-[#666666]" />
                 </button>
-                <div className="absolute right-0 top-full mt-1 w-44 bg-white rounded-lg shadow-lg border border-[#E5E5E5] py-1 hidden group-hover/menu:block z-10">
+                <div className="absolute right-0 top-full z-10 mt-1 hidden w-44 overflow-hidden rounded-lg border border-[#E5E5E5] bg-white py-1 shadow-lg group-hover/menu:block">
                     <button
                         onClick={() => onAddSubcategory(category.id)}
                         className="w-full px-4 py-2 text-left text-sm text-[#1A1A1A] hover:bg-[#F9F9F9] font-[Outfit] flex items-center gap-2"
@@ -501,8 +501,8 @@ export default function Categories({ categories, flatCategories }: CategoriesPro
 
                 {/* Main Content */}
                 <main className="px-8 py-6">
-                    <div className="bg-white rounded-xl border border-[#E5E5E5] overflow-hidden">
-                        <div className="p-4 bg-[#F9F9F9] border-b border-[#E5E5E5] flex items-center gap-4 text-sm text-[#666666] font-[Outfit]">
+                    <div className="bg-white rounded-xl border border-[#E5E5E5] overflow-visible">
+                        <div className="flex items-center gap-4 rounded-t-xl border-b border-[#E5E5E5] bg-[#F9F9F9] p-4 text-sm text-[#666666] font-[Outfit]">
                             <span className="w-12"></span>
                             <span className="w-12"></span>
                             <span className="flex-1">Nombre</span>
