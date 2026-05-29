@@ -17,6 +17,7 @@
         "laravel/cashier": "^16.2",
         "laravel/framework": "^12.0",
         "laravel/horizon": "^5.45",
+        "laravel/nightwatch": "^1.27",
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.25",
         "laravel/telescope": "^5.16",
