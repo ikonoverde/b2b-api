@@ -78,3 +78,18 @@ it('shows banners in display order', function () {
         )
     );
 });
+
+it('keeps the purchase path colorized with Ikonoverde tokens', function () {
+    $dashboardSource = file_get_contents(resource_path('js/Pages/CustomerDashboard.tsx'));
+    $cssSource = file_get_contents(resource_path('css/app.css'));
+
+    expect($dashboardSource)
+        ->toContain('AccountReadyPanel')
+        ->toContain('PurchaseFacts')
+        ->toContain('bg-[var(--iko-accent-mist)]')
+        ->toContain('Cuenta activa')
+        ->and($cssSource)
+        ->toContain('--iko-accent-mist: oklch(')
+        ->toContain('--iko-accent-line: oklch(')
+        ->not->toContain('--iko-accent-mist: #');
+});

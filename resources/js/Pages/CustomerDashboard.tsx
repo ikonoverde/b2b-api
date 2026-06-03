@@ -35,18 +35,21 @@ export default function CustomerDashboard({
 
     return (
         <CustomerShell title="Resumen">
-            <header className="flex flex-col gap-3">
-                <span className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-accent)] uppercase">
-                    Cuenta · Resumen
-                </span>
-                <h1 className="font-display text-[clamp(2.25rem,4.5vw,3rem)] leading-[1.05] tracking-[-0.015em] text-[var(--iko-stone-ink)]">
-                    Hola, {userName}.
-                </h1>
-                <p className="max-w-[58ch] text-[15px] leading-[1.55] text-[var(--iko-stone-ink)]/75">
-                    {isReturning
-                        ? 'Vuelve a pedir tus formatos habituales o explora el catálogo completo.'
-                        : 'Tu cuenta está activa. Empieza por explorar el catálogo o realizar tu primer pedido.'}
-                </p>
+            <header className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(16rem,20rem)] md:items-end">
+                <div className="flex flex-col gap-3">
+                    <span className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-accent)] uppercase">
+                        Cuenta · Resumen
+                    </span>
+                    <h1 className="font-display text-[clamp(2.25rem,4.5vw,3rem)] leading-[1.05] tracking-[-0.015em] text-[var(--iko-stone-ink)]">
+                        Hola, {userName}.
+                    </h1>
+                    <p className="max-w-[58ch] text-[15px] leading-[1.55] text-[var(--iko-stone-ink)]/75">
+                        {isReturning
+                            ? 'Vuelve a pedir tus formatos habituales o explora el catálogo completo.'
+                            : 'Tu cuenta está activa. Empieza por explorar el catálogo o realizar tu primer pedido.'}
+                    </p>
+                </div>
+                <AccountReadyPanel />
             </header>
 
             <ReorderBlock isReturning={isReturning} />
@@ -62,14 +65,33 @@ export default function CustomerDashboard({
     );
 }
 
+function AccountReadyPanel() {
+    return (
+        <aside
+            aria-label="Estado de cuenta"
+            className="border border-[var(--iko-accent-line)] bg-[var(--iko-accent-mist)] p-5 text-[var(--iko-accent-ink)]"
+        >
+            <div className="flex items-center gap-2.5">
+                <span className="h-2.5 w-2.5 rounded-full bg-[var(--iko-accent)]" aria-hidden="true" />
+                <span className="font-spec text-[11px] tracking-[0.08em] uppercase">
+                    Cuenta activa
+                </span>
+            </div>
+            <p className="mt-4 text-[13px] leading-[1.5]">
+                Compra desde una unidad, con precios visibles antes de pagar.
+            </p>
+        </aside>
+    );
+}
+
 function ReorderBlock({ isReturning }: { isReturning: boolean }) {
     return (
         <section
             aria-labelledby="reorder-heading"
-            className="mt-14 grid grid-cols-1 gap-8 border-y border-[var(--iko-stone-hairline)] py-10 md:grid-cols-[2fr_1fr] md:items-center md:gap-12"
+            className="mt-14 grid grid-cols-1 gap-8 border border-[var(--iko-accent-line)] bg-[var(--iko-accent-mist)] px-6 py-8 md:grid-cols-[2fr_1fr] md:items-center md:gap-12 md:px-8 md:py-10"
         >
             <div className="flex flex-col gap-3">
-                <span className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-stone-whisper)] uppercase">
+                <span className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-accent-ink)] uppercase">
                     {isReturning ? 'Pedido recurrente' : 'Empezar'}
                 </span>
                 <h2
@@ -80,6 +102,7 @@ function ReorderBlock({ isReturning }: { isReturning: boolean }) {
                         ? 'Reordena tus formatos habituales en un paso.'
                         : 'Tu primer pedido te toma menos de un minuto.'}
                 </h2>
+                <PurchaseFacts />
             </div>
             <div className="flex flex-col items-start gap-4 md:items-end">
                 <Link
@@ -102,6 +125,23 @@ function ReorderBlock({ isReturning }: { isReturning: boolean }) {
     );
 }
 
+const PURCHASE_FACTS = ['Precios visibles', 'Una unidad', 'Pago claro'] as const;
+
+function PurchaseFacts() {
+    return (
+        <ul className="mt-3 flex flex-wrap gap-2">
+            {PURCHASE_FACTS.map((fact) => (
+                <li
+                    key={fact}
+                    className="border border-[var(--iko-accent-line)] bg-[var(--iko-stone-surface)] px-3 py-1.5 font-spec text-[11px] tracking-[0.04em] text-[var(--iko-accent-ink)] uppercase"
+                >
+                    {fact}
+                </li>
+            ))}
+        </ul>
+    );
+}
+
 const STAT_LABELS = {
     orders: 'Pedidos realizados',
     spent: 'Total comprado',
@@ -111,7 +151,7 @@ function StatStrip({ profile }: { profile: Profile }) {
     return (
         <section
             aria-label="Resumen de cuenta"
-            className="mt-12 grid grid-cols-1 border-b border-[var(--iko-stone-hairline)] sm:grid-cols-2 sm:divide-x sm:divide-[var(--iko-stone-hairline)] sm:border-y"
+            className="mt-12 grid grid-cols-1 border border-[var(--iko-stone-hairline)] bg-[var(--iko-stone-surface)] sm:grid-cols-2 sm:divide-x sm:divide-[var(--iko-stone-hairline)]"
         >
             <StatItem
                 label={STAT_LABELS.orders}
@@ -128,7 +168,7 @@ function StatStrip({ profile }: { profile: Profile }) {
 
 function StatItem({ label, value, hint }: { label: string; value: string; hint?: string }) {
     return (
-        <div className="flex flex-col gap-2 border-b border-[var(--iko-stone-hairline)] py-7 sm:border-b-0 sm:px-8 sm:first:pl-0 sm:last:pr-0">
+        <div className="flex flex-col gap-2 border-b border-[var(--iko-stone-hairline)] px-6 py-7 sm:border-b-0 sm:px-8">
             <span className="font-spec text-[11px] tracking-[0.08em] text-[var(--iko-stone-whisper)] uppercase">
                 {label}
             </span>
@@ -278,4 +318,3 @@ function SectionHeader({
         </div>
     );
 }
-

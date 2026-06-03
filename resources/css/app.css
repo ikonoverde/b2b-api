@@ -44,14 +44,18 @@
  * ───────────────────────────────────────────────────────── */
 [data-iko] {
     --iko-stone-paper: oklch(0.965 0.012 200);
+    --iko-stone-surface: oklch(0.985 0.009 200);
     --iko-stone-mid: oklch(0.88 0.014 200);
     --iko-stone-hairline: oklch(0.92 0.012 200);
     --iko-stone-ink: oklch(0.22 0.02 200);
     --iko-stone-whisper: oklch(0.5 0.018 200);
     --iko-accent: oklch(0.45 0.13 200);
     --iko-accent-hover: oklch(0.38 0.135 200);
+    --iko-accent-ink: oklch(0.32 0.085 200);
     --iko-accent-on: oklch(0.98 0.008 200);
     --iko-accent-soft: oklch(0.45 0.13 200 / 0.1);
+    --iko-accent-mist: oklch(0.935 0.032 200);
+    --iko-accent-line: oklch(0.72 0.06 200);
     /* Brand green — exact match for the SVG mark fill (#1a9d11). */
     --iko-verde: oklch(0.55 0.21 140);
     --iko-error: oklch(0.55 0.18 25);
