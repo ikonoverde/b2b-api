@@ -464,3 +464,7 @@ export default () => (
 
 ## Controllers
 - Controllers should be single action controllers, if you touch a controller that is not single action refactor it.
+
+## Dev Environment
+- The application it's always running on http://192.168.0.193:8000/ for local dev testing
+- When testing by using the app, always check the log files at @storage/logs/

@@ -99,7 +99,7 @@ function ReorderBlock({ isReturning }: { isReturning: boolean }) {
                     className="font-display text-[clamp(1.5rem,3vw,2.25rem)] leading-[1.1] tracking-[-0.01em] text-[var(--iko-stone-ink)]"
                 >
                     {isReturning
-                        ? 'Reordena tus formatos habituales en un paso.'
+                        ? 'Reordena tus productos habituales en un paso.'
                         : 'Tu primer pedido te toma menos de un minuto.'}
                 </h2>
                 <PurchaseFacts />
