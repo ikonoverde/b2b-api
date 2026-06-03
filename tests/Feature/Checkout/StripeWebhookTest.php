@@ -7,7 +7,10 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\User;
+use App\Notifications\Order\NewOrderReceived;
+use App\Notifications\Order\OrderConfirmation;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Notification;
 use Laravel\Cashier\Events\WebhookReceived;
 
 function checkoutCompletedPayload(array $metadata = [], ?string $paymentIntent = 'pi_test_123'): array
@@ -464,6 +467,133 @@ it('dispatches CreateShippingLabel job on payment_intent.succeeded for skydropx 
     )));
 
     Bus::assertDispatched(CreateShippingLabel::class, fn ($job) => $job->order->id === $order->id);
+});
+
+// Order confirmation notification
+
+it('sends order confirmation notification on checkout completed', function () {
+    Notification::fake();
+
+    $user = User::factory()->create();
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'pending',
+        'payment_status' => 'pending',
+    ]);
+
+    event(new WebhookReceived(checkoutCompletedPayload(
+        metadata: ['order_id' => $order->id, 'user_id' => $user->id],
+    )));
+
+    Notification::assertSentTo($user, OrderConfirmation::class, function ($notification) use ($order) {
+        return $notification->order->id === $order->id;
+    });
+});
+
+it('sends order confirmation notification on payment_intent.succeeded', function () {
+    Notification::fake();
+
+    $user = User::factory()->create();
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'payment_pending',
+        'payment_status' => 'pending',
+        'payment_intent_id' => 'pi_test_confirm_pi',
+    ]);
+
+    event(new WebhookReceived(paymentIntentSucceededPayload(
+        paymentIntentId: 'pi_test_confirm_pi',
+        metadata: ['order_id' => $order->id, 'user_id' => $user->id],
+    )));
+
+    Notification::assertSentTo($user, OrderConfirmation::class);
+});
+
+it('does not send order confirmation notification for already completed orders', function () {
+    Notification::fake();
+
+    $user = User::factory()->create();
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'processing',
+        'payment_status' => 'completed',
+        'payment_intent_id' => 'pi_test_already_done',
+    ]);
+
+    event(new WebhookReceived(checkoutCompletedPayload(
+        metadata: ['order_id' => $order->id, 'user_id' => $user->id],
+        paymentIntent: 'pi_test_different',
+    )));
+
+    Notification::assertNothingSent();
+});
+
+// Staff new-order notification
+
+it('notifies active admin and super_admin staff of new order on checkout completed', function () {
+    Notification::fake();
+
+    $admin = User::factory()->admin()->create();
+    $superAdmin = User::factory()->superAdmin()->create();
+    $inactiveAdmin = User::factory()->admin()->inactive()->create();
+
+    $user = User::factory()->create();
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'pending',
+        'payment_status' => 'pending',
+    ]);
+
+    event(new WebhookReceived(checkoutCompletedPayload(
+        metadata: ['order_id' => $order->id, 'user_id' => $user->id],
+    )));
+
+    Notification::assertSentTo($admin, NewOrderReceived::class, function ($notification) use ($order) {
+        return $notification->order->id === $order->id;
+    });
+    Notification::assertSentTo($superAdmin, NewOrderReceived::class);
+    Notification::assertNotSentTo($inactiveAdmin, NewOrderReceived::class);
+    Notification::assertNotSentTo($user, NewOrderReceived::class);
+});
+
+it('notifies staff of new order on payment_intent.succeeded', function () {
+    Notification::fake();
+
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->create();
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'payment_pending',
+        'payment_status' => 'pending',
+        'payment_intent_id' => 'pi_test_staff_pi',
+    ]);
+
+    event(new WebhookReceived(paymentIntentSucceededPayload(
+        paymentIntentId: 'pi_test_staff_pi',
+        metadata: ['order_id' => $order->id, 'user_id' => $user->id],
+    )));
+
+    Notification::assertSentTo($admin, NewOrderReceived::class);
+});
+
+it('does not notify staff for already completed orders', function () {
+    Notification::fake();
+
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->create();
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'processing',
+        'payment_status' => 'completed',
+        'payment_intent_id' => 'pi_test_staff_done',
+    ]);
+
+    event(new WebhookReceived(checkoutCompletedPayload(
+        metadata: ['order_id' => $order->id, 'user_id' => $user->id],
+        paymentIntent: 'pi_test_different',
+    )));
+
+    Notification::assertNotSentTo($admin, NewOrderReceived::class);
 });
 
 // Unrecognized events

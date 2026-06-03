@@ -117,7 +117,7 @@
       "source_file": "Console/Commands/GenerateImageCommand.php",
       "source_location": "L1",
       "id": "console_commands_generateimagecommand_php",
-      "community": 63,
+      "community": 64,
       "norm_label": "generateimagecommand.php"
     },
     {
@@ -126,7 +126,7 @@
       "source_file": "Console/Commands/GenerateImageCommand.php",
       "source_location": "L13",
       "id": "commands_generateimagecommand_generateimagecommand",
-      "community": 63,
+      "community": 64,
       "norm_label": "generateimagecommand"
     },
     {
@@ -135,7 +135,7 @@
       "source_file": "Console/Commands/GenerateImageCommand.php",
       "source_location": "L41",
       "id": "commands_generateimagecommand_generateimagecommand_handle",
-      "community": 63,
+      "community": 64,
       "norm_label": ".handle()"
     },
     {
@@ -189,7 +189,7 @@
       "source_file": "Providers/AppServiceProvider.php",
       "source_location": "L1",
       "id": "providers_appserviceprovider_php",
-      "community": 53,
+      "community": 54,
       "norm_label": "appserviceprovider.php"
     },
     {
@@ -198,7 +198,7 @@
       "source_file": "Providers/AppServiceProvider.php",
       "source_location": "L11",
       "id": "providers_appserviceprovider_appserviceprovider",
-      "community": 53,
+      "community": 54,
       "norm_label": "appserviceprovider"
     },
     {
@@ -207,7 +207,7 @@
       "source_file": "Providers/AppServiceProvider.php",
       "source_location": "L16",
       "id": "providers_appserviceprovider_appserviceprovider_register",
-      "community": 53,
+      "community": 54,
       "norm_label": ".register()"
     },
     {
@@ -216,7 +216,7 @@
       "source_file": "Providers/AppServiceProvider.php",
       "source_location": "L48",
       "id": "providers_appserviceprovider_appserviceprovider_boot",
-      "community": 53,
+      "community": 54,
       "norm_label": ".boot()"
     },
     {
@@ -783,7 +783,7 @@
       "source_file": "Models/ShippingMethod.php",
       "source_location": "L1",
       "id": "models_shippingmethod_php",
-      "community": 54,
+      "community": 55,
       "norm_label": "shippingmethod.php"
     },
     {
@@ -792,7 +792,7 @@
       "source_file": "Models/ShippingMethod.php",
       "source_location": "L9",
       "id": "models_shippingmethod_shippingmethod",
-      "community": 54,
+      "community": 55,
       "norm_label": "shippingmethod"
     },
     {
@@ -801,7 +801,7 @@
       "source_file": "Models/ShippingMethod.php",
       "source_location": "L25",
       "id": "models_shippingmethod_shippingmethod_casts",
-      "community": 54,
+      "community": 55,
       "norm_label": ".casts()"
     },
     {
@@ -810,7 +810,7 @@
       "source_file": "Models/ShippingMethod.php",
       "source_location": "L37",
       "id": "models_shippingmethod_shippingmethod_orders",
-      "community": 54,
+      "community": 55,
       "norm_label": ".orders()"
     },
     {
@@ -1107,7 +1107,7 @@
       "source_file": "Models/CartItem.php",
       "source_location": "L1",
       "id": "models_cartitem_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "cartitem.php"
     },
     {
@@ -1116,7 +1116,7 @@
       "source_file": "Models/CartItem.php",
       "source_location": "L9",
       "id": "models_cartitem_cartitem",
-      "community": 0,
+      "community": 1,
       "norm_label": "cartitem"
     },
     {
@@ -1125,7 +1125,7 @@
       "source_file": "Models/CartItem.php",
       "source_location": "L20",
       "id": "models_cartitem_cartitem_casts",
-      "community": 0,
+      "community": 1,
       "norm_label": ".casts()"
     },
     {
@@ -1134,7 +1134,7 @@
       "source_file": "Models/CartItem.php",
       "source_location": "L30",
       "id": "models_cartitem_cartitem_cart",
-      "community": 0,
+      "community": 1,
       "norm_label": ".cart()"
     },
     {
@@ -1143,7 +1143,7 @@
       "source_file": "Models/CartItem.php",
       "source_location": "L35",
       "id": "models_cartitem_cartitem_product",
-      "community": 0,
+      "community": 1,
       "norm_label": ".product()"
     },
     {
@@ -1152,7 +1152,7 @@
       "source_file": "Models/CartItem.php",
       "source_location": "L40",
       "id": "models_cartitem_cartitem_getsubtotalattribute",
-      "community": 0,
+      "community": 1,
       "norm_label": ".getsubtotalattribute()"
     },
     {
@@ -1242,7 +1242,7 @@
       "source_file": "Models/Address.php",
       "source_location": "L1",
       "id": "models_address_php",
-      "community": 7,
+      "community": 9,
       "norm_label": "address.php"
     },
     {
@@ -1251,7 +1251,7 @@
       "source_file": "Models/Address.php",
       "source_location": "L9",
       "id": "models_address_address",
-      "community": 7,
+      "community": 9,
       "norm_label": "address"
     },
     {
@@ -1260,7 +1260,7 @@
       "source_file": "Models/Address.php",
       "source_location": "L31",
       "id": "models_address_address_casts",
-      "community": 7,
+      "community": 9,
       "norm_label": ".casts()"
     },
     {
@@ -1269,7 +1269,7 @@
       "source_file": "Models/Address.php",
       "source_location": "L39",
       "id": "models_address_address_user",
-      "community": 7,
+      "community": 9,
       "norm_label": ".user()"
     },
     {
@@ -1278,7 +1278,7 @@
       "source_file": "Models/Address.php",
       "source_location": "L47",
       "id": "models_address_address_setasdefault",
-      "community": 7,
+      "community": 9,
       "norm_label": ".setasdefault()"
     },
     {
@@ -1287,7 +1287,7 @@
       "source_file": "Models/Address.php",
       "source_location": "L59",
       "id": "models_address_address_promotenextdefault",
-      "community": 7,
+      "community": 9,
       "norm_label": ".promotenextdefault()"
     },
     {
@@ -1494,7 +1494,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L1",
       "id": "models_product_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "product.php"
     },
     {
@@ -1503,7 +1503,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L15",
       "id": "models_product_product",
-      "community": 1,
+      "community": 0,
       "norm_label": "product"
     },
     {
@@ -1512,7 +1512,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L46",
       "id": "models_product_product_casts",
-      "community": 1,
+      "community": 0,
       "norm_label": ".casts()"
     },
     {
@@ -1530,7 +1530,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L80",
       "id": "models_product_product_getstatusattribute",
-      "community": 1,
+      "community": 0,
       "norm_label": ".getstatusattribute()"
     },
     {
@@ -1539,7 +1539,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L93",
       "id": "models_product_product_getimageurlattribute",
-      "community": 1,
+      "community": 0,
       "norm_label": ".getimageurlattribute()"
     },
     {
@@ -1548,7 +1548,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L103",
       "id": "models_product_product_scopefilterbycategory",
-      "community": 1,
+      "community": 0,
       "norm_label": ".scopefilterbycategory()"
     },
     {
@@ -1557,7 +1557,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L115",
       "id": "models_product_product_scopefeaturedforhome",
-      "community": 1,
+      "community": 0,
       "norm_label": ".scopefeaturedforhome()"
     },
     {
@@ -1566,7 +1566,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L129",
       "id": "models_product_product_scopefilterbypricerange",
-      "community": 1,
+      "community": 0,
       "norm_label": ".scopefilterbypricerange()"
     },
     {
@@ -1575,7 +1575,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L140",
       "id": "models_product_product_scopesearch",
-      "community": 1,
+      "community": 0,
       "norm_label": ".scopesearch()"
     },
     {
@@ -1584,7 +1584,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L155",
       "id": "models_product_product_scopesortby",
-      "community": 1,
+      "community": 0,
       "norm_label": ".scopesortby()"
     },
     {
@@ -1593,7 +1593,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L173",
       "id": "models_product_product_decrementstock",
-      "community": 1,
+      "community": 0,
       "norm_label": ".decrementstock()"
     },
     {
@@ -1602,7 +1602,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L188",
       "id": "models_product_product_restorestock",
-      "community": 1,
+      "community": 0,
       "norm_label": ".restorestock()"
     },
     {
@@ -1611,7 +1611,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L196",
       "id": "models_product_product_orderitems",
-      "community": 1,
+      "community": 0,
       "norm_label": ".orderitems()"
     },
     {
@@ -1629,7 +1629,7 @@
       "source_file": "Models/Product.php",
       "source_location": "L212",
       "id": "models_product_product_images",
-      "community": 1,
+      "community": 0,
       "norm_label": ".images()"
     },
     {
@@ -1638,7 +1638,7 @@
       "source_file": "Models/Cart.php",
       "source_location": "L1",
       "id": "models_cart_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "cart.php"
     },
     {
@@ -1647,7 +1647,7 @@
       "source_file": "Models/Cart.php",
       "source_location": "L10",
       "id": "models_cart_cart",
-      "community": 0,
+      "community": 1,
       "norm_label": "cart"
     },
     {
@@ -1656,7 +1656,7 @@
       "source_file": "Models/Cart.php",
       "source_location": "L19",
       "id": "models_cart_cart_casts",
-      "community": 0,
+      "community": 1,
       "norm_label": ".casts()"
     },
     {
@@ -1665,7 +1665,7 @@
       "source_file": "Models/Cart.php",
       "source_location": "L26",
       "id": "models_cart_cart_user",
-      "community": 9,
+      "community": 8,
       "norm_label": ".user()"
     },
     {
@@ -1674,7 +1674,7 @@
       "source_file": "Models/Cart.php",
       "source_location": "L31",
       "id": "models_cart_cart_items",
-      "community": 0,
+      "community": 1,
       "norm_label": ".items()"
     },
     {
@@ -1683,8 +1683,35 @@
       "source_file": "Models/Cart.php",
       "source_location": "L36",
       "id": "models_cart_cart_calculatetotals",
-      "community": 0,
+      "community": 1,
       "norm_label": ".calculatetotals()"
+    },
+    {
+      "label": "PaymentCompleted.php",
+      "file_type": "code",
+      "source_file": "Events/PaymentCompleted.php",
+      "source_location": "L1",
+      "id": "events_paymentcompleted_php",
+      "community": 7,
+      "norm_label": "paymentcompleted.php"
+    },
+    {
+      "label": "PaymentCompleted",
+      "file_type": "code",
+      "source_file": "Events/PaymentCompleted.php",
+      "source_location": "L9",
+      "id": "events_paymentcompleted_paymentcompleted",
+      "community": 7,
+      "norm_label": "paymentcompleted"
+    },
+    {
+      "label": ".__construct()",
+      "file_type": "code",
+      "source_file": "Events/PaymentCompleted.php",
+      "source_location": "L16",
+      "id": "events_paymentcompleted_paymentcompleted_construct",
+      "community": 7,
+      "norm_label": ".__construct()"
     },
     {
       "label": "StartBusinessScrape.php",
@@ -1827,7 +1854,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L1",
       "id": "jobs_createshippinglabel_php",
-      "community": 8,
+      "community": 7,
       "norm_label": "createshippinglabel.php"
     },
     {
@@ -1836,7 +1863,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L19",
       "id": "jobs_createshippinglabel_createshippinglabel",
-      "community": 8,
+      "community": 7,
       "norm_label": "createshippinglabel"
     },
     {
@@ -1845,7 +1872,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L28",
       "id": "jobs_createshippinglabel_createshippinglabel_construct",
-      "community": 8,
+      "community": 7,
       "norm_label": ".__construct()"
     },
     {
@@ -1854,7 +1881,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L33",
       "id": "jobs_createshippinglabel_createshippinglabel_handle",
-      "community": 8,
+      "community": 7,
       "norm_label": ".handle()"
     },
     {
@@ -1863,7 +1890,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L57",
       "id": "jobs_createshippinglabel_createshippinglabel_resolvelabelurl",
-      "community": 8,
+      "community": 7,
       "norm_label": ".resolvelabelurl()"
     },
     {
@@ -1872,7 +1899,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L69",
       "id": "jobs_createshippinglabel_createshippinglabel_fetchshipmentresult",
-      "community": 8,
+      "community": 7,
       "norm_label": ".fetchshipmentresult()"
     },
     {
@@ -1881,7 +1908,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L96",
       "id": "jobs_createshippinglabel_createshippinglabel_buildupdatedata",
-      "community": 8,
+      "community": 7,
       "norm_label": ".buildupdatedata()"
     },
     {
@@ -1890,7 +1917,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L111",
       "id": "jobs_createshippinglabel_createshippinglabel_failed",
-      "community": 8,
+      "community": 7,
       "norm_label": ".failed()"
     },
     {
@@ -1899,7 +1926,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L126",
       "id": "jobs_createshippinglabel_createshippinglabel_parsecarrier",
-      "community": 8,
+      "community": 7,
       "norm_label": ".parsecarrier()"
     },
     {
@@ -1908,7 +1935,7 @@
       "source_file": "Jobs/CreateShippingLabel.php",
       "source_location": "L145",
       "id": "jobs_createshippinglabel_createshippinglabel_buildaddressto",
-      "community": 8,
+      "community": 7,
       "norm_label": ".buildaddressto()"
     },
     {
@@ -1989,7 +2016,7 @@
       "source_file": "Http/Controllers/ProductDetailController.php",
       "source_location": "L1",
       "id": "http_controllers_productdetailcontroller_php",
-      "community": 64,
+      "community": 65,
       "norm_label": "productdetailcontroller.php"
     },
     {
@@ -1998,7 +2025,7 @@
       "source_file": "Http/Controllers/ProductDetailController.php",
       "source_location": "L13",
       "id": "controllers_productdetailcontroller_productdetailcontroller",
-      "community": 64,
+      "community": 65,
       "norm_label": "productdetailcontroller"
     },
     {
@@ -2007,7 +2034,7 @@
       "source_file": "Http/Controllers/ProductDetailController.php",
       "source_location": "L23",
       "id": "controllers_productdetailcontroller_productdetailcontroller_invoke",
-      "community": 64,
+      "community": 65,
       "norm_label": ".__invoke()"
     },
     {
@@ -2016,7 +2043,7 @@
       "source_file": "Http/Controllers/ProductsController.php",
       "source_location": "L1",
       "id": "http_controllers_productscontroller_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "productscontroller.php"
     },
     {
@@ -2025,7 +2052,7 @@
       "source_file": "Http/Controllers/ProductsController.php",
       "source_location": "L15",
       "id": "controllers_productscontroller_productscontroller",
-      "community": 1,
+      "community": 0,
       "norm_label": "productscontroller"
     },
     {
@@ -2034,7 +2061,7 @@
       "source_file": "Http/Controllers/ProductsController.php",
       "source_location": "L59",
       "id": "controllers_productscontroller_productscontroller_invoke",
-      "community": 1,
+      "community": 0,
       "norm_label": ".__invoke()"
     },
     {
@@ -2043,7 +2070,7 @@
       "source_file": "Http/Controllers/UpdateUserController.php",
       "source_location": "L1",
       "id": "http_controllers_updateusercontroller_php",
-      "community": 65,
+      "community": 66,
       "norm_label": "updateusercontroller.php"
     },
     {
@@ -2052,7 +2079,7 @@
       "source_file": "Http/Controllers/UpdateUserController.php",
       "source_location": "L13",
       "id": "controllers_updateusercontroller_updateusercontroller",
-      "community": 65,
+      "community": 66,
       "norm_label": "updateusercontroller"
     },
     {
@@ -2061,7 +2088,7 @@
       "source_file": "Http/Controllers/UpdateUserController.php",
       "source_location": "L32",
       "id": "controllers_updateusercontroller_updateusercontroller_invoke",
-      "community": 65,
+      "community": 66,
       "norm_label": ".__invoke()"
     },
     {
@@ -2097,7 +2124,7 @@
       "source_file": "Http/Controllers/Controller.php",
       "source_location": "L1",
       "id": "http_controllers_controller_php",
-      "community": 97,
+      "community": 99,
       "norm_label": "controller.php"
     },
     {
@@ -2106,7 +2133,7 @@
       "source_file": "Http/Controllers/Controller.php",
       "source_location": "L5",
       "id": "controllers_controller_controller",
-      "community": 97,
+      "community": 99,
       "norm_label": "controller"
     },
     {
@@ -2115,7 +2142,7 @@
       "source_file": "Http/Controllers/UserController.php",
       "source_location": "L1",
       "id": "http_controllers_usercontroller_php",
-      "community": 66,
+      "community": 67,
       "norm_label": "usercontroller.php"
     },
     {
@@ -2124,7 +2151,7 @@
       "source_file": "Http/Controllers/UserController.php",
       "source_location": "L13",
       "id": "controllers_usercontroller_usercontroller",
-      "community": 66,
+      "community": 67,
       "norm_label": "usercontroller"
     },
     {
@@ -2133,7 +2160,7 @@
       "source_file": "Http/Controllers/UserController.php",
       "source_location": "L25",
       "id": "controllers_usercontroller_usercontroller_invoke",
-      "community": 66,
+      "community": 67,
       "norm_label": ".__invoke()"
     },
     {
@@ -2142,7 +2169,7 @@
       "source_file": "Http/Controllers/FeaturedProductsController.php",
       "source_location": "L1",
       "id": "http_controllers_featuredproductscontroller_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "featuredproductscontroller.php"
     },
     {
@@ -2151,7 +2178,7 @@
       "source_file": "Http/Controllers/FeaturedProductsController.php",
       "source_location": "L14",
       "id": "controllers_featuredproductscontroller_featuredproductscontroller",
-      "community": 1,
+      "community": 0,
       "norm_label": "featuredproductscontroller"
     },
     {
@@ -2160,7 +2187,7 @@
       "source_file": "Http/Controllers/FeaturedProductsController.php",
       "source_location": "L23",
       "id": "controllers_featuredproductscontroller_featuredproductscontroller_invoke",
-      "community": 1,
+      "community": 0,
       "norm_label": ".__invoke()"
     },
     {
@@ -2169,7 +2196,7 @@
       "source_file": "Http/Controllers/Admin/Users/ToggleUserActiveController.php",
       "source_location": "L1",
       "id": "http_controllers_admin_users_toggleuseractivecontroller_php",
-      "community": 67,
+      "community": 68,
       "norm_label": "toggleuseractivecontroller.php"
     },
     {
@@ -2178,7 +2205,7 @@
       "source_file": "Http/Controllers/Admin/Users/ToggleUserActiveController.php",
       "source_location": "L11",
       "id": "users_toggleuseractivecontroller_toggleuseractivecontroller",
-      "community": 67,
+      "community": 68,
       "norm_label": "toggleuseractivecontroller"
     },
     {
@@ -2187,7 +2214,7 @@
       "source_file": "Http/Controllers/Admin/Users/ToggleUserActiveController.php",
       "source_location": "L15",
       "id": "users_toggleuseractivecontroller_toggleuseractivecontroller_invoke",
-      "community": 67,
+      "community": 68,
       "norm_label": ".__invoke()"
     },
     {
@@ -2196,7 +2223,7 @@
       "source_file": "Http/Controllers/Admin/Users/IndexUsersController.php",
       "source_location": "L1",
       "id": "http_controllers_admin_users_indexuserscontroller_php",
-      "community": 9,
+      "community": 8,
       "norm_label": "indexuserscontroller.php"
     },
     {
@@ -2205,7 +2232,7 @@
       "source_file": "Http/Controllers/Admin/Users/IndexUsersController.php",
       "source_location": "L11",
       "id": "users_indexuserscontroller_indexuserscontroller",
-      "community": 9,
+      "community": 8,
       "norm_label": "indexuserscontroller"
     },
     {
@@ -2214,7 +2241,7 @@
       "source_file": "Http/Controllers/Admin/Users/IndexUsersController.php",
       "source_location": "L13",
       "id": "users_indexuserscontroller_indexuserscontroller_invoke",
-      "community": 9,
+      "community": 8,
       "norm_label": ".__invoke()"
     },
     {
@@ -2223,7 +2250,7 @@
       "source_file": "Http/Controllers/Admin/Users/ShowUserController.php",
       "source_location": "L1",
       "id": "http_controllers_admin_users_showusercontroller_php",
-      "community": 68,
+      "community": 69,
       "norm_label": "showusercontroller.php"
     },
     {
@@ -2232,7 +2259,7 @@
       "source_file": "Http/Controllers/Admin/Users/ShowUserController.php",
       "source_location": "L11",
       "id": "users_showusercontroller_showusercontroller",
-      "community": 68,
+      "community": 69,
       "norm_label": "showusercontroller"
     },
     {
@@ -2241,7 +2268,7 @@
       "source_file": "Http/Controllers/Admin/Users/ShowUserController.php",
       "source_location": "L15",
       "id": "users_showusercontroller_showusercontroller_invoke",
-      "community": 68,
+      "community": 69,
       "norm_label": ".__invoke()"
     },
     {
@@ -2250,7 +2277,7 @@
       "source_file": "Http/Controllers/Admin/Users/UpdateUserRoleController.php",
       "source_location": "L1",
       "id": "http_controllers_admin_users_updateuserrolecontroller_php",
-      "community": 69,
+      "community": 70,
       "norm_label": "updateuserrolecontroller.php"
     },
     {
@@ -2259,7 +2286,7 @@
       "source_file": "Http/Controllers/Admin/Users/UpdateUserRoleController.php",
       "source_location": "L11",
       "id": "users_updateuserrolecontroller_updateuserrolecontroller",
-      "community": 69,
+      "community": 70,
       "norm_label": "updateuserrolecontroller"
     },
     {
@@ -2268,7 +2295,7 @@
       "source_file": "Http/Controllers/Admin/Users/UpdateUserRoleController.php",
       "source_location": "L15",
       "id": "users_updateuserrolecontroller_updateuserrolecontroller_invoke",
-      "community": 69,
+      "community": 70,
       "norm_label": ".__invoke()"
     },
     {
@@ -2277,7 +2304,7 @@
       "source_file": "Http/Controllers/Admin/Users/Concerns/BuildsUserShowResponse.php",
       "source_location": "L1",
       "id": "http_controllers_admin_users_concerns_buildsusershowresponse_php",
-      "community": 98,
+      "community": 100,
       "norm_label": "buildsusershowresponse.php"
     },
     {
@@ -2286,7 +2313,7 @@
       "source_file": "Http/Controllers/Admin/Users/Concerns/BuildsUserShowResponse.php",
       "source_location": "L14",
       "id": "concerns_buildsusershowresponse_renderusershow",
-      "community": 98,
+      "community": 100,
       "norm_label": "renderusershow()"
     },
     {
@@ -2403,7 +2430,7 @@
       "source_file": "Http/Controllers/Admin/Orders/ShowOrderController.php",
       "source_location": "L1",
       "id": "http_controllers_admin_orders_showordercontroller_php",
-      "community": 70,
+      "community": 71,
       "norm_label": "showordercontroller.php"
     },
     {
@@ -2412,7 +2439,7 @@
       "source_file": "Http/Controllers/Admin/Orders/ShowOrderController.php",
       "source_location": "L10",
       "id": "orders_showordercontroller_showordercontroller",
-      "community": 70,
+      "community": 71,
       "norm_label": "showordercontroller"
     },
     {
@@ -2421,7 +2448,7 @@
       "source_file": "Http/Controllers/Admin/Orders/ShowOrderController.php",
       "source_location": "L14",
       "id": "orders_showordercontroller_showordercontroller_invoke",
-      "community": 70,
+      "community": 71,
       "norm_label": ".__invoke()"
     },
     {
@@ -2475,7 +2502,7 @@
       "source_file": "Http/Controllers/Admin/Orders/UpdateOrderTrackingController.php",
       "source_location": "L1",
       "id": "http_controllers_admin_orders_updateordertrackingcontroller_php",
-      "community": 71,
+      "community": 72,
       "norm_label": "updateordertrackingcontroller.php"
     },
     {
@@ -2484,7 +2511,7 @@
       "source_file": "Http/Controllers/Admin/Orders/UpdateOrderTrackingController.php",
       "source_location": "L13",
       "id": "orders_updateordertrackingcontroller_updateordertrackingcontroller",
-      "community": 71,
+      "community": 72,
       "norm_label": "updateordertrackingcontroller"
     },
     {
@@ -2493,7 +2520,7 @@
       "source_file": "Http/Controllers/Admin/Orders/UpdateOrderTrackingController.php",
       "source_location": "L17",
       "id": "orders_updateordertrackingcontroller_updateordertrackingcontroller_invoke",
-      "community": 71,
+      "community": 72,
       "norm_label": ".__invoke()"
     },
     {
@@ -2502,7 +2529,7 @@
       "source_file": "Http/Controllers/Admin/Orders/UpdateOrderStatusController.php",
       "source_location": "L1",
       "id": "http_controllers_admin_orders_updateorderstatuscontroller_php",
-      "community": 72,
+      "community": 73,
       "norm_label": "updateorderstatuscontroller.php"
     },
     {
@@ -2511,7 +2538,7 @@
       "source_file": "Http/Controllers/Admin/Orders/UpdateOrderStatusController.php",
       "source_location": "L13",
       "id": "orders_updateorderstatuscontroller_updateorderstatuscontroller",
-      "community": 72,
+      "community": 73,
       "norm_label": "updateorderstatuscontroller"
     },
     {
@@ -2520,7 +2547,7 @@
       "source_file": "Http/Controllers/Admin/Orders/UpdateOrderStatusController.php",
       "source_location": "L17",
       "id": "orders_updateorderstatuscontroller_updateorderstatuscontroller_invoke",
-      "community": 72,
+      "community": 73,
       "norm_label": ".__invoke()"
     },
     {
@@ -2529,7 +2556,7 @@
       "source_file": "Http/Controllers/Admin/Orders/StoreOrderNoteController.php",
       "source_location": "L1",
       "id": "http_controllers_admin_orders_storeordernotecontroller_php",
-      "community": 73,
+      "community": 74,
       "norm_label": "storeordernotecontroller.php"
     },
     {
@@ -2538,7 +2565,7 @@
       "source_file": "Http/Controllers/Admin/Orders/StoreOrderNoteController.php",
       "source_location": "L11",
       "id": "orders_storeordernotecontroller_storeordernotecontroller",
-      "community": 73,
+      "community": 74,
       "norm_label": "storeordernotecontroller"
     },
     {
@@ -2547,7 +2574,7 @@
       "source_file": "Http/Controllers/Admin/Orders/StoreOrderNoteController.php",
       "source_location": "L15",
       "id": "orders_storeordernotecontroller_storeordernotecontroller_invoke",
-      "community": 73,
+      "community": 74,
       "norm_label": ".__invoke()"
     },
     {
@@ -2556,7 +2583,7 @@
       "source_file": "Http/Controllers/Admin/Orders/RetryShippingLabelController.php",
       "source_location": "L1",
       "id": "http_controllers_admin_orders_retryshippinglabelcontroller_php",
-      "community": 8,
+      "community": 7,
       "norm_label": "retryshippinglabelcontroller.php"
     },
     {
@@ -2565,7 +2592,7 @@
       "source_file": "Http/Controllers/Admin/Orders/RetryShippingLabelController.php",
       "source_location": "L10",
       "id": "orders_retryshippinglabelcontroller_retryshippinglabelcontroller",
-      "community": 8,
+      "community": 7,
       "norm_label": "retryshippinglabelcontroller"
     },
     {
@@ -2574,7 +2601,7 @@
       "source_file": "Http/Controllers/Admin/Orders/RetryShippingLabelController.php",
       "source_location": "L12",
       "id": "orders_retryshippinglabelcontroller_retryshippinglabelcontroller_invoke",
-      "community": 8,
+      "community": 7,
       "norm_label": ".__invoke()"
     },
     {
@@ -2628,7 +2655,7 @@
       "source_file": "Http/Controllers/Admin/Orders/Concerns/BuildsOrderShowResponse.php",
       "source_location": "L1",
       "id": "http_controllers_admin_orders_concerns_buildsordershowresponse_php",
-      "community": 74,
+      "community": 75,
       "norm_label": "buildsordershowresponse.php"
     },
     {
@@ -2637,7 +2664,7 @@
       "source_file": "Http/Controllers/Admin/Orders/Concerns/BuildsOrderShowResponse.php",
       "source_location": "L13",
       "id": "concerns_buildsordershowresponse_renderordershow",
-      "community": 74,
+      "community": 75,
       "norm_label": "renderordershow()"
     },
     {
@@ -2646,7 +2673,7 @@
       "source_file": "Http/Controllers/Admin/Orders/Concerns/BuildsOrderShowResponse.php",
       "source_location": "L38",
       "id": "concerns_buildsordershowresponse_formatorder",
-      "community": 74,
+      "community": 75,
       "norm_label": "formatorder()"
     },
     {
@@ -2655,7 +2682,7 @@
       "source_file": "Http/Controllers/Cart/GetCartController.php",
       "source_location": "L1",
       "id": "http_controllers_cart_getcartcontroller_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "getcartcontroller.php"
     },
     {
@@ -2664,7 +2691,7 @@
       "source_file": "Http/Controllers/Cart/GetCartController.php",
       "source_location": "L15",
       "id": "cart_getcartcontroller_getcartcontroller",
-      "community": 0,
+      "community": 1,
       "norm_label": "getcartcontroller"
     },
     {
@@ -2673,7 +2700,7 @@
       "source_file": "Http/Controllers/Cart/GetCartController.php",
       "source_location": "L27",
       "id": "cart_getcartcontroller_getcartcontroller_invoke",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__invoke()"
     },
     {
@@ -2682,7 +2709,7 @@
       "source_file": "Http/Controllers/Cart/ClearCartController.php",
       "source_location": "L1",
       "id": "http_controllers_cart_clearcartcontroller_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "clearcartcontroller.php"
     },
     {
@@ -2691,7 +2718,7 @@
       "source_file": "Http/Controllers/Cart/ClearCartController.php",
       "source_location": "L13",
       "id": "cart_clearcartcontroller_clearcartcontroller",
-      "community": 0,
+      "community": 1,
       "norm_label": "clearcartcontroller"
     },
     {
@@ -2700,7 +2727,7 @@
       "source_file": "Http/Controllers/Cart/ClearCartController.php",
       "source_location": "L24",
       "id": "cart_clearcartcontroller_clearcartcontroller_invoke",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__invoke()"
     },
     {
@@ -2709,7 +2736,7 @@
       "source_file": "Http/Controllers/Cart/UpdateCartItemController.php",
       "source_location": "L1",
       "id": "http_controllers_cart_updatecartitemcontroller_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "updatecartitemcontroller.php"
     },
     {
@@ -2718,7 +2745,7 @@
       "source_file": "Http/Controllers/Cart/UpdateCartItemController.php",
       "source_location": "L16",
       "id": "cart_updatecartitemcontroller_updatecartitemcontroller",
-      "community": 0,
+      "community": 1,
       "norm_label": "updatecartitemcontroller"
     },
     {
@@ -2727,7 +2754,7 @@
       "source_file": "Http/Controllers/Cart/UpdateCartItemController.php",
       "source_location": "L31",
       "id": "cart_updatecartitemcontroller_updatecartitemcontroller_invoke",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__invoke()"
     },
     {
@@ -2736,7 +2763,7 @@
       "source_file": "Http/Controllers/Cart/AddCartItemController.php",
       "source_location": "L1",
       "id": "http_controllers_cart_addcartitemcontroller_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "addcartitemcontroller.php"
     },
     {
@@ -2745,7 +2772,7 @@
       "source_file": "Http/Controllers/Cart/AddCartItemController.php",
       "source_location": "L17",
       "id": "cart_addcartitemcontroller_addcartitemcontroller",
-      "community": 0,
+      "community": 1,
       "norm_label": "addcartitemcontroller"
     },
     {
@@ -2754,7 +2781,7 @@
       "source_file": "Http/Controllers/Cart/AddCartItemController.php",
       "source_location": "L29",
       "id": "cart_addcartitemcontroller_addcartitemcontroller_invoke",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__invoke()"
     },
     {
@@ -2763,7 +2790,7 @@
       "source_file": "Http/Controllers/Cart/RemoveCartItemController.php",
       "source_location": "L1",
       "id": "http_controllers_cart_removecartitemcontroller_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "removecartitemcontroller.php"
     },
     {
@@ -2772,7 +2799,7 @@
       "source_file": "Http/Controllers/Cart/RemoveCartItemController.php",
       "source_location": "L15",
       "id": "cart_removecartitemcontroller_removecartitemcontroller",
-      "community": 0,
+      "community": 1,
       "norm_label": "removecartitemcontroller"
     },
     {
@@ -2781,7 +2808,7 @@
       "source_file": "Http/Controllers/Cart/RemoveCartItemController.php",
       "source_location": "L29",
       "id": "cart_removecartitemcontroller_removecartitemcontroller_invoke",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__invoke()"
     },
     {
@@ -2790,7 +2817,7 @@
       "source_file": "Http/Controllers/PaymentMethods/CreateSetupSessionController.php",
       "source_location": "L1",
       "id": "http_controllers_paymentmethods_createsetupsessioncontroller_php",
-      "community": 75,
+      "community": 76,
       "norm_label": "createsetupsessioncontroller.php"
     },
     {
@@ -2799,7 +2826,7 @@
       "source_file": "Http/Controllers/PaymentMethods/CreateSetupSessionController.php",
       "source_location": "L13",
       "id": "paymentmethods_createsetupsessioncontroller_createsetupsessioncontroller",
-      "community": 75,
+      "community": 76,
       "norm_label": "createsetupsessioncontroller"
     },
     {
@@ -2808,7 +2835,7 @@
       "source_file": "Http/Controllers/PaymentMethods/CreateSetupSessionController.php",
       "source_location": "L32",
       "id": "paymentmethods_createsetupsessioncontroller_createsetupsessioncontroller_invoke",
-      "community": 75,
+      "community": 76,
       "norm_label": ".__invoke()"
     },
     {
@@ -2898,7 +2925,7 @@
       "source_file": "Http/Controllers/Addresses/GetAddressesController.php",
       "source_location": "L1",
       "id": "http_controllers_addresses_getaddressescontroller_php",
-      "community": 7,
+      "community": 9,
       "norm_label": "getaddressescontroller.php"
     },
     {
@@ -2907,7 +2934,7 @@
       "source_file": "Http/Controllers/Addresses/GetAddressesController.php",
       "source_location": "L14",
       "id": "addresses_getaddressescontroller_getaddressescontroller",
-      "community": 7,
+      "community": 9,
       "norm_label": "getaddressescontroller"
     },
     {
@@ -2916,7 +2943,7 @@
       "source_file": "Http/Controllers/Addresses/GetAddressesController.php",
       "source_location": "L44",
       "id": "addresses_getaddressescontroller_getaddressescontroller_invoke",
-      "community": 7,
+      "community": 9,
       "norm_label": ".__invoke()"
     },
     {
@@ -2925,7 +2952,7 @@
       "source_file": "Http/Controllers/Addresses/DestroyAddressController.php",
       "source_location": "L1",
       "id": "http_controllers_addresses_destroyaddresscontroller_php",
-      "community": 76,
+      "community": 77,
       "norm_label": "destroyaddresscontroller.php"
     },
     {
@@ -2934,7 +2961,7 @@
       "source_file": "Http/Controllers/Addresses/DestroyAddressController.php",
       "source_location": "L13",
       "id": "addresses_destroyaddresscontroller_destroyaddresscontroller",
-      "community": 76,
+      "community": 77,
       "norm_label": "destroyaddresscontroller"
     },
     {
@@ -2943,7 +2970,7 @@
       "source_file": "Http/Controllers/Addresses/DestroyAddressController.php",
       "source_location": "L29",
       "id": "addresses_destroyaddresscontroller_destroyaddresscontroller_invoke",
-      "community": 76,
+      "community": 77,
       "norm_label": ".__invoke()"
     },
     {
@@ -2952,7 +2979,7 @@
       "source_file": "Http/Controllers/Addresses/StoreAddressController.php",
       "source_location": "L1",
       "id": "http_controllers_addresses_storeaddresscontroller_php",
-      "community": 7,
+      "community": 9,
       "norm_label": "storeaddresscontroller.php"
     },
     {
@@ -2961,7 +2988,7 @@
       "source_file": "Http/Controllers/Addresses/StoreAddressController.php",
       "source_location": "L15",
       "id": "addresses_storeaddresscontroller_storeaddresscontroller",
-      "community": 7,
+      "community": 9,
       "norm_label": "storeaddresscontroller"
     },
     {
@@ -2970,7 +2997,7 @@
       "source_file": "Http/Controllers/Addresses/StoreAddressController.php",
       "source_location": "L46",
       "id": "addresses_storeaddresscontroller_storeaddresscontroller_invoke",
-      "community": 7,
+      "community": 9,
       "norm_label": ".__invoke()"
     },
     {
@@ -2979,7 +3006,7 @@
       "source_file": "Http/Controllers/Addresses/UpdateAddressController.php",
       "source_location": "L1",
       "id": "http_controllers_addresses_updateaddresscontroller_php",
-      "community": 77,
+      "community": 78,
       "norm_label": "updateaddresscontroller.php"
     },
     {
@@ -2988,7 +3015,7 @@
       "source_file": "Http/Controllers/Addresses/UpdateAddressController.php",
       "source_location": "L15",
       "id": "addresses_updateaddresscontroller_updateaddresscontroller",
-      "community": 77,
+      "community": 78,
       "norm_label": "updateaddresscontroller"
     },
     {
@@ -2997,7 +3024,7 @@
       "source_file": "Http/Controllers/Addresses/UpdateAddressController.php",
       "source_location": "L46",
       "id": "addresses_updateaddresscontroller_updateaddresscontroller_invoke",
-      "community": 77,
+      "community": 78,
       "norm_label": ".__invoke()"
     },
     {
@@ -3006,7 +3033,7 @@
       "source_file": "Http/Controllers/NotificationPreferences/GetNotificationPreferencesController.php",
       "source_location": "L1",
       "id": "http_controllers_notificationpreferences_getnotificationpreferencescontroller_php",
-      "community": 78,
+      "community": 79,
       "norm_label": "getnotificationpreferencescontroller.php"
     },
     {
@@ -3015,7 +3042,7 @@
       "source_file": "Http/Controllers/NotificationPreferences/GetNotificationPreferencesController.php",
       "source_location": "L14",
       "id": "notificationpreferences_getnotificationpreferencescontroller_getnotificationpreferencescontroller",
-      "community": 78,
+      "community": 79,
       "norm_label": "getnotificationpreferencescontroller"
     },
     {
@@ -3024,7 +3051,7 @@
       "source_file": "Http/Controllers/NotificationPreferences/GetNotificationPreferencesController.php",
       "source_location": "L32",
       "id": "notificationpreferences_getnotificationpreferencescontroller_getnotificationpreferencescontroller_invoke",
-      "community": 78,
+      "community": 79,
       "norm_label": ".__invoke()"
     },
     {
@@ -3033,7 +3060,7 @@
       "source_file": "Http/Controllers/NotificationPreferences/UpdateNotificationPreferencesController.php",
       "source_location": "L1",
       "id": "http_controllers_notificationpreferences_updatenotificationpreferencescontroller_php",
-      "community": 79,
+      "community": 80,
       "norm_label": "updatenotificationpreferencescontroller.php"
     },
     {
@@ -3042,7 +3069,7 @@
       "source_file": "Http/Controllers/NotificationPreferences/UpdateNotificationPreferencesController.php",
       "source_location": "L14",
       "id": "notificationpreferences_updatenotificationpreferencescontroller_updatenotificationpreferencescontroller",
-      "community": 79,
+      "community": 80,
       "norm_label": "updatenotificationpreferencescontroller"
     },
     {
@@ -3051,7 +3078,7 @@
       "source_file": "Http/Controllers/NotificationPreferences/UpdateNotificationPreferencesController.php",
       "source_location": "L39",
       "id": "notificationpreferences_updatenotificationpreferencescontroller_updatenotificationpreferencescontroller_invoke",
-      "community": 79,
+      "community": 80,
       "norm_label": ".__invoke()"
     },
     {
@@ -3240,7 +3267,7 @@
       "source_file": "Http/Controllers/Web/AddressesController.php",
       "source_location": "L1",
       "id": "http_controllers_web_addressescontroller_php",
-      "community": 7,
+      "community": 9,
       "norm_label": "addressescontroller.php"
     },
     {
@@ -3249,7 +3276,7 @@
       "source_file": "Http/Controllers/Web/AddressesController.php",
       "source_location": "L15",
       "id": "web_addressescontroller_addressescontroller",
-      "community": 7,
+      "community": 9,
       "norm_label": "addressescontroller"
     },
     {
@@ -3258,7 +3285,7 @@
       "source_file": "Http/Controllers/Web/AddressesController.php",
       "source_location": "L17",
       "id": "web_addressescontroller_addressescontroller_show",
-      "community": 7,
+      "community": 9,
       "norm_label": ".show()"
     },
     {
@@ -3267,7 +3294,7 @@
       "source_file": "Http/Controllers/Web/AddressesController.php",
       "source_location": "L30",
       "id": "web_addressescontroller_addressescontroller_store",
-      "community": 7,
+      "community": 9,
       "norm_label": ".store()"
     },
     {
@@ -3276,7 +3303,7 @@
       "source_file": "Http/Controllers/Web/AddressesController.php",
       "source_location": "L45",
       "id": "web_addressescontroller_addressescontroller_update",
-      "community": 7,
+      "community": 9,
       "norm_label": ".update()"
     },
     {
@@ -3285,7 +3312,7 @@
       "source_file": "Http/Controllers/Web/AddressesController.php",
       "source_location": "L60",
       "id": "web_addressescontroller_addressescontroller_destroy",
-      "community": 7,
+      "community": 9,
       "norm_label": ".destroy()"
     },
     {
@@ -3447,7 +3474,7 @@
       "source_file": "Http/Controllers/Web/AccountController.php",
       "source_location": "L1",
       "id": "http_controllers_web_accountcontroller_php",
-      "community": 80,
+      "community": 81,
       "norm_label": "accountcontroller.php"
     },
     {
@@ -3456,7 +3483,7 @@
       "source_file": "Http/Controllers/Web/AccountController.php",
       "source_location": "L10",
       "id": "web_accountcontroller_accountcontroller",
-      "community": 80,
+      "community": 81,
       "norm_label": "accountcontroller"
     },
     {
@@ -3465,7 +3492,7 @@
       "source_file": "Http/Controllers/Web/AccountController.php",
       "source_location": "L12",
       "id": "web_accountcontroller_accountcontroller_invoke",
-      "community": 80,
+      "community": 81,
       "norm_label": ".__invoke()"
     },
     {
@@ -3501,7 +3528,7 @@
       "source_file": "Http/Controllers/Web/UpdateProfileController.php",
       "source_location": "L1",
       "id": "http_controllers_web_updateprofilecontroller_php",
-      "community": 81,
+      "community": 82,
       "norm_label": "updateprofilecontroller.php"
     },
     {
@@ -3510,7 +3537,7 @@
       "source_file": "Http/Controllers/Web/UpdateProfileController.php",
       "source_location": "L10",
       "id": "web_updateprofilecontroller_updateprofilecontroller",
-      "community": 81,
+      "community": 82,
       "norm_label": "updateprofilecontroller"
     },
     {
@@ -3519,7 +3546,7 @@
       "source_file": "Http/Controllers/Web/UpdateProfileController.php",
       "source_location": "L12",
       "id": "web_updateprofilecontroller_updateprofilecontroller_invoke",
-      "community": 81,
+      "community": 82,
       "norm_label": ".__invoke()"
     },
     {
@@ -3762,7 +3789,7 @@
       "source_file": "Http/Controllers/Web/ContentFeaturedProductsController.php",
       "source_location": "L1",
       "id": "http_controllers_web_contentfeaturedproductscontroller_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "contentfeaturedproductscontroller.php"
     },
     {
@@ -3771,7 +3798,7 @@
       "source_file": "Http/Controllers/Web/ContentFeaturedProductsController.php",
       "source_location": "L13",
       "id": "web_contentfeaturedproductscontroller_contentfeaturedproductscontroller",
-      "community": 1,
+      "community": 0,
       "norm_label": "contentfeaturedproductscontroller"
     },
     {
@@ -3780,7 +3807,7 @@
       "source_file": "Http/Controllers/Web/ContentFeaturedProductsController.php",
       "source_location": "L15",
       "id": "web_contentfeaturedproductscontroller_contentfeaturedproductscontroller_index",
-      "community": 1,
+      "community": 0,
       "norm_label": ".index()"
     },
     {
@@ -3789,7 +3816,7 @@
       "source_file": "Http/Controllers/Web/ContentFeaturedProductsController.php",
       "source_location": "L51",
       "id": "web_contentfeaturedproductscontroller_contentfeaturedproductscontroller_update",
-      "community": 1,
+      "community": 0,
       "norm_label": ".update()"
     },
     {
@@ -3798,7 +3825,7 @@
       "source_file": "Http/Controllers/Web/ProfileController.php",
       "source_location": "L1",
       "id": "http_controllers_web_profilecontroller_php",
-      "community": 82,
+      "community": 83,
       "norm_label": "profilecontroller.php"
     },
     {
@@ -3807,7 +3834,7 @@
       "source_file": "Http/Controllers/Web/ProfileController.php",
       "source_location": "L10",
       "id": "web_profilecontroller_profilecontroller",
-      "community": 82,
+      "community": 83,
       "norm_label": "profilecontroller"
     },
     {
@@ -3816,7 +3843,7 @@
       "source_file": "Http/Controllers/Web/ProfileController.php",
       "source_location": "L12",
       "id": "web_profilecontroller_profilecontroller_invoke",
-      "community": 82,
+      "community": 83,
       "norm_label": ".__invoke()"
     },
     {
@@ -3825,7 +3852,7 @@
       "source_file": "Http/Controllers/Web/NotificationPreferencesController.php",
       "source_location": "L1",
       "id": "http_controllers_web_notificationpreferencescontroller_php",
-      "community": 83,
+      "community": 84,
       "norm_label": "notificationpreferencescontroller.php"
     },
     {
@@ -3834,7 +3861,7 @@
       "source_file": "Http/Controllers/Web/NotificationPreferencesController.php",
       "source_location": "L10",
       "id": "web_notificationpreferencescontroller_notificationpreferencescontroller",
-      "community": 83,
+      "community": 84,
       "norm_label": "notificationpreferencescontroller"
     },
     {
@@ -3843,7 +3870,7 @@
       "source_file": "Http/Controllers/Web/NotificationPreferencesController.php",
       "source_location": "L12",
       "id": "web_notificationpreferencescontroller_notificationpreferencescontroller_invoke",
-      "community": 83,
+      "community": 84,
       "norm_label": ".__invoke()"
     },
     {
@@ -3852,7 +3879,7 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L1",
       "id": "http_controllers_web_cartcontroller_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "cartcontroller.php"
     },
     {
@@ -3861,7 +3888,7 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L14",
       "id": "web_cartcontroller_cartcontroller",
-      "community": 1,
+      "community": 0,
       "norm_label": "cartcontroller"
     },
     {
@@ -3870,7 +3897,7 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L16",
       "id": "web_cartcontroller_cartcontroller_index",
-      "community": 1,
+      "community": 0,
       "norm_label": ".index()"
     },
     {
@@ -3879,7 +3906,7 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L46",
       "id": "web_cartcontroller_cartcontroller_additem",
-      "community": 1,
+      "community": 0,
       "norm_label": ".additem()"
     },
     {
@@ -3888,7 +3915,7 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L73",
       "id": "web_cartcontroller_cartcontroller_updateitem",
-      "community": 1,
+      "community": 0,
       "norm_label": ".updateitem()"
     },
     {
@@ -3897,7 +3924,7 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L92",
       "id": "web_cartcontroller_cartcontroller_removeitem",
-      "community": 1,
+      "community": 0,
       "norm_label": ".removeitem()"
     },
     {
@@ -3906,7 +3933,7 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L105",
       "id": "web_cartcontroller_cartcontroller_clear",
-      "community": 1,
+      "community": 0,
       "norm_label": ".clear()"
     },
     {
@@ -3915,7 +3942,7 @@
       "source_file": "Http/Controllers/Web/CartController.php",
       "source_location": "L113",
       "id": "web_cartcontroller_cartcontroller_getorcreatecart",
-      "community": 1,
+      "community": 0,
       "norm_label": ".getorcreatecart()"
     },
     {
@@ -3987,7 +4014,7 @@
       "source_file": "Http/Controllers/Web/ProductController.php",
       "source_location": "L1",
       "id": "http_controllers_web_productcontroller_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "productcontroller.php"
     },
     {
@@ -3996,7 +4023,7 @@
       "source_file": "Http/Controllers/Web/ProductController.php",
       "source_location": "L12",
       "id": "web_productcontroller_productcontroller",
-      "community": 1,
+      "community": 0,
       "norm_label": "productcontroller"
     },
     {
@@ -4005,7 +4032,7 @@
       "source_file": "Http/Controllers/Web/ProductController.php",
       "source_location": "L14",
       "id": "web_productcontroller_productcontroller_show",
-      "community": 1,
+      "community": 0,
       "norm_label": ".show()"
     },
     {
@@ -4014,7 +4041,7 @@
       "source_file": "Http/Controllers/Web/ProductController.php",
       "source_location": "L65",
       "id": "web_productcontroller_productcontroller_buildbreadcrumbs",
-      "community": 1,
+      "community": 0,
       "norm_label": ".buildbreadcrumbs()"
     },
     {
@@ -4023,7 +4050,7 @@
       "source_file": "Http/Controllers/Web/UpdateNotificationPreferencesController.php",
       "source_location": "L1",
       "id": "http_controllers_web_updatenotificationpreferencescontroller_php",
-      "community": 84,
+      "community": 85,
       "norm_label": "updatenotificationpreferencescontroller.php"
     },
     {
@@ -4032,7 +4059,7 @@
       "source_file": "Http/Controllers/Web/UpdateNotificationPreferencesController.php",
       "source_location": "L10",
       "id": "web_updatenotificationpreferencescontroller_updatenotificationpreferencescontroller",
-      "community": 84,
+      "community": 85,
       "norm_label": "updatenotificationpreferencescontroller"
     },
     {
@@ -4041,7 +4068,7 @@
       "source_file": "Http/Controllers/Web/UpdateNotificationPreferencesController.php",
       "source_location": "L12",
       "id": "web_updatenotificationpreferencescontroller_updatenotificationpreferencescontroller_invoke",
-      "community": 84,
+      "community": 85,
       "norm_label": ".__invoke()"
     },
     {
@@ -4086,7 +4113,7 @@
       "source_file": "Http/Controllers/Web/Products/IndexProductsController.php",
       "source_location": "L1",
       "id": "http_controllers_web_products_indexproductscontroller_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "indexproductscontroller.php"
     },
     {
@@ -4095,7 +4122,7 @@
       "source_file": "Http/Controllers/Web/Products/IndexProductsController.php",
       "source_location": "L11",
       "id": "products_indexproductscontroller_indexproductscontroller",
-      "community": 1,
+      "community": 0,
       "norm_label": "indexproductscontroller"
     },
     {
@@ -4104,7 +4131,7 @@
       "source_file": "Http/Controllers/Web/Products/IndexProductsController.php",
       "source_location": "L13",
       "id": "products_indexproductscontroller_indexproductscontroller_invoke",
-      "community": 1,
+      "community": 0,
       "norm_label": ".__invoke()"
     },
     {
@@ -4113,7 +4140,7 @@
       "source_file": "Http/Controllers/Web/Products/UpdateProductController.php",
       "source_location": "L1",
       "id": "http_controllers_web_products_updateproductcontroller_php",
-      "community": 85,
+      "community": 86,
       "norm_label": "updateproductcontroller.php"
     },
     {
@@ -4122,7 +4149,7 @@
       "source_file": "Http/Controllers/Web/Products/UpdateProductController.php",
       "source_location": "L11",
       "id": "products_updateproductcontroller_updateproductcontroller",
-      "community": 85,
+      "community": 86,
       "norm_label": "updateproductcontroller"
     },
     {
@@ -4131,7 +4158,7 @@
       "source_file": "Http/Controllers/Web/Products/UpdateProductController.php",
       "source_location": "L15",
       "id": "products_updateproductcontroller_updateproductcontroller_invoke",
-      "community": 85,
+      "community": 86,
       "norm_label": ".__invoke()"
     },
     {
@@ -4140,7 +4167,7 @@
       "source_file": "Http/Controllers/Web/Products/DestroyProductController.php",
       "source_location": "L1",
       "id": "http_controllers_web_products_destroyproductcontroller_php",
-      "community": 86,
+      "community": 87,
       "norm_label": "destroyproductcontroller.php"
     },
     {
@@ -4149,7 +4176,7 @@
       "source_file": "Http/Controllers/Web/Products/DestroyProductController.php",
       "source_location": "L10",
       "id": "products_destroyproductcontroller_destroyproductcontroller",
-      "community": 86,
+      "community": 87,
       "norm_label": "destroyproductcontroller"
     },
     {
@@ -4158,7 +4185,7 @@
       "source_file": "Http/Controllers/Web/Products/DestroyProductController.php",
       "source_location": "L12",
       "id": "products_destroyproductcontroller_destroyproductcontroller_invoke",
-      "community": 86,
+      "community": 87,
       "norm_label": ".__invoke()"
     },
     {
@@ -4239,7 +4266,7 @@
       "source_file": "Http/Controllers/Web/Products/StoreProductController.php",
       "source_location": "L1",
       "id": "http_controllers_web_products_storeproductcontroller_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "storeproductcontroller.php"
     },
     {
@@ -4248,7 +4275,7 @@
       "source_file": "Http/Controllers/Web/Products/StoreProductController.php",
       "source_location": "L11",
       "id": "products_storeproductcontroller_storeproductcontroller",
-      "community": 1,
+      "community": 0,
       "norm_label": "storeproductcontroller"
     },
     {
@@ -4257,7 +4284,7 @@
       "source_file": "Http/Controllers/Web/Products/StoreProductController.php",
       "source_location": "L15",
       "id": "products_storeproductcontroller_storeproductcontroller_invoke",
-      "community": 1,
+      "community": 0,
       "norm_label": ".__invoke()"
     },
     {
@@ -4302,7 +4329,7 @@
       "source_file": "Http/Controllers/Web/Auth/LogoutController.php",
       "source_location": "L1",
       "id": "http_controllers_web_auth_logoutcontroller_php",
-      "community": 55,
+      "community": 56,
       "norm_label": "logoutcontroller.php"
     },
     {
@@ -4311,7 +4338,7 @@
       "source_file": "Http/Controllers/Auth/LogoutController.php",
       "source_location": "L14",
       "id": "auth_logoutcontroller_logoutcontroller",
-      "community": 55,
+      "community": 56,
       "norm_label": "logoutcontroller"
     },
     {
@@ -4320,7 +4347,7 @@
       "source_file": "Http/Controllers/Auth/LogoutController.php",
       "source_location": "L25",
       "id": "auth_logoutcontroller_logoutcontroller_invoke",
-      "community": 55,
+      "community": 56,
       "norm_label": ".__invoke()"
     },
     {
@@ -4329,7 +4356,7 @@
       "source_file": "Http/Controllers/Web/Auth/RegisterController.php",
       "source_location": "L1",
       "id": "http_controllers_web_auth_registercontroller_php",
-      "community": 9,
+      "community": 8,
       "norm_label": "registercontroller.php"
     },
     {
@@ -4338,7 +4365,7 @@
       "source_file": "Http/Controllers/Auth/RegisterController.php",
       "source_location": "L16",
       "id": "auth_registercontroller_registercontroller",
-      "community": 9,
+      "community": 8,
       "norm_label": "registercontroller"
     },
     {
@@ -4347,7 +4374,7 @@
       "source_file": "Http/Controllers/Web/Auth/RegisterController.php",
       "source_location": "L15",
       "id": "auth_registercontroller_registercontroller_create",
-      "community": 9,
+      "community": 8,
       "norm_label": ".create()"
     },
     {
@@ -4356,7 +4383,7 @@
       "source_file": "Http/Controllers/Web/Auth/RegisterController.php",
       "source_location": "L20",
       "id": "auth_registercontroller_registercontroller_store",
-      "community": 9,
+      "community": 8,
       "norm_label": ".store()"
     },
     {
@@ -4365,7 +4392,7 @@
       "source_file": "Http/Controllers/Web/Auth/GoogleCallbackController.php",
       "source_location": "L1",
       "id": "http_controllers_web_auth_googlecallbackcontroller_php",
-      "community": 9,
+      "community": 8,
       "norm_label": "googlecallbackcontroller.php"
     },
     {
@@ -4374,7 +4401,7 @@
       "source_file": "Http/Controllers/Web/Auth/GoogleCallbackController.php",
       "source_location": "L12",
       "id": "auth_googlecallbackcontroller_googlecallbackcontroller",
-      "community": 9,
+      "community": 8,
       "norm_label": "googlecallbackcontroller"
     },
     {
@@ -4383,7 +4410,7 @@
       "source_file": "Http/Controllers/Web/Auth/GoogleCallbackController.php",
       "source_location": "L14",
       "id": "auth_googlecallbackcontroller_googlecallbackcontroller_invoke",
-      "community": 9,
+      "community": 8,
       "norm_label": ".__invoke()"
     },
     {
@@ -4392,7 +4419,7 @@
       "source_file": "Http/Controllers/Web/Auth/GoogleCallbackController.php",
       "source_location": "L43",
       "id": "auth_googlecallbackcontroller_googlecallbackcontroller_loginexistinguser",
-      "community": 9,
+      "community": 8,
       "norm_label": ".loginexistinguser()"
     },
     {
@@ -4401,7 +4428,7 @@
       "source_file": "Http/Controllers/Web/Auth/ShowGoogleCompleteRegistrationController.php",
       "source_location": "L1",
       "id": "http_controllers_web_auth_showgooglecompleteregistrationcontroller_php",
-      "community": 87,
+      "community": 88,
       "norm_label": "showgooglecompleteregistrationcontroller.php"
     },
     {
@@ -4410,7 +4437,7 @@
       "source_file": "Http/Controllers/Web/Auth/ShowGoogleCompleteRegistrationController.php",
       "source_location": "L10",
       "id": "auth_showgooglecompleteregistrationcontroller_showgooglecompleteregistrationcontroller",
-      "community": 87,
+      "community": 88,
       "norm_label": "showgooglecompleteregistrationcontroller"
     },
     {
@@ -4419,7 +4446,7 @@
       "source_file": "Http/Controllers/Web/Auth/ShowGoogleCompleteRegistrationController.php",
       "source_location": "L12",
       "id": "auth_showgooglecompleteregistrationcontroller_showgooglecompleteregistrationcontroller_invoke",
-      "community": 87,
+      "community": 88,
       "norm_label": ".__invoke()"
     },
     {
@@ -4428,7 +4455,7 @@
       "source_file": "Http/Controllers/Web/Auth/GoogleRedirectController.php",
       "source_location": "L1",
       "id": "http_controllers_web_auth_googleredirectcontroller_php",
-      "community": 88,
+      "community": 89,
       "norm_label": "googleredirectcontroller.php"
     },
     {
@@ -4437,7 +4464,7 @@
       "source_file": "Http/Controllers/Web/Auth/GoogleRedirectController.php",
       "source_location": "L9",
       "id": "auth_googleredirectcontroller_googleredirectcontroller",
-      "community": 88,
+      "community": 89,
       "norm_label": "googleredirectcontroller"
     },
     {
@@ -4446,7 +4473,7 @@
       "source_file": "Http/Controllers/Web/Auth/GoogleRedirectController.php",
       "source_location": "L11",
       "id": "auth_googleredirectcontroller_googleredirectcontroller_invoke",
-      "community": 88,
+      "community": 89,
       "norm_label": ".__invoke()"
     },
     {
@@ -4455,7 +4482,7 @@
       "source_file": "Http/Controllers/Web/Auth/LoginController.php",
       "source_location": "L1",
       "id": "http_controllers_web_auth_logincontroller_php",
-      "community": 9,
+      "community": 8,
       "norm_label": "logincontroller.php"
     },
     {
@@ -4464,7 +4491,7 @@
       "source_file": "Http/Controllers/Auth/LoginController.php",
       "source_location": "L18",
       "id": "auth_logincontroller_logincontroller",
-      "community": 9,
+      "community": 8,
       "norm_label": "logincontroller"
     },
     {
@@ -4473,7 +4500,7 @@
       "source_file": "Http/Controllers/Web/Auth/LoginController.php",
       "source_location": "L17",
       "id": "auth_logincontroller_logincontroller_create",
-      "community": 9,
+      "community": 8,
       "norm_label": ".create()"
     },
     {
@@ -4482,7 +4509,7 @@
       "source_file": "Http/Controllers/Web/Auth/LoginController.php",
       "source_location": "L27",
       "id": "auth_logincontroller_logincontroller_store",
-      "community": 9,
+      "community": 8,
       "norm_label": ".store()"
     },
     {
@@ -4491,7 +4518,7 @@
       "source_file": "Http/Controllers/Web/Auth/LoginController.php",
       "source_location": "L59",
       "id": "auth_logincontroller_logincontroller_destroy",
-      "community": 9,
+      "community": 8,
       "norm_label": ".destroy()"
     },
     {
@@ -4500,7 +4527,7 @@
       "source_file": "Http/Controllers/Web/Auth/StoreGoogleCompleteRegistrationController.php",
       "source_location": "L1",
       "id": "http_controllers_web_auth_storegooglecompleteregistrationcontroller_php",
-      "community": 9,
+      "community": 8,
       "norm_label": "storegooglecompleteregistrationcontroller.php"
     },
     {
@@ -4509,7 +4536,7 @@
       "source_file": "Http/Controllers/Web/Auth/StoreGoogleCompleteRegistrationController.php",
       "source_location": "L11",
       "id": "auth_storegooglecompleteregistrationcontroller_storegooglecompleteregistrationcontroller",
-      "community": 9,
+      "community": 8,
       "norm_label": "storegooglecompleteregistrationcontroller"
     },
     {
@@ -4518,7 +4545,7 @@
       "source_file": "Http/Controllers/Web/Auth/StoreGoogleCompleteRegistrationController.php",
       "source_location": "L13",
       "id": "auth_storegooglecompleteregistrationcontroller_storegooglecompleteregistrationcontroller_invoke",
-      "community": 9,
+      "community": 8,
       "norm_label": ".__invoke()"
     },
     {
@@ -4527,7 +4554,7 @@
       "source_file": "Http/Controllers/Web/Checkout/StoreCheckoutShippingController.php",
       "source_location": "L1",
       "id": "http_controllers_web_checkout_storecheckoutshippingcontroller_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "storecheckoutshippingcontroller.php"
     },
     {
@@ -4536,7 +4563,7 @@
       "source_file": "Http/Controllers/Web/Checkout/StoreCheckoutShippingController.php",
       "source_location": "L16",
       "id": "checkout_storecheckoutshippingcontroller_storecheckoutshippingcontroller",
-      "community": 0,
+      "community": 1,
       "norm_label": "storecheckoutshippingcontroller"
     },
     {
@@ -4545,7 +4572,7 @@
       "source_file": "Http/Controllers/Web/Checkout/StoreCheckoutShippingController.php",
       "source_location": "L23",
       "id": "checkout_storecheckoutshippingcontroller_storecheckoutshippingcontroller_invoke",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__invoke()"
     },
     {
@@ -4554,7 +4581,7 @@
       "source_file": "Http/Controllers/Web/Checkout/StoreCheckoutShippingController.php",
       "source_location": "L110",
       "id": "checkout_storecheckoutshippingcontroller_storecheckoutshippingcontroller_resolveshipping",
-      "community": 0,
+      "community": 1,
       "norm_label": ".resolveshipping()"
     },
     {
@@ -4563,7 +4590,7 @@
       "source_file": "Http/Controllers/Web/Checkout/StoreCheckoutShippingController.php",
       "source_location": "L161",
       "id": "checkout_storecheckoutshippingcontroller_storecheckoutshippingcontroller_validatestock",
-      "community": 0,
+      "community": 1,
       "norm_label": ".validatestock()"
     },
     {
@@ -4572,7 +4599,7 @@
       "source_file": "Http/Controllers/Web/Checkout/GetShippingQuotesController.php",
       "source_location": "L1",
       "id": "http_controllers_web_checkout_getshippingquotescontroller_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "getshippingquotescontroller.php"
     },
     {
@@ -4581,7 +4608,7 @@
       "source_file": "Http/Controllers/Web/Checkout/GetShippingQuotesController.php",
       "source_location": "L11",
       "id": "checkout_getshippingquotescontroller_getshippingquotescontroller",
-      "community": 0,
+      "community": 1,
       "norm_label": "getshippingquotescontroller"
     },
     {
@@ -4590,7 +4617,7 @@
       "source_file": "Http/Controllers/Web/Checkout/GetShippingQuotesController.php",
       "source_location": "L13",
       "id": "checkout_getshippingquotescontroller_getshippingquotescontroller_invoke",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__invoke()"
     },
     {
@@ -4599,7 +4626,7 @@
       "source_file": "Http/Controllers/Web/Checkout/ShowCheckoutShippingController.php",
       "source_location": "L1",
       "id": "http_controllers_web_checkout_showcheckoutshippingcontroller_php",
-      "community": 7,
+      "community": 9,
       "norm_label": "showcheckoutshippingcontroller.php"
     },
     {
@@ -4608,7 +4635,7 @@
       "source_file": "Http/Controllers/Web/Checkout/ShowCheckoutShippingController.php",
       "source_location": "L13",
       "id": "checkout_showcheckoutshippingcontroller_showcheckoutshippingcontroller",
-      "community": 7,
+      "community": 9,
       "norm_label": "showcheckoutshippingcontroller"
     },
     {
@@ -4617,7 +4644,7 @@
       "source_file": "Http/Controllers/Web/Checkout/ShowCheckoutShippingController.php",
       "source_location": "L15",
       "id": "checkout_showcheckoutshippingcontroller_showcheckoutshippingcontroller_invoke",
-      "community": 7,
+      "community": 9,
       "norm_label": ".__invoke()"
     },
     {
@@ -4698,7 +4725,7 @@
       "source_file": "Http/Controllers/Auth/LogoutController.php",
       "source_location": "L1",
       "id": "http_controllers_auth_logoutcontroller_php",
-      "community": 55,
+      "community": 56,
       "norm_label": "logoutcontroller.php"
     },
     {
@@ -4707,7 +4734,7 @@
       "source_file": "Http/Controllers/Auth/RegisterController.php",
       "source_location": "L1",
       "id": "http_controllers_auth_registercontroller_php",
-      "community": 9,
+      "community": 8,
       "norm_label": "registercontroller.php"
     },
     {
@@ -4716,7 +4743,7 @@
       "source_file": "Http/Controllers/Auth/RegisterController.php",
       "source_location": "L28",
       "id": "auth_registercontroller_registercontroller_invoke",
-      "community": 9,
+      "community": 8,
       "norm_label": ".__invoke()"
     },
     {
@@ -4725,7 +4752,7 @@
       "source_file": "Http/Controllers/Auth/LoginController.php",
       "source_location": "L1",
       "id": "http_controllers_auth_logincontroller_php",
-      "community": 9,
+      "community": 8,
       "norm_label": "logincontroller.php"
     },
     {
@@ -4734,7 +4761,7 @@
       "source_file": "Http/Controllers/Auth/LoginController.php",
       "source_location": "L30",
       "id": "auth_logincontroller_logincontroller_invoke",
-      "community": 9,
+      "community": 8,
       "norm_label": ".__invoke()"
     },
     {
@@ -4743,7 +4770,7 @@
       "source_file": "Http/Controllers/Orders/GetOrderController.php",
       "source_location": "L1",
       "id": "http_controllers_orders_getordercontroller_php",
-      "community": 89,
+      "community": 90,
       "norm_label": "getordercontroller.php"
     },
     {
@@ -4752,7 +4779,7 @@
       "source_file": "Http/Controllers/Orders/GetOrderController.php",
       "source_location": "L16",
       "id": "orders_getordercontroller_getordercontroller",
-      "community": 89,
+      "community": 90,
       "norm_label": "getordercontroller"
     },
     {
@@ -4761,7 +4788,7 @@
       "source_file": "Http/Controllers/Orders/GetOrderController.php",
       "source_location": "L31",
       "id": "orders_getordercontroller_getordercontroller_invoke",
-      "community": 89,
+      "community": 90,
       "norm_label": ".__invoke()"
     },
     {
@@ -4770,7 +4797,7 @@
       "source_file": "Http/Controllers/Orders/DownloadInvoiceController.php",
       "source_location": "L1",
       "id": "http_controllers_orders_downloadinvoicecontroller_php",
-      "community": 90,
+      "community": 91,
       "norm_label": "downloadinvoicecontroller.php"
     },
     {
@@ -4779,7 +4806,7 @@
       "source_file": "Http/Controllers/Orders/DownloadInvoiceController.php",
       "source_location": "L16",
       "id": "orders_downloadinvoicecontroller_downloadinvoicecontroller",
-      "community": 90,
+      "community": 91,
       "norm_label": "downloadinvoicecontroller"
     },
     {
@@ -4788,7 +4815,7 @@
       "source_file": "Http/Controllers/Orders/DownloadInvoiceController.php",
       "source_location": "L32",
       "id": "orders_downloadinvoicecontroller_downloadinvoicecontroller_invoke",
-      "community": 90,
+      "community": 91,
       "norm_label": ".__invoke()"
     },
     {
@@ -4824,7 +4851,7 @@
       "source_file": "Http/Controllers/Orders/ReorderController.php",
       "source_location": "L1",
       "id": "http_controllers_orders_reordercontroller_php",
-      "community": 91,
+      "community": 92,
       "norm_label": "reordercontroller.php"
     },
     {
@@ -4833,7 +4860,7 @@
       "source_file": "Http/Controllers/Orders/ReorderController.php",
       "source_location": "L16",
       "id": "orders_reordercontroller_reordercontroller",
-      "community": 91,
+      "community": 92,
       "norm_label": "reordercontroller"
     },
     {
@@ -4842,7 +4869,7 @@
       "source_file": "Http/Controllers/Orders/ReorderController.php",
       "source_location": "L45",
       "id": "orders_reordercontroller_reordercontroller_invoke",
-      "community": 91,
+      "community": 92,
       "norm_label": ".__invoke()"
     },
     {
@@ -4851,7 +4878,7 @@
       "source_file": "Http/Controllers/Checkout/VerifyCheckoutController.php",
       "source_location": "L1",
       "id": "http_controllers_checkout_verifycheckoutcontroller_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "verifycheckoutcontroller.php"
     },
     {
@@ -4860,7 +4887,7 @@
       "source_file": "Http/Controllers/Checkout/VerifyCheckoutController.php",
       "source_location": "L19",
       "id": "checkout_verifycheckoutcontroller_verifycheckoutcontroller",
-      "community": 0,
+      "community": 1,
       "norm_label": "verifycheckoutcontroller"
     },
     {
@@ -4869,7 +4896,7 @@
       "source_file": "Http/Controllers/Checkout/VerifyCheckoutController.php",
       "source_location": "L51",
       "id": "checkout_verifycheckoutcontroller_verifycheckoutcontroller_invoke",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__invoke()"
     },
     {
@@ -4878,7 +4905,7 @@
       "source_file": "Http/Controllers/Checkout/ConfirmPaymentController.php",
       "source_location": "L1",
       "id": "http_controllers_checkout_confirmpaymentcontroller_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "confirmpaymentcontroller.php"
     },
     {
@@ -4887,7 +4914,7 @@
       "source_file": "Http/Controllers/Checkout/ConfirmPaymentController.php",
       "source_location": "L18",
       "id": "checkout_confirmpaymentcontroller_confirmpaymentcontroller",
-      "community": 0,
+      "community": 1,
       "norm_label": "confirmpaymentcontroller"
     },
     {
@@ -4896,7 +4923,7 @@
       "source_file": "Http/Controllers/Checkout/ConfirmPaymentController.php",
       "source_location": "L34",
       "id": "checkout_confirmpaymentcontroller_confirmpaymentcontroller_invoke",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__invoke()"
     },
     {
@@ -4905,7 +4932,7 @@
       "source_file": "Http/Controllers/Checkout/ConfirmPaymentController.php",
       "source_location": "L69",
       "id": "checkout_confirmpaymentcontroller_confirmpaymentcontroller_validatepaymentintent",
-      "community": 0,
+      "community": 1,
       "norm_label": ".validatepaymentintent()"
     },
     {
@@ -4914,7 +4941,7 @@
       "source_file": "Http/Controllers/Checkout/ConfirmPaymentController.php",
       "source_location": "L84",
       "id": "checkout_confirmpaymentcontroller_confirmpaymentcontroller_completeorder",
-      "community": 0,
+      "community": 1,
       "norm_label": ".completeorder()"
     },
     {
@@ -5481,7 +5508,7 @@
       "source_file": "Http/Requests/PaymentMethods/StorePaymentMethodRequest.php",
       "source_location": "L1",
       "id": "http_requests_paymentmethods_storepaymentmethodrequest_php",
-      "community": 56,
+      "community": 57,
       "norm_label": "storepaymentmethodrequest.php"
     },
     {
@@ -5490,7 +5517,7 @@
       "source_file": "Http/Requests/PaymentMethods/StorePaymentMethodRequest.php",
       "source_location": "L7",
       "id": "paymentmethods_storepaymentmethodrequest_storepaymentmethodrequest",
-      "community": 56,
+      "community": 57,
       "norm_label": "storepaymentmethodrequest"
     },
     {
@@ -5499,7 +5526,7 @@
       "source_file": "Http/Requests/PaymentMethods/StorePaymentMethodRequest.php",
       "source_location": "L9",
       "id": "paymentmethods_storepaymentmethodrequest_storepaymentmethodrequest_authorize",
-      "community": 56,
+      "community": 57,
       "norm_label": ".authorize()"
     },
     {
@@ -5508,7 +5535,7 @@
       "source_file": "Http/Requests/PaymentMethods/StorePaymentMethodRequest.php",
       "source_location": "L17",
       "id": "paymentmethods_storepaymentmethodrequest_storepaymentmethodrequest_rules",
-      "community": 56,
+      "community": 57,
       "norm_label": ".rules()"
     },
     {
@@ -5742,7 +5769,7 @@
       "source_file": "Http/Requests/Web/CheckoutRequest.php",
       "source_location": "L1",
       "id": "http_requests_web_checkoutrequest_php",
-      "community": 57,
+      "community": 58,
       "norm_label": "checkoutrequest.php"
     },
     {
@@ -5751,7 +5778,7 @@
       "source_file": "Http/Requests/Web/CheckoutRequest.php",
       "source_location": "L7",
       "id": "web_checkoutrequest_checkoutrequest",
-      "community": 57,
+      "community": 58,
       "norm_label": "checkoutrequest"
     },
     {
@@ -5760,7 +5787,7 @@
       "source_file": "Http/Requests/Web/CheckoutRequest.php",
       "source_location": "L11",
       "id": "web_checkoutrequest_checkoutrequest_authorize",
-      "community": 57,
+      "community": 58,
       "norm_label": ".authorize()"
     },
     {
@@ -5769,7 +5796,7 @@
       "source_file": "Http/Requests/Web/CheckoutRequest.php",
       "source_location": "L19",
       "id": "web_checkoutrequest_checkoutrequest_rules",
-      "community": 57,
+      "community": 58,
       "norm_label": ".rules()"
     },
     {
@@ -5778,7 +5805,7 @@
       "source_file": "Http/Requests/Web/ShippingQuotesRequest.php",
       "source_location": "L1",
       "id": "http_requests_web_shippingquotesrequest_php",
-      "community": 58,
+      "community": 59,
       "norm_label": "shippingquotesrequest.php"
     },
     {
@@ -5787,7 +5814,7 @@
       "source_file": "Http/Requests/Web/ShippingQuotesRequest.php",
       "source_location": "L7",
       "id": "web_shippingquotesrequest_shippingquotesrequest",
-      "community": 58,
+      "community": 59,
       "norm_label": "shippingquotesrequest"
     },
     {
@@ -5796,7 +5823,7 @@
       "source_file": "Http/Requests/Web/ShippingQuotesRequest.php",
       "source_location": "L11",
       "id": "web_shippingquotesrequest_shippingquotesrequest_authorize",
-      "community": 58,
+      "community": 59,
       "norm_label": ".authorize()"
     },
     {
@@ -5805,7 +5832,7 @@
       "source_file": "Http/Requests/Web/ShippingQuotesRequest.php",
       "source_location": "L19",
       "id": "web_shippingquotesrequest_shippingquotesrequest_rules",
-      "community": 58,
+      "community": 59,
       "norm_label": ".rules()"
     },
     {
@@ -5814,7 +5841,7 @@
       "source_file": "Http/Requests/Web/Content/UpdateFeaturedProductsRequest.php",
       "source_location": "L1",
       "id": "http_requests_web_content_updatefeaturedproductsrequest_php",
-      "community": 59,
+      "community": 60,
       "norm_label": "updatefeaturedproductsrequest.php"
     },
     {
@@ -5823,7 +5850,7 @@
       "source_file": "Http/Requests/Web/Content/UpdateFeaturedProductsRequest.php",
       "source_location": "L7",
       "id": "content_updatefeaturedproductsrequest_updatefeaturedproductsrequest",
-      "community": 59,
+      "community": 60,
       "norm_label": "updatefeaturedproductsrequest"
     },
     {
@@ -5832,7 +5859,7 @@
       "source_file": "Http/Requests/Web/Content/UpdateFeaturedProductsRequest.php",
       "source_location": "L9",
       "id": "content_updatefeaturedproductsrequest_updatefeaturedproductsrequest_authorize",
-      "community": 59,
+      "community": 60,
       "norm_label": ".authorize()"
     },
     {
@@ -5841,7 +5868,7 @@
       "source_file": "Http/Requests/Web/Content/UpdateFeaturedProductsRequest.php",
       "source_location": "L17",
       "id": "content_updatefeaturedproductsrequest_updatefeaturedproductsrequest_rules",
-      "community": 59,
+      "community": 60,
       "norm_label": ".rules()"
     },
     {
@@ -5850,7 +5877,7 @@
       "source_file": "Http/Requests/Web/Content/UpdateBannerRequest.php",
       "source_location": "L1",
       "id": "http_requests_web_content_updatebannerrequest_php",
-      "community": 60,
+      "community": 61,
       "norm_label": "updatebannerrequest.php"
     },
     {
@@ -5859,7 +5886,7 @@
       "source_file": "Http/Requests/Web/Content/UpdateBannerRequest.php",
       "source_location": "L9",
       "id": "content_updatebannerrequest_updatebannerrequest",
-      "community": 60,
+      "community": 61,
       "norm_label": "updatebannerrequest"
     },
     {
@@ -5868,7 +5895,7 @@
       "source_file": "Http/Requests/Web/Content/UpdateBannerRequest.php",
       "source_location": "L13",
       "id": "content_updatebannerrequest_updatebannerrequest_authorize",
-      "community": 60,
+      "community": 61,
       "norm_label": ".authorize()"
     },
     {
@@ -5877,7 +5904,7 @@
       "source_file": "Http/Requests/Web/Content/UpdateBannerRequest.php",
       "source_location": "L21",
       "id": "content_updatebannerrequest_updatebannerrequest_rules",
-      "community": 60,
+      "community": 61,
       "norm_label": ".rules()"
     },
     {
@@ -5886,7 +5913,7 @@
       "source_file": "Http/Requests/Web/Content/StoreBannerRequest.php",
       "source_location": "L1",
       "id": "http_requests_web_content_storebannerrequest_php",
-      "community": 61,
+      "community": 62,
       "norm_label": "storebannerrequest.php"
     },
     {
@@ -5895,7 +5922,7 @@
       "source_file": "Http/Requests/Web/Content/StoreBannerRequest.php",
       "source_location": "L9",
       "id": "content_storebannerrequest_storebannerrequest",
-      "community": 61,
+      "community": 62,
       "norm_label": "storebannerrequest"
     },
     {
@@ -5904,7 +5931,7 @@
       "source_file": "Http/Requests/Web/Content/StoreBannerRequest.php",
       "source_location": "L13",
       "id": "content_storebannerrequest_storebannerrequest_authorize",
-      "community": 61,
+      "community": 62,
       "norm_label": ".authorize()"
     },
     {
@@ -5913,7 +5940,7 @@
       "source_file": "Http/Requests/Web/Content/StoreBannerRequest.php",
       "source_location": "L21",
       "id": "content_storebannerrequest_storebannerrequest_rules",
-      "community": 61,
+      "community": 62,
       "norm_label": ".rules()"
     },
     {
@@ -5922,7 +5949,7 @@
       "source_file": "Http/Requests/Web/Content/UpdateStaticPageRequest.php",
       "source_location": "L1",
       "id": "http_requests_web_content_updatestaticpagerequest_php",
-      "community": 62,
+      "community": 63,
       "norm_label": "updatestaticpagerequest.php"
     },
     {
@@ -5931,7 +5958,7 @@
       "source_file": "Http/Requests/Web/Content/UpdateStaticPageRequest.php",
       "source_location": "L7",
       "id": "content_updatestaticpagerequest_updatestaticpagerequest",
-      "community": 62,
+      "community": 63,
       "norm_label": "updatestaticpagerequest"
     },
     {
@@ -5940,7 +5967,7 @@
       "source_file": "Http/Requests/Web/Content/UpdateStaticPageRequest.php",
       "source_location": "L9",
       "id": "content_updatestaticpagerequest_updatestaticpagerequest_authorize",
-      "community": 62,
+      "community": 63,
       "norm_label": ".authorize()"
     },
     {
@@ -5949,7 +5976,7 @@
       "source_file": "Http/Requests/Web/Content/UpdateStaticPageRequest.php",
       "source_location": "L17",
       "id": "content_updatestaticpagerequest_updatestaticpagerequest_rules",
-      "community": 62,
+      "community": 63,
       "norm_label": ".rules()"
     },
     {
@@ -5958,7 +5985,7 @@
       "source_file": "Http/Requests/Web/Content/Concerns/HasBannerLinkValidation.php",
       "source_location": "L1",
       "id": "http_requests_web_content_concerns_hasbannerlinkvalidation_php",
-      "community": 99,
+      "community": 101,
       "norm_label": "hasbannerlinkvalidation.php"
     },
     {
@@ -5967,7 +5994,7 @@
       "source_file": "Http/Requests/Web/Content/Concerns/HasBannerLinkValidation.php",
       "source_location": "L7",
       "id": "concerns_hasbannerlinkvalidation_linkvaluerule",
-      "community": 99,
+      "community": 101,
       "norm_label": "linkvaluerule()"
     },
     {
@@ -6066,7 +6093,7 @@
       "source_file": "Http/Requests/Web/Products/Concerns/NormalizesProductShippingPackages.php",
       "source_location": "L1",
       "id": "http_requests_web_products_concerns_normalizesproductshippingpackages_php",
-      "community": 92,
+      "community": 93,
       "norm_label": "normalizesproductshippingpackages.php"
     },
     {
@@ -6075,7 +6102,7 @@
       "source_file": "Http/Requests/Web/Products/Concerns/NormalizesProductShippingPackages.php",
       "source_location": "L7",
       "id": "concerns_normalizesproductshippingpackages_prepareshippingpackagesforvalidation",
-      "community": 92,
+      "community": 93,
       "norm_label": "prepareshippingpackagesforvalidation()"
     },
     {
@@ -6084,7 +6111,7 @@
       "source_file": "Http/Requests/Web/Products/Concerns/NormalizesProductShippingPackages.php",
       "source_location": "L39",
       "id": "concerns_normalizesproductshippingpackages_shippingpackagerules",
-      "community": 92,
+      "community": 93,
       "norm_label": "shippingpackagerules()"
     },
     {
@@ -6444,7 +6471,7 @@
       "source_file": "Http/Resources/CartResource.php",
       "source_location": "L1",
       "id": "http_resources_cartresource_php",
-      "community": 23,
+      "community": 24,
       "norm_label": "cartresource.php"
     },
     {
@@ -6453,7 +6480,7 @@
       "source_file": "Http/Resources/CartResource.php",
       "source_location": "L8",
       "id": "resources_cartresource_cartresource",
-      "community": 23,
+      "community": 24,
       "norm_label": "cartresource"
     },
     {
@@ -6462,7 +6489,7 @@
       "source_file": "Http/Resources/CartResource.php",
       "source_location": "L15",
       "id": "resources_cartresource_cartresource_toarray",
-      "community": 23,
+      "community": 24,
       "norm_label": ".toarray()"
     },
     {
@@ -6498,7 +6525,7 @@
       "source_file": "Http/Resources/ProductResource.php",
       "source_location": "L1",
       "id": "http_resources_productresource_php",
-      "community": 1,
+      "community": 0,
       "norm_label": "productresource.php"
     },
     {
@@ -6507,7 +6534,7 @@
       "source_file": "Http/Resources/ProductResource.php",
       "source_location": "L8",
       "id": "resources_productresource_productresource",
-      "community": 1,
+      "community": 0,
       "norm_label": "productresource"
     },
     {
@@ -6516,7 +6543,7 @@
       "source_file": "Http/Resources/ProductResource.php",
       "source_location": "L15",
       "id": "resources_productresource_productresource_toarray",
-      "community": 1,
+      "community": 0,
       "norm_label": ".toarray()"
     },
     {
@@ -6525,7 +6552,7 @@
       "source_file": "Http/Resources/NotificationPreferencesResource.php",
       "source_location": "L1",
       "id": "http_resources_notificationpreferencesresource_php",
-      "community": 93,
+      "community": 94,
       "norm_label": "notificationpreferencesresource.php"
     },
     {
@@ -6534,7 +6561,7 @@
       "source_file": "Http/Resources/NotificationPreferencesResource.php",
       "source_location": "L8",
       "id": "resources_notificationpreferencesresource_notificationpreferencesresource",
-      "community": 93,
+      "community": 94,
       "norm_label": "notificationpreferencesresource"
     },
     {
@@ -6543,7 +6570,7 @@
       "source_file": "Http/Resources/NotificationPreferencesResource.php",
       "source_location": "L13",
       "id": "resources_notificationpreferencesresource_notificationpreferencesresource_toarray",
-      "community": 93,
+      "community": 94,
       "norm_label": ".toarray()"
     },
     {
@@ -6552,7 +6579,7 @@
       "source_file": "Http/Resources/ProductImageResource.php",
       "source_location": "L1",
       "id": "http_resources_productimageresource_php",
-      "community": 24,
+      "community": 23,
       "norm_label": "productimageresource.php"
     },
     {
@@ -6561,7 +6588,7 @@
       "source_file": "Http/Resources/ProductImageResource.php",
       "source_location": "L8",
       "id": "resources_productimageresource_productimageresource",
-      "community": 24,
+      "community": 23,
       "norm_label": "productimageresource"
     },
     {
@@ -6570,7 +6597,7 @@
       "source_file": "Http/Resources/ProductImageResource.php",
       "source_location": "L15",
       "id": "resources_productimageresource_productimageresource_toarray",
-      "community": 24,
+      "community": 23,
       "norm_label": ".toarray()"
     },
     {
@@ -6579,7 +6606,7 @@
       "source_file": "Http/Resources/UserResource.php",
       "source_location": "L1",
       "id": "http_resources_userresource_php",
-      "community": 94,
+      "community": 95,
       "norm_label": "userresource.php"
     },
     {
@@ -6588,7 +6615,7 @@
       "source_file": "Http/Resources/UserResource.php",
       "source_location": "L8",
       "id": "resources_userresource_userresource",
-      "community": 94,
+      "community": 95,
       "norm_label": "userresource"
     },
     {
@@ -6597,7 +6624,7 @@
       "source_file": "Http/Resources/UserResource.php",
       "source_location": "L15",
       "id": "resources_userresource_userresource_toarray",
-      "community": 94,
+      "community": 95,
       "norm_label": ".toarray()"
     },
     {
@@ -6660,7 +6687,7 @@
       "source_file": "Http/Resources/AddressResource.php",
       "source_location": "L1",
       "id": "http_resources_addressresource_php",
-      "community": 7,
+      "community": 9,
       "norm_label": "addressresource.php"
     },
     {
@@ -6669,7 +6696,7 @@
       "source_file": "Http/Resources/AddressResource.php",
       "source_location": "L8",
       "id": "resources_addressresource_addressresource",
-      "community": 7,
+      "community": 9,
       "norm_label": "addressresource"
     },
     {
@@ -6678,7 +6705,7 @@
       "source_file": "Http/Resources/AddressResource.php",
       "source_location": "L13",
       "id": "resources_addressresource_addressresource_toarray",
-      "community": 7,
+      "community": 9,
       "norm_label": ".toarray()"
     },
     {
@@ -6714,7 +6741,7 @@
       "source_file": "Http/Resources/StaticPageResource.php",
       "source_location": "L1",
       "id": "http_resources_staticpageresource_php",
-      "community": 95,
+      "community": 96,
       "norm_label": "staticpageresource.php"
     },
     {
@@ -6723,7 +6750,7 @@
       "source_file": "Http/Resources/StaticPageResource.php",
       "source_location": "L8",
       "id": "resources_staticpageresource_staticpageresource",
-      "community": 95,
+      "community": 96,
       "norm_label": "staticpageresource"
     },
     {
@@ -6732,7 +6759,7 @@
       "source_file": "Http/Resources/StaticPageResource.php",
       "source_location": "L13",
       "id": "resources_staticpageresource_staticpageresource_toarray",
-      "community": 95,
+      "community": 96,
       "norm_label": ".toarray()"
     },
     {
@@ -6741,7 +6768,7 @@
       "source_file": "Http/Resources/CartItemResource.php",
       "source_location": "L1",
       "id": "http_resources_cartitemresource_php",
-      "community": 23,
+      "community": 24,
       "norm_label": "cartitemresource.php"
     },
     {
@@ -6750,7 +6777,7 @@
       "source_file": "Http/Resources/CartItemResource.php",
       "source_location": "L8",
       "id": "resources_cartitemresource_cartitemresource",
-      "community": 23,
+      "community": 24,
       "norm_label": "cartitemresource"
     },
     {
@@ -6759,7 +6786,7 @@
       "source_file": "Http/Resources/CartItemResource.php",
       "source_location": "L15",
       "id": "resources_cartitemresource_cartitemresource_toarray",
-      "community": 23,
+      "community": 24,
       "norm_label": ".toarray()"
     },
     {
@@ -6768,7 +6795,7 @@
       "source_file": "Http/Resources/ProductDetailResource.php",
       "source_location": "L1",
       "id": "http_resources_productdetailresource_php",
-      "community": 24,
+      "community": 23,
       "norm_label": "productdetailresource.php"
     },
     {
@@ -6777,7 +6804,7 @@
       "source_file": "Http/Resources/ProductDetailResource.php",
       "source_location": "L8",
       "id": "resources_productdetailresource_productdetailresource",
-      "community": 24,
+      "community": 23,
       "norm_label": "productdetailresource"
     },
     {
@@ -6786,7 +6813,7 @@
       "source_file": "Http/Resources/ProductDetailResource.php",
       "source_location": "L15",
       "id": "resources_productdetailresource_productdetailresource_toarray",
-      "community": 24,
+      "community": 23,
       "norm_label": ".toarray()"
     },
     {
@@ -6894,7 +6921,7 @@
       "source_file": "Http/Middleware/RoleMiddleware.php",
       "source_location": "L1",
       "id": "http_middleware_rolemiddleware_php",
-      "community": 96,
+      "community": 97,
       "norm_label": "rolemiddleware.php"
     },
     {
@@ -6903,7 +6930,7 @@
       "source_file": "Http/Middleware/RoleMiddleware.php",
       "source_location": "L9",
       "id": "middleware_rolemiddleware_rolemiddleware",
-      "community": 96,
+      "community": 97,
       "norm_label": "rolemiddleware"
     },
     {
@@ -6912,7 +6939,7 @@
       "source_file": "Http/Middleware/RoleMiddleware.php",
       "source_location": "L16",
       "id": "middleware_rolemiddleware_rolemiddleware_handle",
-      "community": 96,
+      "community": 97,
       "norm_label": ".handle()"
     },
     {
@@ -6943,12 +6970,57 @@
       "norm_label": ".__construct()"
     },
     {
+      "label": "NewOrderReceived.php",
+      "file_type": "code",
+      "source_file": "Notifications/Order/NewOrderReceived.php",
+      "source_location": "L1",
+      "id": "notifications_order_neworderreceived_php",
+      "community": 51,
+      "norm_label": "neworderreceived.php"
+    },
+    {
+      "label": "NewOrderReceived",
+      "file_type": "code",
+      "source_file": "Notifications/Order/NewOrderReceived.php",
+      "source_location": "L11",
+      "id": "order_neworderreceived_neworderreceived",
+      "community": 51,
+      "norm_label": "neworderreceived"
+    },
+    {
+      "label": ".__construct()",
+      "file_type": "code",
+      "source_file": "Notifications/Order/NewOrderReceived.php",
+      "source_location": "L18",
+      "id": "order_neworderreceived_neworderreceived_construct",
+      "community": 51,
+      "norm_label": ".__construct()"
+    },
+    {
+      "label": ".via()",
+      "file_type": "code",
+      "source_file": "Notifications/Order/NewOrderReceived.php",
+      "source_location": "L28",
+      "id": "order_neworderreceived_neworderreceived_via",
+      "community": 51,
+      "norm_label": ".via()"
+    },
+    {
+      "label": ".toMail()",
+      "file_type": "code",
+      "source_file": "Notifications/Order/NewOrderReceived.php",
+      "source_location": "L36",
+      "id": "order_neworderreceived_neworderreceived_tomail",
+      "community": 51,
+      "norm_label": ".tomail()"
+    },
+    {
       "label": "OrderStatusChanged.php",
       "file_type": "code",
       "source_file": "Notifications/Order/OrderStatusChanged.php",
       "source_location": "L1",
       "id": "notifications_order_orderstatuschanged_php",
-      "community": 51,
+      "community": 52,
       "norm_label": "orderstatuschanged.php"
     },
     {
@@ -6957,7 +7029,7 @@
       "source_file": "Notifications/Order/OrderStatusChanged.php",
       "source_location": "L11",
       "id": "order_orderstatuschanged_orderstatuschanged",
-      "community": 51,
+      "community": 52,
       "norm_label": "orderstatuschanged"
     },
     {
@@ -6966,7 +7038,7 @@
       "source_file": "Notifications/Order/OrderStatusChanged.php",
       "source_location": "L18",
       "id": "order_orderstatuschanged_orderstatuschanged_construct",
-      "community": 51,
+      "community": 52,
       "norm_label": ".__construct()"
     },
     {
@@ -6975,7 +7047,7 @@
       "source_file": "Notifications/Order/OrderStatusChanged.php",
       "source_location": "L33",
       "id": "order_orderstatuschanged_orderstatuschanged_via",
-      "community": 51,
+      "community": 52,
       "norm_label": ".via()"
     },
     {
@@ -6984,7 +7056,7 @@
       "source_file": "Notifications/Order/OrderStatusChanged.php",
       "source_location": "L41",
       "id": "order_orderstatuschanged_orderstatuschanged_tomail",
-      "community": 51,
+      "community": 52,
       "norm_label": ".tomail()"
     },
     {
@@ -6993,7 +7065,7 @@
       "source_file": "Notifications/Order/OrderConfirmation.php",
       "source_location": "L1",
       "id": "notifications_order_orderconfirmation_php",
-      "community": 52,
+      "community": 53,
       "norm_label": "orderconfirmation.php"
     },
     {
@@ -7002,7 +7074,7 @@
       "source_file": "Notifications/Order/OrderConfirmation.php",
       "source_location": "L11",
       "id": "order_orderconfirmation_orderconfirmation",
-      "community": 52,
+      "community": 53,
       "norm_label": "orderconfirmation"
     },
     {
@@ -7011,7 +7083,7 @@
       "source_file": "Notifications/Order/OrderConfirmation.php",
       "source_location": "L18",
       "id": "order_orderconfirmation_orderconfirmation_construct",
-      "community": 52,
+      "community": 53,
       "norm_label": ".__construct()"
     },
     {
@@ -7020,7 +7092,7 @@
       "source_file": "Notifications/Order/OrderConfirmation.php",
       "source_location": "L28",
       "id": "order_orderconfirmation_orderconfirmation_via",
-      "community": 52,
+      "community": 53,
       "norm_label": ".via()"
     },
     {
@@ -7029,8 +7101,62 @@
       "source_file": "Notifications/Order/OrderConfirmation.php",
       "source_location": "L36",
       "id": "order_orderconfirmation_orderconfirmation_tomail",
-      "community": 52,
+      "community": 53,
       "norm_label": ".tomail()"
+    },
+    {
+      "label": "SendOrderConfirmationNotification.php",
+      "file_type": "code",
+      "source_file": "Listeners/SendOrderConfirmationNotification.php",
+      "source_location": "L1",
+      "id": "listeners_sendorderconfirmationnotification_php",
+      "community": 98,
+      "norm_label": "sendorderconfirmationnotification.php"
+    },
+    {
+      "label": "SendOrderConfirmationNotification",
+      "file_type": "code",
+      "source_file": "Listeners/SendOrderConfirmationNotification.php",
+      "source_location": "L8",
+      "id": "listeners_sendorderconfirmationnotification_sendorderconfirmationnotification",
+      "community": 98,
+      "norm_label": "sendorderconfirmationnotification"
+    },
+    {
+      "label": ".handle()",
+      "file_type": "code",
+      "source_file": "Listeners/SendOrderConfirmationNotification.php",
+      "source_location": "L13",
+      "id": "listeners_sendorderconfirmationnotification_sendorderconfirmationnotification_handle",
+      "community": 98,
+      "norm_label": ".handle()"
+    },
+    {
+      "label": "NotifyStaffOfNewOrder.php",
+      "file_type": "code",
+      "source_file": "Listeners/NotifyStaffOfNewOrder.php",
+      "source_location": "L1",
+      "id": "listeners_notifystaffofneworder_php",
+      "community": 8,
+      "norm_label": "notifystaffofneworder.php"
+    },
+    {
+      "label": "NotifyStaffOfNewOrder",
+      "file_type": "code",
+      "source_file": "Listeners/NotifyStaffOfNewOrder.php",
+      "source_location": "L10",
+      "id": "listeners_notifystaffofneworder_notifystaffofneworder",
+      "community": 8,
+      "norm_label": "notifystaffofneworder"
+    },
+    {
+      "label": ".handle()",
+      "file_type": "code",
+      "source_file": "Listeners/NotifyStaffOfNewOrder.php",
+      "source_location": "L22",
+      "id": "listeners_notifystaffofneworder_notifystaffofneworder_handle",
+      "community": 8,
+      "norm_label": ".handle()"
     },
     {
       "label": "HandleStripeWebhook.php",
@@ -7038,7 +7164,7 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L1",
       "id": "listeners_handlestripewebhook_php",
-      "community": 8,
+      "community": 7,
       "norm_label": "handlestripewebhook.php"
     },
     {
@@ -7047,7 +7173,7 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L15",
       "id": "listeners_handlestripewebhook_handlestripewebhook",
-      "community": 8,
+      "community": 7,
       "norm_label": "handlestripewebhook"
     },
     {
@@ -7056,7 +7182,7 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L17",
       "id": "listeners_handlestripewebhook_handlestripewebhook_handle",
-      "community": 8,
+      "community": 7,
       "norm_label": ".handle()"
     },
     {
@@ -7065,70 +7191,70 @@
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L34",
       "id": "listeners_handlestripewebhook_handlestripewebhook_handlecheckoutcompleted",
-      "community": 8,
+      "community": 7,
       "norm_label": ".handlecheckoutcompleted()"
     },
     {
       "label": ".handlePaymentIntentSucceeded()",
       "file_type": "code",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L64",
+      "source_location": "L66",
       "id": "listeners_handlestripewebhook_handlestripewebhook_handlepaymentintentsucceeded",
-      "community": 8,
+      "community": 7,
       "norm_label": ".handlepaymentintentsucceeded()"
     },
     {
       "label": ".handleCheckoutExpired()",
       "file_type": "code",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L87",
+      "source_location": "L89",
       "id": "listeners_handlestripewebhook_handlestripewebhook_handlecheckoutexpired",
-      "community": 8,
+      "community": 7,
       "norm_label": ".handlecheckoutexpired()"
     },
     {
       "label": ".handleChargeRefunded()",
       "file_type": "code",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L104",
+      "source_location": "L106",
       "id": "listeners_handlestripewebhook_handlestripewebhook_handlechargerefunded",
-      "community": 8,
+      "community": 7,
       "norm_label": ".handlechargerefunded()"
     },
     {
       "label": ".handleSetupCompleted()",
       "file_type": "code",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L132",
+      "source_location": "L134",
       "id": "listeners_handlestripewebhook_handlestripewebhook_handlesetupcompleted",
-      "community": 8,
+      "community": 7,
       "norm_label": ".handlesetupcompleted()"
     },
     {
       "label": ".findPendingOrder()",
       "file_type": "code",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L165",
+      "source_location": "L167",
       "id": "listeners_handlestripewebhook_handlestripewebhook_findpendingorder",
-      "community": 8,
+      "community": 7,
       "norm_label": ".findpendingorder()"
     },
     {
       "label": ".findOrderByMetadata()",
       "file_type": "code",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L179",
+      "source_location": "L181",
       "id": "listeners_handlestripewebhook_handlestripewebhook_findorderbymetadata",
-      "community": 8,
+      "community": 7,
       "norm_label": ".findorderbymetadata()"
     },
     {
       "label": ".fulfillOrder()",
       "file_type": "code",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L193",
+      "source_location": "L195",
       "id": "listeners_handlestripewebhook_handlestripewebhook_fulfillorder",
-      "community": 8,
+      "community": 7,
       "norm_label": ".fulfillorder()"
     },
     {
@@ -7137,7 +7263,7 @@
       "source_file": "Actions/ReorderAction.php",
       "source_location": "L1",
       "id": "actions_reorderaction_php",
-      "community": 0,
+      "community": 1,
       "norm_label": "reorderaction.php"
     },
     {
@@ -7146,7 +7272,7 @@
       "source_file": "Actions/ReorderAction.php",
       "source_location": "L9",
       "id": "actions_reorderaction_reorderaction",
-      "community": 0,
+      "community": 1,
       "norm_label": "reorderaction"
     },
     {
@@ -7155,7 +7281,7 @@
       "source_file": "Actions/ReorderAction.php",
       "source_location": "L18",
       "id": "actions_reorderaction_reorderaction_execute",
-      "community": 0,
+      "community": 1,
       "norm_label": ".execute()"
     }
   ],
@@ -9807,8 +9933,8 @@
       "source_file": "Http/Middleware/HandleInertiaRequests.php",
       "source_location": "L79",
       "weight": 1.0,
-      "_src": "middleware_handleinertiarequests_handleinertiarequests_getadminnavigation",
-      "_tgt": "models_ordernote_ordernote_order",
+      "_src": "models_ordernote_ordernote_order",
+      "_tgt": "middleware_handleinertiarequests_handleinertiarequests_getadminnavigation",
       "source": "models_ordernote_ordernote_order",
       "target": "middleware_handleinertiarequests_handleinertiarequests_getadminnavigation"
     },
@@ -10596,6 +10722,18 @@
       "relation": "calls",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
+      "source_file": "Listeners/NotifyStaffOfNewOrder.php",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_src": "listeners_notifystaffofneworder_notifystaffofneworder_handle",
+      "_tgt": "models_cart_cart_user",
+      "source": "models_cart_cart_user",
+      "target": "listeners_notifystaffofneworder_notifystaffofneworder_handle"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L138",
       "weight": 1.0,
@@ -10603,6 +10741,54 @@
       "_tgt": "listeners_handlestripewebhook_handlestripewebhook_handlesetupcompleted",
       "source": "models_cart_cart_user",
       "target": "listeners_handlestripewebhook_handlestripewebhook_handlesetupcompleted"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Events/PaymentCompleted.php",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_src": "events_paymentcompleted_php",
+      "_tgt": "events_paymentcompleted_paymentcompleted",
+      "source": "events_paymentcompleted_php",
+      "target": "events_paymentcompleted_paymentcompleted",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "Events/PaymentCompleted.php",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_src": "events_paymentcompleted_paymentcompleted",
+      "_tgt": "events_paymentcompleted_paymentcompleted_construct",
+      "source": "events_paymentcompleted_paymentcompleted",
+      "target": "events_paymentcompleted_paymentcompleted_construct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "Listeners/HandleStripeWebhook.php",
+      "source_location": "L60",
+      "weight": 1.0,
+      "_src": "events_paymentcompleted_paymentcompleted",
+      "_tgt": "listeners_handlestripewebhook_handlestripewebhook_handlecheckoutcompleted",
+      "source": "events_paymentcompleted_paymentcompleted",
+      "target": "listeners_handlestripewebhook_handlestripewebhook_handlecheckoutcompleted"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "Listeners/HandleStripeWebhook.php",
+      "source_location": "L83",
+      "weight": 1.0,
+      "_src": "events_paymentcompleted_paymentcompleted",
+      "_tgt": "listeners_handlestripewebhook_handlestripewebhook_handlepaymentintentsucceeded",
+      "source": "events_paymentcompleted_paymentcompleted",
+      "target": "listeners_handlestripewebhook_handlestripewebhook_handlepaymentintentsucceeded"
     },
     {
       "relation": "contains",
@@ -12039,8 +12225,8 @@
       "source_file": "Http/Controllers/Web/Checkout/ShowCheckoutPaymentController.php",
       "source_location": "L75",
       "weight": 1.0,
-      "_src": "checkout_showcheckoutpaymentcontroller_showcheckoutpaymentcontroller_savedpaymentmethodsfor",
-      "_tgt": "paymentmethods_paymentmethoddata_paymentmethoddata",
+      "_src": "paymentmethods_paymentmethoddata_paymentmethoddata",
+      "_tgt": "checkout_showcheckoutpaymentcontroller_showcheckoutpaymentcontroller_savedpaymentmethodsfor",
       "source": "paymentmethods_paymentmethoddata_paymentmethoddata",
       "target": "checkout_showcheckoutpaymentcontroller_showcheckoutpaymentcontroller_savedpaymentmethodsfor"
     },
@@ -16955,6 +17141,54 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "Notifications/Order/NewOrderReceived.php",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_src": "notifications_order_neworderreceived_php",
+      "_tgt": "order_neworderreceived_neworderreceived",
+      "source": "notifications_order_neworderreceived_php",
+      "target": "order_neworderreceived_neworderreceived",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "Notifications/Order/NewOrderReceived.php",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_src": "order_neworderreceived_neworderreceived",
+      "_tgt": "order_neworderreceived_neworderreceived_construct",
+      "source": "order_neworderreceived_neworderreceived",
+      "target": "order_neworderreceived_neworderreceived_construct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "Notifications/Order/NewOrderReceived.php",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_src": "order_neworderreceived_neworderreceived",
+      "_tgt": "order_neworderreceived_neworderreceived_via",
+      "source": "order_neworderreceived_neworderreceived",
+      "target": "order_neworderreceived_neworderreceived_via",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "Notifications/Order/NewOrderReceived.php",
+      "source_location": "L36",
+      "weight": 1.0,
+      "_src": "order_neworderreceived_neworderreceived",
+      "_tgt": "order_neworderreceived_neworderreceived_tomail",
+      "source": "order_neworderreceived_neworderreceived",
+      "target": "order_neworderreceived_neworderreceived_tomail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "Notifications/Order/OrderStatusChanged.php",
       "source_location": "L11",
       "weight": 1.0,
@@ -17051,6 +17285,54 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "Listeners/SendOrderConfirmationNotification.php",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_src": "listeners_sendorderconfirmationnotification_php",
+      "_tgt": "listeners_sendorderconfirmationnotification_sendorderconfirmationnotification",
+      "source": "listeners_sendorderconfirmationnotification_php",
+      "target": "listeners_sendorderconfirmationnotification_sendorderconfirmationnotification",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "Listeners/SendOrderConfirmationNotification.php",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_src": "listeners_sendorderconfirmationnotification_sendorderconfirmationnotification",
+      "_tgt": "listeners_sendorderconfirmationnotification_sendorderconfirmationnotification_handle",
+      "source": "listeners_sendorderconfirmationnotification_sendorderconfirmationnotification",
+      "target": "listeners_sendorderconfirmationnotification_sendorderconfirmationnotification_handle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Listeners/NotifyStaffOfNewOrder.php",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_src": "listeners_notifystaffofneworder_php",
+      "_tgt": "listeners_notifystaffofneworder_notifystaffofneworder",
+      "source": "listeners_notifystaffofneworder_php",
+      "target": "listeners_notifystaffofneworder_notifystaffofneworder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "Listeners/NotifyStaffOfNewOrder.php",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_src": "listeners_notifystaffofneworder_notifystaffofneworder",
+      "_tgt": "listeners_notifystaffofneworder_notifystaffofneworder_handle",
+      "source": "listeners_notifystaffofneworder_notifystaffofneworder",
+      "target": "listeners_notifystaffofneworder_notifystaffofneworder_handle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "Listeners/HandleStripeWebhook.php",
       "source_location": "L15",
       "weight": 1.0,
@@ -17088,7 +17370,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L64",
+      "source_location": "L66",
       "weight": 1.0,
       "_src": "listeners_handlestripewebhook_handlestripewebhook",
       "_tgt": "listeners_handlestripewebhook_handlestripewebhook_handlepaymentintentsucceeded",
@@ -17100,7 +17382,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L87",
+      "source_location": "L89",
       "weight": 1.0,
       "_src": "listeners_handlestripewebhook_handlestripewebhook",
       "_tgt": "listeners_handlestripewebhook_handlestripewebhook_handlecheckoutexpired",
@@ -17112,7 +17394,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L104",
+      "source_location": "L106",
       "weight": 1.0,
       "_src": "listeners_handlestripewebhook_handlestripewebhook",
       "_tgt": "listeners_handlestripewebhook_handlestripewebhook_handlechargerefunded",
@@ -17124,7 +17406,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L132",
+      "source_location": "L134",
       "weight": 1.0,
       "_src": "listeners_handlestripewebhook_handlestripewebhook",
       "_tgt": "listeners_handlestripewebhook_handlestripewebhook_handlesetupcompleted",
@@ -17136,7 +17418,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L165",
+      "source_location": "L167",
       "weight": 1.0,
       "_src": "listeners_handlestripewebhook_handlestripewebhook",
       "_tgt": "listeners_handlestripewebhook_handlestripewebhook_findpendingorder",
@@ -17148,7 +17430,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L179",
+      "source_location": "L181",
       "weight": 1.0,
       "_src": "listeners_handlestripewebhook_handlestripewebhook",
       "_tgt": "listeners_handlestripewebhook_handlestripewebhook_findorderbymetadata",
@@ -17160,7 +17442,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L193",
+      "source_location": "L195",
       "weight": 1.0,
       "_src": "listeners_handlestripewebhook_handlestripewebhook",
       "_tgt": "listeners_handlestripewebhook_handlestripewebhook_fulfillorder",
@@ -17256,7 +17538,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L67",
+      "source_location": "L69",
       "weight": 1.0,
       "_src": "listeners_handlestripewebhook_handlestripewebhook_handlepaymentintentsucceeded",
       "_tgt": "listeners_handlestripewebhook_handlestripewebhook_findpendingorder",
@@ -17268,7 +17550,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L73",
+      "source_location": "L75",
       "weight": 1.0,
       "_src": "listeners_handlestripewebhook_handlestripewebhook_handlepaymentintentsucceeded",
       "_tgt": "listeners_handlestripewebhook_handlestripewebhook_fulfillorder",
@@ -17280,7 +17562,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L89",
+      "source_location": "L91",
       "weight": 1.0,
       "_src": "listeners_handlestripewebhook_handlestripewebhook_handlecheckoutexpired",
       "_tgt": "listeners_handlestripewebhook_handlestripewebhook_findorderbymetadata",
@@ -17292,7 +17574,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "Listeners/HandleStripeWebhook.php",
-      "source_location": "L167",
+      "source_location": "L169",
       "weight": 1.0,
       "_src": "listeners_handlestripewebhook_handlestripewebhook_findpendingorder",
       "_tgt": "listeners_handlestripewebhook_handlestripewebhook_findorderbymetadata",

@@ -3,6 +3,7 @@
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
+use App\Notifications\Order\NewOrderReceived;
 use App\Notifications\Order\OrderConfirmation;
 use App\Notifications\Order\OrderStatusChanged;
 use Illuminate\Support\Facades\Notification;
@@ -276,6 +277,36 @@ describe('Email Content', function () {
         expect($rendered)->toContain('pi_test_confirmed_123');
         expect($rendered)->toContain('Test Product');
         expect($rendered)->toContain('Total pagado');
+    });
+
+    it('new order staff notification renders customer and order details with admin link', function () {
+        $customer = User::factory()->create(['name' => 'Cliente Prueba']);
+        $order = Order::factory()->create([
+            'user_id' => $customer->id,
+            'payment_status' => 'completed',
+            'payment_intent_id' => 'pi_test_staff_render',
+            'total_amount' => 250.00,
+            'shipping_cost' => 50.00,
+        ]);
+        OrderItem::factory()->create([
+            'order_id' => $order->id,
+            'product_name' => 'Aceite de masaje',
+            'quantity' => 4,
+            'unit_price' => 50.00,
+            'subtotal' => 200.00,
+        ]);
+        $admin = User::factory()->admin()->create();
+
+        $notification = new NewOrderReceived($order);
+        $mailMessage = $notification->toMail($admin);
+        $rendered = (string) $mailMessage->render();
+
+        expect($mailMessage->subject)->toContain('Nuevo pedido');
+        expect($mailMessage->subject)->toContain((string) $order->id);
+        expect($rendered)->toContain('Nuevo pedido');
+        expect($rendered)->toContain('Cliente Prueba');
+        expect($rendered)->toContain('Aceite de masaje');
+        expect($rendered)->toContain('/admin/orders/'.$order->id);
     });
 
     it('status change email contains correct status information', function () {
