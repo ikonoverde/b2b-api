@@ -36,8 +36,8 @@ class OrderConfirmation extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Confirmación de Pedido #'.$this->order->id)
-            ->markdown('emails.orders.confirmation', [
+            ->subject('Pago confirmado: Pedido #'.$this->order->id)
+            ->view('emails.orders.confirmation', [
                 'order' => $this->order,
                 'user' => $notifiable,
             ]);

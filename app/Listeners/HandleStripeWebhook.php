@@ -6,6 +6,7 @@ use App\Jobs\CreateShippingLabel;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
+use App\Notifications\Order\OrderConfirmation;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\DB;
 use Laravel\Cashier\Cashier;
@@ -76,6 +77,8 @@ class HandleStripeWebhook implements ShouldQueue
         if ($order->isSkydropxShipment()) {
             CreateShippingLabel::dispatch($order);
         }
+
+        $order->user->notify(new OrderConfirmation($order));
     }
 
     /**

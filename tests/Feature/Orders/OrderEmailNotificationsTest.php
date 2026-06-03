@@ -247,11 +247,13 @@ describe('Order Tracking Email', function () {
 
 // Email Content Tests
 describe('Email Content', function () {
-    it('order confirmation email contains correct order details', function () {
+    it('order confirmation email focuses on payment confirmation and includes products', function () {
         $user = User::factory()->create();
         $order = Order::factory()->create([
             'user_id' => $user->id,
             'status' => 'pending',
+            'payment_status' => 'completed',
+            'payment_intent_id' => 'pi_test_confirmed_123',
             'total_amount' => 150.00,
             'shipping_cost' => 10.00,
         ]);
@@ -265,9 +267,15 @@ describe('Email Content', function () {
 
         $notification = new OrderConfirmation($order);
         $mailMessage = $notification->toMail($user);
+        $rendered = (string) $mailMessage->render();
 
-        expect($mailMessage->subject)->toContain('Confirmación de Pedido');
+        expect($mailMessage->subject)->toContain('Pago confirmado');
         expect($mailMessage->subject)->toContain((string) $order->id);
+        expect($rendered)->toContain('Pago confirmado');
+        expect($rendered)->toContain('Hemos confirmado el pago');
+        expect($rendered)->toContain('pi_test_confirmed_123');
+        expect($rendered)->toContain('Test Product');
+        expect($rendered)->toContain('Total pagado');
     });
 
     it('status change email contains correct status information', function () {
