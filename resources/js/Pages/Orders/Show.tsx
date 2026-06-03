@@ -1,6 +1,6 @@
 import { Link, router, usePage } from '@inertiajs/react';
 import { FileText, RefreshCw } from 'lucide-react';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import AccountShell from '@/Layouts/AccountShell';
 import { formatCurrency } from '@/utils/currency';
 import { formatDateTimeLong } from '@/utils/date';
@@ -49,6 +49,50 @@ interface Props extends PageProps {
 }
 
 const STATUS_ORDER = ['payment_pending', 'pending', 'processing', 'shipped', 'delivered'];
+
+const PAYMENT_STATUS_LABELS: Record<string, string> = {
+    pending: 'Pago pendiente',
+    completed: 'Pago confirmado',
+    failed: 'Pago fallido',
+    refunded: 'Reembolsado',
+    partially_refunded: 'Reembolso parcial',
+};
+
+type Tone = 'success' | 'warning' | 'danger' | 'neutral';
+
+const TONE_STYLES: Record<
+    Tone,
+    { bg: string; border: string; dot: string; ring: string; text: string }
+> = {
+    success: {
+        bg: 'bg-[var(--iko-accent-mist)]',
+        border: 'border-[var(--iko-accent-line)]',
+        dot: 'bg-[var(--iko-accent)]',
+        ring: 'ring-[var(--iko-accent-line)]',
+        text: 'text-[var(--iko-accent-ink)]',
+    },
+    warning: {
+        bg: 'bg-[var(--iko-caution-soft)]',
+        border: 'border-[var(--iko-caution-line)]',
+        dot: 'bg-[var(--iko-caution)]',
+        ring: 'ring-[var(--iko-caution-line)]',
+        text: 'text-[var(--iko-caution-ink)]',
+    },
+    danger: {
+        bg: 'bg-[var(--iko-error-soft)]',
+        border: 'border-[var(--iko-error-line)]',
+        dot: 'bg-[var(--iko-error)]',
+        ring: 'ring-[var(--iko-error-line)]',
+        text: 'text-[var(--iko-error-ink)]',
+    },
+    neutral: {
+        bg: 'bg-[var(--iko-stone-surface)]',
+        border: 'border-[var(--iko-stone-hairline)]',
+        dot: 'bg-[var(--iko-stone-mid)]',
+        ring: 'ring-[var(--iko-stone-hairline)]',
+        text: 'text-[var(--iko-stone-whisper)]',
+    },
+};
 
 const CARRIER_TRACKING_URLS: Record<string, (id: string) => string> = {
     dhl: (id) =>
@@ -104,7 +148,9 @@ export default function OrderShow() {
                 <StatusPill status={order.status} />
             </div>
 
-            <div className="mt-10 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_22rem]">
+            <OrderFacts order={order} />
+
+            <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_22rem]">
                 <div className="flex flex-col gap-12">
                     <OrderItemsBlock order={order} />
                     <OrderTimeline order={order} />
@@ -119,30 +165,100 @@ export default function OrderShow() {
     );
 }
 
+function orderToneFor(status: string): Tone {
+    if (status === 'cancelled') {
+        return 'danger';
+    }
+
+    if (status === 'payment_pending') {
+        return 'warning';
+    }
+
+    if (STATUS_ORDER.includes(status)) {
+        return 'success';
+    }
+
+    return 'neutral';
+}
+
+function paymentToneFor(status: string): Tone {
+    if (status === 'completed') {
+        return 'success';
+    }
+
+    if (status === 'pending') {
+        return 'warning';
+    }
+
+    if (status === 'failed' || status === 'cancelled') {
+        return 'danger';
+    }
+
+    return 'neutral';
+}
+
 function StatusPill({ status }: { status: string }) {
-    const tone =
-        status === 'delivered'
-            ? 'success'
-            : status === 'cancelled' || status === 'payment_pending'
-            ? 'alert'
-            : 'neutral';
+    const styles = TONE_STYLES[orderToneFor(status)];
 
     return (
-        <span className="inline-flex items-baseline gap-2">
-            <span
-                aria-hidden="true"
-                className={`inline-block h-1.5 w-1.5 rounded-full ${
-                    tone === 'success'
-                        ? 'bg-[var(--iko-accent)]'
-                        : tone === 'alert'
-                        ? 'bg-[var(--iko-error)]'
-                        : 'bg-[var(--iko-stone-mid)]'
-                }`}
-            />
-            <span className="font-spec text-[12px] tracking-[0.04em] text-[var(--iko-stone-ink)] uppercase">
+        <span
+            className={`inline-flex items-center gap-2 border px-3 py-1.5 ${styles.bg} ${styles.border}`}
+        >
+            <span aria-hidden="true" className={`inline-block h-1.5 w-1.5 rounded-full ${styles.dot}`} />
+            <span className={`font-spec text-[12px] tracking-[0.04em] uppercase ${styles.text}`}>
                 {statusLabels[status] ?? status}
             </span>
         </span>
+    );
+}
+
+function OrderFacts({ order }: { order: Order }) {
+    const paymentTone = paymentToneFor(order.payment_status);
+    const paymentStyles = TONE_STYLES[paymentTone];
+
+    return (
+        <dl
+            aria-label="Resumen operativo del pedido"
+            className="mt-6 grid grid-cols-1 divide-y divide-[var(--iko-stone-hairline)] border-y border-[var(--iko-stone-hairline)] sm:grid-cols-3 sm:divide-x sm:divide-y-0"
+        >
+            <OrderFact label="Total">
+                <span className="font-spec text-[1rem] tabular-nums text-[var(--iko-stone-ink)]">
+                    {formatCurrency(order.total_amount)}
+                </span>
+            </OrderFact>
+            <OrderFact label="Pago">
+                <span
+                    className={`inline-flex items-center gap-2 border px-2.5 py-1 ${paymentStyles.bg} ${paymentStyles.border}`}
+                >
+                    <span aria-hidden="true" className={`inline-block h-1.5 w-1.5 rounded-full ${paymentStyles.dot}`} />
+                    <span className={`font-spec text-[11px] tracking-[0.04em] uppercase ${paymentStyles.text}`}>
+                        {PAYMENT_STATUS_LABELS[order.payment_status] ?? order.payment_status}
+                    </span>
+                </span>
+            </OrderFact>
+            <OrderFact label="Seguimiento">
+                {order.tracking_number ? (
+                    <span className="font-spec text-[12px] tabular-nums tracking-[0.02em] text-[var(--iko-stone-ink)]">
+                        {order.shipping_carrier ?? 'Guía'} · {order.tracking_number}
+                    </span>
+                ) : (
+                    <span className="text-[13px] text-[var(--iko-stone-whisper)]">
+                        Pendiente de envío
+                    </span>
+                )}
+            </OrderFact>
+        </dl>
+    );
+}
+
+function OrderFact({ label, children }: { label: string; children: ReactNode }) {
+    return (
+        <div className="flex min-h-24 flex-col justify-between gap-4 px-1 py-4 sm:px-5">
+            <dt className="font-spec text-[11px] tracking-[0.08em] text-[var(--iko-stone-whisper)] uppercase">
+                {label}
+            </dt>
+            <dd>{children}</dd>
+        </div>
     );
 }
 
@@ -283,11 +399,11 @@ function OrderTimeline({ order }: { order: Order }) {
             </div>
 
             {isCancelled ? (
-                <div className="mt-6 border border-[var(--iko-error)]/40 bg-[var(--iko-error)]/5 px-5 py-4">
-                    <p className="font-spec text-[11px] tracking-[0.08em] text-[var(--iko-error)] uppercase">
+                <div className="mt-6 border border-[var(--iko-error-line)] bg-[var(--iko-error-soft)] px-5 py-4">
+                    <p className="font-spec text-[11px] tracking-[0.08em] text-[var(--iko-error-ink)] uppercase">
                         Pedido cancelado
                     </p>
-                    <p className="mt-1 text-[13px] leading-[1.55] text-[var(--iko-error)]">
+                    <p className="mt-1 text-[13px] leading-[1.55] text-[var(--iko-error-ink)]">
                         Este pedido fue cancelado y no se procesará. Si crees que es un error, contacta
                         al equipo comercial.
                     </p>
@@ -314,19 +430,24 @@ function TimelineRow({
     step: { status: string; label: string; isCompleted: boolean; isCurrent: boolean; date: string | null };
     index: number;
 }) {
-    const tone = step.isCompleted
-        ? 'completed'
-        : step.isCurrent
+    const tone = step.isCurrent
         ? 'current'
+        : step.isCompleted
+        ? 'completed'
         : 'pending';
+    const styles = TONE_STYLES[tone === 'pending' ? 'neutral' : orderToneFor(step.status)];
 
     return (
-        <li className="grid grid-cols-[3rem_1fr_auto] items-center gap-4 border-t border-[var(--iko-stone-hairline)] py-4 first:border-t-0 sm:gap-6">
+        <li
+            className={`grid grid-cols-[3rem_1fr_auto] items-center gap-4 border-t border-[var(--iko-stone-hairline)] px-4 py-4 first:border-t-0 sm:gap-6 ${
+                tone === 'current' ? `${styles.bg} ring-1 ring-inset ${styles.ring}` : ''
+            }`}
+        >
             <span
-                className={`font-spec text-[11px] tabular-nums ${
+                className={`flex h-7 w-7 items-center justify-center border font-spec text-[11px] tabular-nums ${
                     tone === 'completed' || tone === 'current'
-                        ? 'text-[var(--iko-accent)]'
-                        : 'text-[var(--iko-stone-mid)]'
+                        ? `${styles.border} ${styles.text}`
+                        : 'border-[var(--iko-stone-hairline)] text-[var(--iko-stone-mid)]'
                 }`}
             >
                 {String(index).padStart(2, '0')}
@@ -340,7 +461,7 @@ function TimelineRow({
             >
                 {step.label}
                 {tone === 'current' && (
-                    <span className="ml-3 font-spec text-[10px] tracking-[0.08em] text-[var(--iko-accent)] uppercase">
+                    <span className={`ml-3 font-spec text-[10px] tracking-[0.08em] uppercase ${styles.text}`}>
                         · Actual
                     </span>
                 )}
@@ -372,9 +493,9 @@ function ActionsBlock({ orderId }: { orderId: number }) {
     }
 
     return (
-        <aside className="border border-[var(--iko-stone-hairline)]">
+        <aside className="border border-[var(--iko-stone-hairline)] bg-[var(--iko-stone-surface)]">
             <header className="border-b border-[var(--iko-stone-hairline)] px-5 py-4">
-                <span className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-accent)] uppercase">
+                <span className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-stone-whisper)] uppercase">
                     Acciones
                 </span>
             </header>
@@ -383,7 +504,7 @@ function ActionsBlock({ orderId }: { orderId: number }) {
                     type="button"
                     onClick={reorder}
                     disabled={reordering}
-                    className="flex h-12 w-full items-center justify-center gap-2 bg-[var(--iko-accent)] text-[14px] font-medium text-[var(--iko-accent-on)] hover:bg-[var(--iko-accent-hover)] disabled:opacity-60"
+                    className="flex h-12 w-full items-center justify-center gap-2 bg-[var(--iko-accent)] text-[14px] font-medium text-[var(--iko-accent-on)] hover:bg-[var(--iko-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-surface)] disabled:opacity-60"
                 >
                     <RefreshCw
                         className={`h-4 w-4 ${reordering ? 'animate-spin' : ''}`}
@@ -394,7 +515,7 @@ function ActionsBlock({ orderId }: { orderId: number }) {
                 <button
                     type="button"
                     onClick={downloadInvoice}
-                    className="flex h-12 w-full items-center justify-center gap-2 border border-[var(--iko-stone-hairline)] text-[14px] text-[var(--iko-stone-ink)] hover:border-[var(--iko-accent)] hover:text-[var(--iko-accent)]"
+                    className="flex h-12 w-full items-center justify-center gap-2 border border-[var(--iko-stone-hairline)] text-[14px] text-[var(--iko-stone-ink)] hover:border-[var(--iko-accent)] hover:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-surface)]"
                 >
                     <FileText className="h-4 w-4" strokeWidth={1.5} />
                     Descargar factura
@@ -409,9 +530,9 @@ function ShippingBlock({ order }: { order: Order }) {
         order.tracking_url ?? getCarrierTrackingUrl(order.shipping_carrier, order.tracking_number);
 
     return (
-        <aside className="border border-[var(--iko-stone-hairline)]">
+        <aside className="border border-[var(--iko-stone-hairline)] bg-[var(--iko-stone-surface)]">
             <header className="border-b border-[var(--iko-stone-hairline)] px-5 py-4">
-                <span className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-accent)] uppercase">
+                <span className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-stone-whisper)] uppercase">
                     Envío
                 </span>
             </header>

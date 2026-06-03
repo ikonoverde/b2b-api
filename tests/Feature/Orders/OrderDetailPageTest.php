@@ -28,6 +28,7 @@ it('displays order detail page with order data', function () {
     $order = Order::factory()->create([
         'user_id' => $user->id,
         'status' => 'delivered',
+        'payment_status' => 'completed',
         'total_amount' => 150.00,
         'shipping_cost' => 15.00,
         'tracking_number' => '123456789',
@@ -66,6 +67,7 @@ it('displays order detail page with order data', function () {
             ->has('order')
             ->where('order.id', $order->id)
             ->where('order.status', 'delivered')
+            ->where('order.payment_status', 'completed')
             ->where('order.tracking_number', '123456789')
             ->where('order.shipping_carrier', 'DHL')
             ->has('order.items', 1)
