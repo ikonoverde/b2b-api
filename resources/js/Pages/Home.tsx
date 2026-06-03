@@ -4,14 +4,6 @@ import PublicShell from '@/Layouts/PublicShell';
 import type { PageProps } from '@/types';
 import { formatCurrency } from '@/utils/currency';
 
-/**
- * Public home for Ikonoverde.
- *
- * Renders for both anonymous and authenticated visitors. Chrome (header,
- * footer, stone-paper surface, fonts) is owned by PublicShell, which adapts
- * the nav for the current auth state.
- */
-
 interface FeaturedProduct {
     id: number;
     slug: string;
@@ -26,9 +18,15 @@ export interface HomeProps extends PageProps {
     banners: BannerData[];
 }
 
+const VALUE_PROPS = [
+    { label: 'SIN MÍNIMO', value: 'Desde 1 unidad' },
+    { label: 'PRECIO CLARO', value: 'Visible para todos' },
+    { label: 'CUENTA OPCIONAL', value: 'Compra sin registrarte' },
+] as const;
+
 export default function Home({ featuredProducts, banners }: HomeProps) {
     return (
-        <PublicShell title="Ikonoverde — Cuidado corporal profesional">
+        <PublicShell title="Ikonoverde | Cuidado corporal profesional">
             <Hero />
             <ValuePropStrip />
             <FeaturedList products={featuredProducts} />
@@ -37,15 +35,6 @@ export default function Home({ featuredProducts, banners }: HomeProps) {
         </PublicShell>
     );
 }
-
-/* ─────────────────────────────────────────────────────────
- * Hero — full-bleed photographic section with a contained
- * specimen card. The image bleeds to both viewport edges;
- * a solid stone-paper card on the left holds the type, like
- * an exhibition label sitting on a poster. Mobile stacks
- * the image on top, card below — no overlay.
- * Accent underline lands on "sin condiciones".
- * ───────────────────────────────────────────────────────── */
 
 function Hero() {
     return (
@@ -61,8 +50,8 @@ function Hero() {
             />
 
             <div className="relative mx-auto max-w-[72rem] px-6 sm:flex sm:min-h-[clamp(34rem,80vh,46rem)] sm:items-center sm:px-10 lg:px-16">
-                <div className="border-t border-[var(--iko-stone-hairline)] bg-[var(--iko-stone-paper)] py-12 sm:max-w-[32rem] sm:border-b sm:px-10 lg:px-12 lg:py-14">
-                    <p className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-stone-whisper)] uppercase">
+                <div className="border-y border-[var(--iko-accent-line)] bg-[var(--iko-stone-surface)] py-12 sm:max-w-[32rem] sm:border sm:px-10 lg:px-12 lg:py-14">
+                    <p className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-accent-ink)] uppercase">
                         Ikonoverde · Cuidado corporal
                     </p>
 
@@ -82,16 +71,21 @@ function Hero() {
                         Formulado para spas, hoteles y uso personal. Sin pedido mínimo, sin cuenta obligatoria.
                     </p>
 
+                    <div className="mt-7 flex max-w-max items-center gap-3 border border-[var(--iko-accent-line)] bg-[var(--iko-accent-mist)] px-4 py-2 font-spec text-[11px] text-[var(--iko-accent-ink)] tracking-[0.04em] uppercase">
+                        <span aria-hidden="true" className="h-1.5 w-1.5 bg-[var(--iko-accent)]" />
+                        Precio visible para todos
+                    </div>
+
                     <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3">
                         <Link
                             href="/catalog"
-                            className="inline-flex items-center bg-[var(--iko-accent)] px-7 py-3.5 text-[14px] font-medium text-[var(--iko-accent-on)] tracking-[0.01em] hover:bg-[var(--iko-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] transition-colors"
+                            className="inline-flex items-center bg-[var(--iko-accent)] px-7 py-3.5 text-[14px] font-medium text-[var(--iko-accent-on)] tracking-[0.01em] transition-colors hover:bg-[var(--iko-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)]"
                         >
                             Ver el catálogo
                         </Link>
                         <Link
                             href="/register"
-                            className="group inline-flex items-baseline gap-2 text-[14px] font-medium text-[var(--iko-stone-ink)] hover:text-[var(--iko-accent)] focus-visible:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] rounded-sm transition-colors"
+                            className="group inline-flex items-baseline gap-2 rounded-sm text-[14px] font-medium text-[var(--iko-stone-ink)] transition-colors hover:text-[var(--iko-accent)] focus-visible:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)]"
                         >
                             Crear cuenta
                             <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
@@ -105,29 +99,22 @@ function Hero() {
     );
 }
 
-/* ─────────────────────────────────────────────────────────
- * Value-prop strip — mono labels + serif values, hairline-separated.
- * Each entry maps to a "no artificial gates" principle from PRODUCT.md.
- * ───────────────────────────────────────────────────────── */
-
-const VALUE_PROPS = [
-    { label: 'SIN MÍNIMO', value: 'Desde 1 unidad' },
-    { label: 'PRECIO CLARO', value: 'Visible para todos' },
-    { label: 'CUENTA OPCIONAL', value: 'Compra sin registrarte' },
-] as const;
-
 function ValuePropStrip() {
     return (
         <section
             aria-label="Términos comerciales"
-            className="grid grid-cols-1 border-y border-[var(--iko-stone-hairline)] py-10 sm:grid-cols-3 sm:divide-x sm:divide-[var(--iko-stone-hairline)]"
+            className="grid grid-cols-1 border-y border-[var(--iko-accent-line)] bg-[var(--iko-stone-surface)] py-10 sm:grid-cols-3 sm:divide-x sm:divide-[var(--iko-accent-line)]"
         >
-            {VALUE_PROPS.map((item) => (
-                <div key={item.label} className="flex flex-col gap-2 px-0 py-3 sm:px-8 sm:first:pl-0 sm:last:pr-0">
-                    <span className="font-spec text-[11px] tracking-[0.08em] text-[var(--iko-stone-whisper)] uppercase">
-                        {item.label}
+            {VALUE_PROPS.map((item, idx) => (
+                <div key={item.label} className="flex flex-col gap-2 px-8 py-3">
+                    <span className="font-spec text-[11px] tracking-[0.08em] text-[var(--iko-accent-ink)] uppercase">
+                        {String(idx + 1).padStart(2, '0')} · {item.label}
                     </span>
-                    <span className="font-display text-[1.5rem] leading-tight text-[var(--iko-stone-ink)]">
+                    <span
+                        className={`font-display text-[1.5rem] leading-tight ${
+                            idx === 0 ? 'text-[var(--iko-accent-ink)]' : 'text-[var(--iko-stone-ink)]'
+                        }`}
+                    >
                         {item.value}
                     </span>
                 </div>
@@ -135,12 +122,6 @@ function ValuePropStrip() {
         </section>
     );
 }
-
-/* ─────────────────────────────────────────────────────────
- * Featured products — spec-sheet list, NOT a card grid.
- * Numbered rows: mono index · serif name · sans category · mono price.
- * Prices are public per PRODUCT.md — no login gate, no lock affordance.
- * ───────────────────────────────────────────────────────── */
 
 function FeaturedList({ products }: { products: FeaturedProduct[] }) {
     if (products.length === 0) {
@@ -164,14 +145,14 @@ function FeaturedList({ products }: { products: FeaturedProduct[] }) {
         <section aria-labelledby="featured-heading" className="py-20">
             <SectionHeader index="01" eyebrow="Catálogo" title="Productos destacados" headingId="featured-heading" />
 
-            <ol className="mt-10 border-t border-[var(--iko-stone-hairline)]">
+            <ol className="mt-10 border-t border-[var(--iko-accent-line)]">
                 {products.map((product, idx) => (
                     <li key={product.id}>
                         <Link
                             href={`/products/${product.slug}`}
                             className="group grid grid-cols-[3.5rem_1fr_auto] items-center gap-6 border-b border-[var(--iko-stone-hairline)] py-6 transition-colors hover:bg-[var(--iko-accent-soft)] focus-visible:bg-[var(--iko-accent-soft)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-inset sm:grid-cols-[3.5rem_5rem_1fr_auto]"
                         >
-                            <span className="font-spec text-[12px] tabular-nums text-[var(--iko-accent)]">
+                            <span className="font-spec text-[12px] tabular-nums text-[var(--iko-accent-ink)]">
                                 {String(idx + 1).padStart(2, '0')}
                             </span>
 
@@ -186,8 +167,8 @@ function FeaturedList({ products }: { products: FeaturedProduct[] }) {
                                 ) : null}
                             </span>
 
-                            <span className="flex flex-col gap-1 min-w-0">
-                                <span className="font-display text-[1.25rem] leading-tight text-[var(--iko-stone-ink)] truncate">
+                            <span className="flex min-w-0 flex-col gap-1">
+                                <span className="truncate font-display text-[1.25rem] leading-tight text-[var(--iko-stone-ink)]">
                                     {product.name}
                                 </span>
                                 {product.category && (
@@ -197,7 +178,7 @@ function FeaturedList({ products }: { products: FeaturedProduct[] }) {
                                 )}
                             </span>
 
-                            <span className="font-spec text-[15px] tabular-nums text-[var(--iko-stone-ink)]">
+                            <span className="border border-[var(--iko-accent-line)] bg-[var(--iko-accent-mist)] px-3 py-1.5 font-spec text-[14px] tabular-nums text-[var(--iko-accent-ink)] transition-colors group-hover:border-[var(--iko-accent)]">
                                 {formatCurrency(product.price)}
                             </span>
                         </Link>
@@ -207,10 +188,6 @@ function FeaturedList({ products }: { products: FeaturedProduct[] }) {
         </section>
     );
 }
-
-/* ─────────────────────────────────────────────────────────
- * Banners — only when present, restyled to system.
- * ───────────────────────────────────────────────────────── */
 
 function BannersBlock({ banners }: { banners: BannerData[] }) {
     if (banners.length === 0) {
@@ -222,7 +199,7 @@ function BannersBlock({ banners }: { banners: BannerData[] }) {
             <SectionHeader index="02" eyebrow="Avisos" title="Novedades" headingId="banners-heading" />
 
             <div
-                className={`mt-10 grid gap-px bg-[var(--iko-stone-hairline)] ${
+                className={`mt-10 grid gap-px bg-[var(--iko-accent-line)] ${
                     banners.length > 1 ? 'sm:grid-cols-2' : ''
                 }`}
             >
@@ -236,15 +213,15 @@ function BannersBlock({ banners }: { banners: BannerData[] }) {
 
 function BannerRow({ banner }: { banner: BannerData }) {
     const inner = (
-        <div className="flex h-full flex-col gap-3 bg-[var(--iko-stone-paper)] p-8">
-            <span className="font-display text-[1.5rem] leading-tight text-[var(--iko-stone-ink)]">
+        <div className="flex h-full flex-col gap-3 bg-[var(--iko-accent-mist)] p-8 text-[var(--iko-accent-ink)]">
+            <span className="font-display text-[1.5rem] leading-tight text-[var(--iko-accent-ink)]">
                 {banner.title}
             </span>
             {banner.subtitle && (
-                <span className="text-[14px] leading-[1.55] text-[var(--iko-stone-ink)]/75">{banner.subtitle}</span>
+                <span className="text-[14px] leading-[1.55] text-[var(--iko-accent-ink)]/80">{banner.subtitle}</span>
             )}
             {banner.link_text && (
-                <span className="mt-2 inline-flex items-baseline gap-2 font-spec text-[12px] tracking-[0.04em] text-[var(--iko-accent)] uppercase">
+                <span className="mt-2 inline-flex items-baseline gap-2 font-spec text-[12px] tracking-[0.04em] text-[var(--iko-accent-ink)] uppercase">
                     {banner.link_text}
                     <span aria-hidden="true">→</span>
                 </span>
@@ -257,6 +234,7 @@ function BannerRow({ banner }: { banner: BannerData }) {
         const external = banner.link_type === 'url';
         const linkClass =
             'block transition-colors hover:bg-[var(--iko-accent-soft)] focus-visible:bg-[var(--iko-accent-soft)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-inset';
+
         if (external) {
             return (
                 <a href={href} target="_blank" rel="noopener noreferrer" className={linkClass}>
@@ -264,12 +242,14 @@ function BannerRow({ banner }: { banner: BannerData }) {
                 </a>
             );
         }
+
         return (
             <Link href={href} className={linkClass}>
                 {inner}
             </Link>
         );
     }
+
     return inner;
 }
 
@@ -277,27 +257,26 @@ function bannerHref(banner: BannerData): string | null {
     if (!banner.link_type || !banner.link_value) {
         return null;
     }
+
     if (banner.link_type === 'url') {
         return banner.link_value;
     }
+
     if (banner.link_type === 'product') {
         return `/products/${banner.link_value}`;
     }
+
     return `/catalog?category_id=${banner.link_value}`;
 }
 
-/* ─────────────────────────────────────────────────────────
- * Footer hand-off — final reinforcement of the one-track buying premise.
- * ───────────────────────────────────────────────────────── */
-
 function SecondaryHandoff() {
     return (
-        <section className="border-t border-[var(--iko-stone-hairline)] py-16">
-            <p className="text-[15px] leading-[1.55] text-[var(--iko-stone-whisper)]">
+        <section className="border border-[var(--iko-accent-line)] bg-[var(--iko-accent-mist)] px-6 py-10 sm:px-8">
+            <p className="max-w-[68ch] text-[15px] leading-[1.6] text-[var(--iko-accent-ink)]">
                 Cuidado corporal profesional hecho en México para spas, hoteles y salas de masaje.{' '}
                 <Link
                     href="/catalog"
-                    className="text-[var(--iko-stone-ink)] underline decoration-[var(--iko-stone-mid)] underline-offset-4 transition-colors hover:text-[var(--iko-accent)] hover:decoration-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)] rounded-sm"
+                    className="rounded-sm text-[var(--iko-accent-ink)] underline decoration-[var(--iko-accent-line)] underline-offset-4 transition-colors hover:text-[var(--iko-accent-hover)] hover:decoration-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-accent-mist)]"
                 >
                     Explorar productos →
                 </Link>
@@ -305,10 +284,6 @@ function SecondaryHandoff() {
         </section>
     );
 }
-
-/* ─────────────────────────────────────────────────────────
- * Section header — shared spec-sheet treatment.
- * ───────────────────────────────────────────────────────── */
 
 function SectionHeader({
     index,
@@ -322,15 +297,15 @@ function SectionHeader({
     headingId?: string;
 }) {
     return (
-        <div className="flex items-baseline gap-6 border-b border-[var(--iko-stone-hairline)] pb-4">
-            <span className="font-spec text-[11px] tabular-nums tracking-[0.04em] text-[var(--iko-accent)]">
+        <div className="flex items-baseline gap-6 border-b border-[var(--iko-accent-line)] pb-4">
+            <span className="font-spec text-[11px] tabular-nums tracking-[0.04em] text-[var(--iko-accent-ink)]">
                 {index}
             </span>
             <div className="flex flex-1 items-baseline justify-between gap-6">
                 <h2 id={headingId} className="font-display text-[1.875rem] leading-tight text-[var(--iko-stone-ink)]">
                     {title}
                 </h2>
-                <span className="font-spec text-[11px] tracking-[0.08em] text-[var(--iko-accent)] uppercase">
+                <span className="font-spec text-[11px] tracking-[0.08em] text-[var(--iko-accent-ink)] uppercase">
                     {eyebrow}
                 </span>
             </div>

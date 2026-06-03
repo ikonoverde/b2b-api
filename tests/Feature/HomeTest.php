@@ -30,6 +30,22 @@ it('shows the homepage footer handoff copy', function () {
         ->toContain('Explorar productos →');
 });
 
+it('keeps the homepage purchase path colorized with Ikonoverde tokens', function () {
+    $homePage = file_get_contents(resource_path('js/Pages/Home.tsx'));
+    $cssSource = file_get_contents(resource_path('css/app.css'));
+
+    expect($homePage)
+        ->toContain('Precio visible para todos')
+        ->toContain('bg-[var(--iko-accent-mist)]')
+        ->toContain('border-[var(--iko-accent-line)]')
+        ->toContain('text-[var(--iko-accent-ink)]')
+        ->and($cssSource)
+        ->toContain('--iko-accent-mist: oklch(')
+        ->toContain('--iko-accent-line: oklch(')
+        ->toContain('--iko-accent-ink: oklch(')
+        ->not->toContain('--iko-accent-mist: #');
+});
+
 it('passes featured products to the home page', function () {
     Product::factory(3)->create(['is_active' => true, 'is_featured' => true]);
     Product::factory(2)->create(['is_active' => false]);
