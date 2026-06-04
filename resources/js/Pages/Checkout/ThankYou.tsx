@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react';
 import CustomerShell from '@/Layouts/CustomerShell';
 import CheckoutStepIndicator from '@/Components/CheckoutStepIndicator';
 import OrderSummary from '@/Components/OrderSummary';
+import { formatCurrency } from '@/utils/currency';
 
 interface OrderItem {
     id: number;
@@ -25,28 +26,112 @@ interface ThankYouProps {
     };
 }
 
+type Tone = 'success' | 'warning' | 'danger' | 'neutral';
+
+const PAYMENT_STATUS_LABELS: Record<string, string> = {
+    pending: 'Pago pendiente',
+    completed: 'Pago confirmado',
+    failed: 'Pago fallido',
+    refunded: 'Reembolsado',
+    partially_refunded: 'Reembolso parcial',
+};
+
+const TONE_STYLES: Record<Tone, { bg: string; border: string; dot: string; text: string }> = {
+    success: {
+        bg: 'bg-[var(--iko-accent-mist)]',
+        border: 'border-[var(--iko-accent-line)]',
+        dot: 'bg-[var(--iko-accent)]',
+        text: 'text-[var(--iko-accent-ink)]',
+    },
+    warning: {
+        bg: 'bg-[var(--iko-caution-soft)]',
+        border: 'border-[var(--iko-caution-line)]',
+        dot: 'bg-[var(--iko-caution)]',
+        text: 'text-[var(--iko-caution-ink)]',
+    },
+    danger: {
+        bg: 'bg-[var(--iko-error-soft)]',
+        border: 'border-[var(--iko-error-line)]',
+        dot: 'bg-[var(--iko-error)]',
+        text: 'text-[var(--iko-error-ink)]',
+    },
+    neutral: {
+        bg: 'bg-[var(--iko-stone-surface)]',
+        border: 'border-[var(--iko-stone-hairline)]',
+        dot: 'bg-[var(--iko-stone-mid)]',
+        text: 'text-[var(--iko-stone-whisper)]',
+    },
+};
+
+function paymentToneFor(status: string): Tone {
+    if (status === 'completed') {
+        return 'success';
+    }
+
+    if (status === 'pending') {
+        return 'warning';
+    }
+
+    if (status === 'failed' || status === 'cancelled') {
+        return 'danger';
+    }
+
+    return 'neutral';
+}
+
+function headerCopyFor(status: string): { eyebrow: string; title: string; body: string } {
+    if (status === 'pending') {
+        return {
+            eyebrow: 'Compra · Procesando',
+            title: 'Procesando tu pago',
+            body: 'Tu pago está siendo confirmado. Te notificaremos cuando se complete y aparecerá en tu historial de pedidos.',
+        };
+    }
+
+    if (status === 'failed' || status === 'cancelled') {
+        return {
+            eyebrow: 'Compra · Revisión',
+            title: 'Pago en revisión',
+            body: 'No pudimos confirmar el pago todavía. Conservamos el pedido para que puedas revisarlo o intentar nuevamente.',
+        };
+    }
+
+    return {
+        eyebrow: 'Compra · Confirmada',
+        title: 'Pedido confirmado',
+        body: 'Hemos recibido tu pedido. Te enviaremos los siguientes pasos por correo electrónico junto con la información de seguimiento.',
+    };
+}
+
 export default function ThankYou({ order }: ThankYouProps) {
-    const isProcessing = order.payment_status === 'pending';
+    const headerCopy = headerCopyFor(order.payment_status);
+    const paymentTone = paymentToneFor(order.payment_status);
+    const paymentStyles = TONE_STYLES[paymentTone];
+    const orderCode = String(order.id).padStart(5, '0');
 
     return (
-        <CustomerShell title={isProcessing ? 'Procesando · Compra' : 'Pedido confirmado'}>
+        <CustomerShell title={headerCopy.title}>
             <header className="flex flex-col gap-3">
-                <span className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-accent)] uppercase">
-                    {isProcessing ? 'Compra · Procesando' : 'Compra · Confirmada'}
+                <span className={`font-spec text-[11px] tracking-[0.12em] uppercase ${paymentStyles.text}`}>
+                    {headerCopy.eyebrow}
                 </span>
                 <h1 className="font-display text-[clamp(2rem,4vw,2.75rem)] leading-[1.05] tracking-[-0.015em] text-[var(--iko-stone-ink)]">
-                    {isProcessing ? 'Procesando tu pago' : 'Pedido confirmado'}
+                    {headerCopy.title}
                 </h1>
                 <p className="max-w-[58ch] text-[15px] leading-[1.55] text-[var(--iko-stone-ink)]/75">
-                    {isProcessing
-                        ? 'Tu pago está siendo confirmado. Te notificaremos cuando se complete y aparecerá en tu historial de pedidos.'
-                        : 'Hemos recibido tu pedido. Te enviaremos los siguientes pasos por correo electrónico junto con la información de seguimiento.'}
+                    {headerCopy.body}
                 </p>
             </header>
 
             <div className="mt-10">
                 <CheckoutStepIndicator currentStep={3} />
             </div>
+
+            <PaymentStatusPanel
+                order={order}
+                orderCode={orderCode}
+                paymentStyles={paymentStyles}
+            />
 
             <section
                 aria-labelledby="order-detail-heading"
@@ -60,8 +145,8 @@ export default function ThankYou({ order }: ThankYouProps) {
                         >
                             Detalle del pedido
                         </h2>
-                        <span className="font-spec text-[12px] tabular-nums tracking-[0.04em] text-[var(--iko-accent)] uppercase">
-                            Pedido · {String(order.id).padStart(5, '0')}
+                        <span className="font-spec text-[12px] tabular-nums tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
+                            Pedido · {orderCode}
                         </span>
                     </div>
 
@@ -94,9 +179,76 @@ export default function ThankYou({ order }: ThankYouProps) {
                     </div>
                 </div>
 
-                <NextStepsPanel isProcessing={isProcessing} />
+                <NextStepsPanel paymentStatus={order.payment_status} paymentStyles={paymentStyles} />
             </section>
         </CustomerShell>
+    );
+}
+
+function PaymentStatusPanel({
+    order,
+    orderCode,
+    paymentStyles,
+}: {
+    order: ThankYouProps['order'];
+    orderCode: string;
+    paymentStyles: (typeof TONE_STYLES)[Tone];
+}) {
+    const statusLabel = PAYMENT_STATUS_LABELS[order.payment_status] ?? order.payment_status;
+
+    return (
+        <section
+            aria-label="Estado del pago"
+            aria-live={order.payment_status === 'pending' ? 'polite' : 'off'}
+            className={`mt-8 grid gap-5 border px-5 py-5 sm:grid-cols-[1fr_auto] sm:items-center ${paymentStyles.bg} ${paymentStyles.border}`}
+        >
+            <div className="flex flex-col gap-2">
+                <span className={`font-spec text-[11px] tracking-[0.1em] uppercase ${paymentStyles.text}`}>
+                    Estado de la compra
+                </span>
+                <div className="flex flex-wrap items-center gap-3">
+                    <PaymentStatusPill statusLabel={statusLabel} paymentStyles={paymentStyles} />
+                    <span className="font-spec text-[12px] tabular-nums tracking-[0.04em] text-[var(--iko-stone-whisper)] uppercase">
+                        Pedido · {orderCode}
+                    </span>
+                </div>
+            </div>
+
+            <dl className="grid grid-cols-2 gap-x-7 gap-y-3 sm:min-w-72">
+                <StatusFact label="Total" value={formatCurrency(order.total_amount)} />
+                <StatusFact label="Productos" value={String(order.items.length).padStart(2, '0')} />
+            </dl>
+        </section>
+    );
+}
+
+function PaymentStatusPill({
+    statusLabel,
+    paymentStyles,
+}: {
+    statusLabel: string;
+    paymentStyles: (typeof TONE_STYLES)[Tone];
+}) {
+    return (
+        <span className={`inline-flex items-center gap-2 border px-3 py-1.5 ${paymentStyles.bg} ${paymentStyles.border}`}>
+            <span aria-hidden="true" className={`inline-block h-1.5 w-1.5 rounded-full ${paymentStyles.dot}`} />
+            <span className={`font-spec text-[12px] tracking-[0.04em] uppercase ${paymentStyles.text}`}>
+                {statusLabel}
+            </span>
+        </span>
+    );
+}
+
+function StatusFact({ label, value }: { label: string; value: string }) {
+    return (
+        <div className="flex flex-col gap-1">
+            <dt className="font-spec text-[10px] tracking-[0.08em] text-[var(--iko-stone-whisper)] uppercase">
+                {label}
+            </dt>
+            <dd className="font-spec text-[14px] tabular-nums text-[var(--iko-stone-ink)]">
+                {value}
+            </dd>
+        </div>
     );
 }
 
@@ -126,12 +278,24 @@ function ShippingAddressBlock({ address }: { address: Record<string, string> }) 
     );
 }
 
-function NextStepsPanel({ isProcessing }: { isProcessing: boolean }) {
-    const steps = isProcessing
+function NextStepsPanel({
+    paymentStatus,
+    paymentStyles,
+}: {
+    paymentStatus: string;
+    paymentStyles: (typeof TONE_STYLES)[Tone];
+}) {
+    const steps = paymentStatus === 'pending'
         ? [
               { eyebrow: '01', title: 'Confirmación', body: 'Confirmaremos el pago en los próximos minutos.' },
               { eyebrow: '02', title: 'Notificación', body: 'Recibirás un correo con el detalle final del pedido.' },
               { eyebrow: '03', title: 'Envío', body: 'Coordinaremos el envío al confirmar el pago.' },
+          ]
+        : paymentStatus === 'failed' || paymentStatus === 'cancelled'
+        ? [
+              { eyebrow: '01', title: 'Revisión', body: 'Revisa el estado del pedido antes de intentar otro pago.' },
+              { eyebrow: '02', title: 'Nuevo intento', body: 'Puedes volver al pedido y completar el pago cuando lo necesites.' },
+              { eyebrow: '03', title: 'Soporte', body: 'Contáctanos si el cargo aparece en tu banco.' },
           ]
         : [
               { eyebrow: '01', title: 'Preparación', body: 'Preparamos tu pedido en las próximas 24 horas hábiles.' },
@@ -142,7 +306,7 @@ function NextStepsPanel({ isProcessing }: { isProcessing: boolean }) {
     return (
         <aside className="border border-[var(--iko-stone-hairline)] lg:sticky lg:top-24">
             <header className="border-b border-[var(--iko-stone-hairline)] px-5 py-4">
-                <span className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-accent)] uppercase">
+                <span className={`font-spec text-[11px] tracking-[0.12em] uppercase ${paymentStyles.text}`}>
                     Próximos pasos
                 </span>
             </header>
@@ -152,7 +316,7 @@ function NextStepsPanel({ isProcessing }: { isProcessing: boolean }) {
                         key={step.eyebrow}
                         className="grid grid-cols-[2rem_1fr] gap-4 px-5 py-4"
                     >
-                        <span className="font-spec text-[11px] tabular-nums text-[var(--iko-accent)]">
+                        <span className={`font-spec text-[11px] tabular-nums ${paymentStyles.text}`}>
                             {step.eyebrow}
                         </span>
                         <span className="flex flex-col gap-1">

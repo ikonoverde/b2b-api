@@ -30,6 +30,7 @@ it('shows confirmation for users order', function () {
             ->component('Checkout/ThankYou')
             ->has('order')
             ->where('order.id', $order->id)
+            ->where('order.payment_status', 'completed')
         );
 });
 
@@ -46,5 +47,21 @@ it('shows processing status for pending payment', function () {
         ->assertInertia(fn ($page) => $page
             ->component('Checkout/ThankYou')
             ->where('order.payment_status', 'pending')
+        );
+});
+
+it('shows failed payment status for users order', function () {
+    $user = User::factory()->create();
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'payment_pending',
+        'payment_status' => 'failed',
+    ]);
+
+    $this->actingAs($user)->get("/checkout/thank-you?order={$order->id}")
+        ->assertSuccessful()
+        ->assertInertia(fn ($page) => $page
+            ->component('Checkout/ThankYou')
+            ->where('order.payment_status', 'failed')
         );
 });
