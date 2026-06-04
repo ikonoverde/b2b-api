@@ -314,13 +314,27 @@ describe('Email Content', function () {
         $order = Order::factory()->create([
             'user_id' => $user->id,
             'status' => 'processing',
+            'total_amount' => 150.00,
+            'shipping_cost' => 10.00,
+        ]);
+        OrderItem::factory()->create([
+            'order_id' => $order->id,
+            'product_name' => 'Aceite de masaje',
+            'quantity' => 2,
+            'unit_price' => 70.00,
+            'subtotal' => 140.00,
         ]);
 
         $notification = new OrderStatusChanged($order, 'pending');
         $mailMessage = $notification->toMail($user);
+        $rendered = (string) $mailMessage->render();
 
         expect($mailMessage->subject)->toContain('Actualización de Estado');
         expect($mailMessage->subject)->toContain((string) $order->id);
+        expect($rendered)->toContain('Estado actualizado');
+        expect($rendered)->toContain('El estado de tu pedido cambió de Pendiente a En Procesamiento');
+        expect($rendered)->toContain('Aceite de masaje');
+        expect($rendered)->toContain('Ver pedido');
     });
 
     it('status change email includes tracking info when provided', function () {
@@ -328,6 +342,15 @@ describe('Email Content', function () {
         $order = Order::factory()->create([
             'user_id' => $user->id,
             'status' => 'shipped',
+            'total_amount' => 50.00,
+            'shipping_cost' => 0.00,
+        ]);
+        OrderItem::factory()->create([
+            'order_id' => $order->id,
+            'product_name' => 'Aceite profesional',
+            'quantity' => 1,
+            'unit_price' => 50.00,
+            'subtotal' => 50.00,
         ]);
 
         $notification = new OrderStatusChanged(
@@ -338,8 +361,13 @@ describe('Email Content', function () {
             'https://www.dhl.com/track?id=1234567890'
         );
         $mailMessage = $notification->toMail($user);
+        $rendered = (string) $mailMessage->render();
 
         expect($mailMessage->subject)->toContain('Actualización de Estado');
+        expect($rendered)->toContain('Datos de envío');
+        expect($rendered)->toContain('1234567890');
+        expect($rendered)->toContain('DHL');
+        expect($rendered)->toContain('https://www.dhl.com/track?id=1234567890');
     });
 });
 
