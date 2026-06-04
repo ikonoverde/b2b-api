@@ -6,7 +6,7 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use OutscraperClient;
 
-class OutscraperService
+readonly class OutscraperService
 {
     public function __construct(private OutscraperClient $client) {}
 

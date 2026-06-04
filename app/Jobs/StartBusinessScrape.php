@@ -30,7 +30,7 @@ class StartBusinessScrape implements ShouldQueue
             queries: $queries,
             language: 'es',
             region: 'MX',
-            limit: 100,
+            limit: config('services.outscraper.limit', 500),
         );
 
         if (! $requestId) {
@@ -40,7 +40,7 @@ class StartBusinessScrape implements ShouldQueue
         $this->scrapeRun->markRunning($requestId);
 
         PollBusinessScrapeStatus::dispatch($this->scrapeRun)
-            ->delay(now()->addSeconds(30));
+            ->delay(30);
     }
 
     public function failed(\Throwable $e): void

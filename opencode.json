@@ -27,5 +27,6 @@
             "url": "https://mcp.linear.app/mcp",
             "enabled": true
         }
-    }
+    },
+    "lsp": true
 }

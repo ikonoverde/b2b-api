@@ -55,6 +55,7 @@ return [
 
     'outscraper' => [
         'api_key' => env('OUTSCRAPER_API_KEY'),
+        'limit' => env('OUTSCRAPER_LIMIT_LIMIT', 500),
     ],
 
 ];

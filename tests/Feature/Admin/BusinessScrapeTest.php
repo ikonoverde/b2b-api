@@ -1,8 +1,10 @@
 <?php
 
+use App\Jobs\PollBusinessScrapeStatus;
 use App\Jobs\StartBusinessScrape;
 use App\Models\BusinessScrapeRun;
 use App\Models\User;
+use App\Services\OutscraperService;
 use Illuminate\Support\Facades\Queue;
 
 test('admin can view businesses index page', function () {
@@ -35,6 +37,29 @@ test('admin can trigger a business scrape', function () {
     ]);
 
     Queue::assertPushed(StartBusinessScrape::class);
+});
+
+test('start business scrape schedules status polling after request starts', function () {
+    Queue::fake();
+
+    $scrapeRun = BusinessScrapeRun::factory()->create();
+
+    $outscraper = Mockery::mock(OutscraperService::class);
+    $outscraper->shouldReceive('startSearch')
+        ->once()
+        ->andReturn('request-123');
+
+    (new StartBusinessScrape($scrapeRun))->handle($outscraper);
+
+    expect($scrapeRun->fresh())
+        ->status->toBe('running')
+        ->outscraper_request_id->toBe('request-123');
+
+    Queue::assertPushed(
+        PollBusinessScrapeStatus::class,
+        fn (PollBusinessScrapeStatus $job): bool => $job->delay === 30
+            && $job->scrapeRun->is($scrapeRun),
+    );
 });
 
 test('cannot trigger scrape while one is active', function () {
