@@ -8,6 +8,8 @@ use App\Services\OutscraperService;
 use function Pest\Laravel\mock;
 
 test('import creates new businesses from outscraper items', function () {
+    $googleMapsUrl = 'https://www.google.com/maps/place/Casa+Spa+Masajes+Relajantes+y+Terap%C3%A9uticos+M%C3%A9rida/@21.0357251,-89.65155,14z/data=!4m8!1m2!2m1!1sCasa+Spa+Masajes+Relajantes+y+Terap%C3%A9uticos+M%C3%A9rida!3m4!1s0x8f56755d22a44a3b:0x3635b6f6f8a20ed7!8m2!3d21.0357251!4d-89.65155';
+
     $scrapeRun = BusinessScrapeRun::factory()->create([
         'outscraper_request_id' => 'req-123',
         'status' => 'collecting',
@@ -29,6 +31,7 @@ test('import creates new businesses from outscraper items', function () {
                     'country_code' => 'MX',
                     'phone' => '+529991234567',
                     'site' => 'https://spazen.com',
+                    'location_link' => $googleMapsUrl,
                     'rating' => 4.5,
                     'reviews' => 120,
                     'latitude' => 20.97,
@@ -60,6 +63,8 @@ test('import creates new businesses from outscraper items', function () {
     expect($first->name)->toBe('Spa Zen Merida');
     expect($first->category_name)->toBe('Spa');
     expect($first->website)->toBe('https://spazen.com');
+    expect(strlen($googleMapsUrl))->toBeGreaterThan(255);
+    expect($first->google_maps_url)->toBe($googleMapsUrl);
     expect((float) $first->rating)->toBe(4.50);
     expect($first->is_claimed)->toBeTrue();
 
