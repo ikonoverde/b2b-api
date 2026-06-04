@@ -257,6 +257,15 @@ describe('Email Content', function () {
             'payment_intent_id' => 'pi_test_confirmed_123',
             'total_amount' => 150.00,
             'shipping_cost' => 10.00,
+            'shipping_address' => [
+                'name' => 'Cliente Confirmación',
+                'address_line_1' => 'Av. Siempre Viva 742',
+                'address_line_2' => 'Col. Centro',
+                'city' => 'Guadalajara',
+                'state' => 'Jalisco',
+                'postal_code' => '44100',
+                'phone' => '3312345678',
+            ],
         ]);
         OrderItem::factory()->create([
             'order_id' => $order->id,
@@ -276,6 +285,9 @@ describe('Email Content', function () {
         expect($rendered)->toContain('Hemos confirmado el pago');
         expect($rendered)->toContain('pi_test_confirmed_123');
         expect($rendered)->toContain('Test Product');
+        expect($rendered)->toContain('Dirección de envío');
+        expect($rendered)->toContain('Av. Siempre Viva 742');
+        expect($rendered)->toContain('Guadalajara, Jalisco');
         expect($rendered)->toContain('Total pagado');
     });
 
@@ -287,6 +299,13 @@ describe('Email Content', function () {
             'payment_intent_id' => 'pi_test_staff_render',
             'total_amount' => 250.00,
             'shipping_cost' => 50.00,
+            'shipping_address' => [
+                'street' => 'Calle Staff 123',
+                'city' => 'Monterrey',
+                'state' => 'Nuevo León',
+                'zip' => '64000',
+                'country' => 'México',
+            ],
         ]);
         OrderItem::factory()->create([
             'order_id' => $order->id,
@@ -306,6 +325,9 @@ describe('Email Content', function () {
         expect($rendered)->toContain('Nuevo pedido');
         expect($rendered)->toContain('Cliente Prueba');
         expect($rendered)->toContain('Aceite de masaje');
+        expect($rendered)->toContain('Dirección de envío');
+        expect($rendered)->toContain('Calle Staff 123');
+        expect($rendered)->toContain('64000, México');
         expect($rendered)->toContain('/admin/orders/'.$order->id);
     });
 
@@ -334,6 +356,7 @@ describe('Email Content', function () {
         expect($rendered)->toContain('Estado actualizado');
         expect($rendered)->toContain('El estado de tu pedido cambió de Pendiente a En Procesamiento');
         expect($rendered)->toContain('Aceite de masaje');
+        expect($rendered)->not->toContain('Dirección de envío');
         expect($rendered)->toContain('Ver pedido');
     });
 
@@ -344,6 +367,15 @@ describe('Email Content', function () {
             'status' => 'shipped',
             'total_amount' => 50.00,
             'shipping_cost' => 0.00,
+            'shipping_address' => [
+                'name' => 'Cliente Envío',
+                'address_line_1' => 'Camino al Huerto 88',
+                'address_line_2' => 'Bodega 4',
+                'city' => 'Zapopan',
+                'state' => 'Jalisco',
+                'postal_code' => '45010',
+                'phone' => '3311112222',
+            ],
         ]);
         OrderItem::factory()->create([
             'order_id' => $order->id,
@@ -368,6 +400,9 @@ describe('Email Content', function () {
         expect($rendered)->toContain('1234567890');
         expect($rendered)->toContain('DHL');
         expect($rendered)->toContain('https://www.dhl.com/track?id=1234567890');
+        expect($rendered)->toContain('Dirección de envío');
+        expect($rendered)->toContain('Camino al Huerto 88');
+        expect($rendered)->toContain('Zapopan, Jalisco');
     });
 });
 

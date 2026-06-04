@@ -216,6 +216,8 @@
                     </tr>
                     @endif
 
+                    @include('emails.orders.partials.shipping-address', ['order' => $order])
+
                     {{-- CTA --}}
                     <tr>
                         <td class="pad" style="padding:32px 40px 8px 40px;">

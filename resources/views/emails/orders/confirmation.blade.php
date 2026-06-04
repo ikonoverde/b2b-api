@@ -216,6 +216,8 @@
                     </tr>
                     @endif
 
+                    @include('emails.orders.partials.shipping-address', ['order' => $order])
+
                     {{-- Note --}}
                     <tr>
                         <td class="pad" style="padding:28px 40px 0 40px; font-family:{{ $sans }}; font-size:14px; line-height:1.55; color:#3a4a4b;">

@@ -166,6 +166,10 @@
                         </td>
                     </tr>
                     @endif
+
+                    @if($order->status === 'shipped')
+                        @include('emails.orders.partials.shipping-address', ['order' => $order])
+                    @endif
                     <tr>
                         <td class="pad" style="padding:28px 40px 0 40px; font-family:{{ $sans }}; font-size:11px; font-weight:500; letter-spacing:0.06em; color:#586767; text-transform:uppercase;">
                             Resumen del pedido
