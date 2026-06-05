@@ -26,6 +26,11 @@
             "type": "remote",
             "url": "https://mcp.linear.app/mcp",
             "enabled": true
+        },
+        "nightwatch": {
+            "type": "remote",
+            "url": "https://nightwatch.laravel.com/mcp",
+            "enabled": true
         }
     },
     "command": {

@@ -1,13 +1,13 @@
 {
     "agents": [
-        "claude_code",
         "opencode"
     ],
     "editors": [
-        "claude_code",
         "opencode"
     ],
     "guidelines": [
-        "laravel/ai"
+        "laravel/ai",
+        "inertiajs/inertia-laravel",
+        "lucianotonet/laravel-telescope-mcp"
     ]
 }

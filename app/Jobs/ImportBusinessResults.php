@@ -13,6 +13,8 @@ class ImportBusinessResults implements ShouldQueue
 {
     use Queueable;
 
+    private const MAX_IMAGE_URL_LENGTH = 255;
+
     public int $tries = 3;
 
     /** @var array<int, int> */
@@ -123,13 +125,28 @@ class ImportBusinessResults implements ShouldQueue
             'reviews_count' => $item['reviews'],
             'latitude' => $item['latitude'],
             'longitude' => $item['longitude'],
-            'image_url' => $item['photo'],
+            'image_url' => $this->normalizeImageUrl($item['photo']),
             'opening_hours' => $item['working_hours'],
             'additional_info' => $item['about'],
             'is_claimed' => (bool) $item['verified'],
             'is_advertisement' => false,
             'business_scrape_run_id' => $this->scrapeRun->id,
         ];
+    }
+
+    private function normalizeImageUrl(mixed $value): ?string
+    {
+        if (! is_string($value)) {
+            return null;
+        }
+
+        $imageUrl = trim($value);
+
+        if ($imageUrl === '' || strlen($imageUrl) > self::MAX_IMAGE_URL_LENGTH) {
+            return null;
+        }
+
+        return $imageUrl;
     }
 
     /**

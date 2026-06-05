@@ -158,6 +158,34 @@ test('import deduplicates using place_id', function () {
     expect($scrapeRun->total_updated)->toBe(1);
 });
 
+test('import discards image URLs that exceed the businesses column length', function () {
+    $scrapeRun = BusinessScrapeRun::factory()->create([
+        'outscraper_request_id' => 'req-long-image',
+        'status' => 'collecting',
+    ]);
+
+    $outscraper = outscraperWithArchive('req-long-image', [
+        'status' => 'Success',
+        'data' => [
+            [
+                [
+                    'place_id' => 'ChIJ_long_image',
+                    'name' => 'Long Image Spa',
+                    'photo' => 'https://lh3.googleusercontent.com/gps-proxy/'.str_repeat('a', 260),
+                ],
+            ],
+        ],
+    ]);
+
+    $job = new ImportBusinessResults($scrapeRun);
+    $job->handle($outscraper);
+
+    $business = Business::where('place_id', 'ChIJ_long_image')->first();
+
+    expect($business->image_url)->toBeNull();
+    expect($scrapeRun->refresh()->status)->toBe('completed');
+});
+
 test('import skips items without place_id', function () {
     $scrapeRun = BusinessScrapeRun::factory()->create([
         'outscraper_request_id' => 'req-789',

@@ -231,8 +231,8 @@ Route::get('/users', function () {
 
 ## Laravel Pint Code Formatter
 
-- You must run `vendor/bin/pint --dirty` before finalizing changes to ensure your code matches the project's expected style.
-- Do not run `vendor/bin/pint --test`, simply run `vendor/bin/pint` to fix any formatting issues.
+- You must run `vendor/bin/pint --dirty --format agent` before finalizing changes to ensure your code matches the project's expected style.
+- Do not run `vendor/bin/pint --test --format agent`, simply run `vendor/bin/pint --format agent` to fix any formatting issues.
 
 === pest/core rules ===
 
@@ -444,12 +444,48 @@ export default () => (
 | decoration-slice | box-decoration-slice |
 | decoration-clone | box-decoration-clone |
 
+=== inertiajs/inertia-laravel rules ===
+
+# Inertia
+
+- Inertia creates fully client-side rendered SPAs without modern SPA complexity, leveraging existing server-side patterns.
+- Components live in `resources/js/Pages` (unless specified in `vite.config.js`). Use `Inertia::render()` for server-side routing instead of Blade views.
+- ALWAYS use `search-docs` tool for version-specific Inertia documentation and updated code examples.
+- IMPORTANT: Activate `inertia-react-development` when working with Inertia client-side patterns.
+
+# Inertia v2
+
+- Use all Inertia features from v1 and v2. Check the documentation before making changes to ensure the correct approach.
+- New features: deferred props, infinite scroll, merging props, polling, prefetching, once props, flash data.
+- When using deferred props, add an empty state with a pulsing or animated skeleton.
+
 === laravel/ai rules ===
 
 ## Laravel AI SDK
 
 - This application uses the Laravel AI SDK (`laravel/ai`) for all AI functionality.
 - Activate the `developing-with-ai-sdk` skill when building, editing, updating, debugging, or testing AI agents, text generation, chat, streaming, structured output, tools, image generation, audio, transcription, embeddings, reranking, vector stores, files, conversation memory, or any AI provider integration (OpenAI, Anthropic, Gemini, Cohere, Groq, xAI, ElevenLabs, Jina, OpenRouter).
+
+=== lucianotonet/laravel-telescope-mcp rules ===
+
+## Laravel Telescope MCP
+
+This project uses `lucianotonet/laravel-telescope-mcp` to expose Laravel Telescope
+telemetry data via MCP (Model Context Protocol). When debugging application issues,
+prefer using the Telescope MCP tools over manual log inspection.
+
+### Quick Reference
+- MCP Endpoint: `telescope-mcp`
+- 19 tools: requests, logs, exceptions, queries, jobs, cache, commands, dumps, events,
+  gates, http-client, mail, models, notifications, redis, schedule, views, batches, prune
+- All tools support `id` for entry details and `limit` for pagination (max 100)
+- Use `request_id` to correlate entries from the same HTTP request
+
+### Debugging Best Practices
+- Start with `exceptions` when investigating errors
+- Use `queries` with `slow: true` for performance analysis (threshold: >100ms)
+- Cross-reference entries via `request_id` for full request lifecycle
+- Use `requests` with `include_related: true` to see all related entries at once
 </laravel-boost-guidelines>
 
 ## API Documentation
@@ -463,8 +499,8 @@ export default () => (
 - **password**: env('LOCAL_PASS')
 
 ## Controllers
-- Controllers should be single action controllers, if you touch a controller that is not single action refactor it.
+- Controllers should be single action controllers, if you touch a controller that is not single action refactor it into a single action controller.
 
 ## Dev Environment
 - The application it's always running on http://192.168.0.193:8000/ for local dev testing
-- When testing by using the app, always check the log files at @storage/logs/
+- When testing by using a browser, always check the log files at @storage/logs/
