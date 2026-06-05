@@ -30,3 +30,8 @@ playground/
 graphify-out/cache/
 graphify-out/manifest.json
 graphify-out/cost.json
+
+!app/graphify-out/
+app/graphify-out/cache/
+app/graphify-out/manifest.json
+app/graphify-out/cost.json
