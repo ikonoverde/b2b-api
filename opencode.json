@@ -28,5 +28,11 @@
             "enabled": true
         }
     },
+    "command": {
+        "commit": {
+            "description": "Inspect, verify, stage, and commit current changes with a list-formatted summary.",
+            "template": "Commit the current worktree changes. First inspect git status, unstaged and staged diffs, and the recent commit history. Preserve any unrelated or unexpected user changes, and stage only the files that belong in this commit. Run the smallest appropriate verification for the changes, including project formatters when required. Create a commit with a concise subject matching the repository style and a commit body that describes the changes as a Markdown-style bullet list using `- ` items. Do not push. After committing, report the commit hash, list the committed changes, mention verification run, and confirm the working tree status."
+        }
+    },
     "lsp": true
 }
