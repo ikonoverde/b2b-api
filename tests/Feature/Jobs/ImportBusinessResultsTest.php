@@ -4,8 +4,19 @@ use App\Jobs\ImportBusinessResults;
 use App\Models\Business;
 use App\Models\BusinessScrapeRun;
 use App\Services\OutscraperService;
+use Illuminate\Support\Facades\Http;
 
-use function Pest\Laravel\mock;
+function outscraperWithArchive(string $requestId, array $response): OutscraperService
+{
+    Http::fake([
+        "api.outscraper.cloud/requests/{$requestId}" => Http::response($response),
+    ]);
+
+    return new OutscraperService(
+        apiKey: 'test-api-key',
+        baseUrl: 'https://api.outscraper.cloud',
+    );
+}
 
 test('import creates new businesses from outscraper items', function () {
     $googleMapsUrl = 'https://www.google.com/maps/place/Casa+Spa+Masajes+Relajantes+y+Terap%C3%A9uticos+M%C3%A9rida/@21.0357251,-89.65155,14z/data=!4m8!1m2!2m1!1sCasa+Spa+Masajes+Relajantes+y+Terap%C3%A9uticos+M%C3%A9rida!3m4!1s0x8f56755d22a44a3b:0x3635b6f6f8a20ed7!8m2!3d21.0357251!4d-89.65155';
@@ -15,12 +26,10 @@ test('import creates new businesses from outscraper items', function () {
         'status' => 'collecting',
     ]);
 
-    mock(OutscraperService::class)
-        ->shouldReceive('getRequestStatus')
-        ->with('req-123')
-        ->andReturn([
-            'status' => 'Success',
-            'items' => [
+    $outscraper = outscraperWithArchive('req-123', [
+        'status' => 'Success',
+        'data' => [
+            [
                 [
                     'place_id' => 'ChIJ_place_1',
                     'name' => 'Spa Zen Merida',
@@ -30,6 +39,20 @@ test('import creates new businesses from outscraper items', function () {
                     'state' => 'Yucatan',
                     'country_code' => 'MX',
                     'phone' => '+529991234567',
+                    'emails' => [
+                        ['value' => 'INFO@SPAZEN.COM'],
+                        ['value' => 'bad-email'],
+                    ],
+                    'contacts' => [
+                        [
+                            'full_name' => 'Ana Perez',
+                            'emails' => [
+                                ['value' => 'ana@spazen.com'],
+                                ['value' => 'info@spazen.com'],
+                            ],
+                        ],
+                        ['email' => 'ventas@spazen.com'],
+                    ],
                     'site' => 'https://spazen.com',
                     'location_link' => $googleMapsUrl,
                     'rating' => 4.5,
@@ -52,16 +75,22 @@ test('import creates new businesses from outscraper items', function () {
                     'longitude' => -89.63,
                 ],
             ],
-        ]);
+        ],
+    ]);
 
     $job = new ImportBusinessResults($scrapeRun);
-    $job->handle(app(OutscraperService::class));
+    $job->handle($outscraper);
 
     expect(Business::count())->toBe(2);
 
     $first = Business::where('place_id', 'ChIJ_place_1')->first();
     expect($first->name)->toBe('Spa Zen Merida');
     expect($first->category_name)->toBe('Spa');
+    expect($first->emails)->toBe([
+        'info@spazen.com',
+        'ana@spazen.com',
+        'ventas@spazen.com',
+    ]);
     expect($first->website)->toBe('https://spazen.com');
     expect(strlen($googleMapsUrl))->toBeGreaterThan(255);
     expect($first->google_maps_url)->toBe($googleMapsUrl);
@@ -90,12 +119,10 @@ test('import deduplicates using place_id', function () {
         'status' => 'collecting',
     ]);
 
-    mock(OutscraperService::class)
-        ->shouldReceive('getRequestStatus')
-        ->with('req-456')
-        ->andReturn([
-            'status' => 'Success',
-            'items' => [
+    $outscraper = outscraperWithArchive('req-456', [
+        'status' => 'Success',
+        'data' => [
+            [
                 [
                     'place_id' => 'ChIJ_existing',
                     'name' => 'Updated Spa Name',
@@ -113,10 +140,11 @@ test('import deduplicates using place_id', function () {
                     'longitude' => -89.64,
                 ],
             ],
-        ]);
+        ],
+    ]);
 
     $job = new ImportBusinessResults($scrapeRun);
-    $job->handle(app(OutscraperService::class));
+    $job->handle($outscraper);
 
     expect(Business::count())->toBe(2);
 
@@ -136,12 +164,10 @@ test('import skips items without place_id', function () {
         'status' => 'collecting',
     ]);
 
-    mock(OutscraperService::class)
-        ->shouldReceive('getRequestStatus')
-        ->with('req-789')
-        ->andReturn([
-            'status' => 'Success',
-            'items' => [
+    $outscraper = outscraperWithArchive('req-789', [
+        'status' => 'Success',
+        'data' => [
+            [
                 [
                     'name' => 'No Place ID Spa',
                     'rating' => 4.0,
@@ -156,10 +182,11 @@ test('import skips items without place_id', function () {
                     'longitude' => -89.62,
                 ],
             ],
-        ]);
+        ],
+    ]);
 
     $job = new ImportBusinessResults($scrapeRun);
-    $job->handle(app(OutscraperService::class));
+    $job->handle($outscraper);
 
     expect(Business::count())->toBe(1);
     expect(Business::first()->name)->toBe('Valid Spa');
@@ -171,16 +198,12 @@ test('import fails loudly when archive is not Success', function () {
         'status' => 'collecting',
     ]);
 
-    mock(OutscraperService::class)
-        ->shouldReceive('getRequestStatus')
-        ->with('req-999')
-        ->andReturn([
-            'status' => 'Pending',
-            'items' => null,
-        ]);
+    $outscraper = outscraperWithArchive('req-999', [
+        'status' => 'Pending',
+    ]);
 
     $job = new ImportBusinessResults($scrapeRun);
 
-    expect(fn () => $job->handle(app(OutscraperService::class)))
+    expect(fn () => $job->handle($outscraper))
         ->toThrow(RuntimeException::class);
 });

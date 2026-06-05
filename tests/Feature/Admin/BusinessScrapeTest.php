@@ -5,6 +5,7 @@ use App\Jobs\StartBusinessScrape;
 use App\Models\BusinessScrapeRun;
 use App\Models\User;
 use App\Services\OutscraperService;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
 
 test('admin can view businesses index page', function () {
@@ -44,10 +45,14 @@ test('start business scrape schedules status polling after request starts', func
 
     $scrapeRun = BusinessScrapeRun::factory()->create();
 
-    $outscraper = Mockery::mock(OutscraperService::class);
-    $outscraper->shouldReceive('startSearch')
-        ->once()
-        ->andReturn('request-123');
+    Http::fake([
+        'api.outscraper.cloud/google-maps-search' => Http::response(['id' => 'request-123', 'status' => 'Pending'], 202),
+    ]);
+
+    $outscraper = new OutscraperService(
+        apiKey: 'test-api-key',
+        baseUrl: 'https://api.outscraper.cloud',
+    );
 
     (new StartBusinessScrape($scrapeRun))->handle($outscraper);
 

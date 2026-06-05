@@ -29,6 +29,7 @@ class BusinessFactory extends Factory
             'postal_code' => fake()->numerify('#####'),
             'country_code' => 'MX',
             'phone' => fake()->phoneNumber(),
+            'emails' => [],
             'website' => fake()->optional(0.7)->url(),
             'google_maps_url' => 'https://www.google.com/maps/place/?q=place_id:'.fake()->uuid(),
             'rating' => fake()->optional(0.9)->randomFloat(2, 2.0, 5.0),

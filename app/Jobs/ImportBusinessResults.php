@@ -91,6 +91,8 @@ class ImportBusinessResults implements ShouldQueue
             'postal_code' => null,
             'country_code' => null,
             'phone' => null,
+            'emails' => [],
+            'contacts' => [],
             'site' => null,
             'location_link' => null,
             'rating' => null,
@@ -114,6 +116,7 @@ class ImportBusinessResults implements ShouldQueue
             'postal_code' => $item['postal_code'],
             'country_code' => $item['country_code'],
             'phone' => $item['phone'],
+            'emails' => $this->extractEmails($item),
             'website' => $item['site'],
             'google_maps_url' => $item['location_link'],
             'rating' => $item['rating'],
@@ -127,6 +130,74 @@ class ImportBusinessResults implements ShouldQueue
             'is_advertisement' => false,
             'business_scrape_run_id' => $this->scrapeRun->id,
         ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $item
+     * @return array<int, string>
+     */
+    private function extractEmails(array $item): array
+    {
+        $emails = $this->extractEmailEntries($item['emails'] ?? []);
+
+        $contacts = is_array($item['contacts'] ?? null) ? $item['contacts'] : [];
+
+        foreach ($contacts as $contact) {
+            if (! is_array($contact)) {
+                continue;
+            }
+
+            foreach ($this->extractEmailEntries($contact['emails'] ?? []) as $email) {
+                $emails[] = $email;
+            }
+
+            foreach ($this->extractEmailEntries($contact['email'] ?? null) as $email) {
+                $emails[] = $email;
+            }
+        }
+
+        return array_values(array_unique($emails));
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function extractEmailEntries(mixed $entries): array
+    {
+        if (is_string($entries)) {
+            $email = $this->normalizeEmail($entries);
+
+            return $email === null ? [] : [$email];
+        }
+
+        if (! is_array($entries)) {
+            return [];
+        }
+
+        $emails = [];
+
+        foreach ($entries as $entry) {
+            $email = is_array($entry)
+                ? $this->normalizeEmail($entry['value'] ?? $entry['email'] ?? null)
+                : $this->normalizeEmail($entry);
+
+            if ($email !== null) {
+                $emails[] = $email;
+            }
+        }
+
+        return $emails;
+    }
+
+    private function normalizeEmail(mixed $value): ?string
+    {
+        if (! is_string($value)) {
+            return null;
+        }
+
+        $email = strtolower(trim($value));
+
+        return filter_var($email, FILTER_VALIDATE_EMAIL) ? $email : null;
     }
 
     public function failed(\Throwable $e): void
