@@ -6,7 +6,6 @@ use App\Services\OutscraperService;
 use App\Services\ProductionApiService;
 use App\Services\SkydropxService;
 use Illuminate\Support\ServiceProvider;
-use OutscraperClient;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,12 +32,11 @@ class AppServiceProvider extends ServiceProvider
             );
         });
 
-        $this->app->singleton(OutscraperClient::class, function () {
-            return new OutscraperClient(config('services.outscraper.api_key') ?? '');
-        });
-
-        $this->app->singleton(OutscraperService::class, function ($app) {
-            return new OutscraperService($app->make(OutscraperClient::class));
+        $this->app->singleton(OutscraperService::class, function () {
+            return new OutscraperService(
+                apiKey: config('services.outscraper.api_key') ?? '',
+                baseUrl: config('services.outscraper.base_url') ?? 'https://api.outscraper.cloud',
+            );
         });
     }
 

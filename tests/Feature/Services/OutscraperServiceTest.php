@@ -1,74 +1,87 @@
 <?php
 
 use App\Services\OutscraperService;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Http;
 
-use function Pest\Laravel\mock;
+function outscraperService(): OutscraperService
+{
+    return new OutscraperService(
+        apiKey: 'test-api-key',
+        baseUrl: 'https://api.outscraper.cloud',
+    );
+}
 
 test('startSearch submits async request and returns the request id', function () {
-    $captured = null;
+    Http::fake([
+        'api.outscraper.cloud/google-maps-search' => Http::response(['id' => 'req-123', 'status' => 'Pending'], 202),
+    ]);
 
-    $client = mock(\OutscraperClient::class);
-    $client->shouldReceive('google_maps_search')
-        ->once()
-        ->andReturnUsing(function (...$args) use (&$captured) {
-            $captured = $args;
-
-            return ['id' => 'req-123', 'status' => 'Pending'];
-        });
-
-    $service = new OutscraperService($client);
-
-    $requestId = $service->startSearch(['spa, Merida, Mexico']);
+    $requestId = outscraperService()->startSearch(['spa, Merida, Mexico']);
 
     expect($requestId)->toBe('req-123');
-    expect($captured[0])->toBe(['spa, Merida, Mexico']);
-    expect($captured[1])->toBe('es');
-    expect($captured[2])->toBe('MX');
-    expect($captured[3])->toBe(100);
+
+    Http::assertSent(function ($request) {
+        return $request->method() === 'POST'
+            && $request->url() === 'https://api.outscraper.cloud/google-maps-search'
+            && $request->hasHeader('X-API-KEY', 'test-api-key')
+            && $request->data() === [
+                'query' => ['spa, Merida, Mexico'],
+                'language' => 'es',
+                'region' => 'MX',
+                'limit' => 100,
+                'dropDuplicates' => true,
+                'enrichment' => ['contacts_n_leads'],
+                'async' => true,
+            ];
+    });
 });
 
-test('startSearch returns null when the client throws', function () {
-    $client = mock(\OutscraperClient::class);
-    $client->shouldReceive('google_maps_search')
-        ->once()
-        ->andThrow(new Exception('boom'));
+test('startSearch returns null when the api fails', function () {
+    Http::fake([
+        'api.outscraper.cloud/google-maps-search' => Http::response(['error' => true, 'errorMessage' => 'boom'], 422),
+    ]);
 
-    $service = new OutscraperService($client);
+    expect(outscraperService()->startSearch(['spa, Merida, Mexico']))->toBeNull();
+});
 
-    expect($service->startSearch(['spa, Merida, Mexico']))->toBeNull();
+test('startSearch returns null when the request throws', function () {
+    Http::fake([
+        'api.outscraper.cloud/google-maps-search' => fn () => throw new ConnectionException('network'),
+    ]);
+
+    expect(outscraperService()->startSearch(['spa, Merida, Mexico']))->toBeNull();
 });
 
 test('getRequestStatus returns pending when archive is still processing', function () {
-    $client = mock(\OutscraperClient::class);
-    $client->shouldReceive('get_request_archive')
-        ->once()
-        ->with('req-123')
-        ->andReturn(['status' => 'Pending']);
+    Http::fake([
+        'api.outscraper.cloud/requests/req-123' => Http::response(['status' => 'Pending']),
+    ]);
 
-    $service = new OutscraperService($client);
-
-    expect($service->getRequestStatus('req-123'))->toBe([
+    expect(outscraperService()->getRequestStatus('req-123'))->toBe([
         'status' => 'Pending',
         'items' => null,
     ]);
+
+    Http::assertSent(function ($request) {
+        return $request->method() === 'GET'
+            && $request->url() === 'https://api.outscraper.cloud/requests/req-123'
+            && $request->hasHeader('X-API-KEY', 'test-api-key');
+    });
 });
 
 test('getRequestStatus flattens multi-query result data on success', function () {
-    $client = mock(\OutscraperClient::class);
-    $client->shouldReceive('get_request_archive')
-        ->once()
-        ->with('req-123')
-        ->andReturn([
+    Http::fake([
+        'api.outscraper.cloud/requests/req-123' => Http::response([
             'status' => 'Success',
             'data' => [
                 [['place_id' => 'a'], ['place_id' => 'b']],
                 [['place_id' => 'c']],
             ],
-        ]);
+        ]),
+    ]);
 
-    $service = new OutscraperService($client);
-
-    $result = $service->getRequestStatus('req-123');
+    $result = outscraperService()->getRequestStatus('req-123');
 
     expect($result['status'])->toBe('Success');
     expect($result['items'])->toHaveCount(3);
@@ -77,31 +90,33 @@ test('getRequestStatus flattens multi-query result data on success', function ()
 });
 
 test('getRequestStatus passes through already-flat data on success', function () {
-    $client = mock(\OutscraperClient::class);
-    $client->shouldReceive('get_request_archive')
-        ->once()
-        ->andReturn([
+    Http::fake([
+        'api.outscraper.cloud/requests/req-123' => Http::response([
             'status' => 'Success',
             'data' => [
                 ['place_id' => 'a'],
                 ['place_id' => 'b'],
             ],
-        ]);
+        ]),
+    ]);
 
-    $service = new OutscraperService($client);
-
-    $result = $service->getRequestStatus('req-123');
+    $result = outscraperService()->getRequestStatus('req-123');
 
     expect($result['items'])->toHaveCount(2);
 });
 
-test('getRequestStatus returns null when the client throws', function () {
-    $client = mock(\OutscraperClient::class);
-    $client->shouldReceive('get_request_archive')
-        ->once()
-        ->andThrow(new Exception('network'));
+test('getRequestStatus returns null when the api fails', function () {
+    Http::fake([
+        'api.outscraper.cloud/requests/req-123' => Http::response(['error' => true, 'errorMessage' => 'failure'], 500),
+    ]);
 
-    $service = new OutscraperService($client);
+    expect(outscraperService()->getRequestStatus('req-123'))->toBeNull();
+});
 
-    expect($service->getRequestStatus('req-123'))->toBeNull();
+test('getRequestStatus returns null when the request throws', function () {
+    Http::fake([
+        'api.outscraper.cloud/requests/req-123' => fn () => throw new ConnectionException('network'),
+    ]);
+
+    expect(outscraperService()->getRequestStatus('req-123'))->toBeNull();
 });

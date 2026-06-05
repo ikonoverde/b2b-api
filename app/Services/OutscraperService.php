@@ -2,13 +2,17 @@
 
 namespace App\Services;
 
-use Exception;
+use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use OutscraperClient;
+use Throwable;
 
 readonly class OutscraperService
 {
-    public function __construct(private OutscraperClient $client) {}
+    public function __construct(
+        private string $apiKey,
+        private string $baseUrl,
+    ) {}
 
     /**
      * Submit an async Google Maps search and return the Outscraper request id.
@@ -22,19 +26,35 @@ readonly class OutscraperService
         int $limit = 100,
     ): ?string {
         try {
-            $result = $this->client->google_maps_search(
-                query: $queries,
-                language: $language,
-                region: $region,
-                limit: $limit,
-                drop_duplicates: true,
-                async_request: true,
-            );
-        } catch (Exception $e) {
+            $response = $this->request()->post('/google-maps-search', [
+                'query' => $queries,
+                'language' => $language,
+                'region' => $region,
+                'limit' => $limit,
+                'dropDuplicates' => true,
+                'enrichment' => ['contacts_n_leads'],
+                'async' => true,
+            ]);
+        } catch (Throwable $e) {
             Log::error('OutscraperService: Failed to start search', [
                 'message' => $e->getMessage(),
             ]);
 
+            return null;
+        }
+
+        if ($response->failed() || $response->json('error') === true) {
+            Log::error('OutscraperService: Failed to start search', [
+                'status' => $response->status(),
+                'message' => $response->json('errorMessage'),
+            ]);
+
+            return null;
+        }
+
+        $result = $response->json();
+
+        if (! is_array($result)) {
             return null;
         }
 
@@ -50,13 +70,29 @@ readonly class OutscraperService
     public function getRequestStatus(string $requestId): ?array
     {
         try {
-            $result = $this->client->get_request_archive($requestId);
-        } catch (Exception $e) {
+            $response = $this->request()->get("/requests/{$requestId}");
+        } catch (Throwable $e) {
             Log::error('OutscraperService: Failed to fetch request archive', [
                 'request_id' => $requestId,
                 'message' => $e->getMessage(),
             ]);
 
+            return null;
+        }
+
+        if ($response->failed() || $response->json('error') === true) {
+            Log::error('OutscraperService: Failed to fetch request archive', [
+                'request_id' => $requestId,
+                'status' => $response->status(),
+                'message' => $response->json('errorMessage'),
+            ]);
+
+            return null;
+        }
+
+        $result = $response->json();
+
+        if (! is_array($result)) {
             return null;
         }
 
@@ -92,5 +128,15 @@ readonly class OutscraperService
         }
 
         return $data;
+    }
+
+    private function request(): PendingRequest
+    {
+        return Http::baseUrl($this->baseUrl)
+            ->acceptJson()
+            ->withHeaders([
+                'X-API-KEY' => $this->apiKey,
+            ])
+            ->timeout(30);
     }
 }
