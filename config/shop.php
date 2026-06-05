@@ -12,7 +12,7 @@ return [
     |
     */
 
-    'shipping_cost' => env('SHOP_SHIPPING_COST', 10.00),
+    'shipping_cost' => env('SHOP_SHIPPING_COST', 150.00),
 
     'shipping_origin_postal_code' => env('SHOP_ORIGIN_POSTAL_CODE', '06600'),
 

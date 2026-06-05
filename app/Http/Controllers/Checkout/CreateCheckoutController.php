@@ -108,7 +108,7 @@ class CreateCheckoutController extends Controller
     private function resolveShipping(array $validated): array|JsonResponse
     {
         if (empty($validated['shipping_method_id'])) {
-            return ['method_id' => null, 'cost' => (float) config('shop.shipping_cost', 10.00), 'label' => 'Shipping'];
+            return ['method_id' => null, 'cost' => (float) config('shop.shipping_cost', 150.00), 'label' => 'Shipping'];
         }
 
         $method = ShippingMethod::query()
