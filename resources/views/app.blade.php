@@ -6,6 +6,21 @@
 
     <title inertia>{{ config('app.name', 'Ikonoverde') }}</title>
 
+    @if ($googleAnalyticsMeasurementId = config('services.google_analytics.measurement_id'))
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ $googleAnalyticsMeasurementId }}"></script>
+        <script>
+            window.googleAnalyticsMeasurementId = @js($googleAnalyticsMeasurementId);
+            window.dataLayer = window.dataLayer || [];
+
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+
+            gtag('js', new Date());
+            gtag('config', window.googleAnalyticsMeasurementId, { send_page_view: false });
+        </script>
+    @endif
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
