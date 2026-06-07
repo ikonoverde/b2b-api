@@ -9,6 +9,7 @@ it('does not render google analytics when it is not configured', function () {
 
     $response->assertSuccessful();
     $response->assertDontSee('googletagmanager.com/gtag/js');
+    $response->assertDontSee('tools.luckyorange.com/core/lo.js');
     $response->assertDontSee('window.googleAnalyticsMeasurementId', false);
 });
 
@@ -19,6 +20,7 @@ it('renders google analytics when a measurement id is configured', function () {
 
     $response->assertSuccessful();
     $response->assertSee('https://www.googletagmanager.com/gtag/js?id=G-TEST123', false);
+    $response->assertSee('https://tools.luckyorange.com/core/lo.js?site-id=1b9d2b4c', false);
     $response->assertSee('window.googleAnalyticsMeasurementId', false);
     $response->assertSee('send_page_view', false);
 });

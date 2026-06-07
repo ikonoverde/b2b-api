@@ -19,6 +19,7 @@
             gtag('js', new Date());
             gtag('config', window.googleAnalyticsMeasurementId, { send_page_view: false });
         </script>
+        <script async defer src="https://tools.luckyorange.com/core/lo.js?site-id=1b9d2b4c"></script>
     @endif
 
     <!-- Fonts -->
