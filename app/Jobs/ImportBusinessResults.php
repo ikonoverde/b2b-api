@@ -82,7 +82,7 @@ class ImportBusinessResults implements ShouldQueue
      */
     private function mapItemAttributes(array $item): array
     {
-        $item += [
+        $item = array_filter($item, static fn (mixed $value): bool => $value !== null) + [
             'name' => 'Unknown',
             'category' => null,
             'full_address' => null,

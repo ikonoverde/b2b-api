@@ -186,6 +186,48 @@ test('import discards image URLs that exceed the businesses column length', func
     expect($scrapeRun->refresh()->status)->toBe('completed');
 });
 
+test('import applies defaults when outscraper returns explicit nulls', function () {
+    $scrapeRun = BusinessScrapeRun::factory()->create([
+        'outscraper_request_id' => 'req-nulls',
+        'status' => 'collecting',
+    ]);
+
+    $outscraper = outscraperWithArchive('req-nulls', [
+        'status' => 'Success',
+        'data' => [
+            [
+                [
+                    'place_id' => 'ChIJ_null_fields',
+                    'name' => null,
+                    'rating' => null,
+                    'reviews' => null,
+                    'emails' => null,
+                    'contacts' => null,
+                    'verified' => null,
+                    'latitude' => 21.0089037,
+                    'longitude' => -89.6187164,
+                ],
+            ],
+        ],
+    ]);
+
+    $job = new ImportBusinessResults($scrapeRun);
+    $job->handle($outscraper);
+
+    $business = Business::where('place_id', 'ChIJ_null_fields')->first();
+
+    expect($business)->not->toBeNull();
+    expect($business->name)->toBe('Unknown');
+    expect($business->reviews_count)->toBe(0);
+    expect($business->rating)->toBeNull();
+    expect($business->emails)->toBe([]);
+    expect($business->is_claimed)->toBeFalse();
+
+    $scrapeRun->refresh();
+    expect($scrapeRun->status)->toBe('completed');
+    expect($scrapeRun->total_imported)->toBe(1);
+});
+
 test('import skips items without place_id', function () {
     $scrapeRun = BusinessScrapeRun::factory()->create([
         'outscraper_request_id' => 'req-789',
