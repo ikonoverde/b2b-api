@@ -1,8 +1,10 @@
 import { Link } from '@inertiajs/react';
+import { useEffect } from 'react';
 import CustomerShell from '@/Layouts/CustomerShell';
 import CheckoutStepIndicator from '@/Components/CheckoutStepIndicator';
 import OrderSummary from '@/Components/OrderSummary';
 import { formatCurrency } from '@/utils/currency';
+import { META_PIXEL_CURRENCY, trackMetaPurchase } from '@/utils/analytics';
 
 interface OrderItem {
     id: number;
@@ -108,6 +110,17 @@ export default function ThankYou({ order }: ThankYouProps) {
     const paymentTone = paymentToneFor(order.payment_status);
     const paymentStyles = TONE_STYLES[paymentTone];
     const orderCode = String(order.id).padStart(5, '0');
+
+    useEffect(() => {
+        trackMetaPurchase(
+            {
+                value: order.total_amount,
+                currency: META_PIXEL_CURRENCY,
+                num_items: order.items.reduce((count, item) => count + item.quantity, 0),
+            },
+            `order_${order.id}`,
+        );
+    }, [order.id, order.total_amount, order.items]);
 
     return (
         <CustomerShell title={headerCopy.title}>

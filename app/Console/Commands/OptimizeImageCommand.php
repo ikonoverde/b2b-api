@@ -22,7 +22,8 @@ class OptimizeImageCommand extends Command
         {--format= : Convert output to webp, jpeg, or png; defaults to keeping the source format}
         {--quality=80 : Encoding quality (1-100) for lossy formats}
         {--max-width= : Downscale images wider than this many pixels, preserving aspect ratio}
-        {--cover= : Resize and center-crop to exact dimensions, e.g. 1200x630}
+        {--cover= : Resize and crop to exact dimensions, e.g. 1200x630}
+        {--position=center : Crop anchor for --cover: top-left, top, top-right, left, center, right, bottom-left, bottom, bottom-right}
         {--disk= : Filesystem disk to read from and write to; omit to use local filesystem paths}
         {--output= : Destination path for a single file; defaults to optimizing in place}';
 
@@ -39,6 +40,17 @@ class OptimizeImageCommand extends Command
      * @var list<string>
      */
     private const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif'];
+
+    /**
+     * Valid crop anchors accepted by Intervention's cover() method.
+     *
+     * @var list<string>
+     */
+    private const COVER_POSITIONS = [
+        'top-left', 'top', 'top-right',
+        'left', 'center', 'right',
+        'bottom-left', 'bottom', 'bottom-right',
+    ];
 
     /**
      * Execute the console command.
@@ -86,6 +98,14 @@ class OptimizeImageCommand extends Command
             $cover = ['width' => (int) $matches[1], 'height' => (int) $matches[2]];
         }
 
+        $position = strtolower((string) $this->option('position'));
+
+        if (! in_array($position, self::COVER_POSITIONS, true)) {
+            $this->error('Invalid --position. Use one of: '.implode(', ', self::COVER_POSITIONS).'.');
+
+            return self::INVALID;
+        }
+
         $maxWidth = null;
 
         if ($maxWidthOption !== null) {
@@ -128,7 +148,7 @@ class OptimizeImageCommand extends Command
 
         foreach ($files as $file) {
             try {
-                $result = $this->optimizeFile($manager, $disk, $file, $format, $quality, $cover, $maxWidth, $output);
+                $result = $this->optimizeFile($manager, $disk, $file, $format, $quality, $cover, $position, $maxWidth, $output);
             } catch (Throwable $e) {
                 $this->error("Failed to optimize {$file}: ".$e->getMessage());
 
@@ -218,6 +238,7 @@ class OptimizeImageCommand extends Command
         ?string $format,
         int $quality,
         ?array $cover,
+        string $position,
         ?int $maxWidth,
         ?string $output,
     ): array {
@@ -233,7 +254,7 @@ class OptimizeImageCommand extends Command
         $image = $manager->read($contents);
 
         if ($cover !== null) {
-            $image->cover($cover['width'], $cover['height']);
+            $image->cover($cover['width'], $cover['height'], $position);
         } elseif ($maxWidth !== null) {
             $image->scaleDown(width: $maxWidth);
         }

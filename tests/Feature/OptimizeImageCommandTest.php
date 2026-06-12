@@ -39,6 +39,41 @@ it('resizes and crops to exact cover dimensions', function () {
         ->and($image->height())->toBe(630);
 });
 
+it('anchors the cover crop to the requested position', function () {
+    Storage::fake('public');
+
+    $image = ImageManager::gd()->create(100, 100)->fill('ff0000');
+    $image->drawRectangle(0, 50, function ($rectangle) {
+        $rectangle->size(100, 50);
+        $rectangle->background('0000ff');
+    });
+    Storage::disk('public')->put('img/split.png', (string) $image->toPng());
+
+    $this->artisan('image:optimize', [
+        'path' => 'img/split.png',
+        '--cover' => '100x50',
+        '--position' => 'top',
+        '--disk' => 'public',
+    ])->assertSuccessful();
+
+    $cropped = ImageManager::gd()->read(Storage::disk('public')->get('img/split.png'));
+
+    expect($cropped->height())->toBe(50)
+        ->and($cropped->pickColor(50, 25)->toHex())->toBe('ff0000');
+});
+
+it('rejects an invalid cover position', function () {
+    Storage::fake('public');
+    Storage::disk('public')->put('img/x.png', makeOptimizeTestImage(100, 100));
+
+    $this->artisan('image:optimize', [
+        'path' => 'img/x.png',
+        '--cover' => '100x50',
+        '--position' => 'middle',
+        '--disk' => 'public',
+    ])->assertExitCode(Command::INVALID);
+});
+
 it('downscales images wider than the max width, preserving aspect ratio', function () {
     Storage::fake('public');
     Storage::disk('public')->put('img/big.png', makeOptimizeTestImage(2000, 1000));

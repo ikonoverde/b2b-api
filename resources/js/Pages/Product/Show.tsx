@@ -1,9 +1,10 @@
 import { Link, router } from '@inertiajs/react';
 import { Check, ChevronLeft, ChevronRight, Minus, Plus } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import CustomerShell from '@/Layouts/CustomerShell';
 import { formatCurrency } from '@/utils/currency';
+import { META_PIXEL_CURRENCY, trackMetaAddToCart, trackMetaViewContent } from '@/utils/analytics';
 import type { BreadcrumbItem, ProductDetail, RelatedProduct } from '@/types';
 
 interface ProductShowProps {
@@ -20,6 +21,16 @@ export default function ProductShow({ product, related_products }: ProductShowPr
     const totalPrice = unitPrice * quantity;
     const stockReady = product.stock > 0 && product.is_active;
 
+    useEffect(() => {
+        trackMetaViewContent({
+            content_ids: [String(product.id)],
+            content_name: product.name,
+            content_type: 'product',
+            value: product.price,
+            currency: META_PIXEL_CURRENCY,
+        });
+    }, [product.id, product.name, product.price]);
+
     function addToCart(): void {
         router.post(
             '/cart/items',
@@ -31,6 +42,15 @@ export default function ProductShow({ product, related_products }: ProductShowPr
                 onFinish: () => setLoading(false),
                 onSuccess: () => {
                     setAdded(true);
+                    trackMetaAddToCart({
+                        content_ids: [String(product.id)],
+                        content_name: product.name,
+                        content_type: 'product',
+                        contents: [{ id: String(product.id), quantity }],
+                        num_items: quantity,
+                        value: unitPrice * quantity,
+                        currency: META_PIXEL_CURRENCY,
+                    });
                     setTimeout(() => setAdded(false), 2000);
                 },
             },

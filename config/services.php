@@ -57,6 +57,10 @@ return [
         'measurement_id' => env('GOOGLE_ANALYTICS_MEASUREMENT_ID'),
     ],
 
+    'meta_pixel' => [
+        'pixel_id' => env('META_PIXEL_ID'),
+    ],
+
     'outscraper' => [
         'api_key' => env('OUTSCRAPER_API_KEY'),
         'base_url' => env('OUTSCRAPER_BASE_URL', 'https://api.outscraper.cloud'),

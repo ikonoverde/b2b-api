@@ -29,6 +29,10 @@
         "nightwatch": {
             "type": "http",
             "url": "https://nightwatch.laravel.com/mcp"
+        },
+        "meta-ads": {
+            "type": "http",
+            "url": "https://mcp.facebook.com/ads"
         }
     }
 }
