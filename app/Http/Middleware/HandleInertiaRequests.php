@@ -5,8 +5,10 @@ namespace App\Http\Middleware;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
+use Closure;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Symfony\Component\HttpFoundation\Response;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -14,6 +16,18 @@ class HandleInertiaRequests extends Middleware
      * The root template that is loaded on the first page visit.
      */
     protected $rootView = 'app';
+
+    /**
+     * Handle the incoming request.
+     */
+    public function handle(Request $request, Closure $next): Response
+    {
+        if ($request->is('admin') || $request->is('admin/*') || $request->routeIs('checkout.payment')) {
+            config(['inertia.ssr.enabled' => false]);
+        }
+
+        return parent::handle($request, $next);
+    }
 
     /**
      * Determine the current asset version.

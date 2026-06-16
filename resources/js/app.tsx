@@ -1,5 +1,5 @@
 import './bootstrap';
-import { createRoot } from 'react-dom/client';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import { createInertiaApp, router } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { trackGoogleAnalyticsPageView, trackMetaPixelPageView } from './utils/analytics';
@@ -14,8 +14,11 @@ createInertiaApp({
             import.meta.glob('./Pages/**/*.tsx')
         ),
     setup({ el, App, props }) {
-        const root = createRoot(el);
-        root.render(<App {...props} />);
+        if (el.dataset.serverRendered === 'true') {
+            hydrateRoot(el, <App {...props} />);
+        } else {
+            createRoot(el).render(<App {...props} />);
+        }
 
         trackGoogleAnalyticsPageView(props.initialPage.url);
         trackMetaPixelPageView();
