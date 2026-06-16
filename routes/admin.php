@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Businesses\ExportBusinessesForMetaController;
 use App\Http\Controllers\Admin\Businesses\IndexBusinessesController;
 use App\Http\Controllers\Admin\Businesses\StartBusinessScrapeController;
 use App\Http\Controllers\Admin\Orders\CreateOrderRefundController;
@@ -95,6 +96,7 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
         ->name('orders.retry-label');
 
     Route::get('/businesses', IndexBusinessesController::class)->name('businesses');
+    Route::get('/businesses/export', ExportBusinessesForMetaController::class)->name('businesses.export');
     Route::post('/businesses/scrape', StartBusinessScrapeController::class)->name('businesses.scrape');
 
     Route::get('/settings', ShowSettingsController::class)->name('settings.show');

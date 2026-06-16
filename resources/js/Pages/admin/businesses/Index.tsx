@@ -4,6 +4,7 @@ import {
     ChevronLeft,
     ChevronRight,
     Search,
+    Download,
     Play,
     Loader2,
     Star,
@@ -237,6 +238,9 @@ function Pagination({ businesses }: { businesses: PaginatedBusinesses }) {
 export default function BusinessesIndex() {
     const { businesses, latestRun, activeRun, filters, flash } = usePage<Props>().props;
     const [scraping, setScraping] = useState(false);
+    const exportUrl = filters.search
+        ? `/admin/businesses/export?${new URLSearchParams({ search: filters.search }).toString()}`
+        : '/admin/businesses/export';
 
     const handleStartScrape = () => {
         setScraping(true);
@@ -258,22 +262,31 @@ export default function BusinessesIndex() {
                             Negocios de spa y masajes en Merida, Yucatan
                         </p>
                     </div>
-                    <button
-                        onClick={handleStartScrape}
-                        disabled={scraping || !!activeRun}
-                        className={`flex items-center gap-2 h-10 px-5 rounded-lg text-sm font-medium text-white font-[Outfit] transition-colors ${
-                            scraping || activeRun
-                                ? 'bg-gray-400 cursor-not-allowed'
-                                : 'bg-[#4A5D4A] hover:bg-[#3d4d3d] cursor-pointer'
-                        }`}
-                    >
-                        {scraping ? (
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                        ) : (
-                            <Play className="w-4 h-4" />
-                        )}
-                        Iniciar Scrape
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <a
+                            href={exportUrl}
+                            className="flex items-center gap-2 h-10 px-5 rounded-lg border border-[#D6D0C8] text-sm font-medium text-[#1A1A1A] font-[Outfit] hover:bg-[#FBF9F7] transition-colors"
+                        >
+                            <Download className="w-4 h-4" />
+                            Exportar Meta CSV
+                        </a>
+                        <button
+                            onClick={handleStartScrape}
+                            disabled={scraping || !!activeRun}
+                            className={`flex items-center gap-2 h-10 px-5 rounded-lg text-sm font-medium text-white font-[Outfit] transition-colors ${
+                                scraping || activeRun
+                                    ? 'bg-gray-400 cursor-not-allowed'
+                                    : 'bg-[#4A5D4A] hover:bg-[#3d4d3d] cursor-pointer'
+                            }`}
+                        >
+                            {scraping ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                                <Play className="w-4 h-4" />
+                            )}
+                            Iniciar Scrape
+                        </button>
+                    </div>
                 </div>
 
                 {flash.success && (
