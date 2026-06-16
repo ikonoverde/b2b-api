@@ -20,6 +20,8 @@ it('shows product details with slug', function () {
         'category_id' => $category->id,
         'name' => 'Fertilizante Premium',
         'slug' => 'fertilizante-premium',
+        'active_ingredients' => 'Extracto de algas y aminoácidos',
+        'recommendations' => 'Aplicar cada 15 días por la mañana.',
     ]);
 
     $response = $this->actingAs($user)->get("/products/{$product->slug}");
@@ -31,6 +33,8 @@ it('shows product details with slug', function () {
                 ->where('id', $product->id)
                 ->where('name', $product->name)
                 ->where('slug', 'fertilizante-premium')
+                ->where('active_ingredients', fn ($value) => str_contains($value, 'Extracto de algas y aminoácidos'))
+                ->where('recommendations', fn ($value) => str_contains($value, 'Aplicar cada 15 días por la mañana.'))
                 ->has('category')
                 ->has('breadcrumbs')
                 ->has('price')

@@ -20,6 +20,26 @@ export default function ProductShow({ product, related_products }: ProductShowPr
     const unitPrice = product.price;
     const totalPrice = unitPrice * quantity;
     const stockReady = product.stock > 0 && product.is_active;
+    const detailSections = [
+        {
+            headingId: 'description-heading',
+            eyebrow: 'Producto',
+            title: 'Descripción',
+            html: product.description,
+        },
+        {
+            headingId: 'active-ingredients-heading',
+            eyebrow: 'Fórmula',
+            title: 'Ingredientes activos',
+            html: product.active_ingredients,
+        },
+        {
+            headingId: 'recommendations-heading',
+            eyebrow: 'Uso',
+            title: 'Recomendaciones',
+            html: product.recommendations,
+        },
+    ].filter((section): section is ProductDetailSection => Boolean(section.html));
 
     useEffect(() => {
         trackMetaViewContent({
@@ -145,18 +165,45 @@ export default function ProductShow({ product, related_products }: ProductShowPr
                 </div>
             </div>
 
-            {product.description && (
-                <section aria-labelledby="description-heading" className="mt-24">
-                    <SectionHeader index="01" eyebrow="Producto" title="Descripción" headingId="description-heading" />
+            <ProductDetailSections sections={detailSections} />
+
+            <RelatedProductsList
+                products={related_products}
+                index={String(detailSections.length + 1).padStart(2, '0')}
+            />
+        </CustomerShell>
+    );
+}
+
+interface ProductDetailSection {
+    headingId: string;
+    eyebrow: string;
+    title: string;
+    html: string;
+}
+
+function ProductDetailSections({ sections }: { sections: ProductDetailSection[] }) {
+    if (sections.length === 0) {
+        return null;
+    }
+
+    return (
+        <div className="mt-24 flex flex-col gap-20">
+            {sections.map((section, index) => (
+                <section key={section.headingId} aria-labelledby={section.headingId}>
+                    <SectionHeader
+                        index={String(index + 1).padStart(2, '0')}
+                        eyebrow={section.eyebrow}
+                        title={section.title}
+                        headingId={section.headingId}
+                    />
                     <div
                         className="prose prose-stone mt-8 max-w-[68ch] font-sans text-[15px] leading-[1.7] text-[var(--iko-stone-ink)]/85"
-                        dangerouslySetInnerHTML={{ __html: product.description }}
+                        dangerouslySetInnerHTML={{ __html: section.html }}
                     />
                 </section>
-            )}
-
-            <RelatedProductsList products={related_products} />
-        </CustomerShell>
+            ))}
+        </div>
     );
 }
 
@@ -410,7 +457,7 @@ function SectionHeader({
     );
 }
 
-function RelatedProductsList({ products }: { products: RelatedProduct[] }) {
+function RelatedProductsList({ products, index }: { products: RelatedProduct[]; index: string }) {
     if (products.length === 0) {
         return null;
     }
@@ -418,7 +465,7 @@ function RelatedProductsList({ products }: { products: RelatedProduct[] }) {
     return (
         <section aria-labelledby="related-heading" className="mt-24">
             <SectionHeader
-                index="02"
+                index={index}
                 eyebrow="Catálogo"
                 title="También en esta categoría"
                 headingId="related-heading"

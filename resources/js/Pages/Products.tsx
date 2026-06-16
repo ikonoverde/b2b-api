@@ -296,9 +296,12 @@ function ProductRow({ product, onDelete }: { product: Product; onDelete: (produc
                     )}
                 </div>
                 <div className="flex flex-col gap-0.5">
-                    <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                    <Link
+                        href={`/admin/products/${product.id}/edit`}
+                        className="text-sm font-medium text-[#1A1A1A] font-[Outfit] hover:text-[#4A5D4A] hover:underline underline-offset-2 transition-colors"
+                    >
                         {product.name}
-                    </span>
+                    </Link>
                     <span className="text-xs text-[#999999] font-[Outfit]">
                         {product.sku}
                     </span>

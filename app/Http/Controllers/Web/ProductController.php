@@ -38,7 +38,9 @@ class ProductController extends Controller
                     'name' => $product->category?->name,
                     'slug' => $product->category?->slug,
                 ],
-                'description' => Str::of($product->description)->markdown(),
+                'description' => $this->renderMarkdown($product->description),
+                'active_ingredients' => $this->renderMarkdown($product->active_ingredients),
+                'recommendations' => $this->renderMarkdown($product->recommendations),
                 'price' => (float) $product->price,
                 'stock' => $product->stock,
                 'is_active' => $product->is_active,
@@ -90,5 +92,14 @@ class ProductController extends Controller
         ];
 
         return $breadcrumbs;
+    }
+
+    private function renderMarkdown(?string $content): ?string
+    {
+        if (blank($content)) {
+            return null;
+        }
+
+        return (string) Str::of($content)->markdown();
     }
 }

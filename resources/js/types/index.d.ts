@@ -148,6 +148,8 @@ export interface ProductDetail {
         slug: string;
     };
     description: string | null;
+    active_ingredients: string | null;
+    recommendations: string | null;
     price: number;
     stock: number;
     is_active: boolean;
