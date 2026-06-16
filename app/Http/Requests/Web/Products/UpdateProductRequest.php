@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Web\Products;
 
 use App\Http\Requests\Web\Products\Concerns\NormalizesProductShippingPackages;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProductRequest extends FormRequest
@@ -25,7 +26,7 @@ class UpdateProductRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -36,6 +37,7 @@ class UpdateProductRequest extends FormRequest
             'category_id' => ['required', 'integer', 'exists:categories,id'],
             'formula_id' => ['nullable', 'integer'],
             'description' => ['nullable', 'string'],
+            'active_ingredients' => ['nullable', 'string'],
             'price' => ['required', 'numeric', 'min:0'],
             'cost' => ['nullable', 'numeric', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],

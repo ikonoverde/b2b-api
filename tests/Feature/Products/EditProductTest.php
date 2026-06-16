@@ -36,6 +36,7 @@ test('edit page shows product data', function () {
         'name' => 'Fertilizante Premium',
         'sku' => 'FERT-001',
         'category_id' => $category->id,
+        'active_ingredients' => 'Extracto de algas y aminoacidos',
         'price' => 49.99,
     ]);
 
@@ -46,6 +47,7 @@ test('edit page shows product data', function () {
         ->where('product.name', 'Fertilizante Premium')
         ->where('product.sku', 'FERT-001')
         ->where('product.category_id', $category->id)
+        ->where('product.active_ingredients', 'Extracto de algas y aminoacidos')
     );
 });
 
@@ -62,6 +64,7 @@ test('authenticated user can update a product', function () {
         'sku' => 'UPD-001',
         'category_id' => $category->id,
         'description' => 'Updated description',
+        'active_ingredients' => 'Aloe vera and calendula',
         'price' => 59.99,
         'cost' => 30.00,
         'stock' => 200,
@@ -78,6 +81,7 @@ test('authenticated user can update a product', function () {
         'name' => 'Updated Name',
         'sku' => 'UPD-001',
         'category_id' => $category->id,
+        'active_ingredients' => 'Aloe vera and calendula',
     ]);
 });
 

@@ -19,6 +19,7 @@ interface ProductData {
     category_id: number;
     formula_id: number | null;
     description: string;
+    active_ingredients: string;
     price: string;
     cost: string;
     stock: string;
@@ -49,6 +50,7 @@ export default function Edit({ product, categories, formulas }: EditProductProps
         category_id: String(product.category_id),
         formula_id: product.formula_id ? String(product.formula_id) : '',
         description: product.description,
+        active_ingredients: product.active_ingredients,
         price: product.price,
         cost: product.cost,
         stock: product.stock,

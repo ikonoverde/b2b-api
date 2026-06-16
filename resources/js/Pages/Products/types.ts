@@ -24,6 +24,7 @@ export interface ProductFormData {
     category_id: string;
     formula_id: string;
     description: string;
+    active_ingredients: string;
     price: string;
     cost: string;
     stock: string;

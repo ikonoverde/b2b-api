@@ -24,6 +24,7 @@ export default function Create({ categories, formulas }: CreateProductProps) {
         category_id: '',
         formula_id: '',
         description: '',
+        active_ingredients: '',
         price: '',
         cost: '',
         stock: '',
