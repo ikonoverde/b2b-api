@@ -38,6 +38,7 @@ class StoreProductRequest extends FormRequest
             'formula_id' => ['nullable', 'integer'],
             'description' => ['nullable', 'string'],
             'active_ingredients' => ['nullable', 'string'],
+            'recommendations' => ['nullable', 'string'],
             'price' => ['required', 'numeric', 'min:0'],
             'cost' => ['nullable', 'numeric', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],

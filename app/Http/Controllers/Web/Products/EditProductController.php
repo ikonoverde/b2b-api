@@ -28,6 +28,7 @@ class EditProductController extends Controller
                 'formula_id' => $product->formula_id,
                 'description' => $product->description ?? '',
                 'active_ingredients' => $product->active_ingredients ?? '',
+                'recommendations' => $product->recommendations ?? '',
                 'price' => (string) $product->price,
                 'cost' => $product->cost ? (string) $product->cost : '',
                 'stock' => (string) $product->stock,

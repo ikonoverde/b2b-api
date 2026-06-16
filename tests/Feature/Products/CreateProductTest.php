@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\User;
 
 test('authenticated user can view create product page', function () {
@@ -42,6 +43,7 @@ test('authenticated user can store a product', function () {
         'sku' => 'TEST-001',
         'category_id' => $category->id,
         'description' => 'A test product description',
+        'recommendations' => 'Apply in the morning every two weeks',
         'price' => 29.99,
         'cost' => 15.00,
         'stock' => 100,
@@ -57,6 +59,7 @@ test('authenticated user can store a product', function () {
         'name' => 'Test Product',
         'sku' => 'TEST-001',
         'category_id' => $category->id,
+        'recommendations' => 'Apply in the morning every two weeks',
     ]);
 });
 
@@ -142,7 +145,7 @@ test('validation fails with invalid stock', function () {
 
 test('validation fails with duplicate sku', function () {
     $user = User::factory()->admin()->create();
-    \App\Models\Product::factory()->create(['sku' => 'DUPE-001']);
+    Product::factory()->create(['sku' => 'DUPE-001']);
 
     $response = $this->actingAs($user)->post('/admin/products', [
         'name' => 'Test Product',

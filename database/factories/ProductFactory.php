@@ -3,10 +3,11 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
+ * @extends Factory<Product>
  */
 class ProductFactory extends Factory
 {
@@ -23,6 +24,8 @@ class ProductFactory extends Factory
             'category_id' => Category::factory(),
             'formula_id' => null,
             'description' => fake()->optional()->paragraph(),
+            'active_ingredients' => fake()->optional()->paragraph(),
+            'recommendations' => fake()->optional()->paragraph(),
             'price' => fake()->randomFloat(2, 5, 500),
             'cost' => fake()->optional()->randomFloat(2, 1, 250),
             'stock' => fake()->numberBetween(0, 1000),

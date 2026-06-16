@@ -157,6 +157,28 @@ export default function BasicInfoCard({
                         <span className="text-xs text-red-500 font-[Outfit]">{errors.active_ingredients}</span>
                     )}
                 </div>
+
+                <div className="flex flex-col gap-2">
+                    <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                        Recomendaciones (Markdown)
+                    </label>
+                    <Suspense
+                        fallback={
+                            <div className="h-[220px] bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] animate-pulse" />
+                        }
+                    >
+                        <div data-color-mode="light">
+                            <MDEditor
+                                value={data.recommendations}
+                                onChange={(val) => setData('recommendations', val || '')}
+                                height={220}
+                            />
+                        </div>
+                    </Suspense>
+                    {errors.recommendations && (
+                        <span className="text-xs text-red-500 font-[Outfit]">{errors.recommendations}</span>
+                    )}
+                </div>
             </div>
         </div>
     );
