@@ -26,13 +26,16 @@ it('shows customer dashboard', function () {
 
 it('shows profile stats', function () {
     $user = User::factory()->create();
-    Order::factory(3)->create(['user_id' => $user->id, 'total_amount' => 100]);
+    Order::factory()->create(['user_id' => $user->id, 'status' => 'pending', 'total_amount' => 100]);
+    Order::factory()->processing()->create(['user_id' => $user->id, 'total_amount' => 125]);
+    Order::factory()->create(['user_id' => $user->id, 'status' => 'payment_pending', 'total_amount' => 200]);
+    Order::factory()->cancelled()->create(['user_id' => $user->id, 'total_amount' => 300]);
 
     $response = $this->actingAs($user)->get('/dashboard');
 
     $response->assertInertia(fn ($page) => $page
-        ->where('profile.orders_count', 3)
-        ->where('profile.total_spent', 300)
+        ->where('profile.orders_count', 4)
+        ->where('profile.total_spent', 225)
     );
 });
 

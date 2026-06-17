@@ -38,9 +38,11 @@ trait BuildsUserShowResponse
             'orders' => $orders,
             'activity' => [
                 'total_orders' => $user->orders()->count(),
-                'total_spent' => (float) $user->orders()->sum('total_amount'),
+                'total_spent' => (float) $user->orders()
+                    ->whereNotIn('status', ['payment_pending', 'cancelled'])
+                    ->sum('total_amount'),
                 'last_order_date' => $lastOrder?->created_at->toIso8601String(),
-                'account_age_days' => $user->created_at->diffInDays(now()),
+                'account_age_days' => (int) floor($user->created_at->diffInDays(now())),
             ],
         ];
 

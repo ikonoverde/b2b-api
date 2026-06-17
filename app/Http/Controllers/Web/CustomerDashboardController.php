@@ -33,7 +33,9 @@ class CustomerDashboardController extends Controller
 
         $profile = [
             'orders_count' => $user->orders()->count(),
-            'total_spent' => (float) $user->orders()->sum('total_amount'),
+            'total_spent' => (float) $user->orders()
+                ->whereNotIn('status', ['payment_pending', 'cancelled'])
+                ->sum('total_amount'),
         ];
 
         return Inertia::render('CustomerDashboard', [

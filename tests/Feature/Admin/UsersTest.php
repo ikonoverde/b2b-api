@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Order;
 use App\Models\User;
 
 test('admin can view users page', function () {
@@ -135,14 +136,19 @@ test('user details returns 404 for non-existent user', function () {
 
 test('user details includes activity summary', function () {
     $admin = User::factory()->admin()->create();
-    $user = User::factory()->create();
+    $user = User::factory()->create(['created_at' => now()->subDays(3)->subHours(12)]);
+    Order::factory()->create(['user_id' => $user->id, 'status' => 'pending', 'total_amount' => 100]);
+    Order::factory()->processing()->create(['user_id' => $user->id, 'total_amount' => 125]);
+    Order::factory()->create(['user_id' => $user->id, 'status' => 'payment_pending', 'total_amount' => 200]);
+    Order::factory()->cancelled()->create(['user_id' => $user->id, 'total_amount' => 300]);
 
     $response = $this->actingAs($admin)->get("/admin/users/{$user->id}");
 
     $response->assertInertia(fn ($page) => $page
         ->has('activity')
-        ->where('activity.total_orders', 0)
-        ->where('activity.total_spent', 0)
+        ->where('activity.total_orders', 4)
+        ->where('activity.total_spent', 225)
+        ->where('activity.account_age_days', 3)
     );
 });
 
