@@ -2,12 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Services\ImageService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Laravel\Ai\Files\Image as ReferenceImage;
-use Laravel\Ai\Image;
-use Laravel\Ai\PendingResponses\PendingImageGeneration;
+use InvalidArgumentException;
 use Throwable;
 
 class GenerateImageCommand extends Command
@@ -38,47 +35,26 @@ class GenerateImageCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): int
+    public function handle(ImageService $images): int
     {
-        $size = $this->option('size');
-
-        if (! in_array($size, ['1:1', '3:2', '2:3'], true)) {
-            $this->error('Invalid --size. Use one of: 1:1, 3:2, 2:3.');
-
-            return self::INVALID;
-        }
-
-        $quality = $this->option('quality');
-
-        if (! in_array($quality, ['low', 'medium', 'high'], true)) {
-            $this->error('Invalid --quality. Use one of: low, medium, high.');
-
-            return self::INVALID;
-        }
-
-        $references = [];
-
-        foreach ($this->option('reference') as $referencePath) {
-            if (! is_file($referencePath)) {
-                $this->error("Reference image not found: {$referencePath}");
-
-                return self::INVALID;
-            }
-
-            $references[] = ReferenceImage::fromPath($referencePath);
-        }
-
         $this->info('Generating image...');
 
         try {
-            $response = Image::of($this->argument('prompt'))
-                ->size($size)
-                ->quality($quality)
-                ->when($references !== [], fn (PendingImageGeneration $pending): PendingImageGeneration => $pending->attachments($references))
-                ->generate(
-                    $this->option('provider') ?: null,
-                    $this->option('model') ?: null,
-                );
+            $result = $images->generate(
+                prompt: $this->argument('prompt'),
+                size: $this->option('size'),
+                quality: $this->option('quality'),
+                provider: $this->option('provider') ?: null,
+                model: $this->option('model') ?: null,
+                references: $this->option('reference'),
+                disk: $this->option('disk'),
+                path: $this->option('path'),
+                name: $this->option('name') ?: null,
+            );
+        } catch (InvalidArgumentException $e) {
+            $this->error($e->getMessage());
+
+            return self::INVALID;
         } catch (Throwable $e) {
             $this->error('Image generation failed: '.$e->getMessage());
             $this->line('Ensure the provider API key (e.g. GEMINI_API_KEY) is set in your .env file.');
@@ -86,32 +62,10 @@ class GenerateImageCommand extends Command
             return self::FAILURE;
         }
 
-        $extension = match ($response->firstImage()->mime) {
-            'image/jpeg' => 'jpg',
-            'image/webp' => 'webp',
-            default => 'png',
-        };
+        $this->info("Image stored: [{$result['disk']}] {$result['path']}");
 
-        $disk = $this->option('disk');
-
-        $storedPath = $response->storePubliclyAs(
-            trim((string) $this->option('path'), '/'),
-            ($this->option('name') ?: Str::random(40)).'.'.$extension,
-            $disk,
-        );
-
-        if ($storedPath === false) {
-            $this->error("Generated the image but failed to store it on the [{$disk}] disk.");
-
-            return self::FAILURE;
-        }
-
-        $this->info("Image stored: [{$disk}] {$storedPath}");
-
-        try {
-            $this->line('URL: '.Storage::disk($disk)->url($storedPath));
-        } catch (Throwable) {
-            // The disk does not support URL generation; nothing to show.
+        if ($result['url'] !== null) {
+            $this->line('URL: '.$result['url']);
         }
 
         return self::SUCCESS;

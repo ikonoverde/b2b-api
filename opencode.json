@@ -4,11 +4,7 @@
         "laravel-boost": {
             "type": "local",
             "enabled": true,
-            "command": [
-                "php",
-                "artisan",
-                "boost:mcp"
-            ]
+            "command": ["php", "artisan", "boost:mcp"]
         },
         "laravel-telescope": {
             "type": "local",
@@ -35,15 +31,15 @@
         "analytics-mcp": {
             "type": "local",
             "enabled": true,
-            "command": [
-                "pipx",
-                "run",
-                "analytics-mcp"
-            ],
+            "command": ["pipx", "run", "analytics-mcp"],
             "environment": {
                 "GOOGLE_APPLICATION_CREDENTIALS": "/home/eric/projects/b2b/marketing/client_secret_728090609161-ji196taumii0c2a2puiq8s2hbv7gh1nh.apps.googleusercontent.com.json",
                 "GOOGLE_PROJECT_ID": "ikonoverde"
             }
+        },
+        "images": {
+            "type": "remote",
+            "url": "http://192.168.0.193:8000/mcp/images"
         }
     },
     "command": {
