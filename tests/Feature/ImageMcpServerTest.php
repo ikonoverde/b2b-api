@@ -69,6 +69,65 @@ it('rejects conflicting optimization options before generating', function () {
     Image::assertNothingGenerated();
 });
 
+it('treats blank optional mcp arguments as omitted', function () {
+    Storage::fake('public');
+    Image::fake([base64_encode(makeMcpImageTestImage(1024, 1024))]);
+
+    ImageServer::tool(GenerateAndOptimizeImageTool::class, [
+        'prompt' => 'A simple blue rocket on a white background',
+        'size' => '1:1',
+        'generation_quality' => 'low',
+        'provider' => '',
+        'model' => '',
+        'references' => [],
+        'disk' => 'public',
+        'path' => 'mcp-test',
+        'name' => 'images-mcp-test',
+        'format' => 'webp',
+        'optimize_quality' => 80,
+        'max_width' => 512,
+        'cover' => '',
+        'position' => 'center',
+        'output' => '',
+    ])->assertOk();
+
+    Storage::disk('public')->assertExists('mcp-test/images-mcp-test.webp');
+
+    $optimized = ImageManager::gd()->read(Storage::disk('public')->get('mcp-test/images-mcp-test.webp'));
+
+    expect($optimized->width())->toBe(512)
+        ->and($optimized->height())->toBe(512);
+});
+
+it('treats zero max width as omitted when cover is provided', function () {
+    Storage::fake('public');
+    Image::fake([base64_encode(makeMcpImageTestImage(1024, 768))]);
+
+    ImageServer::tool(GenerateAndOptimizeImageTool::class, [
+        'prompt' => 'A simple blue rocket on a white background',
+        'path' => 'mcp-test',
+        'name' => 'images-mcp-cover-test',
+        'format' => 'webp',
+        'max_width' => 0,
+        'cover' => '512x512',
+    ])->assertOk();
+
+    $optimized = ImageManager::gd()->read(Storage::disk('public')->get('mcp-test/images-mcp-cover-test.webp'));
+
+    expect($optimized->width())->toBe(512)
+        ->and($optimized->height())->toBe(512);
+});
+
+it('advertises optional mcp arguments as nullable', function () {
+    $tool = app(GenerateAndOptimizeImageTool::class)->toArray();
+
+    expect($tool['inputSchema']['required'])->toBe(['prompt'])
+        ->and($tool['inputSchema']['properties']['cover']['type'])->toBe(['string', 'null'])
+        ->and($tool['inputSchema']['properties']['max_width']['type'])->toBe(['integer', 'null'])
+        ->and($tool['inputSchema']['properties']['provider']['type'])->toBe(['string', 'null'])
+        ->and($tool['inputSchema']['properties']['output']['type'])->toBe(['string', 'null']);
+});
+
 it('requires authentication for the mcp http server', function () {
     $this->postJson('/mcp/images', [
         'jsonrpc' => '2.0',

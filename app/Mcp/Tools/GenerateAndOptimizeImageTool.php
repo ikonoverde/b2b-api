@@ -29,6 +29,8 @@ class GenerateAndOptimizeImageTool extends Tool
      */
     public function handle(Request $request, ImageService $images): Response|ResponseFactory
     {
+        $request->setArguments($this->normalizeArguments($request->all()));
+
         $validated = $request->validate([
             'prompt' => ['required', 'string', 'max:4000'],
             'size' => ['nullable', 'string', 'in:1:1,3:2,2:3'],
@@ -54,7 +56,7 @@ class GenerateAndOptimizeImageTool extends Tool
             'cover.regex' => 'Use cover dimensions in WIDTHxHEIGHT format, such as 1200x630.',
         ]);
 
-        if (array_key_exists('cover', $validated) && array_key_exists('max_width', $validated)) {
+        if (($validated['cover'] ?? null) !== null && ($validated['max_width'] ?? null) !== null) {
             return Response::error('Use either max_width or cover, not both.');
         }
 
@@ -104,6 +106,25 @@ class GenerateAndOptimizeImageTool extends Tool
     }
 
     /**
+     * @param  array<string, mixed>  $arguments
+     * @return array<string, mixed>
+     */
+    private function normalizeArguments(array $arguments): array
+    {
+        foreach (['size', 'generation_quality', 'provider', 'model', 'disk', 'path', 'name', 'format', 'cover', 'position', 'output'] as $key) {
+            if (array_key_exists($key, $arguments) && is_string($arguments[$key])) {
+                $arguments[$key] = trim($arguments[$key]) === '' ? null : trim($arguments[$key]);
+            }
+        }
+
+        if (($arguments['max_width'] ?? null) === '' || ($arguments['max_width'] ?? null) === 0 || ($arguments['max_width'] ?? null) === '0') {
+            $arguments['max_width'] = null;
+        }
+
+        return $arguments;
+    }
+
+    /**
      * Get the tool's input schema.
      *
      * @return array<string, Type>
@@ -115,47 +136,61 @@ class GenerateAndOptimizeImageTool extends Tool
                 ->description('Text prompt describing the image to generate.')
                 ->required(),
             'size' => $schema->string()
+                ->nullable()
                 ->enum(['1:1', '3:2', '2:3'])
                 ->description('Generation aspect ratio.')
                 ->default('1:1'),
             'generation_quality' => $schema->string()
+                ->nullable()
                 ->enum(['low', 'medium', 'high'])
                 ->description('AI image generation quality.')
                 ->default('high'),
             'provider' => $schema->string()
+                ->nullable()
                 ->description('AI provider to use. Defaults to the image provider configured for the app.'),
             'model' => $schema->string()
+                ->nullable()
                 ->description('Provider model to use. Defaults to the provider default.'),
             'references' => $schema->array()
+                ->nullable()
                 ->items($schema->string()->description('Server-local reference image path.'))
                 ->description('Optional server-local reference image paths to guide or edit the image.'),
             'disk' => $schema->string()
+                ->nullable()
                 ->description('Filesystem disk where the generated and optimized image should be stored.')
                 ->default('public'),
             'path' => $schema->string()
+                ->nullable()
                 ->description('Directory on the disk where the generated image should be stored.')
                 ->default('ai-images'),
             'name' => $schema->string()
+                ->nullable()
                 ->description('Filename without extension. Defaults to a random name.'),
             'format' => $schema->string()
+                ->nullable()
                 ->enum(['webp', 'jpeg', 'jpg', 'png'])
                 ->description('Optional output format for optimization. Defaults to the generated format.'),
             'optimize_quality' => $schema->integer()
+                ->nullable()
                 ->min(1)
                 ->max(100)
                 ->description('Encoding quality for lossy optimization formats.')
                 ->default(80),
             'max_width' => $schema->integer()
+                ->nullable()
                 ->min(1)
                 ->description('Downscale images wider than this many pixels, preserving aspect ratio. Do not use with cover.'),
             'cover' => $schema->string()
+                ->nullable()
                 ->pattern('^\d+x\d+$')
                 ->description('Resize and crop to exact dimensions, such as 1200x630. Do not use with max_width.'),
             'position' => $schema->string()
+                ->nullable()
                 ->enum(['top-left', 'top', 'top-right', 'left', 'center', 'right', 'bottom-left', 'bottom', 'bottom-right'])
                 ->description('Crop anchor for cover resizing.')
                 ->default('center'),
             'output' => $schema->string()
+                ->nullable()
                 ->description('Optional destination path on the same disk for the optimized file.'),
         ];
     }
