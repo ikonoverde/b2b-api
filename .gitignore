@@ -13,9 +13,7 @@
 /.vscode
 /.zed
 /auth.json
-/bootstrap/ssr
 /node_modules
-/public/build
 /public/hot
 /public/storage
 /storage/*.key
