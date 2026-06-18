@@ -39,7 +39,7 @@
         },
         "images": {
             "type": "remote",
-            "url": "http://192.168.0.193:8000/mcp/images"
+            "url": "http://localhost:8000/mcp/images"
         }
     },
     "command": {
