@@ -46,6 +46,9 @@ export default function SiteFooter({ className = '' }: SiteFooterProps) {
                         <Link href="/catalog" prefetch className={footerLinkClass}>
                             Catálogo
                         </Link>
+                        <Link href="/blog" prefetch className={footerLinkClass}>
+                            Blog
+                        </Link>
                         <Link href="/faq" className={footerLinkClass}>
                             Preguntas frecuentes
                         </Link>

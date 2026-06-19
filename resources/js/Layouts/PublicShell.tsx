@@ -60,6 +60,9 @@ function SiteHeader() {
                     <Link href="/catalog" className={linkClass}>
                         Catálogo
                     </Link>
+                    <Link href="/blog" className={linkClass}>
+                        Blog
+                    </Link>
                     {auth.user ? (
                         <>
                             {auth.canAccessAdmin && (

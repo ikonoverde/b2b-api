@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SuperAdminUserSeeder::class);
         $this->call(ShippingMethodSeeder::class);
         $this->call(ProductSeeder::class);
+        $this->call(BlogPostSeeder::class);
 
         $categories = Category::factory(4)->create();
 

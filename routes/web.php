@@ -14,6 +14,8 @@ use App\Http\Controllers\Web\Auth\ShowForgotPasswordController;
 use App\Http\Controllers\Web\Auth\ShowGoogleCompleteRegistrationController;
 use App\Http\Controllers\Web\Auth\ShowResetPasswordController;
 use App\Http\Controllers\Web\Auth\StoreGoogleCompleteRegistrationController;
+use App\Http\Controllers\Web\Blog\IndexBlogPostsController;
+use App\Http\Controllers\Web\Blog\ShowBlogPostController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\CatalogController;
 use App\Http\Controllers\Web\Checkout\GetShippingQuotesController;
@@ -36,6 +38,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', HomeController::class)->name('home');
 Route::get('/catalog', CatalogController::class)->name('catalog');
 Route::get('/products/{slug}', [ProductController::class, 'show'])->name('product.show');
+Route::get('/blog', IndexBlogPostsController::class)->name('blog.index');
+Route::get('/blog/{blogPost:slug}', ShowBlogPostController::class)->name('blog.show');
 
 Route::get('/terms', [StaticPageController::class, 'show'])->defaults('slug', 'terms')->name('terms');
 Route::get('/privacy', [StaticPageController::class, 'show'])->defaults('slug', 'privacy')->name('privacy');

@@ -15,6 +15,7 @@ import {
     Star,
     Image,
     PenLine,
+    Newspaper,
 } from 'lucide-react';
 import type { PageProps } from '@/types';
 
@@ -49,6 +50,7 @@ const contentNav: NavItem[] = [
     { name: 'Destacados', href: '/admin/featured-products', icon: Star, id: 'featured-products' },
     { name: 'Banners', href: '/admin/banners', icon: Image, id: 'banners' },
     { name: 'Páginas', href: '/admin/static-pages', icon: PenLine, id: 'static-pages' },
+    { name: 'Blog', href: '/admin/blog-posts', icon: Newspaper, id: 'blog-posts' },
 ];
 
 const systemNav: NavItem[] = [

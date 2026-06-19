@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\BlogPosts\CreateBlogPostController;
+use App\Http\Controllers\Admin\BlogPosts\DestroyBlogPostController;
+use App\Http\Controllers\Admin\BlogPosts\EditBlogPostController;
+use App\Http\Controllers\Admin\BlogPosts\IndexBlogPostsController;
+use App\Http\Controllers\Admin\BlogPosts\StoreBlogPostController;
+use App\Http\Controllers\Admin\BlogPosts\UpdateBlogPostController;
 use App\Http\Controllers\Admin\Businesses\ExportBusinessesForMetaController;
 use App\Http\Controllers\Admin\Businesses\IndexBusinessesController;
 use App\Http\Controllers\Admin\Businesses\StartBusinessScrapeController;
@@ -76,6 +82,13 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
         ->name('static-pages.edit');
     Route::put('/static-pages/{staticPage}', [StaticPagesController::class, 'update'])
         ->name('static-pages.update');
+
+    Route::get('/blog-posts', IndexBlogPostsController::class)->name('blog-posts');
+    Route::get('/blog-posts/create', CreateBlogPostController::class)->name('blog-posts.create');
+    Route::post('/blog-posts', StoreBlogPostController::class)->name('blog-posts.store');
+    Route::get('/blog-posts/{blogPost}/edit', EditBlogPostController::class)->name('blog-posts.edit');
+    Route::put('/blog-posts/{blogPost}', UpdateBlogPostController::class)->name('blog-posts.update');
+    Route::delete('/blog-posts/{blogPost}', DestroyBlogPostController::class)->name('blog-posts.destroy');
 
     Route::get('/users', IndexUsersController::class)->name('users');
     Route::get('/users/{user}', ShowUserController::class)->name('users.show');
