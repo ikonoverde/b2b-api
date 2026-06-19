@@ -14,12 +14,12 @@ it('shows the homepage benefit copy', function () {
     $homePage = file_get_contents(resource_path('js/Pages/Home.tsx'));
 
     expect($homePage)
-        ->toContain('SIN MÍNIMO')
-        ->toContain('Desde 1 unidad')
-        ->toContain('PRECIO CLARO')
-        ->toContain('Visible para todos')
-        ->toContain('CUENTA OPCIONAL')
-        ->toContain('Compra sin registrarte');
+        ->toContain('Para servicios de spa y masaje')
+        ->toContain('Cuidado corporal formulado para terapeutas, centros de bienestar, spas y hoteles')
+        ->toContain('Ingredientes con propósito')
+        ->toContain('activos botánicos pensados para aportar deslizamiento, nutrición, calma o recuperación')
+        ->toContain('Absorción agradable')
+        ->toContain('Texturas cómodas que se integran a la piel sin sentirse pesadas');
 });
 
 it('shows the homepage footer handoff copy', function () {

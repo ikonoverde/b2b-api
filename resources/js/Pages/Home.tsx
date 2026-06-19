@@ -18,17 +18,26 @@ export interface HomeProps extends PageProps {
     banners: BannerData[];
 }
 
-const VALUE_PROPS = [
-    { label: 'SIN MÍNIMO', value: 'Desde 1 unidad' },
-    { label: 'PRECIO CLARO', value: 'Visible para todos' },
-    { label: 'CUENTA OPCIONAL', value: 'Compra sin registrarte' },
+const BENEFITS = [
+    {
+        label: 'Para servicios de spa y masaje',
+        text: 'Cuidado corporal formulado para terapeutas, centros de bienestar, spas y hoteles.',
+    },
+    {
+        label: 'Ingredientes con propósito',
+        text: 'Fórmulas con activos botánicos pensados para aportar deslizamiento, nutrición, calma o recuperación según el tratamiento.',
+    },
+    {
+        label: 'Absorción agradable',
+        text: 'Texturas cómodas que se integran a la piel sin sentirse pesadas, para que cada servicio se perciba más profesional.',
+    },
 ] as const;
 
 export default function Home({ featuredProducts, banners }: HomeProps) {
     return (
         <PublicShell title="Ikonoverde | Cuidado corporal profesional">
             <Hero />
-            <ValuePropStrip />
+            <BenefitsSection />
             <FeaturedList products={featuredProducts} />
             <BannersBlock banners={banners} />
             <SecondaryHandoff />
@@ -99,26 +108,48 @@ function Hero() {
     );
 }
 
-function ValuePropStrip() {
+function BenefitsSection() {
     return (
         <section
-            aria-label="Términos comerciales"
-            className="grid grid-cols-1 border-y border-[var(--iko-accent-line)] bg-[var(--iko-stone-surface)] py-10 sm:grid-cols-3 sm:divide-x sm:divide-[var(--iko-accent-line)]"
+            aria-labelledby="benefits-heading"
+            className="relative left-1/2 w-screen -translate-x-1/2 border-y border-[var(--iko-accent-line)] bg-[var(--iko-stone-surface)]"
         >
-            {VALUE_PROPS.map((item, idx) => (
-                <div key={item.label} className="flex flex-col gap-2 px-8 py-3">
-                    <span className="font-spec text-[11px] tracking-[0.08em] text-[var(--iko-accent-ink)] uppercase">
-                        {String(idx + 1).padStart(2, '0')} · {item.label}
-                    </span>
-                    <span
-                        className={`font-display text-[1.5rem] leading-tight ${
-                            idx === 0 ? 'text-[var(--iko-accent-ink)]' : 'text-[var(--iko-stone-ink)]'
-                        }`}
+            <div className="mx-auto grid max-w-[72rem] gap-10 px-6 py-14 sm:px-10 lg:grid-cols-[0.72fr_1.28fr] lg:px-16 lg:py-16">
+                <div className="max-w-[30rem]">
+                    <p className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-accent-ink)] uppercase">
+                        Beneficios
+                    </p>
+                    <h2
+                        id="benefits-heading"
+                        className="mt-5 font-display text-[clamp(2rem,3vw,2.75rem)] leading-[1.08] tracking-[-0.01em] text-[var(--iko-stone-ink)]"
                     >
-                        {item.value}
-                    </span>
+                        Formulado para que el servicio se sienta profesional.
+                    </h2>
+                    <p className="mt-6 max-w-[42ch] text-[15px] leading-[1.65] text-[var(--iko-stone-whisper)]">
+                        El valor principal está en cabina: deslizamiento, textura y percepción del tratamiento, no
+                        en promesas genéricas de bienestar.
+                    </p>
                 </div>
-            ))}
+
+                <ol className="border-t border-[var(--iko-accent-line)]">
+                    {BENEFITS.map((benefit, idx) => (
+                        <li
+                            key={benefit.label}
+                            className="grid gap-4 border-b border-[var(--iko-stone-hairline)] py-6 sm:grid-cols-[3.5rem_14rem_1fr] sm:gap-6 sm:py-7"
+                        >
+                            <span className="font-spec text-[12px] tabular-nums tracking-[0.04em] text-[var(--iko-accent-ink)]">
+                                {String(idx + 1).padStart(2, '0')}
+                            </span>
+                            <h3 className="font-display text-[1.35rem] leading-[1.12] text-[var(--iko-stone-ink)]">
+                                {benefit.label}
+                            </h3>
+                            <p className="max-w-[52ch] text-[15px] leading-[1.65] text-[var(--iko-stone-ink)]/75">
+                                {benefit.text}
+                            </p>
+                        </li>
+                    ))}
+                </ol>
+            </div>
         </section>
     );
 }
