@@ -1,5 +1,6 @@
 <?php
 
+use App\Mcp\Servers\BlogServer;
 use App\Mcp\Servers\ImageServer;
 use Laravel\Mcp\Facades\Mcp;
 
@@ -8,4 +9,7 @@ use Laravel\Mcp\Facades\Mcp;
 Mcp::oauthRoutes();
 
 Mcp::web('/mcp/images', ImageServer::class)
+    ->middleware('auth:api');
+
+Mcp::web('/mcp/blog', BlogServer::class)
     ->middleware('auth:api');

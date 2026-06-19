@@ -34,7 +34,11 @@
         },
         "images": {
             "type": "remote",
-            "url": "https://pro.ikonoverde.com/mcp/images"
+            "url": "http://localhost:8000/mcp/images"
+        },
+        "blog": {
+            "type": "remote",
+            "url": "http://localhost:8000/mcp/blog"
         }
     },
     "command": {
