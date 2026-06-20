@@ -107,6 +107,7 @@ it('validates required questionnaire answers', function () {
         'business_name',
         'contact_name',
         'email',
+        'phone',
         'business_type',
         'client_volume',
         'products_interested',
@@ -115,6 +116,31 @@ it('validates required questionnaire answers', function () {
 
     expect(MeridaSampleRequest::query()->count())->toBe(0);
 });
+
+it('validates contact email and phone number', function (array $overrides, array $errors) {
+    $response = $this->post('/muestras-gratis-merida', validMeridaSamplePayload($overrides));
+
+    $response->assertInvalid($errors);
+
+    expect(MeridaSampleRequest::query()->count())->toBe(0);
+})->with([
+    'invalid email' => [
+        ['email' => 'ana-at-example.com'],
+        ['email' => 'Indique un correo válido.'],
+    ],
+    'email without top-level domain' => [
+        ['email' => 'asdf@ggg'],
+        ['email' => 'Indique un correo válido.'],
+    ],
+    'short phone' => [
+        ['phone' => '999123456'],
+        ['phone' => 'El teléfono debe tener 10 dígitos.'],
+    ],
+    'phone with letters' => [
+        ['phone' => '999123abcd'],
+        ['phone' => 'El teléfono debe tener 10 dígitos.'],
+    ],
+]);
 
 it('rejects unsupported questionnaire options', function () {
     $response = $this->post('/muestras-gratis-merida', validMeridaSamplePayload([

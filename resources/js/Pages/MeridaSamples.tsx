@@ -152,6 +152,7 @@ export default function MeridaSamples({ options }: MeridaSamplesProps) {
                                         value={form.data.email}
                                         error={form.errors.email}
                                         required
+                                        pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
                                         onChange={(value) =>
                                             form.setData("email", value)
                                         }
@@ -162,6 +163,11 @@ export default function MeridaSamples({ options }: MeridaSamplesProps) {
                                         type="tel"
                                         value={form.data.phone}
                                         error={form.errors.phone}
+                                        required
+                                        pattern="[0-9]{10}"
+                                        inputMode="numeric"
+                                        maxLength={10}
+                                        placeholder="9991234567"
                                         onChange={(value) =>
                                             form.setData("phone", value)
                                         }
@@ -312,6 +318,9 @@ function TextField({
     error,
     placeholder,
     required = false,
+    pattern,
+    inputMode,
+    maxLength,
 }: {
     id: keyof MeridaSampleForm;
     label: string;
@@ -321,6 +330,9 @@ function TextField({
     error?: string;
     placeholder?: string;
     required?: boolean;
+    pattern?: string;
+    inputMode?: "numeric";
+    maxLength?: number;
 }) {
     return (
         <div className="grid gap-2">
@@ -342,6 +354,9 @@ function TextField({
                 value={value}
                 placeholder={placeholder}
                 required={required}
+                pattern={pattern}
+                inputMode={inputMode}
+                maxLength={maxLength}
                 onChange={(event) => onChange(event.target.value)}
                 aria-invalid={error ? "true" : undefined}
                 aria-describedby={error ? `${id}-error` : undefined}
