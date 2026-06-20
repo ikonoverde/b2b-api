@@ -2,6 +2,8 @@
 
 use App\Models\MeridaSampleRequest;
 use App\Models\User;
+use App\Notifications\SampleRequest\NewMeridaSampleRequest;
+use Illuminate\Support\Facades\Notification;
 
 function validMeridaSamplePayload(array $overrides = []): array
 {
@@ -58,6 +60,34 @@ it('stores a Merida sample request', function () {
         ->and($sampleRequest->products_interested)->toBe(['Aceites', 'Gel After Sun'])
         ->and($sampleRequest->improvement_goals)->toBe(['Mejor precio/rendimiento', 'Proveedor local más rápido'])
         ->and($sampleRequest->status)->toBe('pending');
+});
+
+it('emails active admin users when a Merida sample request is submitted', function () {
+    Notification::fake();
+
+    $admin = User::factory()->admin()->create();
+    $superAdmin = User::factory()->superAdmin()->create();
+    $inactiveAdmin = User::factory()->admin()->inactive()->create();
+    $customer = User::factory()->create();
+
+    $this->post('/muestras-gratis-merida', validMeridaSamplePayload())
+        ->assertRedirect(route('merida-samples.show'));
+
+    $sampleRequest = MeridaSampleRequest::query()->firstOrFail();
+
+    Notification::assertSentTo($admin, NewMeridaSampleRequest::class, function (NewMeridaSampleRequest $notification, array $channels) use ($sampleRequest): bool {
+        return in_array('mail', $channels, true)
+            && $notification->sampleRequest->is($sampleRequest);
+    });
+
+    Notification::assertSentTo($superAdmin, NewMeridaSampleRequest::class, function (NewMeridaSampleRequest $notification, array $channels) use ($sampleRequest): bool {
+        return in_array('mail', $channels, true)
+            && $notification->sampleRequest->is($sampleRequest);
+    });
+
+    Notification::assertNotSentTo($inactiveAdmin, NewMeridaSampleRequest::class);
+    Notification::assertNotSentTo($customer, NewMeridaSampleRequest::class);
+    Notification::assertSentTimes(NewMeridaSampleRequest::class, 2);
 });
 
 it('associates sample requests with authenticated users', function () {
