@@ -30,7 +30,9 @@ use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\PaymentMethodController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileController;
+use App\Http\Controllers\Web\ShowMeridaSampleRequestController;
 use App\Http\Controllers\Web\StaticPageController;
+use App\Http\Controllers\Web\StoreMeridaSampleRequestController;
 use App\Http\Controllers\Web\UpdateNotificationPreferencesController;
 use App\Http\Controllers\Web\UpdateProfileController;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +42,8 @@ Route::get('/catalog', CatalogController::class)->name('catalog');
 Route::get('/products/{slug}', [ProductController::class, 'show'])->name('product.show');
 Route::get('/blog', IndexBlogPostsController::class)->name('blog.index');
 Route::get('/blog/{blogPost:slug}', ShowBlogPostController::class)->name('blog.show');
+Route::get('/muestras-gratis-merida', ShowMeridaSampleRequestController::class)->name('merida-samples.show');
+Route::post('/muestras-gratis-merida', StoreMeridaSampleRequestController::class)->name('merida-samples.store');
 
 Route::get('/terms', [StaticPageController::class, 'show'])->defaults('slug', 'terms')->name('terms');
 Route::get('/privacy', [StaticPageController::class, 'show'])->defaults('slug', 'privacy')->name('privacy');

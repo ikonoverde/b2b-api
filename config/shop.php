@@ -37,6 +37,8 @@ return [
 
     'visitor_location' => [
         'database_path' => env('GEOIP_DATABASE_PATH', storage_path('app/geoip/GeoLite2-City.mmdb')),
+        'download_url' => env('GEOIP_DOWNLOAD_URL', 'https://download.maxmind.com/app/geoip_download'),
+        'license_key' => env('MAXMIND_LICENSE_KEY'),
         'cache_ttl' => env('GEOIP_CACHE_TTL', 86400),
         'merida_promotion' => [
             'enabled' => env('MERIDA_PROMOTION_ENABLED', true),

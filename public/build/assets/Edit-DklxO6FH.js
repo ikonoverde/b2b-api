@@ -1,1 +1,0 @@
-import{j as t}from"./app-CtGjZFEa.js";import r from"./Form-CTqmNaQo.js";import"./AppLayout-D33RM1HW.js";import"./shopping-cart-ClK2mWRt.js";import"./createLucideIcon-CNCLuPXS.js";import"./package-BBqNNkex.js";import"./file-text-CG7a_PCB.js";import"./star-DpsDu8WV.js";import"./arrow-left-CR03uB3N.js";function a({post:o}){return t.jsx(r,{post:o})}export{a as default};

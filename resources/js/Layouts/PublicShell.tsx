@@ -57,18 +57,18 @@ function MeridaPromotionBanner() {
             <div className="mx-auto flex max-w-[72rem] flex-col gap-3 px-6 py-4 text-[var(--iko-stone-ink)] sm:flex-row sm:items-center sm:justify-between sm:px-10 lg:px-16">
                 <div className="max-w-[54rem]">
                     <p className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-accent-ink)] uppercase">
-                        Mérida · Yucatán
+                        Mérida · Muestras para negocios
                     </p>
                     <p className="mt-1 text-[14px] leading-[1.55] text-[var(--iko-stone-ink)]/80">
-                        Está visitando desde nuestra ciudad base. Consulte promociones locales disponibles para su
-                        pedido.
+                        Negocios locales pueden solicitar muestras sin costo. Complete un breve cuestionario para
+                        validar el perfil del servicio.
                     </p>
                 </div>
                 <Link
-                    href="/catalog"
+                    href="/muestras-gratis-merida"
                     className="w-fit rounded-sm text-[13px] font-medium text-[var(--iko-accent-ink)] underline underline-offset-4 transition-colors hover:text-[var(--iko-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-accent-mist)]"
                 >
-                    Ver catálogo
+                    Solicitar muestras
                 </Link>
             </div>
         </section>
