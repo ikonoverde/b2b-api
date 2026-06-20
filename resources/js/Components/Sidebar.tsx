@@ -16,6 +16,7 @@ import {
     Image,
     PenLine,
     Newspaper,
+    Gift,
 } from 'lucide-react';
 import type { PageProps } from '@/types';
 
@@ -43,6 +44,7 @@ const managementNav: NavItem[] = [
     { name: 'Categorías', href: '/admin/categories', icon: Folder, id: 'categories' },
     { name: 'Envios', href: '/admin/shipments', icon: Truck, id: 'shipments' },
     { name: 'Negocios', href: '/admin/businesses', icon: Building2, id: 'businesses' },
+    { name: 'Muestras gratis', href: '/admin/sample-requests', icon: Gift, id: 'sample-requests' },
     { name: 'Facturas', href: '/admin/invoices', icon: FileText, id: 'invoices' },
 ];
 

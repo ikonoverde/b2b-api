@@ -379,3 +379,19 @@ export interface BusinessScrapeRun {
     started_at: string | null;
     completed_at: string | null;
 }
+
+export interface MeridaSampleRequestItem {
+    id: number;
+    business_name: string;
+    contact_name: string;
+    email: string;
+    phone: string | null;
+    business_type: string;
+    client_volume: string;
+    social_url: string | null;
+    products_interested: string[];
+    improvement_goals: string[];
+    status: string;
+    created_at: string;
+    user: AdminOrderCustomer | null;
+}

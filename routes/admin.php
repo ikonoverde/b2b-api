@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\BlogPosts\UpdateBlogPostController;
 use App\Http\Controllers\Admin\Businesses\ExportBusinessesForMetaController;
 use App\Http\Controllers\Admin\Businesses\IndexBusinessesController;
 use App\Http\Controllers\Admin\Businesses\StartBusinessScrapeController;
+use App\Http\Controllers\Admin\MeridaSampleRequests\IndexMeridaSampleRequestsController;
 use App\Http\Controllers\Admin\Orders\CreateOrderRefundController;
 use App\Http\Controllers\Admin\Orders\IndexOrdersController;
 use App\Http\Controllers\Admin\Orders\RetryShippingLabelController;
@@ -111,6 +112,7 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
     Route::get('/businesses', IndexBusinessesController::class)->name('businesses');
     Route::get('/businesses/export', ExportBusinessesForMetaController::class)->name('businesses.export');
     Route::post('/businesses/scrape', StartBusinessScrapeController::class)->name('businesses.scrape');
+    Route::get('/sample-requests', IndexMeridaSampleRequestsController::class)->name('sample-requests');
 
     Route::get('/settings', ShowSettingsController::class)->name('settings.show');
     Route::put('/settings', UpdateSettingsController::class)->name('settings.update');
