@@ -2,12 +2,30 @@
 
 use App\Models\Product;
 use App\Models\User;
+use App\Services\VisitorLocationService;
 
 it('renders the home page for guests', function () {
     $response = $this->get('/');
 
     $response->assertSuccessful();
     $response->assertInertia(fn ($page) => $page->component('Home'));
+});
+
+it('shares merida promotion eligibility with inertia pages', function () {
+    app()->instance(VisitorLocationService::class, new class extends VisitorLocationService
+    {
+        public function shouldShowMeridaPromotion(string $ip): bool
+        {
+            return true;
+        }
+    });
+
+    $response = $this->get('/');
+
+    $response->assertInertia(fn ($page) => $page
+        ->component('Home')
+        ->where('visitor.showMeridaPromo', true)
+    );
 });
 
 it('shows the homepage benefit copy', function () {

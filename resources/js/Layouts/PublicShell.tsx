@@ -35,12 +35,43 @@ export default function PublicShell({ title, children }: PublicShellProps) {
                 }
             >
                 <SiteHeader />
+                <MeridaPromotionBanner />
                 <div className="flex-1 px-6 sm:px-10 lg:px-16">
                     <div className="mx-auto max-w-[72rem]">{children}</div>
                 </div>
                 <SiteFooter className="mt-32" />
             </div>
         </>
+    );
+}
+
+function MeridaPromotionBanner() {
+    const { visitor } = usePage<PageProps>().props;
+
+    if (!visitor?.showMeridaPromo) {
+        return null;
+    }
+
+    return (
+        <section className="border-b border-[var(--iko-accent-line)] bg-[var(--iko-accent-mist)]">
+            <div className="mx-auto flex max-w-[72rem] flex-col gap-3 px-6 py-4 text-[var(--iko-stone-ink)] sm:flex-row sm:items-center sm:justify-between sm:px-10 lg:px-16">
+                <div className="max-w-[54rem]">
+                    <p className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-accent-ink)] uppercase">
+                        Mérida · Yucatán
+                    </p>
+                    <p className="mt-1 text-[14px] leading-[1.55] text-[var(--iko-stone-ink)]/80">
+                        Está visitando desde nuestra ciudad base. Consulte promociones locales disponibles para su
+                        pedido.
+                    </p>
+                </div>
+                <Link
+                    href="/catalog"
+                    className="w-fit rounded-sm text-[13px] font-medium text-[var(--iko-accent-ink)] underline underline-offset-4 transition-colors hover:text-[var(--iko-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-accent-mist)]"
+                >
+                    Ver catálogo
+                </Link>
+            </div>
+        </section>
     );
 }
 

@@ -78,6 +78,9 @@ export interface PageProps {
         ordersCount: number;
     } | null;
     miniCart: MiniCart | null;
+    visitor: {
+        showMeridaPromo: boolean;
+    };
     flash: {
         success?: string;
         error?: string;

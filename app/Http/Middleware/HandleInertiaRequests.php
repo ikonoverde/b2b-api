@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
+use App\Services\VisitorLocationService;
 use Closure;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -12,6 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HandleInertiaRequests extends Middleware
 {
+    public function __construct(private VisitorLocationService $visitorLocationService) {}
+
     /**
      * The root template that is loaded on the first page visit.
      */
@@ -61,6 +64,9 @@ class HandleInertiaRequests extends Middleware
             ],
             'adminNavigation' => fn () => $this->getAdminNavigation($request),
             'miniCart' => fn () => $user ? $this->getMiniCart($user) : null,
+            'visitor' => [
+                'showMeridaPromo' => fn () => $this->visitorLocationService->shouldShowMeridaPromotion($request->ip()),
+            ],
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),

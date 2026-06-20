@@ -35,4 +35,16 @@ return [
         'depth_cm' => 10.0,
     ],
 
+    'visitor_location' => [
+        'database_path' => env('GEOIP_DATABASE_PATH', storage_path('app/geoip/GeoLite2-City.mmdb')),
+        'cache_ttl' => env('GEOIP_CACHE_TTL', 86400),
+        'merida_promotion' => [
+            'enabled' => env('MERIDA_PROMOTION_ENABLED', true),
+            'local_override' => env('MERIDA_PROMOTION_LOCAL_OVERRIDE', false),
+            'country' => env('MERIDA_PROMOTION_COUNTRY', 'MX'),
+            'region' => env('MERIDA_PROMOTION_REGION', 'Yucatán'),
+            'city' => env('MERIDA_PROMOTION_CITY', 'Mérida'),
+        ],
+    ],
+
 ];
