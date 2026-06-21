@@ -34,7 +34,7 @@
     "/build/assets/Shipping-iCNhcdMx.js"
   ],
   "resources/js/Components/Sidebar.tsx": [
-    "/build/assets/AppLayout-C3u1HoYz.js"
+    "/build/assets/AppLayout-BjsYRyw5.js"
   ],
   "resources/js/Components/SiteFooter.tsx": [
     "/build/assets/SiteFooter-Cn_4a6rU.js"
@@ -49,7 +49,7 @@
     "/build/assets/AccountShell-B64sRR20.js"
   ],
   "resources/js/Layouts/AppLayout.tsx": [
-    "/build/assets/AppLayout-C3u1HoYz.js"
+    "/build/assets/AppLayout-BjsYRyw5.js"
   ],
   "resources/js/Layouts/AuthShell.tsx": [
     "/build/assets/AuthShell-DwgI5cc3.js"
@@ -58,7 +58,7 @@
     "/build/assets/CustomerShell-BUXLAgvU.js"
   ],
   "resources/js/Layouts/PublicShell.tsx": [
-    "/build/assets/PublicShell-BP7kSiNp.js"
+    "/build/assets/PublicShell-BcEJPWWt.js"
   ],
   "resources/js/Pages/Account.tsx": [
     "/build/assets/Account-DR5ROzap.js"
@@ -88,10 +88,10 @@
     "/build/assets/ResetPassword-_u_Vi1Bq.js"
   ],
   "resources/js/Pages/Blog/Index.tsx": [
-    "/build/assets/Index-BEr6F-CW.js"
+    "/build/assets/Index-7Ten76JD.js"
   ],
   "resources/js/Pages/Blog/Show.tsx": [
-    "/build/assets/Show-DZi8KAuE.js"
+    "/build/assets/Show-DldGRLvg.js"
   ],
   "resources/js/Pages/Cart.tsx": [
     "/build/assets/Cart-B0CSZoBN.js"
@@ -100,7 +100,7 @@
     "/build/assets/Catalog-idt735A-.js"
   ],
   "resources/js/Pages/Categories.tsx": [
-    "/build/assets/Categories-DllxQDW7.js"
+    "/build/assets/Categories-DrWvcgJy.js"
   ],
   "resources/js/Pages/Checkout/Payment.tsx": [
     "/build/assets/Payment-TefJLyf6.js"
@@ -112,28 +112,31 @@
     "/build/assets/ThankYou-CTKOLMIQ.js"
   ],
   "resources/js/Pages/Content/Banners.tsx": [
-    "/build/assets/Banners-Ns8l3nVm.js"
+    "/build/assets/Banners-BkDVbiFE.js"
   ],
   "resources/js/Pages/Content/FeaturedProducts.tsx": [
-    "/build/assets/FeaturedProducts-C8E31Q4v.js"
+    "/build/assets/FeaturedProducts-DI_1sDqr.js"
   ],
   "resources/js/Pages/Content/StaticPages.tsx": [
-    "/build/assets/StaticPages-D1kV0ANg.js"
+    "/build/assets/StaticPages-DRrUFuBs.js"
   ],
   "resources/js/Pages/Content/StaticPages/Edit.tsx": [
-    "/build/assets/Edit-B6JE-Cth.js"
+    "/build/assets/Edit-BWUjllEq.js"
   ],
   "resources/js/Pages/CustomerDashboard.tsx": [
     "/build/assets/CustomerDashboard-CYBun0O3.js"
   ],
   "resources/js/Pages/Dashboard.tsx": [
-    "/build/assets/Dashboard-B9wWM_Su.js"
+    "/build/assets/Dashboard-CDtYU5NE.js"
   ],
   "resources/js/Pages/Error.tsx": [
-    "/build/assets/Error-DZAtOqgc.js"
+    "/build/assets/Error-DcWp194O.js"
   ],
   "resources/js/Pages/Home.tsx": [
-    "/build/assets/Home-CBFybl3L.js"
+    "/build/assets/Home-DWur8Y5L.js"
+  ],
+  "resources/js/Pages/MeridaSamples.tsx": [
+    "/build/assets/MeridaSamples-DAiX6O7n.js"
   ],
   "resources/js/Pages/Orders/Index.tsx": [
     "/build/assets/Index-UW_SJmUi.js"
@@ -148,13 +151,13 @@
     "/build/assets/Show-DPLDzFBf.js"
   ],
   "resources/js/Pages/Products.tsx": [
-    "/build/assets/Products-Cl6x6Z8s.js"
+    "/build/assets/Products-X8mvtSVv.js"
   ],
   "resources/js/Pages/Products/Create.tsx": [
-    "/build/assets/Create-Dv34Ik82.js"
+    "/build/assets/Create-D29SFCIu.js"
   ],
   "resources/js/Pages/Products/Edit.tsx": [
-    "/build/assets/Edit-D0DqZfRx.js"
+    "/build/assets/Edit-ClJwaTz-.js"
   ],
   "resources/js/Pages/Products/components/BasicInfoCard.tsx": [
     "/build/assets/BasicInfoCard-DUl2Poqc.js"
@@ -184,25 +187,28 @@
     "/build/assets/ImageSection-CSsqV-Zx.js"
   ],
   "resources/js/Pages/StaticPage.tsx": [
-    "/build/assets/StaticPage-Diipen14.js"
+    "/build/assets/StaticPage-B5O-QpQD.js"
   ],
   "resources/js/Pages/admin/blog-posts/Create.tsx": [
-    "/build/assets/Create-BPeoxiGr.js"
+    "/build/assets/Create-BWEKMWAS.js"
   ],
   "resources/js/Pages/admin/blog-posts/Edit.tsx": [
-    "/build/assets/Edit-CM-5CU6O.js"
+    "/build/assets/Edit-B7NqFwnh.js"
   ],
   "resources/js/Pages/admin/blog-posts/Form.tsx": [
-    "/build/assets/Form-C8YswqsO.js"
+    "/build/assets/Form-Bo5niJ9v.js"
   ],
   "resources/js/Pages/admin/blog-posts/Index.tsx": [
-    "/build/assets/Index-Dyfm_yzS.js"
+    "/build/assets/Index-B-05nYv5.js"
   ],
   "resources/js/Pages/admin/businesses/Index.tsx": [
-    "/build/assets/Index-BoJC_Otz.js"
+    "/build/assets/Index-D9GsqwFQ.js"
+  ],
+  "resources/js/Pages/admin/merida-sample-requests/Index.tsx": [
+    "/build/assets/Index-DUAlcAMV.js"
   ],
   "resources/js/Pages/admin/orders/Index.tsx": [
-    "/build/assets/Index-nNVOLNxx.js"
+    "/build/assets/Index-BTBkKuMH.js"
   ],
   "resources/js/Pages/admin/orders/NotesSection.tsx": [
     "/build/assets/NotesSection-CbbYi7_u.js"
@@ -214,7 +220,7 @@
     "/build/assets/RefundModal-DiH1IJz_.js"
   ],
   "resources/js/Pages/admin/orders/Show.tsx": [
-    "/build/assets/Show-7njA88VA.js"
+    "/build/assets/Show-DjLaGJZ1.js"
   ],
   "resources/js/Pages/admin/orders/StatusChangeModal.tsx": [
     "/build/assets/StatusChangeModal-Cp6RzVv0.js"
@@ -226,13 +232,13 @@
     "/build/assets/helpers-CnpaKXV5.js"
   ],
   "resources/js/Pages/admin/settings/Index.tsx": [
-    "/build/assets/Index-Ds0KwHt8.js"
+    "/build/assets/Index-BpMPOx2b.js"
   ],
   "resources/js/Pages/admin/users/Index.tsx": [
-    "/build/assets/Index-Cr5Ld_x7.js"
+    "/build/assets/Index-CZhej8Ti.js"
   ],
   "resources/js/Pages/admin/users/Show.tsx": [
-    "/build/assets/Show-vLYb_aCj.js"
+    "/build/assets/Show-B9lEsCCS.js"
   ],
   "resources/js/hooks/useSavedAddress.ts": [
     "/build/assets/Shipping-iCNhcdMx.js"
