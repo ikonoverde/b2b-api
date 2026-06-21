@@ -45,7 +45,6 @@ return [
             'local_override' => env('MERIDA_PROMOTION_LOCAL_OVERRIDE', false),
             'country' => env('MERIDA_PROMOTION_COUNTRY', 'MX'),
             'region' => env('MERIDA_PROMOTION_REGION', 'Yucatán'),
-            'city' => env('MERIDA_PROMOTION_CITY', 'Mérida'),
         ],
     ],
 

@@ -33,10 +33,10 @@ const BENEFITS = [
     },
 ] as const;
 
-export default function Home({ featuredProducts, banners }: HomeProps) {
+export default function Home({ featuredProducts, banners, visitor }: HomeProps) {
     return (
         <PublicShell title="Ikonoverde | Cuidado corporal profesional">
-            <Hero />
+            <Hero originLabel={visitor.showMeridaPromo ? 'Hecho en Yucatan' : 'Hecho en Mexico'} />
             <BenefitsSection />
             <FeaturedList products={featuredProducts} />
             <BannersBlock banners={banners} />
@@ -45,7 +45,7 @@ export default function Home({ featuredProducts, banners }: HomeProps) {
     );
 }
 
-function Hero() {
+function Hero({ originLabel }: { originLabel: string }) {
     return (
         <section className="relative left-1/2 w-screen -translate-x-1/2 bg-[var(--iko-stone-paper)]">
             <img
@@ -82,7 +82,7 @@ function Hero() {
 
                     <div className="mt-7 flex max-w-max items-center gap-3 border border-[var(--iko-accent-line)] bg-[var(--iko-accent-mist)] px-4 py-2 font-spec text-[11px] text-[var(--iko-accent-ink)] tracking-[0.04em] uppercase">
                         <span aria-hidden="true" className="h-1.5 w-1.5 bg-[var(--iko-accent)]" />
-                        Precio visible para todos
+                        {originLabel}
                     </div>
 
                     <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3">

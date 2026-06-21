@@ -57,11 +57,11 @@ function MeridaPromotionBanner() {
             <div className="mx-auto flex max-w-[72rem] flex-col gap-3 px-6 py-4 text-[var(--iko-stone-ink)] sm:flex-row sm:items-center sm:justify-between sm:px-10 lg:px-16">
                 <div className="max-w-[54rem]">
                     <p className="font-spec text-[11px] tracking-[0.12em] text-[var(--iko-accent-ink)] uppercase">
-                        Mérida · Muestras para negocios
+                        Mérida y alrededores · Muestras para negocios
                     </p>
                     <p className="mt-1 text-[14px] leading-[1.55] text-[var(--iko-stone-ink)]/80">
-                        Negocios locales pueden solicitar muestras sin costo. Complete un breve cuestionario para
-                        validar el perfil del servicio.
+                        Negocios de Mérida y alrededores pueden solicitar muestras sin costo. Complete un breve
+                        cuestionario para validar el perfil del servicio.
                     </p>
                 </div>
                 <Link

@@ -52,8 +52,7 @@ class VisitorLocationService
     public function isPromotionLocation(array $location): bool
     {
         return $this->normalize($location['country'] ?? null) === $this->normalize(config('shop.visitor_location.merida_promotion.country'))
-            && $this->normalize($location['region'] ?? null) === $this->normalize(config('shop.visitor_location.merida_promotion.region'))
-            && $this->normalize($location['city'] ?? null) === $this->normalize(config('shop.visitor_location.merida_promotion.city'));
+            && $this->normalize($location['region'] ?? null) === $this->normalize(config('shop.visitor_location.merida_promotion.region'));
     }
 
     /**

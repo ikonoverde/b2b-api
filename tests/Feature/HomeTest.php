@@ -53,7 +53,9 @@ it('keeps the homepage purchase path colorized with Ikonoverde tokens', function
     $cssSource = file_get_contents(resource_path('css/app.css'));
 
     expect($homePage)
-        ->toContain('Precio visible para todos')
+        ->toContain('Hecho en Yucatan')
+        ->toContain('Hecho en Mexico')
+        ->toContain('visitor.showMeridaPromo')
         ->toContain('bg-[var(--iko-accent-mist)]')
         ->toContain('border-[var(--iko-accent-line)]')
         ->toContain('text-[var(--iko-accent-ink)]')
@@ -62,6 +64,16 @@ it('keeps the homepage purchase path colorized with Ikonoverde tokens', function
         ->toContain('--iko-accent-line: oklch(')
         ->toContain('--iko-accent-ink: oklch(')
         ->not->toContain('--iko-accent-mist: #');
+});
+
+it('labels the samples banner for yucatan visitors', function () {
+    $publicShell = file_get_contents(resource_path('js/Layouts/PublicShell.tsx'));
+
+    expect($publicShell)
+        ->toContain('visitor?.showMeridaPromo')
+        ->toContain('Mérida y alrededores · Muestras para negocios')
+        ->toContain('Negocios de Mérida y alrededores pueden solicitar muestras sin costo')
+        ->not->toContain('Yucatán · Muestras para negocios');
 });
 
 it('passes featured products to the home page', function () {

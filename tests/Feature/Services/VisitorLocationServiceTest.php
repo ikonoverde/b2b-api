@@ -8,16 +8,25 @@ beforeEach(function () {
     config()->set('shop.visitor_location.merida_promotion.local_override', false);
     config()->set('shop.visitor_location.merida_promotion.country', 'MX');
     config()->set('shop.visitor_location.merida_promotion.region', 'Yucatán');
-    config()->set('shop.visitor_location.merida_promotion.city', 'Mérida');
 });
 
-it('matches merida yucatan with or without accents', function () {
+it('matches yucatan state with or without accents', function () {
     $service = new VisitorLocationService;
 
     expect($service->isPromotionLocation([
         'country' => 'mx',
         'region' => 'Yucatan',
         'city' => 'Merida',
+    ]))->toBeTrue();
+});
+
+it('matches other yucatan cities', function () {
+    $service = new VisitorLocationService;
+
+    expect($service->isPromotionLocation([
+        'country' => 'MX',
+        'region' => 'Yucatán',
+        'city' => 'Valladolid',
     ]))->toBeTrue();
 });
 
@@ -35,11 +44,6 @@ it('rejects other locations', function (array $location) {
         'country' => 'MX',
         'region' => 'Nuevo León',
         'city' => 'Mérida',
-    ]],
-    'wrong city' => [[
-        'country' => 'MX',
-        'region' => 'Yucatán',
-        'city' => 'Valladolid',
     ]],
 ]);
 
