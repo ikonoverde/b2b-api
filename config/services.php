@@ -59,6 +59,10 @@ return [
 
     'meta_pixel' => [
         'pixel_id' => env('META_PIXEL_ID'),
+        'conversions_api_access_token' => env('META_CONVERSIONS_API_ACCESS_TOKEN'),
+        'api_version' => env('META_CONVERSIONS_API_VERSION', 'v21.0'),
+        'test_event_code' => env('META_CONVERSIONS_API_TEST_EVENT_CODE'),
+        'currency' => env('META_PIXEL_CURRENCY', 'MXN'),
     ],
 
     'outscraper' => [

@@ -7,6 +7,7 @@ use App\Jobs\CreateShippingLabel;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
+use App\Services\MetaConversionsApiService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\DB;
 use Laravel\Cashier\Cashier;
@@ -57,6 +58,8 @@ class HandleStripeWebhook implements ShouldQueue
             CreateShippingLabel::dispatch($order);
         }
 
+        app(MetaConversionsApiService::class)->sendPurchase($order);
+
         PaymentCompleted::dispatch($order);
     }
 
@@ -79,6 +82,8 @@ class HandleStripeWebhook implements ShouldQueue
         if ($order->isSkydropxShipment()) {
             CreateShippingLabel::dispatch($order);
         }
+
+        app(MetaConversionsApiService::class)->sendPurchase($order);
 
         PaymentCompleted::dispatch($order);
     }

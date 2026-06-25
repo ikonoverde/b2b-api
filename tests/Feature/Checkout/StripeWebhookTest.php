@@ -10,8 +10,16 @@ use App\Models\User;
 use App\Notifications\Order\NewOrderReceived;
 use App\Notifications\Order\OrderConfirmation;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Cashier\Events\WebhookReceived;
+
+beforeEach(function () {
+    config([
+        'services.meta_pixel.conversions_api_access_token' => null,
+        'services.meta_pixel.test_event_code' => null,
+    ]);
+});
 
 function checkoutCompletedPayload(array $metadata = [], ?string $paymentIntent = 'pi_test_123'): array
 {
@@ -405,6 +413,91 @@ it('is idempotent for payment_intent.succeeded on already completed order', func
 
     expect($product->fresh()->stock)->toBe(45);
     expect($order->fresh()->payment_status)->toBe('completed');
+});
+
+// Meta Conversions API
+
+it('sends a meta conversions api purchase event on checkout completed', function () {
+    config([
+        'services.meta_pixel.pixel_id' => 'pixel-123',
+        'services.meta_pixel.conversions_api_access_token' => 'token-123',
+        'services.meta_pixel.api_version' => 'v21.0',
+        'services.meta_pixel.currency' => 'MXN',
+    ]);
+
+    Http::fake([
+        'graph.facebook.com/*' => Http::response(['events_received' => 1]),
+    ]);
+
+    $user = User::factory()->create([
+        'email' => 'Buyer@example.com',
+        'phone' => '+52 (999) 123-4567',
+    ]);
+    $product = Product::factory()->create(['stock' => 50]);
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'pending',
+        'payment_status' => 'pending',
+        'total_amount' => 123.45,
+        'shipping_cost' => 10.00,
+    ]);
+    OrderItem::factory()->create([
+        'order_id' => $order->id,
+        'product_id' => $product->id,
+        'quantity' => 2,
+        'unit_price' => 56.72,
+        'subtotal' => 113.44,
+    ]);
+
+    event(new WebhookReceived(checkoutCompletedPayload(
+        metadata: ['order_id' => $order->id, 'user_id' => $user->id],
+    )));
+
+    Http::assertSent(function ($request) use ($order, $product, $user): bool {
+        $data = $request->data();
+        $event = $data['data'][0] ?? [];
+
+        return $request->method() === 'POST'
+            && $request->url() === 'https://graph.facebook.com/v21.0/pixel-123/events'
+            && $data['access_token'] === 'token-123'
+            && $event['event_name'] === 'Purchase'
+            && $event['event_id'] === "order_{$order->id}"
+            && $event['action_source'] === 'website'
+            && $event['event_source_url'] === route('checkout.thank-you', ['order' => $order->id])
+            && $event['user_data']['em'] === hash('sha256', 'buyer@example.com')
+            && $event['user_data']['ph'] === hash('sha256', '529991234567')
+            && $event['user_data']['external_id'] === hash('sha256', (string) $user->id)
+            && $event['custom_data']['currency'] === 'MXN'
+            && $event['custom_data']['value'] === 123.45
+            && $event['custom_data']['order_id'] === (string) $order->id
+            && $event['custom_data']['content_type'] === 'product'
+            && $event['custom_data']['content_ids'] === [(string) $product->id]
+            && $event['custom_data']['contents'] === [[
+                'id' => (string) $product->id,
+                'quantity' => 2,
+                'item_price' => 56.72,
+            ]]
+            && $event['custom_data']['num_items'] === 2;
+    });
+});
+
+it('does not send a meta conversions api event without an access token', function () {
+    config(['services.meta_pixel.pixel_id' => 'pixel-123']);
+
+    Http::fake();
+
+    $user = User::factory()->create();
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'pending',
+        'payment_status' => 'pending',
+    ]);
+
+    event(new WebhookReceived(checkoutCompletedPayload(
+        metadata: ['order_id' => $order->id, 'user_id' => $user->id],
+    )));
+
+    Http::assertNothingSent();
 });
 
 it('ignores payment_intent.succeeded with missing metadata', function () {
