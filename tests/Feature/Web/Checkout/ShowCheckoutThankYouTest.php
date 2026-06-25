@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\User;
 
 it('requires authentication', function () {
@@ -23,6 +24,7 @@ it('shows confirmation for users order', function () {
         'status' => 'processing',
         'payment_status' => 'completed',
     ]);
+    $orderItem = OrderItem::factory()->create(['order_id' => $order->id]);
 
     $this->actingAs($user)->get("/checkout/thank-you?order={$order->id}")
         ->assertSuccessful()
@@ -32,6 +34,7 @@ it('shows confirmation for users order', function () {
             ->where('order.id', $order->id)
             ->where('order.payment_status', 'completed')
             ->where('order.meta_purchase_event_id', "order_{$order->id}")
+            ->where('order.items.0.product_id', $orderItem->product_id)
         );
 });
 

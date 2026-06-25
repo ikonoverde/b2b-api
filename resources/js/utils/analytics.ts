@@ -1,4 +1,15 @@
-type GoogleAnalyticsParameters = Record<string, string | number | boolean | null | undefined>;
+type GoogleAnalyticsItem = {
+    item_id: string;
+    item_name: string;
+    item_category?: string;
+    price?: number;
+    quantity?: number;
+};
+
+type GoogleAnalyticsParameters = Record<
+    string,
+    string | number | boolean | null | undefined | GoogleAnalyticsItem[]
+>;
 
 type MetaPixelContent = {
     id: string;
@@ -45,6 +56,35 @@ export function trackGoogleAnalyticsPageView(url: string): void {
         page_title: document.title,
         send_to: window.googleAnalyticsMeasurementId,
     });
+}
+
+function trackGoogleAnalyticsEvent(event: string, parameters: GoogleAnalyticsParameters = {}): boolean {
+    if (!window.googleAnalyticsMeasurementId || typeof window.gtag !== 'function') {
+        return false;
+    }
+
+    window.gtag('event', event, {
+        ...parameters,
+        send_to: window.googleAnalyticsMeasurementId,
+    });
+
+    return true;
+}
+
+export function trackGoogleAnalyticsViewItem(parameters: GoogleAnalyticsParameters): boolean {
+    return trackGoogleAnalyticsEvent('view_item', parameters);
+}
+
+export function trackGoogleAnalyticsAddToCart(parameters: GoogleAnalyticsParameters): boolean {
+    return trackGoogleAnalyticsEvent('add_to_cart', parameters);
+}
+
+export function trackGoogleAnalyticsBeginCheckout(parameters: GoogleAnalyticsParameters): boolean {
+    return trackGoogleAnalyticsEvent('begin_checkout', parameters);
+}
+
+export function trackGoogleAnalyticsPurchase(parameters: GoogleAnalyticsParameters): boolean {
+    return trackGoogleAnalyticsEvent('purchase', parameters);
 }
 
 function trackMetaPixel(

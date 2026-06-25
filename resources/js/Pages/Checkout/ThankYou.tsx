@@ -4,10 +4,11 @@ import CustomerShell from '@/Layouts/CustomerShell';
 import CheckoutStepIndicator from '@/Components/CheckoutStepIndicator';
 import OrderSummary from '@/Components/OrderSummary';
 import { formatCurrency } from '@/utils/currency';
-import { META_PIXEL_CURRENCY, trackMetaPurchase } from '@/utils/analytics';
+import { META_PIXEL_CURRENCY, trackGoogleAnalyticsPurchase, trackMetaPurchase } from '@/utils/analytics';
 
 interface OrderItem {
     id: number;
+    product_id: number;
     product_name: string;
     quantity: number;
     unit_price: number;
@@ -106,21 +107,23 @@ function headerCopyFor(status: string): { eyebrow: string; title: string; body: 
     };
 }
 
-function metaPurchaseStorageKey(eventId: string): string {
-    return `meta_purchase_tracked:${eventId}`;
+type PurchaseTrackingPlatform = 'ga4' | 'meta';
+
+function purchaseStorageKey(platform: PurchaseTrackingPlatform, eventId: string): string {
+    return `${platform}_purchase_tracked:${eventId}`;
 }
 
-function hasTrackedMetaPurchase(eventId: string): boolean {
+function hasTrackedPurchase(platform: PurchaseTrackingPlatform, eventId: string): boolean {
     try {
-        return window.localStorage.getItem(metaPurchaseStorageKey(eventId)) === '1';
+        return window.localStorage.getItem(purchaseStorageKey(platform, eventId)) === '1';
     } catch {
         return false;
     }
 }
 
-function rememberTrackedMetaPurchase(eventId: string): void {
+function rememberTrackedPurchase(platform: PurchaseTrackingPlatform, eventId: string): void {
     try {
-        window.localStorage.setItem(metaPurchaseStorageKey(eventId), '1');
+        window.localStorage.setItem(purchaseStorageKey(platform, eventId), '1');
     } catch {
         // Ignore storage failures so analytics never blocks the thank-you page.
     }
@@ -136,23 +139,44 @@ export default function ThankYou({ order }: ThankYouProps) {
     useEffect(() => {
         const eventId = order.meta_purchase_event_id;
 
-        if (! eventId || hasTrackedMetaPurchase(eventId)) {
+        if (! eventId) {
             return;
         }
 
-        const didTrack = trackMetaPurchase(
-            {
+        if (! hasTrackedPurchase('ga4', eventId)) {
+            const didTrackGoogleAnalytics = trackGoogleAnalyticsPurchase({
+                transaction_id: eventId,
                 value: order.total_amount,
+                shipping: order.shipping_cost,
                 currency: META_PIXEL_CURRENCY,
-                num_items: itemCount,
-            },
-            eventId,
-        );
+                items: order.items.map((item) => ({
+                    item_id: String(item.product_id),
+                    item_name: item.product_name,
+                    price: item.unit_price,
+                    quantity: item.quantity,
+                })),
+            });
 
-        if (didTrack) {
-            rememberTrackedMetaPurchase(eventId);
+            if (didTrackGoogleAnalytics) {
+                rememberTrackedPurchase('ga4', eventId);
+            }
         }
-    }, [order.meta_purchase_event_id, order.total_amount, itemCount]);
+
+        if (! hasTrackedPurchase('meta', eventId)) {
+            const didTrackMeta = trackMetaPurchase(
+                {
+                    value: order.total_amount,
+                    currency: META_PIXEL_CURRENCY,
+                    num_items: itemCount,
+                },
+                eventId,
+            );
+
+            if (didTrackMeta) {
+                rememberTrackedPurchase('meta', eventId);
+            }
+        }
+    }, [order.items, order.meta_purchase_event_id, order.shipping_cost, order.total_amount, itemCount]);
 
     return (
         <CustomerShell title={headerCopy.title}>

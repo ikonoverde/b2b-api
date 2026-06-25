@@ -8,7 +8,11 @@ import ShippingQuoteSelector from '@/Components/ShippingQuoteSelector';
 import CheckoutSummary from '@/Components/CheckoutSummary';
 import useSavedAddress from '@/hooks/useSavedAddress';
 import useShippingQuotes from '@/hooks/useShippingQuotes';
-import { META_PIXEL_CURRENCY, trackMetaInitiateCheckout } from '@/utils/analytics';
+import {
+    META_PIXEL_CURRENCY,
+    trackGoogleAnalyticsBeginCheckout,
+    trackMetaInitiateCheckout,
+} from '@/utils/analytics';
 import type { Address, Cart, PageProps } from '@/types';
 
 interface ShippingProps {
@@ -98,6 +102,17 @@ export default function Shipping({ cart, addresses }: ShippingProps) {
 
     function submit(e: FormEvent): void {
         e.preventDefault();
+
+        trackGoogleAnalyticsBeginCheckout({
+            value: cart.totals.subtotal,
+            currency: META_PIXEL_CURRENCY,
+            items: cart.items.map((item) => ({
+                item_id: String(item.product_id),
+                item_name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+            })),
+        });
 
         trackMetaInitiateCheckout({
             content_ids: cart.items.map((item) => String(item.product_id)),

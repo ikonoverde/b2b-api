@@ -4,7 +4,13 @@ import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import CustomerShell from '@/Layouts/CustomerShell';
 import { formatCurrency } from '@/utils/currency';
-import { META_PIXEL_CURRENCY, trackMetaAddToCart, trackMetaViewContent } from '@/utils/analytics';
+import {
+    META_PIXEL_CURRENCY,
+    trackGoogleAnalyticsAddToCart,
+    trackGoogleAnalyticsViewItem,
+    trackMetaAddToCart,
+    trackMetaViewContent,
+} from '@/utils/analytics';
 import type { BreadcrumbItem, ProductDetail, RelatedProduct } from '@/types';
 
 interface ProductShowProps {
@@ -42,6 +48,20 @@ export default function ProductShow({ product, related_products }: ProductShowPr
     ].filter((section): section is ProductDetailSection => Boolean(section.html));
 
     useEffect(() => {
+        trackGoogleAnalyticsViewItem({
+            value: product.price,
+            currency: META_PIXEL_CURRENCY,
+            items: [
+                {
+                    item_id: String(product.id),
+                    item_name: product.name,
+                    item_category: product.category.name,
+                    price: product.price,
+                    quantity: 1,
+                },
+            ],
+        });
+
         trackMetaViewContent({
             content_ids: [String(product.id)],
             content_name: product.name,
@@ -49,7 +69,7 @@ export default function ProductShow({ product, related_products }: ProductShowPr
             value: product.price,
             currency: META_PIXEL_CURRENCY,
         });
-    }, [product.id, product.name, product.price]);
+    }, [product.category.name, product.id, product.name, product.price]);
 
     function addToCart(): void {
         router.post(
@@ -62,6 +82,19 @@ export default function ProductShow({ product, related_products }: ProductShowPr
                 onFinish: () => setLoading(false),
                 onSuccess: () => {
                     setAdded(true);
+                    trackGoogleAnalyticsAddToCart({
+                        value: unitPrice * quantity,
+                        currency: META_PIXEL_CURRENCY,
+                        items: [
+                            {
+                                item_id: String(product.id),
+                                item_name: product.name,
+                                item_category: product.category.name,
+                                price: unitPrice,
+                                quantity,
+                            },
+                        ],
+                    });
                     trackMetaAddToCart({
                         content_ids: [String(product.id)],
                         content_name: product.name,
