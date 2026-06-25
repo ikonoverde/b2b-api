@@ -31,6 +31,7 @@ it('shows confirmation for users order', function () {
             ->has('order')
             ->where('order.id', $order->id)
             ->where('order.payment_status', 'completed')
+            ->where('order.meta_purchase_event_id', "order_{$order->id}")
         );
 });
 
@@ -47,6 +48,7 @@ it('shows processing status for pending payment', function () {
         ->assertInertia(fn ($page) => $page
             ->component('Checkout/ThankYou')
             ->where('order.payment_status', 'pending')
+            ->where('order.meta_purchase_event_id', null)
         );
 });
 
@@ -63,5 +65,6 @@ it('shows failed payment status for users order', function () {
         ->assertInertia(fn ($page) => $page
             ->component('Checkout/ThankYou')
             ->where('order.payment_status', 'failed')
+            ->where('order.meta_purchase_event_id', null)
         );
 });

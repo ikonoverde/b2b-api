@@ -51,12 +51,14 @@ function trackMetaPixel(
     event: string,
     parameters: MetaPixelParameters = {},
     options?: { eventID?: string },
-): void {
+): boolean {
     if (!window.metaPixelId || typeof window.fbq !== 'function') {
-        return;
+        return false;
     }
 
     window.fbq('track', event, parameters, options);
+
+    return true;
 }
 
 export function trackMetaPixelPageView(): void {
@@ -75,6 +77,6 @@ export function trackMetaInitiateCheckout(parameters: MetaPixelParameters): void
     trackMetaPixel('InitiateCheckout', parameters);
 }
 
-export function trackMetaPurchase(parameters: MetaPixelParameters, eventId: string): void {
-    trackMetaPixel('Purchase', parameters, { eventID: eventId });
+export function trackMetaPurchase(parameters: MetaPixelParameters, eventId: string): boolean {
+    return trackMetaPixel('Purchase', parameters, { eventID: eventId });
 }

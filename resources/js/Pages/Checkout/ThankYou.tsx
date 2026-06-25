@@ -20,6 +20,7 @@ interface ThankYouProps {
         id: number;
         status: string;
         payment_status: string;
+        meta_purchase_event_id: string | null;
         total_amount: number;
         shipping_cost: number;
         shipping_address: Record<string, string> | null;
@@ -105,22 +106,53 @@ function headerCopyFor(status: string): { eyebrow: string; title: string; body: 
     };
 }
 
+function metaPurchaseStorageKey(eventId: string): string {
+    return `meta_purchase_tracked:${eventId}`;
+}
+
+function hasTrackedMetaPurchase(eventId: string): boolean {
+    try {
+        return window.localStorage.getItem(metaPurchaseStorageKey(eventId)) === '1';
+    } catch {
+        return false;
+    }
+}
+
+function rememberTrackedMetaPurchase(eventId: string): void {
+    try {
+        window.localStorage.setItem(metaPurchaseStorageKey(eventId), '1');
+    } catch {
+        // Ignore storage failures so analytics never blocks the thank-you page.
+    }
+}
+
 export default function ThankYou({ order }: ThankYouProps) {
     const headerCopy = headerCopyFor(order.payment_status);
     const paymentTone = paymentToneFor(order.payment_status);
     const paymentStyles = TONE_STYLES[paymentTone];
     const orderCode = String(order.id).padStart(5, '0');
+    const itemCount = order.items.reduce((count, item) => count + item.quantity, 0);
 
     useEffect(() => {
-        trackMetaPurchase(
+        const eventId = order.meta_purchase_event_id;
+
+        if (! eventId || hasTrackedMetaPurchase(eventId)) {
+            return;
+        }
+
+        const didTrack = trackMetaPurchase(
             {
                 value: order.total_amount,
                 currency: META_PIXEL_CURRENCY,
-                num_items: order.items.reduce((count, item) => count + item.quantity, 0),
+                num_items: itemCount,
             },
-            `order_${order.id}`,
+            eventId,
         );
-    }, [order.id, order.total_amount, order.items]);
+
+        if (didTrack) {
+            rememberTrackedMetaPurchase(eventId);
+        }
+    }, [order.meta_purchase_event_id, order.total_amount, itemCount]);
 
     return (
         <CustomerShell title={headerCopy.title}>
