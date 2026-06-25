@@ -103,31 +103,33 @@ export default function Shipping({ cart, addresses }: ShippingProps) {
     function submit(e: FormEvent): void {
         e.preventDefault();
 
-        trackGoogleAnalyticsBeginCheckout({
-            value: cart.totals.subtotal,
-            currency: META_PIXEL_CURRENCY,
-            items: cart.items.map((item) => ({
-                item_id: String(item.product_id),
-                item_name: item.name,
-                price: item.price,
-                quantity: item.quantity,
-            })),
-        });
+        form.post('/checkout/shipping', {
+            onSuccess: () => {
+                trackGoogleAnalyticsBeginCheckout({
+                    value: cart.totals.subtotal,
+                    currency: META_PIXEL_CURRENCY,
+                    items: cart.items.map((item) => ({
+                        item_id: String(item.product_id),
+                        item_name: item.name,
+                        price: item.price,
+                        quantity: item.quantity,
+                    })),
+                });
 
-        trackMetaInitiateCheckout({
-            content_ids: cart.items.map((item) => String(item.product_id)),
-            content_type: 'product',
-            contents: cart.items.map((item) => ({
-                id: String(item.product_id),
-                quantity: item.quantity,
-                item_price: item.price,
-            })),
-            num_items: cart.items.reduce((count, item) => count + item.quantity, 0),
-            value: cart.totals.subtotal,
-            currency: META_PIXEL_CURRENCY,
+                trackMetaInitiateCheckout({
+                    content_ids: cart.items.map((item) => String(item.product_id)),
+                    content_type: 'product',
+                    contents: cart.items.map((item) => ({
+                        id: String(item.product_id),
+                        quantity: item.quantity,
+                        item_price: item.price,
+                    })),
+                    num_items: cart.items.reduce((count, item) => count + item.quantity, 0),
+                    value: cart.totals.subtotal,
+                    currency: META_PIXEL_CURRENCY,
+                });
+            },
         });
-
-        form.post('/checkout/shipping');
     }
 
     const stockErrors = errors.stock
