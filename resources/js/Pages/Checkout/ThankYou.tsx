@@ -165,6 +165,13 @@ export default function ThankYou({ order }: ThankYouProps) {
         if (! hasTrackedPurchase('meta', eventId)) {
             const didTrackMeta = trackMetaPurchase(
                 {
+                    content_ids: order.items.map((item) => String(item.product_id)),
+                    content_type: 'product',
+                    contents: order.items.map((item) => ({
+                        id: String(item.product_id),
+                        quantity: item.quantity,
+                        item_price: item.unit_price,
+                    })),
                     value: order.total_amount,
                     currency: META_PIXEL_CURRENCY,
                     num_items: itemCount,
