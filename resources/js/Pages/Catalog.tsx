@@ -3,6 +3,7 @@ import { Check, ChevronDown, Minus, Plus, Search, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import CustomerShell from '@/Layouts/CustomerShell';
+import { META_PIXEL_CURRENCY, trackMetaAddToCart } from '@/utils/analytics';
 import { formatCurrency } from '@/utils/currency';
 
 interface Category {
@@ -75,7 +76,8 @@ export default function Catalog({
     }, []);
 
     const addToCart = useCallback(
-        (productId: number) => {
+        (product: CatalogProduct) => {
+            const productId = product.id;
             const quantity = quantities[productId] ?? 1;
             router.post(
                 '/cart/items',
@@ -86,6 +88,15 @@ export default function Catalog({
                     onStart: () => setCartStates((s) => ({ ...s, [productId]: 'loading' })),
                     onSuccess: () => {
                         setCartStates((s) => ({ ...s, [productId]: 'added' }));
+                        trackMetaAddToCart({
+                            content_ids: [String(product.id)],
+                            content_name: product.name,
+                            content_type: 'product',
+                            contents: [{ id: String(product.id), quantity }],
+                            num_items: quantity,
+                            value: product.price * quantity,
+                            currency: META_PIXEL_CURRENCY,
+                        });
                         clearTimeout(timersRef.current[productId]);
                         timersRef.current[productId] = setTimeout(() => {
                             setCartStates((s) => {
@@ -159,7 +170,7 @@ export default function Catalog({
                                 index={idx + 1}
                                 quantity={quantities[product.id] ?? 1}
                                 onQuantityChange={(q) => setQty(product.id, q)}
-                                onAddToCart={() => addToCart(product.id)}
+                                onAddToCart={() => addToCart(product)}
                                 cartState={cartStates[product.id]}
                             />
                         ))}
