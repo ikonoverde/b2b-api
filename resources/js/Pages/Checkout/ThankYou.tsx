@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePoll } from '@inertiajs/react';
 import { useEffect } from 'react';
 import CustomerShell from '@/Layouts/CustomerShell';
 import CheckoutStepIndicator from '@/Components/CheckoutStepIndicator';
@@ -130,6 +130,11 @@ function rememberTrackedPurchase(platform: PurchaseTrackingPlatform, eventId: st
 }
 
 export default function ThankYou({ order }: ThankYouProps) {
+    const { start: startPaymentStatusPolling, stop: stopPaymentStatusPolling } = usePoll(2000, {
+        only: ['order'],
+    }, {
+        autoStart: false,
+    });
     const headerCopy = headerCopyFor(order.payment_status);
     const paymentTone = paymentToneFor(order.payment_status);
     const paymentStyles = TONE_STYLES[paymentTone];
@@ -137,9 +142,21 @@ export default function ThankYou({ order }: ThankYouProps) {
     const itemCount = order.items.reduce((count, item) => count + item.quantity, 0);
 
     useEffect(() => {
+        if (order.payment_status !== 'pending') {
+            stopPaymentStatusPolling();
+
+            return;
+        }
+
+        startPaymentStatusPolling();
+
+        return () => stopPaymentStatusPolling();
+    }, [order.payment_status, startPaymentStatusPolling, stopPaymentStatusPolling]);
+
+    useEffect(() => {
         const eventId = order.meta_purchase_event_id;
 
-        if (! eventId) {
+        if (order.payment_status !== 'completed' || ! eventId) {
             return;
         }
 
@@ -183,7 +200,7 @@ export default function ThankYou({ order }: ThankYouProps) {
                 rememberTrackedPurchase('meta', eventId);
             }
         }
-    }, [order.items, order.meta_purchase_event_id, order.shipping_cost, order.total_amount, itemCount]);
+    }, [order.items, order.meta_purchase_event_id, order.payment_status, order.shipping_cost, order.total_amount, itemCount]);
 
     return (
         <CustomerShell title={headerCopy.title}>

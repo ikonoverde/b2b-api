@@ -2,9 +2,11 @@
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use App\Services\ShippingQuoteService;
+use Stripe\Service\PaymentIntentService;
 use Stripe\StripeClient;
 
 function validShippingData(array $overrides = []): array
@@ -49,11 +51,11 @@ function mockShippingQuoteForStore(): void
 
 function mockStripePaymentIntentCreate(): void
 {
-    $mockPaymentIntent = new \stdClass;
+    $mockPaymentIntent = new stdClass;
     $mockPaymentIntent->id = 'pi_test_123';
     $mockPaymentIntent->client_secret = 'pi_test_123_secret_456';
 
-    $mockPaymentIntents = Mockery::mock(\Stripe\Service\PaymentIntentService::class);
+    $mockPaymentIntents = Mockery::mock(PaymentIntentService::class);
     $mockPaymentIntents->shouldReceive('create')->andReturn($mockPaymentIntent);
 
     $mockStripe = Mockery::mock(StripeClient::class);
@@ -64,11 +66,11 @@ function mockStripePaymentIntentCreate(): void
 
 function mockStripePaymentIntentCreateForCustomer(string $customerId): void
 {
-    $mockPaymentIntent = new \stdClass;
+    $mockPaymentIntent = new stdClass;
     $mockPaymentIntent->id = 'pi_test_123';
     $mockPaymentIntent->client_secret = 'pi_test_123_secret_456';
 
-    $mockPaymentIntents = Mockery::mock(\Stripe\Service\PaymentIntentService::class);
+    $mockPaymentIntents = Mockery::mock(PaymentIntentService::class);
     $mockPaymentIntents->shouldReceive('create')
         ->once()
         ->with(Mockery::on(fn (array $payload) => ($payload['customer'] ?? null) === $customerId
@@ -117,6 +119,38 @@ it('creates order with payment_pending status', function () {
     $this->assertDatabaseHas('order_items', [
         'product_id' => $product->id,
         'quantity' => 2,
+    ]);
+});
+
+it('stores analytics context for conversion matching', function () {
+    $user = User::factory()->create();
+    $cart = Cart::factory()->create(['user_id' => $user->id]);
+    $product = Product::factory()->withDimensions()->create(['price' => 100, 'stock' => 50]);
+    CartItem::factory()->create([
+        'cart_id' => $cart->id,
+        'product_id' => $product->id,
+        'quantity' => 1,
+        'unit_price' => 100,
+    ]);
+
+    mockShippingQuoteForStore();
+    mockStripePaymentIntentCreate();
+
+    $this->withServerVariables([
+        'REMOTE_ADDR' => '203.0.113.10',
+        'HTTP_USER_AGENT' => 'Mozilla/5.0 Conversion Test',
+    ])->withCookie('_fbp', 'fb.1.1710000000000.123456789')
+        ->withCookie('_fbc', 'fb.1.1710000000000.AbCdEf')
+        ->actingAs($user)
+        ->post('/checkout/shipping', validShippingData())
+        ->assertRedirect();
+
+    $this->assertDatabaseHas('orders', [
+        'user_id' => $user->id,
+        'client_ip_address' => '203.0.113.10',
+        'client_user_agent' => 'Mozilla/5.0 Conversion Test',
+        'meta_fbp' => 'fb.1.1710000000000.123456789',
+        'meta_fbc' => 'fb.1.1710000000000.AbCdEf',
     ]);
 });
 
@@ -174,7 +208,7 @@ it('redirects to payment page', function () {
 
     $response = $this->actingAs($user)->post('/checkout/shipping', validShippingData());
 
-    $order = \App\Models\Order::where('user_id', $user->id)->latest()->first();
+    $order = Order::where('user_id', $user->id)->latest()->first();
     $response->assertRedirect(route('checkout.payment', ['order' => $order->id]));
 });
 

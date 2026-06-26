@@ -440,6 +440,10 @@ it('sends a meta conversions api purchase event on checkout completed', function
         'payment_status' => 'pending',
         'total_amount' => 123.45,
         'shipping_cost' => 10.00,
+        'client_ip_address' => '203.0.113.10',
+        'client_user_agent' => 'Mozilla/5.0 Conversion Test',
+        'meta_fbp' => 'fb.1.1710000000000.123456789',
+        'meta_fbc' => 'fb.1.1710000000000.AbCdEf',
     ]);
     OrderItem::factory()->create([
         'order_id' => $order->id,
@@ -467,6 +471,10 @@ it('sends a meta conversions api purchase event on checkout completed', function
             && $event['user_data']['em'] === hash('sha256', 'buyer@example.com')
             && $event['user_data']['ph'] === hash('sha256', '529991234567')
             && $event['user_data']['external_id'] === hash('sha256', (string) $user->id)
+            && $event['user_data']['client_ip_address'] === '203.0.113.10'
+            && $event['user_data']['client_user_agent'] === 'Mozilla/5.0 Conversion Test'
+            && $event['user_data']['fbp'] === 'fb.1.1710000000000.123456789'
+            && $event['user_data']['fbc'] === 'fb.1.1710000000000.AbCdEf'
             && $event['custom_data']['currency'] === 'MXN'
             && $event['custom_data']['value'] === 123.45
             && $event['custom_data']['order_id'] === (string) $order->id

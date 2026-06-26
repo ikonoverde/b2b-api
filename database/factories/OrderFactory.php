@@ -2,11 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Order>
+ * @extends Factory<Order>
  */
 class OrderFactory extends Factory
 {
@@ -33,6 +34,10 @@ class OrderFactory extends Factory
                 'zip' => fake()->postcode(),
                 'country' => 'USA',
             ],
+            'client_ip_address' => null,
+            'client_user_agent' => null,
+            'meta_fbp' => null,
+            'meta_fbc' => null,
             'tracking_number' => null,
             'shipping_carrier' => null,
             'tracking_url' => null,

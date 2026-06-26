@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\OrderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
-    /** @use HasFactory<\Database\Factories\OrderFactory> */
+    /** @use HasFactory<OrderFactory> */
     use HasFactory;
 
     /** @var string[] */
@@ -35,6 +36,10 @@ class Order extends Model
         'shipping_cost',
         'shipping_method_id',
         'shipping_address',
+        'client_ip_address',
+        'client_user_agent',
+        'meta_fbp',
+        'meta_fbc',
         'tracking_number',
         'shipping_carrier',
         'tracking_url',

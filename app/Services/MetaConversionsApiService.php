@@ -100,6 +100,10 @@ class MetaConversionsApiService
             'em' => $this->hash($order->user?->email),
             'ph' => $this->hashPhone(is_string($phone) ? $phone : null),
             'external_id' => $this->hash((string) $order->user_id),
+            'client_ip_address' => $order->client_ip_address,
+            'client_user_agent' => $order->client_user_agent,
+            'fbp' => $order->meta_fbp,
+            'fbc' => $order->meta_fbc,
         ], fn (?string $value): bool => $value !== null);
     }
 

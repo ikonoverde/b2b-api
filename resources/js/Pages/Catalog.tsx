@@ -3,7 +3,7 @@ import { Check, ChevronDown, Minus, Plus, Search, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import CustomerShell from '@/Layouts/CustomerShell';
-import { META_PIXEL_CURRENCY, trackMetaAddToCart } from '@/utils/analytics';
+import { META_PIXEL_CURRENCY, trackGoogleAnalyticsAddToCart, trackMetaAddToCart } from '@/utils/analytics';
 import { formatCurrency } from '@/utils/currency';
 
 interface Category {
@@ -88,6 +88,19 @@ export default function Catalog({
                     onStart: () => setCartStates((s) => ({ ...s, [productId]: 'loading' })),
                     onSuccess: () => {
                         setCartStates((s) => ({ ...s, [productId]: 'added' }));
+                        trackGoogleAnalyticsAddToCart({
+                            value: product.price * quantity,
+                            currency: META_PIXEL_CURRENCY,
+                            items: [
+                                {
+                                    item_id: String(product.id),
+                                    item_name: product.name,
+                                    item_category: product.category,
+                                    price: product.price,
+                                    quantity,
+                                },
+                            ],
+                        });
                         trackMetaAddToCart({
                             content_ids: [String(product.id)],
                             content_name: product.name,

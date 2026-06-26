@@ -38,7 +38,7 @@ it('shows confirmation for users order', function () {
         );
 });
 
-it('shows processing status for pending payment', function () {
+it('does not expose purchase event id for pending payment', function () {
     $user = User::factory()->create();
     $order = Order::factory()->create([
         'user_id' => $user->id,
@@ -53,6 +53,33 @@ it('shows processing status for pending payment', function () {
             ->where('order.payment_status', 'pending')
             ->where('order.meta_purchase_event_id', null)
         );
+});
+
+it('exposes purchase event id after a pending payment completes on reload', function () {
+    $user = User::factory()->create();
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'payment_pending',
+        'payment_status' => 'pending',
+    ]);
+
+    $response = $this->actingAs($user)->get("/checkout/thank-you?order={$order->id}")
+        ->assertSuccessful();
+
+    $order->update([
+        'status' => 'processing',
+        'payment_status' => 'completed',
+    ]);
+
+    $response->assertInertia(fn ($page) => $page
+        ->component('Checkout/ThankYou')
+        ->where('order.payment_status', 'pending')
+        ->where('order.meta_purchase_event_id', null)
+        ->reloadOnly('order', fn ($reload) => $reload
+            ->where('order.payment_status', 'completed')
+            ->where('order.meta_purchase_event_id', "order_{$order->id}")
+        )
+    );
 });
 
 it('shows failed payment status for users order', function () {

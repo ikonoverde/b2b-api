@@ -62,6 +62,10 @@ class StoreCheckoutShippingController extends Controller
                     'postal_code' => $request->validated('postal_code'),
                     'phone' => $request->validated('phone'),
                 ],
+                'client_ip_address' => $request->ip(),
+                'client_user_agent' => $request->userAgent(),
+                'meta_fbp' => $request->cookie('_fbp'),
+                'meta_fbc' => $request->cookie('_fbc'),
             ]);
 
             foreach ($cart->items as $item) {
