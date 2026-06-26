@@ -39,7 +39,7 @@ class SkydropxService
         $quotes = $this->fetchQuotes($destination, $parcel);
 
         if (! empty($quotes)) {
-            Cache::put($cacheKey, $quotes, 300);
+            Cache::put($cacheKey, $quotes, 1800);
         }
 
         return $quotes;
