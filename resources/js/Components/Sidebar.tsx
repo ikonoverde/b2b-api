@@ -17,6 +17,7 @@ import {
     PenLine,
     Newspaper,
     Gift,
+    MessageSquareText,
 } from 'lucide-react';
 import type { PageProps } from '@/types';
 
@@ -44,6 +45,7 @@ const managementNav: NavItem[] = [
     { name: 'Categorías', href: '/admin/categories', icon: Folder, id: 'categories' },
     { name: 'Envios', href: '/admin/shipments', icon: Truck, id: 'shipments' },
     { name: 'Negocios', href: '/admin/businesses', icon: Building2, id: 'businesses' },
+    { name: 'Chat', href: '/admin/chat', icon: MessageSquareText, id: 'chat' },
     { name: 'Muestras gratis', href: '/admin/sample-requests', icon: Gift, id: 'sample-requests' },
     { name: 'Facturas', href: '/admin/invoices', icon: FileText, id: 'invoices' },
 ];
