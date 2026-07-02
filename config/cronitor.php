@@ -1,5 +1,7 @@
 <?php
 
+use App\Jobs\CreateBlogPost;
+
 return [
     'enabled' => env('CRONITOR_ENABLED', true),
     'api_key' => env('CRONITOR_API_KEY'),
@@ -10,7 +12,9 @@ return [
     'monitor_defaults' => [],
 
     // Ignore queue telemetry for matching raw names or resolved keys.
-    'ignored_jobs' => [],
+    'ignored_jobs' => [
+        CreateBlogPost::class,
+    ],
 
     // Ignore schedule sync + telemetry for matching task summaries or keys.
     'ignored_tasks' => [],
