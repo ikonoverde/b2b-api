@@ -10,6 +10,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "cronitor/laravel": "dev-master",
         "geoip2/geoip2": "^3.3",
         "inertiajs/inertia-laravel": "^2.0",
         "intervention/image": "^3.11",
@@ -105,5 +106,10 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": [{
+        "name": "cronitor-laravel",
+        "type": "vcs",
+        "url": "https://github.com/cronitorio/cronitor-laravel.git"
+    }]
 }
