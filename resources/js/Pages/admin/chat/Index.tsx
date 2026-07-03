@@ -5,6 +5,9 @@ import { PromptInput, PromptInputAction, PromptInputActions, PromptInputTextarea
 import { PromptSuggestion } from '@/components/ui/prompt-suggestion';
 import AppLayout from '@/Layouts/AppLayout';
 import { ArrowUp, Bot, Brain, Database, FileText, Paperclip, Sparkles } from 'lucide-react';
+import type { ComponentPropsWithoutRef } from 'react';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const suggestions = [
     'Resume pedidos pendientes de hoy',
@@ -22,7 +25,7 @@ const sampleMessages = [
     {
         id: 'assistant-plan',
         role: 'assistant',
-        content: 'Puedo ayudarte a priorizar pedidos, consultas de clientes, inventario y contenido. Cuando conectemos la funcionalidad, esta vista podrá consultar datos internos antes de proponer acciones.',
+        content: 'Puedo ayudarte a priorizar **pedidos**, consultas de clientes, inventario y contenido.\n\nCuando conectemos la funcionalidad, esta vista podrá:\n\n- Consultar datos internos antes de proponer acciones.\n- Citar fuentes administrativas.\n- Pedir confirmación antes de modificar registros.',
     },
 ];
 
@@ -103,7 +106,11 @@ export default function AdminChatIndex() {
                                         <div className={message.role === 'user'
                                             ? 'max-w-[82%] rounded-2xl bg-[#4A5D4A] px-4 py-3 text-sm leading-6 text-white prose-p:m-0'
                                             : 'max-w-[82%] rounded-2xl border border-[#E5E5E5] bg-white px-4 py-3 text-sm leading-6 text-[#1A1A1A] prose-p:m-0'}>
-                                            {message.content}
+                                            {message.role === 'assistant' ? (
+                                                <ChatMarkdown>{message.content}</ChatMarkdown>
+                                            ) : (
+                                                message.content
+                                            )}
                                         </div>
                                     </div>
                                 ))}
@@ -195,3 +202,57 @@ function AssistantAvatar() {
         </div>
     );
 }
+
+function ChatMarkdown({ children }: { children: string }) {
+    return (
+        <Markdown remarkPlugins={[remarkGfm]} components={MARKDOWN_COMPONENTS}>
+            {children}
+        </Markdown>
+    );
+}
+
+const MARKDOWN_COMPONENTS = {
+    p: ({ children }: ComponentPropsWithoutRef<'p'>) => (
+        <p className="mb-3 last:mb-0">{children}</p>
+    ),
+    ul: ({ children }: ComponentPropsWithoutRef<'ul'>) => (
+        <ul className="mb-3 flex flex-col gap-1.5 pl-0 last:mb-0">{children}</ul>
+    ),
+    ol: ({ children }: ComponentPropsWithoutRef<'ol'>) => (
+        <ol className="mb-3 flex list-decimal flex-col gap-1.5 pl-5 last:mb-0">{children}</ol>
+    ),
+    li: ({ children }: ComponentPropsWithoutRef<'li'>) => (
+        <li className="relative list-none pl-5 before:absolute before:left-0 before:top-[0.72em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-[#4A5D4A]">
+            {children}
+        </li>
+    ),
+    a: ({ children, href, ...rest }: ComponentPropsWithoutRef<'a'>) => (
+        <a
+            {...rest}
+            href={href}
+            className="font-medium text-[#4A5D4A] underline decoration-[#D9D6D0] underline-offset-4 hover:decoration-[#4A5D4A]"
+            target={href?.startsWith('http') ? '_blank' : undefined}
+            rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
+        >
+            {children}
+        </a>
+    ),
+    code: ({ children }: ComponentPropsWithoutRef<'code'>) => (
+        <code className="rounded-md bg-[#F5F3F0] px-1.5 py-0.5 font-mono text-[0.86em] text-[#4A5D4A]">
+            {children}
+        </code>
+    ),
+    pre: ({ children }: ComponentPropsWithoutRef<'pre'>) => (
+        <pre className="mb-3 overflow-x-auto rounded-xl bg-[#F5F3F0] p-3 text-xs leading-5 text-[#1A1A1A] last:mb-0">
+            {children}
+        </pre>
+    ),
+    strong: ({ children }: ComponentPropsWithoutRef<'strong'>) => (
+        <strong className="font-semibold text-[#1A1A1A]">{children}</strong>
+    ),
+    blockquote: ({ children }: ComponentPropsWithoutRef<'blockquote'>) => (
+        <blockquote className="mb-3 rounded-xl border border-[#D9D6D0] bg-[#FBF9F7] px-3 py-2 text-[#666666] last:mb-0">
+            {children}
+        </blockquote>
+    ),
+};
