@@ -19,22 +19,19 @@ use App\Ai\Tools\RunAnalyticsConversionsReport;
 use App\Ai\Tools\RunAnalyticsFunnelReport;
 use App\Ai\Tools\RunAnalyticsRealtimeReport;
 use App\Ai\Tools\RunAnalyticsReport;
-use Laravel\Ai\Attributes\MaxSteps;
-use Laravel\Ai\Attributes\Timeout;
-use Laravel\Ai\Attributes\UseSmartestModel;
+use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Conversational;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
+use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Messages\AssistantMessage;
 use Laravel\Ai\Messages\Message;
 use Laravel\Ai\Messages\UserMessage;
 use Laravel\Ai\Promptable;
 use Stringable;
 
-#[UseSmartestModel]
-#[MaxSteps(18)]
-#[Timeout(120)]
+#[Model('deepseek/deepseek-v4-flash')]
 class AdsAgent implements Agent, Conversational, HasTools
 {
     use Promptable;
@@ -43,6 +40,11 @@ class AdsAgent implements Agent, Conversational, HasTools
      * @param  list<array{role: 'user'|'assistant', content: string}>  $messages
      */
     public function __construct(private array $messages = []) {}
+
+    public function provider(): Lab|string
+    {
+        return Lab::OpenRouter;
+    }
 
     public function instructions(): Stringable|string
     {

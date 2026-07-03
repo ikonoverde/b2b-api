@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Chat;
 
-use App\Ai\Agents\AdminChatAgent;
+use App\Ai\Agents\AdsAgent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Chat\SendChatMessageRequest;
 use Illuminate\Http\JsonResponse;
@@ -14,7 +14,7 @@ class SendChatMessageController extends Controller
      */
     public function __invoke(SendChatMessageRequest $request): JsonResponse
     {
-        $response = AdminChatAgent::make(messages: $request->history())
+        $response = AdsAgent::make(messages: $request->history())
             ->prompt($request->validated('message'));
 
         return response()->json([

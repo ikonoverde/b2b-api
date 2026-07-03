@@ -28,7 +28,8 @@ const initialMessages: ChatMessage[] = [
     {
         id: 'assistant-welcome',
         role: 'assistant',
-        content: 'Puedo ayudarte a redactar respuestas, estructurar tareas administrativas, pensar en contenido y preparar próximos pasos. Todavía no tengo herramientas para leer datos en vivo, así que te diré claramente cuando necesite que verifiques algo en el panel.',
+        // content: 'Puedo ayudarte a redactar respuestas, estructurar tareas administrativas, pensar en contenido y preparar próximos pasos. Todavía no tengo herramientas para leer datos en vivo, así que te diré claramente cuando necesite que verifiques algo en el panel.',
+        content: 'I can help you debug the external connections to GA4 and Meta'
     },
 ];
 
