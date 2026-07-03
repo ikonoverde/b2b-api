@@ -55,6 +55,17 @@ return [
 
     'google_analytics' => [
         'measurement_id' => env('GOOGLE_ANALYTICS_MEASUREMENT_ID'),
+        'credentials_path' => env('GOOGLE_ANALYTICS_CREDENTIALS_PATH'),
+        'credentials_json' => env('GOOGLE_ANALYTICS_CREDENTIALS_JSON'),
+        'default_property_id' => env('GOOGLE_ANALYTICS_PROPERTY_ID'),
+    ],
+
+    'meta_graph' => [
+        'access_token' => env('META_GRAPH_ACCESS_TOKEN'),
+        'api_version' => env('META_GRAPH_API_VERSION', 'v21.0'),
+        'page_id' => env('META_PAGE_ID'),
+        'instagram_business_account_id' => env('META_INSTAGRAM_BUSINESS_ACCOUNT_ID'),
+        'base_url' => env('META_GRAPH_BASE_URL', 'https://graph.facebook.com'),
     ],
 
     'meta_pixel' => [
