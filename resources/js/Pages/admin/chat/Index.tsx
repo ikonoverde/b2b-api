@@ -4,10 +4,18 @@ import { Loader } from '@/components/ui/loader';
 import { PromptInput, PromptInputAction, PromptInputActions, PromptInputTextarea } from '@/components/ui/prompt-input';
 import { PromptSuggestion } from '@/components/ui/prompt-suggestion';
 import AppLayout from '@/Layouts/AppLayout';
+import axios from 'axios';
 import { ArrowUp, Bot, Brain, Database, FileText, Paperclip, Sparkles } from 'lucide-react';
+import { useState } from 'react';
 import type { ComponentPropsWithoutRef } from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+
+type ChatMessage = {
+    id: string;
+    role: 'user' | 'assistant';
+    content: string;
+};
 
 const suggestions = [
     'Resume pedidos pendientes de hoy',
@@ -16,16 +24,11 @@ const suggestions = [
     'Prepara ideas para el siguiente blog',
 ];
 
-const sampleMessages = [
+const initialMessages: ChatMessage[] = [
     {
-        id: 'admin-brief',
-        role: 'user',
-        content: 'Necesito revisar qué temas debería atender primero esta mañana.',
-    },
-    {
-        id: 'assistant-plan',
+        id: 'assistant-welcome',
         role: 'assistant',
-        content: 'Puedo ayudarte a priorizar **pedidos**, consultas de clientes, inventario y contenido.\n\nCuando conectemos la funcionalidad, esta vista podrá:\n\n- Consultar datos internos antes de proponer acciones.\n- Citar fuentes administrativas.\n- Pedir confirmación antes de modificar registros.',
+        content: 'Puedo ayudarte a redactar respuestas, estructurar tareas administrativas, pensar en contenido y preparar próximos pasos. Todavía no tengo herramientas para leer datos en vivo, así que te diré claramente cuando necesite que verifiques algo en el panel.',
     },
 ];
 
@@ -36,6 +39,54 @@ const dataSources = [
 ];
 
 export default function AdminChatIndex() {
+    const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
+    const [input, setInput] = useState('');
+    const [isSending, setIsSending] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const sendMessage = async () => {
+        const content = input.trim();
+
+        if (!content || isSending) {
+            return;
+        }
+
+        const history = messages.slice(-12).map((message) => ({
+            role: message.role,
+            content: message.content,
+        }));
+        const userMessage: ChatMessage = {
+            id: crypto.randomUUID(),
+            role: 'user',
+            content,
+        };
+
+        setMessages((current) => [...current, userMessage]);
+        setInput('');
+        setError(null);
+        setIsSending(true);
+
+        try {
+            const response = await axios.post('/admin/chat/messages', {
+                message: content,
+                messages: history,
+            });
+
+            setMessages((current) => [
+                ...current,
+                {
+                    id: crypto.randomUUID(),
+                    role: 'assistant',
+                    content: response.data.message.content,
+                },
+            ]);
+        } catch {
+            setError('No pude completar la respuesta. Revisa la configuración del proveedor de AI e intenta de nuevo.');
+        } finally {
+            setIsSending(false);
+        }
+    };
+
     return (
         <AppLayout title="Chat" active="chat">
             <div className="flex h-screen min-h-[720px] flex-col bg-[#FBF9F7] font-[Outfit] text-[#1A1A1A]">
@@ -44,13 +95,13 @@ export default function AdminChatIndex() {
                         <div className="max-w-3xl">
                             <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#D9D6D0] bg-white px-3 py-1 text-xs font-medium text-[#4A5D4A]">
                                 <Bot className="h-3.5 w-3.5" />
-                                Asistente interno, UI preliminar
+                                Asistente interno conectado
                             </div>
                             <h1 className="text-2xl font-semibold tracking-tight text-[#1A1A1A]">
                                 Chat administrativo
                             </h1>
                             <p className="mt-2 max-w-2xl text-sm leading-6 text-[#666666]">
-                                Una superficie para consultar operaciones, redactar respuestas y preparar acciones. Por ahora es una maqueta visual; la conexión con datos y modelos se implementará después.
+                                Una superficie para consultar criterio operativo, redactar respuestas y preparar acciones con un agente genérico de Laravel AI.
                             </p>
                         </div>
                         <div className="grid gap-3 sm:grid-cols-3 lg:w-[520px]">
@@ -85,20 +136,25 @@ export default function AdminChatIndex() {
                                                 ¿Qué necesitas resolver?
                                             </h2>
                                             <p className="mt-1 text-sm leading-6 text-[#666666]">
-                                                Prueba una solicitud operativa. Más adelante el chat podrá consultar datos reales, ejecutar tareas aprobadas y devolver fuentes.
+                                                Prueba una solicitud operativa. El agente puede ayudarte a pensar y redactar, pero todavía no consulta datos internos en vivo.
                                             </p>
                                         </div>
                                     </div>
                                     <div className="mt-5 flex flex-wrap gap-2">
                                         {suggestions.map((suggestion) => (
-                                            <PromptSuggestion key={suggestion} size="sm" className="rounded-full border-[#D9D6D0] bg-[#FBF9F7] text-[#4A5D4A] hover:bg-white">
+                                            <PromptSuggestion
+                                                key={suggestion}
+                                                size="sm"
+                                                className="rounded-full border-[#D9D6D0] bg-[#FBF9F7] text-[#4A5D4A] hover:bg-white"
+                                                onClick={() => setInput(suggestion)}
+                                            >
                                                 {suggestion}
                                             </PromptSuggestion>
                                         ))}
                                     </div>
                                 </div>
 
-                                {sampleMessages.map((message) => (
+                                {messages.map((message) => (
                                     <div key={message.id} className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                         {message.role === 'assistant' && (
                                             <AssistantAvatar />
@@ -115,22 +171,36 @@ export default function AdminChatIndex() {
                                     </div>
                                 ))}
 
-                                <div className="flex justify-start gap-3">
-                                    <AssistantAvatar />
-                                    <div className="flex items-center gap-3 rounded-2xl border border-[#E5E5E5] bg-white px-4 py-3 text-sm text-[#666666]">
-                                        <Loader variant="typing" size="sm" />
-                                        Esperando funcionalidad
+                                {isSending && (
+                                    <div className="flex justify-start gap-3">
+                                        <AssistantAvatar />
+                                        <div className="flex items-center gap-3 rounded-2xl border border-[#E5E5E5] bg-white px-4 py-3 text-sm text-[#666666]">
+                                            <Loader variant="typing" size="sm" />
+                                            Pensando
+                                        </div>
                                     </div>
-                                </div>
+                                )}
+
+                                {error && (
+                                    <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                                        {error}
+                                    </div>
+                                )}
                                 <ChatContainerScrollAnchor />
                             </ChatContainerContent>
                         </ChatContainerRoot>
 
                         <div className="border-t border-[#E5E5E5] bg-[#FBF9F7] px-6 py-5">
                             <div className="mx-auto max-w-3xl">
-                                <PromptInput disabled className="rounded-3xl border-[#D9D6D0] bg-white p-3 shadow-none">
+                                <PromptInput
+                                    value={input}
+                                    onValueChange={setInput}
+                                    onSubmit={sendMessage}
+                                    isLoading={isSending}
+                                    className="rounded-3xl border-[#D9D6D0] bg-white p-3 shadow-none"
+                                >
                                     <PromptInputTextarea
-                                        placeholder="La escritura se activará cuando conectemos el endpoint..."
+                                        placeholder="Escribe una pregunta o tarea administrativa..."
                                         className="min-h-12 text-sm text-[#1A1A1A] placeholder:text-[#999999]"
                                     />
                                     <PromptInputActions className="justify-between border-t border-[#EDEAE5] pt-3">
@@ -139,14 +209,19 @@ export default function AdminChatIndex() {
                                                 <Paperclip className="h-4 w-4" />
                                             </Button>
                                         </PromptInputAction>
-                                        <Button type="button" disabled className="rounded-full bg-[#4A5D4A] px-4 text-white">
-                                            Enviar
+                                        <Button
+                                            type="button"
+                                            disabled={isSending || input.trim() === ''}
+                                            className="rounded-full bg-[#4A5D4A] px-4 text-white"
+                                            onClick={sendMessage}
+                                        >
+                                            {isSending ? 'Enviando' : 'Enviar'}
                                             <ArrowUp className="h-4 w-4" />
                                         </Button>
                                     </PromptInputActions>
                                 </PromptInput>
                                 <p className="mt-3 text-center text-xs text-[#999999]">
-                                    Vista estática. Sin llamadas al modelo, historial persistente ni acciones administrativas todavía.
+                                    El agente no ejecuta acciones ni consulta datos internos todavía. Verifica decisiones operativas antes de aplicarlas.
                                 </p>
                             </div>
                         </div>
@@ -165,10 +240,10 @@ export default function AdminChatIndex() {
                             <div className="rounded-2xl border border-[#E5E5E5] bg-white p-4">
                                 <h3 className="text-sm font-semibold text-[#1A1A1A]">Próximas capacidades</h3>
                                 <div className="mt-4 flex flex-col gap-3 text-sm text-[#666666]">
-                                    <Capability label="Consultar pedidos" />
+                                    <Capability label="Conversar con Laravel AI" />
                                     <Capability label="Redactar respuestas" />
                                     <Capability label="Sugerir acciones" />
-                                    <Capability label="Citar fuentes internas" />
+                                    <Capability label="Mantener contexto reciente" />
                                 </div>
                             </div>
 
