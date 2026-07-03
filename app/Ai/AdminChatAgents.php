@@ -4,6 +4,7 @@ namespace App\Ai;
 
 use App\Ai\Agents\AdminChatAgent;
 use App\Ai\Agents\AdsAgent;
+use App\Ai\Agents\MarketingIdeasAgent;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\In;
 
@@ -26,6 +27,19 @@ class AdminChatAgents
                     'Diagnostica la conexion de Meta',
                     'Explica que falta para medir ROAS',
                     'Lista las propiedades de Analytics disponibles',
+                ],
+            ],
+            'marketing_ideas' => [
+                'class' => MarketingIdeasAgent::class,
+                'name' => 'MarketingIdeasAgent',
+                'description' => 'Propone ideas de marketing, crecimiento y promocion segun etapa, presupuesto y recursos.',
+                'status' => 'Estrategia de crecimiento',
+                'welcome' => 'Puedo ayudarte a elegir ideas de marketing relevantes, priorizarlas y convertirlas en proximos pasos claros.',
+                'suggestions' => [
+                    'Dame ideas para vender mas aceites de masaje 5 L',
+                    'Sugiere tacticas de bajo presupuesto para spas',
+                    'Prepara ideas para captar terapeutas profesionales',
+                    'Ayudame a priorizar canales de crecimiento',
                 ],
             ],
             'admin' => [

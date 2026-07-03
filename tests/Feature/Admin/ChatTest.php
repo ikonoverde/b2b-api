@@ -2,6 +2,7 @@
 
 use App\Ai\Agents\AdminChatAgent;
 use App\Ai\Agents\AdsAgent;
+use App\Ai\Agents\MarketingIdeasAgent;
 use App\Models\AgentConversation;
 use App\Models\AgentConversationMessage;
 use App\Models\User;
@@ -32,6 +33,7 @@ test('admin can view chat page with agents and conversations', function () {
     $response->assertInertia(fn ($page) => $page
         ->component('admin/chat/Index')
         ->has('agents.ads')
+        ->has('agents.marketing_ideas')
         ->has('agents.admin')
         ->has('conversations', 1)
         ->where('selectedConversation', null)
@@ -100,6 +102,41 @@ test('admin can send first message and create a persisted ads conversation', fun
     ]);
 
     AdsAgent::assertPrompted('Revisa si GA4 esta conectado.');
+});
+
+test('admin can send first message and create a persisted marketing ideas conversation', function () {
+    $admin = User::factory()->admin()->create();
+
+    MarketingIdeasAgent::fake(['Prioriza SEO local, alianzas con spas y muestras para terapeutas.']);
+
+    $response = $this->actingAs($admin)->postJson('/admin/chat/messages', [
+        'agent' => 'marketing_ideas',
+        'message' => 'Dame ideas para vender mas aceite 5 L.',
+    ]);
+
+    $response
+        ->assertSuccessful()
+        ->assertJsonPath('message.agent', 'marketing_ideas')
+        ->assertJsonPath('message.role', 'assistant')
+        ->assertJsonPath('message.content', 'Prioriza SEO local, alianzas con spas y muestras para terapeutas.');
+
+    $conversationId = $response->json('conversation.id');
+
+    $this->assertDatabaseHas('agent_conversation_messages', [
+        'conversation_id' => $conversationId,
+        'agent' => 'marketing_ideas',
+        'role' => 'user',
+        'content' => 'Dame ideas para vender mas aceite 5 L.',
+    ]);
+
+    $this->assertDatabaseHas('agent_conversation_messages', [
+        'conversation_id' => $conversationId,
+        'agent' => 'marketing_ideas',
+        'role' => 'assistant',
+        'content' => 'Prioriza SEO local, alianzas con spas y muestras para terapeutas.',
+    ]);
+
+    MarketingIdeasAgent::assertPrompted('Dame ideas para vender mas aceite 5 L.');
 });
 
 test('admin can append to an owned conversation with selected agent', function () {
