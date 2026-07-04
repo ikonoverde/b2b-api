@@ -4,6 +4,7 @@ namespace App\Ai;
 
 use App\Ai\Agents\AdminChatAgent;
 use App\Ai\Agents\AdsAgent;
+use App\Ai\Agents\KeywordsAgent;
 use App\Ai\Agents\MarketingIdeasAgent;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\In;
@@ -40,6 +41,19 @@ class AdminChatAgents
                     'Sugiere tacticas de bajo presupuesto para spas',
                     'Prepara ideas para captar terapeutas profesionales',
                     'Ayudame a priorizar canales de crecimiento',
+                ],
+            ],
+            'keywords' => [
+                'class' => KeywordsAgent::class,
+                'name' => 'KeywordsAgent',
+                'description' => 'Investiga keywords SEO, intencion SERP, brechas competitivas y clusters de contenido.',
+                'status' => 'Investigacion SEO',
+                'welcome' => 'Puedo ayudarte a investigar keywords, agruparlas por intencion y proponer paginas SEO para Ikonoverde.',
+                'suggestions' => [
+                    'Investiga keywords para aceites de masaje profesional',
+                    'Encuentra oportunidades SEO para spas en Mexico',
+                    'Agrupa keywords por intencion de busqueda',
+                    'Propone paginas SEO para productos 5 L',
                 ],
             ],
             'admin' => [

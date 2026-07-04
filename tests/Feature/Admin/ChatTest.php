@@ -2,6 +2,7 @@
 
 use App\Ai\Agents\AdminChatAgent;
 use App\Ai\Agents\AdsAgent;
+use App\Ai\Agents\KeywordsAgent;
 use App\Ai\Agents\MarketingIdeasAgent;
 use App\Models\AgentConversation;
 use App\Models\AgentConversationMessage;
@@ -34,6 +35,7 @@ test('admin can view chat page with agents and conversations', function () {
         ->component('admin/chat/Index')
         ->has('agents.ads')
         ->has('agents.marketing_ideas')
+        ->has('agents.keywords')
         ->has('agents.admin')
         ->has('conversations', 1)
         ->where('selectedConversation', null)
@@ -137,6 +139,41 @@ test('admin can send first message and create a persisted marketing ideas conver
     ]);
 
     MarketingIdeasAgent::assertPrompted('Dame ideas para vender mas aceite 5 L.');
+});
+
+test('admin can send first message and create a persisted keywords conversation', function () {
+    $admin = User::factory()->admin()->create();
+
+    KeywordsAgent::fake(['Prioriza clusters transaccionales para aceite de masaje profesional y 5 L.']);
+
+    $response = $this->actingAs($admin)->postJson('/admin/chat/messages', [
+        'agent' => 'keywords',
+        'message' => 'Investiga keywords para aceite de masaje profesional.',
+    ]);
+
+    $response
+        ->assertSuccessful()
+        ->assertJsonPath('message.agent', 'keywords')
+        ->assertJsonPath('message.role', 'assistant')
+        ->assertJsonPath('message.content', 'Prioriza clusters transaccionales para aceite de masaje profesional y 5 L.');
+
+    $conversationId = $response->json('conversation.id');
+
+    $this->assertDatabaseHas('agent_conversation_messages', [
+        'conversation_id' => $conversationId,
+        'agent' => 'keywords',
+        'role' => 'user',
+        'content' => 'Investiga keywords para aceite de masaje profesional.',
+    ]);
+
+    $this->assertDatabaseHas('agent_conversation_messages', [
+        'conversation_id' => $conversationId,
+        'agent' => 'keywords',
+        'role' => 'assistant',
+        'content' => 'Prioriza clusters transaccionales para aceite de masaje profesional y 5 L.',
+    ]);
+
+    KeywordsAgent::assertPrompted('Investiga keywords para aceite de masaje profesional.');
 });
 
 test('admin can append to an owned conversation with selected agent', function () {

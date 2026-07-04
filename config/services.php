@@ -82,4 +82,40 @@ return [
         'limit' => env('OUTSCRAPER_LIMIT_LIMIT', 500),
     ],
 
+    'dataforseo' => [
+        'login' => env('DATAFORSEO_LOGIN'),
+        'password' => env('DATAFORSEO_PASSWORD'),
+        'base_url' => env('DATAFORSEO_BASE_URL', 'https://api.dataforseo.com'),
+    ],
+
+    'serpapi' => [
+        'api_key' => env('SERPAPI_API_KEY'),
+        'base_url' => env('SERPAPI_BASE_URL', 'https://serpapi.com'),
+    ],
+
+    'google_search_console' => [
+        'site_url' => env('GOOGLE_SEARCH_CONSOLE_SITE_URL'),
+        'credentials_path' => env('GOOGLE_SEARCH_CONSOLE_CREDENTIALS_PATH'),
+        'credentials_json' => env('GOOGLE_SEARCH_CONSOLE_CREDENTIALS_JSON'),
+    ],
+
+    'google_ads' => [
+        'developer_token' => env('GOOGLE_ADS_DEVELOPER_TOKEN'),
+        'customer_id' => env('GOOGLE_ADS_CUSTOMER_ID'),
+        'login_customer_id' => env('GOOGLE_ADS_LOGIN_CUSTOMER_ID'),
+        'client_id' => env('GOOGLE_ADS_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_ADS_CLIENT_SECRET'),
+        'refresh_token' => env('GOOGLE_ADS_REFRESH_TOKEN'),
+    ],
+
+    'semrush' => [
+        'api_key' => env('SEMRUSH_API_KEY'),
+        'base_url' => env('SEMRUSH_BASE_URL', 'https://api.semrush.com'),
+    ],
+
+    'ahrefs' => [
+        'api_key' => env('AHREFS_API_KEY'),
+        'base_url' => env('AHREFS_BASE_URL', 'https://api.ahrefs.com'),
+    ],
+
 ];
