@@ -34,7 +34,7 @@
     "/build/assets/Shipping-DJxiEYsN.js"
   ],
   "resources/js/Components/Sidebar.tsx": [
-    "/build/assets/AppLayout-BjsYRyw5.js"
+    "/build/assets/AppLayout-ca4ZqyB9.js"
   ],
   "resources/js/Components/SiteFooter.tsx": [
     "/build/assets/SiteFooter-Cn_4a6rU.js"
@@ -49,7 +49,7 @@
     "/build/assets/AccountShell-B64sRR20.js"
   ],
   "resources/js/Layouts/AppLayout.tsx": [
-    "/build/assets/AppLayout-BjsYRyw5.js"
+    "/build/assets/AppLayout-ca4ZqyB9.js"
   ],
   "resources/js/Layouts/AuthShell.tsx": [
     "/build/assets/AuthShell-DwgI5cc3.js"
@@ -100,7 +100,7 @@
     "/build/assets/Catalog-D8PexdXV.js"
   ],
   "resources/js/Pages/Categories.tsx": [
-    "/build/assets/Categories-DrWvcgJy.js"
+    "/build/assets/Categories-ClGdB7JV.js"
   ],
   "resources/js/Pages/Checkout/Payment.tsx": [
     "/build/assets/Payment-TefJLyf6.js"
@@ -112,22 +112,22 @@
     "/build/assets/ThankYou-D3GLwWu7.js"
   ],
   "resources/js/Pages/Content/Banners.tsx": [
-    "/build/assets/Banners-BkDVbiFE.js"
+    "/build/assets/Banners-ymmuCbgk.js"
   ],
   "resources/js/Pages/Content/FeaturedProducts.tsx": [
-    "/build/assets/FeaturedProducts-DI_1sDqr.js"
+    "/build/assets/FeaturedProducts-oe2hRp3a.js"
   ],
   "resources/js/Pages/Content/StaticPages.tsx": [
-    "/build/assets/StaticPages-DRrUFuBs.js"
+    "/build/assets/StaticPages-BM3dBq4w.js"
   ],
   "resources/js/Pages/Content/StaticPages/Edit.tsx": [
-    "/build/assets/Edit-BWUjllEq.js"
+    "/build/assets/Edit-CPI_qEW0.js"
   ],
   "resources/js/Pages/CustomerDashboard.tsx": [
     "/build/assets/CustomerDashboard-CYBun0O3.js"
   ],
   "resources/js/Pages/Dashboard.tsx": [
-    "/build/assets/Dashboard-CDtYU5NE.js"
+    "/build/assets/Dashboard-BLgyCT8_.js"
   ],
   "resources/js/Pages/Error.tsx": [
     "/build/assets/Error-DcWp194O.js"
@@ -151,13 +151,13 @@
     "/build/assets/Show-B0EC7fqK.js"
   ],
   "resources/js/Pages/Products.tsx": [
-    "/build/assets/Products-X8mvtSVv.js"
+    "/build/assets/Products-DyawI9BN.js"
   ],
   "resources/js/Pages/Products/Create.tsx": [
-    "/build/assets/Create-D29SFCIu.js"
+    "/build/assets/Create-C2FENEJv.js"
   ],
   "resources/js/Pages/Products/Edit.tsx": [
-    "/build/assets/Edit-ClJwaTz-.js"
+    "/build/assets/Edit-C-1PK3Cf.js"
   ],
   "resources/js/Pages/Products/components/BasicInfoCard.tsx": [
     "/build/assets/BasicInfoCard-DUl2Poqc.js"
@@ -190,25 +190,28 @@
     "/build/assets/StaticPage-B5O-QpQD.js"
   ],
   "resources/js/Pages/admin/blog-posts/Create.tsx": [
-    "/build/assets/Create-BWEKMWAS.js"
+    "/build/assets/Create-BEl43eFq.js"
   ],
   "resources/js/Pages/admin/blog-posts/Edit.tsx": [
-    "/build/assets/Edit-B7NqFwnh.js"
+    "/build/assets/Edit-C9SvsEJB.js"
   ],
   "resources/js/Pages/admin/blog-posts/Form.tsx": [
-    "/build/assets/Form-Bo5niJ9v.js"
+    "/build/assets/Form-UC76y3v6.js"
   ],
   "resources/js/Pages/admin/blog-posts/Index.tsx": [
-    "/build/assets/Index-B-05nYv5.js"
+    "/build/assets/Index-aDhOehIF.js"
   ],
   "resources/js/Pages/admin/businesses/Index.tsx": [
-    "/build/assets/Index-D9GsqwFQ.js"
+    "/build/assets/Index-DNnL6PAZ.js"
+  ],
+  "resources/js/Pages/admin/chat/Index.tsx": [
+    "/build/assets/Index-B1qlB-so.js"
   ],
   "resources/js/Pages/admin/merida-sample-requests/Index.tsx": [
-    "/build/assets/Index-DUAlcAMV.js"
+    "/build/assets/Index-sJt530ma.js"
   ],
   "resources/js/Pages/admin/orders/Index.tsx": [
-    "/build/assets/Index-BTBkKuMH.js"
+    "/build/assets/Index-CJpQzp3y.js"
   ],
   "resources/js/Pages/admin/orders/NotesSection.tsx": [
     "/build/assets/NotesSection-CbbYi7_u.js"
@@ -220,7 +223,7 @@
     "/build/assets/RefundModal-DiH1IJz_.js"
   ],
   "resources/js/Pages/admin/orders/Show.tsx": [
-    "/build/assets/Show-DjLaGJZ1.js"
+    "/build/assets/Show-D8usdNyu.js"
   ],
   "resources/js/Pages/admin/orders/StatusChangeModal.tsx": [
     "/build/assets/StatusChangeModal-Cp6RzVv0.js"
@@ -232,19 +235,43 @@
     "/build/assets/helpers-CnpaKXV5.js"
   ],
   "resources/js/Pages/admin/settings/Index.tsx": [
-    "/build/assets/Index-BpMPOx2b.js"
+    "/build/assets/Index-DpGck5Hj.js"
   ],
   "resources/js/Pages/admin/users/Index.tsx": [
-    "/build/assets/Index-CZhej8Ti.js"
+    "/build/assets/Index-DHcwLa52.js"
   ],
   "resources/js/Pages/admin/users/Show.tsx": [
-    "/build/assets/Show-B9lEsCCS.js"
+    "/build/assets/Show-Dk0DsErO.js"
+  ],
+  "resources/js/components/ui/button.tsx": [
+    "/build/assets/Index-B1qlB-so.js"
+  ],
+  "resources/js/components/ui/chat-container.tsx": [
+    "/build/assets/Index-B1qlB-so.js"
+  ],
+  "resources/js/components/ui/loader.tsx": [
+    "/build/assets/Index-B1qlB-so.js"
+  ],
+  "resources/js/components/ui/prompt-input.tsx": [
+    "/build/assets/Index-B1qlB-so.js"
+  ],
+  "resources/js/components/ui/prompt-suggestion.tsx": [
+    "/build/assets/Index-B1qlB-so.js"
+  ],
+  "resources/js/components/ui/textarea.tsx": [
+    "/build/assets/Index-B1qlB-so.js"
+  ],
+  "resources/js/components/ui/tooltip.tsx": [
+    "/build/assets/Index-B1qlB-so.js"
   ],
   "resources/js/hooks/useSavedAddress.ts": [
     "/build/assets/Shipping-DJxiEYsN.js"
   ],
   "resources/js/hooks/useShippingQuotes.ts": [
     "/build/assets/Shipping-DJxiEYsN.js"
+  ],
+  "resources/js/lib/utils.ts": [
+    "/build/assets/Index-B1qlB-so.js"
   ],
   "resources/js/ssr.tsx": [],
   "resources/js/utils/analytics.ts": [
