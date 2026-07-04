@@ -2,12 +2,9 @@
     "agents": [
         "opencode"
     ],
+    "cloud": false,
     "editors": [
         "opencode"
     ],
-    "guidelines": [
-        "laravel/ai",
-        "inertiajs/inertia-laravel",
-        "lucianotonet/laravel-telescope-mcp"
-    ]
+    "guidelines": true
 }

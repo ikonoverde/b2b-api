@@ -9,8 +9,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
-        "cronitor/laravel": "dev-master",
+        "php": "^8.3",
         "geoip2/geoip2": "^3.3",
         "google/analytics-admin": "^0.32.0",
         "google/analytics-data": "^0.24.0",
@@ -19,7 +18,7 @@
         "knuckleswtf/scribe": "^5.6",
         "laravel/ai": "^0.7.2",
         "laravel/cashier": "^16.2",
-        "laravel/framework": "^12.0",
+        "laravel/framework": "^13.0",
         "laravel/horizon": "^5.45",
         "laravel/mcp": "^0.5.9",
         "laravel/nightwatch": "^1.27",
@@ -27,13 +26,13 @@
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.25",
         "laravel/telescope": "^5.16",
-        "laravel/tinker": "^2.10.1",
+        "laravel/tinker": "^3.0",
         "outscraper/outscraper": "^4.2",
         "sqids/sqids": "^0.5.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
-        "laravel/boost": "^1.8",
+        "laravel/boost": "^2.0",
         "laravel/pail": "^1.2.2",
         "laravel/pao": "^1.0",
         "laravel/pint": "^1.24",
@@ -108,10 +107,5 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-    "repositories": [{
-        "name": "cronitor-laravel",
-        "type": "vcs",
-        "url": "https://github.com/cronitorio/cronitor-laravel.git"
-    }]
+    "prefer-stable": true
 }
