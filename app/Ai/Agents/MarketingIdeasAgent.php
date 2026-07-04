@@ -2,9 +2,22 @@
 
 namespace App\Ai\Agents;
 
+use App\Ai\Tools\GetAnalyticsAccountSummaries;
+use App\Ai\Tools\GetAnalyticsPropertyDetails;
+use App\Ai\Tools\GetCustomDimensionsAndMetrics;
+use App\Ai\Tools\ListAnalyticsPropertyAnnotations;
+use App\Ai\Tools\ListGoogleAdsLinks;
+use App\Ai\Tools\MarketingProductCatalog;
+use App\Ai\Tools\MarketingSalesSummary;
+use App\Ai\Tools\RunAnalyticsConversionsReport;
+use App\Ai\Tools\RunAnalyticsFunnelReport;
+use App\Ai\Tools\RunAnalyticsRealtimeReport;
+use App\Ai\Tools\RunAnalyticsReport;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Conversational;
+use Laravel\Ai\Contracts\HasTools;
+use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Messages\AssistantMessage;
 use Laravel\Ai\Messages\Message;
@@ -13,7 +26,7 @@ use Laravel\Ai\Promptable;
 use Stringable;
 
 #[Model('deepseek/deepseek-v4-flash')]
-class MarketingIdeasAgent implements Agent, Conversational
+class MarketingIdeasAgent implements Agent, Conversational, HasTools
 {
     use Promptable;
 
@@ -58,7 +71,14 @@ Ikonoverde context:
 - Core messages: public prices, no minimum order, same price for everyone, compra desde una unidad, uso profesional, deslizamiento prolongado, absorcion gradual, sin residuo graso, ingredientes activos, hecho en Mexico.
 - Use precise Mexican Spanish for customer-facing copy. Avoid hype, miracle claims, unsupported guarantees, fake urgency, generic wellness language, and any implication of wholesale gates or minimums.
 
-You do not have tools that read live analytics, ads, social, order, or customer data. Do not claim that you checked live data. If live performance data is needed, ask the admin to provide it or recommend using AdsAgent for reporting and diagnosis.
+Use the available read-only tools when data can make the ideas more specific:
+- Product catalog: active products, categories, SKUs, slugs, prices, stock, featured flags, ingredients, recommendations, and description summaries.
+- Sales summary: completed non-cancelled order totals by product, revenue, quantity sold, average order value, top products, and date range.
+- GA4 analytics: traffic, channels, campaigns, landing pages, ecommerce, funnels, realtime behavior, conversions, annotations, property setup, and available dimensions/metrics.
+
+When using data, state the data source, date range or filters, dimensions, metrics, and caveats before making recommendations.
+
+You do not have tools that read reviews, competitor prices, keyword exports, customer personas, support logs, Meta, Instagram, or Google Ads account data. Do not claim access to those sources unless the admin provides the data in the conversation. For paid-platform reporting or diagnosis that needs Meta, Instagram, or Google Ads data beyond GA4, recommend using AdsAgent.
 PROMPT;
     }
 
@@ -72,5 +92,25 @@ PROMPT;
                 ? new AssistantMessage($message['content'])
                 : new UserMessage($message['content']))
             ->all();
+    }
+
+    /**
+     * @return Tool[]
+     */
+    public function tools(): iterable
+    {
+        return [
+            app(MarketingProductCatalog::class),
+            app(MarketingSalesSummary::class),
+            app(GetAnalyticsAccountSummaries::class),
+            app(GetAnalyticsPropertyDetails::class),
+            app(ListGoogleAdsLinks::class),
+            app(GetCustomDimensionsAndMetrics::class),
+            app(RunAnalyticsReport::class),
+            app(RunAnalyticsConversionsReport::class),
+            app(RunAnalyticsFunnelReport::class),
+            app(RunAnalyticsRealtimeReport::class),
+            app(ListAnalyticsPropertyAnnotations::class),
+        ];
     }
 }
