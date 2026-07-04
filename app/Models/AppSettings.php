@@ -9,6 +9,7 @@ class AppSettings extends Model
     protected $table = 'app_settings';
 
     protected $fillable = [
+        'id',
         'contact_email',
         'contact_phone',
         'contact_address',
