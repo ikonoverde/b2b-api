@@ -2,23 +2,6 @@
 
 namespace App\Ai\Agents;
 
-use App\Ai\Tools\GetAnalyticsAccountSummaries;
-use App\Ai\Tools\GetAnalyticsPropertyDetails;
-use App\Ai\Tools\GetCustomDimensionsAndMetrics;
-use App\Ai\Tools\GetInstagramAccountInfo;
-use App\Ai\Tools\GetInstagramPostComments;
-use App\Ai\Tools\GetInstagramPostInsights;
-use App\Ai\Tools\GetInstagramPosts;
-use App\Ai\Tools\GetMetaPageInfo;
-use App\Ai\Tools\GetMetaPagePosts;
-use App\Ai\Tools\GetMetaPostComments;
-use App\Ai\Tools\GetMetaPostInsights;
-use App\Ai\Tools\ListAnalyticsPropertyAnnotations;
-use App\Ai\Tools\ListGoogleAdsLinks;
-use App\Ai\Tools\RunAnalyticsConversionsReport;
-use App\Ai\Tools\RunAnalyticsFunnelReport;
-use App\Ai\Tools\RunAnalyticsRealtimeReport;
-use App\Ai\Tools\RunAnalyticsReport;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Conversational;
@@ -111,23 +94,8 @@ PROMPT;
     public function tools(): iterable
     {
         return [
-            app(GetAnalyticsAccountSummaries::class),
-            app(GetAnalyticsPropertyDetails::class),
-            app(ListGoogleAdsLinks::class),
-            app(GetCustomDimensionsAndMetrics::class),
-            app(RunAnalyticsReport::class),
-            app(RunAnalyticsConversionsReport::class),
-            app(RunAnalyticsFunnelReport::class),
-            app(RunAnalyticsRealtimeReport::class),
-            app(ListAnalyticsPropertyAnnotations::class),
-            app(GetMetaPageInfo::class),
-            app(GetMetaPagePosts::class),
-            app(GetMetaPostInsights::class),
-            app(GetMetaPostComments::class),
-            app(GetInstagramAccountInfo::class),
-            app(GetInstagramPosts::class),
-            app(GetInstagramPostInsights::class),
-            app(GetInstagramPostComments::class),
+            new GoogleAnalyticsAgent,
+            new MetaAgent,
         ];
     }
 }

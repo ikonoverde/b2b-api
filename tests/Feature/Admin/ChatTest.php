@@ -2,8 +2,10 @@
 
 use App\Ai\Agents\AdminChatAgent;
 use App\Ai\Agents\AdsAgent;
+use App\Ai\Agents\GoogleAnalyticsAgent;
 use App\Ai\Agents\KeywordsAgent;
 use App\Ai\Agents\MarketingIdeasAgent;
+use App\Ai\Agents\MetaAgent;
 use App\Models\AgentConversation;
 use App\Models\AgentConversationMessage;
 use App\Models\User;
@@ -34,6 +36,8 @@ test('admin can view chat page with agents and conversations', function () {
     $response->assertInertia(fn ($page) => $page
         ->component('admin/chat/Index')
         ->has('agents.ads')
+        ->has('agents.google_analitics')
+        ->has('agents.meta')
         ->has('agents.marketing_ideas')
         ->has('agents.keywords')
         ->has('agents.admin')
@@ -104,6 +108,76 @@ test('admin can send first message and create a persisted ads conversation', fun
     ]);
 
     AdsAgent::assertPrompted('Revisa si GA4 esta conectado.');
+});
+
+test('admin can send first message and create a persisted Google Analytics conversation', function () {
+    $admin = User::factory()->admin()->create();
+
+    GoogleAnalyticsAgent::fake(['GA4 muestra crecimiento en trafico organico.']);
+
+    $response = $this->actingAs($admin)->postJson('/admin/chat/messages', [
+        'agent' => 'google_analitics',
+        'message' => 'Revisa el trafico organico en GA4.',
+    ]);
+
+    $response
+        ->assertSuccessful()
+        ->assertJsonPath('message.agent', 'google_analitics')
+        ->assertJsonPath('message.role', 'assistant')
+        ->assertJsonPath('message.content', 'GA4 muestra crecimiento en trafico organico.');
+
+    $conversationId = $response->json('conversation.id');
+
+    $this->assertDatabaseHas('agent_conversation_messages', [
+        'conversation_id' => $conversationId,
+        'agent' => 'google_analitics',
+        'role' => 'user',
+        'content' => 'Revisa el trafico organico en GA4.',
+    ]);
+
+    $this->assertDatabaseHas('agent_conversation_messages', [
+        'conversation_id' => $conversationId,
+        'agent' => 'google_analitics',
+        'role' => 'assistant',
+        'content' => 'GA4 muestra crecimiento en trafico organico.',
+    ]);
+
+    GoogleAnalyticsAgent::assertPrompted('Revisa el trafico organico en GA4.');
+});
+
+test('admin can send first message and create a persisted Meta conversation', function () {
+    $admin = User::factory()->admin()->create();
+
+    MetaAgent::fake(['Instagram tiene mejores senales en posts de producto 5 L.']);
+
+    $response = $this->actingAs($admin)->postJson('/admin/chat/messages', [
+        'agent' => 'meta',
+        'message' => 'Analiza los posts recientes de Instagram.',
+    ]);
+
+    $response
+        ->assertSuccessful()
+        ->assertJsonPath('message.agent', 'meta')
+        ->assertJsonPath('message.role', 'assistant')
+        ->assertJsonPath('message.content', 'Instagram tiene mejores senales en posts de producto 5 L.');
+
+    $conversationId = $response->json('conversation.id');
+
+    $this->assertDatabaseHas('agent_conversation_messages', [
+        'conversation_id' => $conversationId,
+        'agent' => 'meta',
+        'role' => 'user',
+        'content' => 'Analiza los posts recientes de Instagram.',
+    ]);
+
+    $this->assertDatabaseHas('agent_conversation_messages', [
+        'conversation_id' => $conversationId,
+        'agent' => 'meta',
+        'role' => 'assistant',
+        'content' => 'Instagram tiene mejores senales en posts de producto 5 L.',
+    ]);
+
+    MetaAgent::assertPrompted('Analiza los posts recientes de Instagram.');
 });
 
 test('admin can send first message and create a persisted marketing ideas conversation', function () {

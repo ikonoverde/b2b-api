@@ -4,8 +4,10 @@ namespace App\Ai;
 
 use App\Ai\Agents\AdminChatAgent;
 use App\Ai\Agents\AdsAgent;
+use App\Ai\Agents\GoogleAnalyticsAgent;
 use App\Ai\Agents\KeywordsAgent;
 use App\Ai\Agents\MarketingIdeasAgent;
+use App\Ai\Agents\MetaAgent;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\In;
 
@@ -28,6 +30,32 @@ class AdminChatAgents
                     'Diagnostica la conexion de Meta',
                     'Explica que falta para medir ROAS',
                     'Lista las propiedades de Analytics disponibles',
+                ],
+            ],
+            'google_analitics' => [
+                'class' => GoogleAnalyticsAgent::class,
+                'name' => 'GoogleAnalyticsAgent',
+                'description' => 'Consulta GA4, conversiones, embudos, atribucion, realtime y configuracion de propiedades.',
+                'status' => 'Datos e interpretacion GA4',
+                'welcome' => 'Puedo revisar datos de Google Analytics, explicar reportes y detectar problemas de medicion o atribucion.',
+                'suggestions' => [
+                    'Lista las propiedades de Analytics disponibles',
+                    'Revisa conversiones de los ultimos 30 dias',
+                    'Analiza el embudo de compra en GA4',
+                    'Explica si el trafico cambio esta semana',
+                ],
+            ],
+            'meta' => [
+                'class' => MetaAgent::class,
+                'name' => 'MetaAgent',
+                'description' => 'Consulta Meta e Instagram, posts, insights, comentarios y senales de contenido social.',
+                'status' => 'Datos e interpretacion Meta',
+                'welcome' => 'Puedo revisar datos de Meta e Instagram, interpretar posts y resumir senales de comentarios o engagement.',
+                'suggestions' => [
+                    'Revisa la informacion de la pagina de Meta',
+                    'Lista los posts recientes de Instagram',
+                    'Analiza insights de un post de Meta',
+                    'Resume comentarios de una publicacion',
                 ],
             ],
             'marketing_ideas' => [
