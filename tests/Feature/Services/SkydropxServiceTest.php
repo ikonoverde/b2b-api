@@ -1,6 +1,8 @@
 <?php
 
 use App\Services\SkydropxService;
+use GuzzleHttp\Promise\PromiseInterface;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
@@ -27,7 +29,7 @@ beforeEach(function () {
     ];
 });
 
-function fakeQuotesResponse(array ...$rates): \GuzzleHttp\Promise\PromiseInterface
+function fakeQuotesResponse(array ...$rates): PromiseInterface
 {
     $rateData = array_map(fn (array $rate, int $i) => [
         'success' => $rate['success'] ?? true,
@@ -99,7 +101,7 @@ test('returns empty array when oauth fails', function () {
 test('returns empty array on timeout', function () {
     Http::fake([
         '*/oauth/token' => Http::response($this->oauthResponse),
-        '*/quotations' => fn () => throw new \Illuminate\Http\Client\ConnectionException('Timeout'),
+        '*/quotations' => fn () => throw new ConnectionException('Timeout'),
     ]);
 
     $quotes = $this->service->getQuotes($this->destination, [

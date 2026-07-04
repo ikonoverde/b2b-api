@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\ShippingMethod;
 use App\Models\User;
 use App\Services\ShippingQuoteService;
+use Stripe\Service\PaymentIntentService;
 use Stripe\StripeClient;
 
 function createCartWithItems(User $user): Cart
@@ -63,11 +64,11 @@ function mockSkydropxQuote(float $price, string $providerDisplay = 'FedEx', stri
 
 function mockStripePaymentIntent(): void
 {
-    $mockPaymentIntent = new \stdClass;
+    $mockPaymentIntent = new stdClass;
     $mockPaymentIntent->id = 'pi_test_123';
     $mockPaymentIntent->client_secret = 'pi_test_123_secret_456';
 
-    $mockPaymentIntents = Mockery::mock(\Stripe\Service\PaymentIntentService::class);
+    $mockPaymentIntents = Mockery::mock(PaymentIntentService::class);
     $mockPaymentIntents->shouldReceive('create')->andReturn($mockPaymentIntent);
 
     $mockStripe = Mockery::mock(StripeClient::class);

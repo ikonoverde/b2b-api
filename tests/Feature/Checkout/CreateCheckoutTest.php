@@ -2,6 +2,7 @@
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\ShippingMethod;
 use App\Models\User;
@@ -238,7 +239,7 @@ it('falls back to config shipping cost when no method is provided', function () 
     $response->assertCreated();
     $response->assertJsonPath('data.shipping_method_id', null);
 
-    $order = \App\Models\Order::where('user_id', $user->id)->first();
+    $order = Order::where('user_id', $user->id)->first();
     expect((float) $order->shipping_cost)->toBe((float) config('shop.shipping_cost', 10.00));
 });
 

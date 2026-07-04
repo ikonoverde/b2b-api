@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
 
 describe('POST /api/forgot-password', function () {
@@ -18,7 +19,7 @@ describe('POST /api/forgot-password', function () {
         $response->assertOk()
             ->assertJsonPath('message', 'If an account exists with that email, a reset link has been sent.');
 
-        Notification::assertSentTo($user, \Illuminate\Auth\Notifications\ResetPassword::class);
+        Notification::assertSentTo($user, ResetPassword::class);
     });
 
     it('returns 200 even when email does not exist to prevent enumeration', function () {

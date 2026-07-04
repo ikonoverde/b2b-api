@@ -151,7 +151,7 @@ test('refund handles stripe error gracefully', function () {
     ]);
 
     $mockRefunds = Mockery::mock();
-    $mockRefunds->shouldReceive('create')->once()->andThrow(new \Exception('Card declined'));
+    $mockRefunds->shouldReceive('create')->once()->andThrow(new Exception('Card declined'));
     $this->mockStripeClient->refunds = $mockRefunds;
 
     $response = $this->actingAs($admin)->post("/admin/orders/{$order->id}/refund", [

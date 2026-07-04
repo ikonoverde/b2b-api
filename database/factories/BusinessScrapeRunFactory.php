@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\BusinessScrapeRun;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BusinessScrapeRun>
+ * @extends Factory<BusinessScrapeRun>
  */
 class BusinessScrapeRunFactory extends Factory
 {

@@ -104,7 +104,7 @@ it('records label_error on failure', function () {
 
     try {
         (new CreateShippingLabel($order))->handle($mock);
-    } catch (\RuntimeException) {
+    } catch (RuntimeException) {
         // Expected — the job calls $this->fail()
     }
 
@@ -128,7 +128,7 @@ it('passes the carrier-parse guard for well-formed shipping_carrier strings', fu
     $mock = Mockery::mock(SkydropxService::class);
     $mock->shouldReceive('createShipment')
         ->once()
-        ->with(Mockery::type('array'), Mockery::type(\App\Models\Order::class))
+        ->with(Mockery::type('array'), Mockery::type(Order::class))
         ->andReturn([
             'id' => 'shp_789',
             'tracking_number' => null,

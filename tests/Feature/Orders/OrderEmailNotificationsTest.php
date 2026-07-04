@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Notifications\Order\NewOrderReceived;
 use App\Notifications\Order\OrderConfirmation;
 use App\Notifications\Order\OrderStatusChanged;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Notification;
 use Stripe\StripeClient;
 
@@ -411,7 +412,7 @@ describe('Email Queue', function () {
     it('order confirmation implements ShouldQueue', function () {
         $notification = new OrderConfirmation(Order::factory()->make());
 
-        expect($notification)->toBeInstanceOf(\Illuminate\Contracts\Queue\ShouldQueue::class);
+        expect($notification)->toBeInstanceOf(ShouldQueue::class);
     });
 
     it('order status changed implements ShouldQueue', function () {
@@ -420,6 +421,6 @@ describe('Email Queue', function () {
             'pending'
         );
 
-        expect($notification)->toBeInstanceOf(\Illuminate\Contracts\Queue\ShouldQueue::class);
+        expect($notification)->toBeInstanceOf(ShouldQueue::class);
     });
 });

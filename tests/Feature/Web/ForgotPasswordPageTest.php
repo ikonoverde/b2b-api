@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+
 describe('GET /forgot-password', function () {
     it('renders the forgot password page for guests', function () {
         $response = $this->get('/forgot-password');
@@ -11,7 +13,7 @@ describe('GET /forgot-password', function () {
     });
 
     it('redirects authenticated users to dashboard', function () {
-        $user = \App\Models\User::factory()->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get('/forgot-password');
 

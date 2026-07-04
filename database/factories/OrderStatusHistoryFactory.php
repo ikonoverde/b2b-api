@@ -3,11 +3,12 @@
 namespace Database\Factories;
 
 use App\Models\Order;
+use App\Models\OrderStatusHistory;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\OrderStatusHistory>
+ * @extends Factory<OrderStatusHistory>
  */
 class OrderStatusHistoryFactory extends Factory
 {

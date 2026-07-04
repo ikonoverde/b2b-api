@@ -74,7 +74,7 @@ describe('POST /api/password/reset/confirm', function () {
         $token = Password::createToken($user);
 
         // Simulate token expiration by manipulating the created_at timestamp
-        \DB::table('password_reset_tokens')
+        DB::table('password_reset_tokens')
             ->where('email', 'john@example.com')
             ->update(['created_at' => now()->subMinutes(61)]);
 

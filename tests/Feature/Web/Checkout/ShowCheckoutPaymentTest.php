@@ -4,14 +4,17 @@ use App\Models\Order;
 use App\Models\User;
 use Stripe\Customer;
 use Stripe\PaymentMethod;
+use Stripe\Service\CustomerService;
+use Stripe\Service\PaymentIntentService;
+use Stripe\Service\PaymentMethodService;
 use Stripe\StripeClient;
 
 function mockStripePaymentIntentRetrieve(): void
 {
-    $mockPaymentIntent = new \stdClass;
+    $mockPaymentIntent = new stdClass;
     $mockPaymentIntent->client_secret = 'pi_test_123_secret_456';
 
-    $mockPaymentIntents = Mockery::mock(\Stripe\Service\PaymentIntentService::class);
+    $mockPaymentIntents = Mockery::mock(PaymentIntentService::class);
     $mockPaymentIntents->shouldReceive('retrieve')->once()->andReturn($mockPaymentIntent);
 
     $mockStripe = Mockery::mock(StripeClient::class);
@@ -37,7 +40,7 @@ function stripePaymentMethodForCheckout(string $id, string $brand, string $last4
 
 function mockStripeCheckoutWithPaymentMethods(): void
 {
-    $mockPaymentIntent = new \stdClass;
+    $mockPaymentIntent = new stdClass;
     $mockPaymentIntent->client_secret = 'pi_test_123_secret_456';
     $mockPaymentIntent->customer = 'cus_test_123';
 
@@ -52,16 +55,16 @@ function mockStripeCheckoutWithPaymentMethods(): void
         'default_payment_method' => $defaultPaymentMethod,
     ];
 
-    $mockPaymentIntents = Mockery::mock(\Stripe\Service\PaymentIntentService::class);
+    $mockPaymentIntents = Mockery::mock(PaymentIntentService::class);
     $mockPaymentIntents->shouldReceive('retrieve')->once()->andReturn($mockPaymentIntent);
 
-    $mockPaymentMethods = Mockery::mock(\Stripe\Service\PaymentMethodService::class);
+    $mockPaymentMethods = Mockery::mock(PaymentMethodService::class);
     $mockPaymentMethods->shouldReceive('all')
         ->once()
         ->with(['customer' => 'cus_test_123', 'limit' => 24])
         ->andReturn((object) ['data' => [$defaultPaymentMethod, $secondPaymentMethod]]);
 
-    $mockCustomers = Mockery::mock(\Stripe\Service\CustomerService::class);
+    $mockCustomers = Mockery::mock(CustomerService::class);
     $mockCustomers->shouldReceive('retrieve')
         ->once()
         ->with('cus_test_123', ['expand' => ['default_source', 'invoice_settings.default_payment_method']])
@@ -77,11 +80,11 @@ function mockStripeCheckoutWithPaymentMethods(): void
 
 function mockStripeCheckoutWithDetachedPaymentIntent(): void
 {
-    $mockPaymentIntent = new \stdClass;
+    $mockPaymentIntent = new stdClass;
     $mockPaymentIntent->client_secret = 'pi_test_123_secret_456';
     $mockPaymentIntent->customer = null;
 
-    $updatedPaymentIntent = new \stdClass;
+    $updatedPaymentIntent = new stdClass;
     $updatedPaymentIntent->client_secret = 'pi_test_123_secret_456';
     $updatedPaymentIntent->customer = 'cus_test_123';
 
@@ -95,20 +98,20 @@ function mockStripeCheckoutWithDetachedPaymentIntent(): void
         'default_payment_method' => $defaultPaymentMethod,
     ];
 
-    $mockPaymentIntents = Mockery::mock(\Stripe\Service\PaymentIntentService::class);
+    $mockPaymentIntents = Mockery::mock(PaymentIntentService::class);
     $mockPaymentIntents->shouldReceive('retrieve')->once()->andReturn($mockPaymentIntent);
     $mockPaymentIntents->shouldReceive('update')
         ->once()
         ->with('pi_test_123', ['customer' => 'cus_test_123'])
         ->andReturn($updatedPaymentIntent);
 
-    $mockPaymentMethods = Mockery::mock(\Stripe\Service\PaymentMethodService::class);
+    $mockPaymentMethods = Mockery::mock(PaymentMethodService::class);
     $mockPaymentMethods->shouldReceive('all')
         ->once()
         ->with(['customer' => 'cus_test_123', 'limit' => 24])
         ->andReturn((object) ['data' => [$defaultPaymentMethod]]);
 
-    $mockCustomers = Mockery::mock(\Stripe\Service\CustomerService::class);
+    $mockCustomers = Mockery::mock(CustomerService::class);
     $mockCustomers->shouldReceive('retrieve')
         ->once()
         ->with('cus_test_123', ['expand' => ['default_source', 'invoice_settings.default_payment_method']])

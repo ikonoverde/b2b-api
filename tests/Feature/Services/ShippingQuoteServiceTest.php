@@ -5,6 +5,7 @@ use App\Models\CartItem;
 use App\Models\Product;
 use App\Services\ShippingQuoteService;
 use App\Services\SkydropxService;
+use Illuminate\Support\Collection;
 
 function makeQuote(string $quoteId, float $price, int $days, string $carrier = 'Carrier'): array
 {
@@ -27,7 +28,7 @@ function makeServiceWithQuotes(array $quotes): ShippingQuoteService
     return new ShippingQuoteService($skydropx);
 }
 
-function cartItemsForService(): \Illuminate\Support\Collection
+function cartItemsForService(): Collection
 {
     $product = Product::factory()->withDimensions()->create(['stock' => 10]);
     $cart = Cart::factory()->create(['status' => 'active']);

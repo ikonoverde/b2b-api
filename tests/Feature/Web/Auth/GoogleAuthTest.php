@@ -97,7 +97,7 @@ describe('GET /auth/google/callback', function () {
 
     it('redirects to login on Google auth failure', function () {
         $provider = Mockery::mock(GoogleProvider::class);
-        $provider->shouldReceive('user')->andThrow(new \Exception('Google error'));
+        $provider->shouldReceive('user')->andThrow(new Exception('Google error'));
 
         Socialite::shouldReceive('driver')->with('google')->andReturn($provider);
 
