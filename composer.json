@@ -13,6 +13,7 @@
         "geoip2/geoip2": "^3.3",
         "google/analytics-admin": "^0.32.0",
         "google/analytics-data": "^0.24.0",
+        "google/apiclient": "^2.19",
         "inertiajs/inertia-laravel": "^2.0",
         "intervention/image": "^3.11",
         "knuckleswtf/scribe": "^5.6",

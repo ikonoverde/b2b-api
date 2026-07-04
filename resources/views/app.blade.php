@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="_Uk0O0f2ISSGKvqrlrdAGWLAvC7nHkoSJJgiPL_1fD8">
 
     <title inertia>{{ config('app.name', 'Ikonoverde') }}</title>
 
