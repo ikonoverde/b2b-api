@@ -100,7 +100,7 @@ it('returns structured configuration errors from SEO placeholders', function (st
     'dataforseo' => [DataForSeoKeywordResearch::class, 'dataforseo', ['services.dataforseo.login', 'services.dataforseo.password']],
     'serpapi' => [SerpApiSearchInsights::class, 'serpapi', ['services.serpapi.api_key']],
     'search console' => [GoogleSearchConsoleKeywordPerformance::class, 'google_search_console', ['services.google_search_console.site_url']],
-    'keyword planner' => [GoogleAdsKeywordPlannerIdeas::class, 'google_ads_keyword_planner', ['services.google_ads.developer_token', 'services.google_ads.customer_id']],
+    'keyword planner' => [GoogleAdsKeywordPlannerIdeas::class, 'google_ads_keyword_planner', ['services.google_ads.developer_token', 'services.google_ads.customer_id', 'services.google_ads.client_id', 'services.google_ads.client_secret', 'services.google_ads.refresh_token']],
     'semrush' => [SemrushKeywordResearch::class, 'semrush', ['services.semrush.api_key']],
     'ahrefs' => [AhrefsKeywordResearch::class, 'ahrefs', ['services.ahrefs.api_key']],
 ]);

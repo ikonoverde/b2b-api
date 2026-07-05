@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Google Ads API Tool Design Documentation</title>
+    <style>
+        @page {
+            margin: 0.7in;
+        }
+
+        body {
+            color: #202124;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11pt;
+            line-height: 1.45;
+        }
+
+        h1 {
+            border-bottom: 2px solid #1a73e8;
+            color: #174ea6;
+            font-size: 22pt;
+            margin: 0 0 18px;
+            padding-bottom: 8px;
+        }
+
+        h2 {
+            color: #174ea6;
+            font-size: 14pt;
+            margin: 22px 0 8px;
+        }
+
+        p {
+            margin: 0 0 10px;
+        }
+
+        ul {
+            margin: 0 0 12px 20px;
+            padding: 0;
+        }
+
+        li {
+            margin: 4px 0;
+        }
+
+        .meta {
+            background: #f8fbff;
+            border: 1px solid #d2e3fc;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            padding: 12px 14px;
+        }
+
+        .meta p {
+            margin: 4px 0;
+        }
+
+        .label {
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <h1>Google Ads API Tool Design Documentation</h1>
+
+    <div class="meta">
+        <p><span class="label">Tool name:</span> Ikonoverde Internal Marketing Assistant</p>
+        <p><span class="label">Company:</span> Ikonoverde</p>
+        <p><span class="label">Google Ads manager account ID:</span> 525-687-9092</p>
+        <p><span class="label">Primary use:</span> Internal keyword planning, reporting, campaign creation, and campaign management for Ikonoverde-owned advertising accounts.</p>
+    </div>
+
+    <h2>1. Product Overview</h2>
+    <p>
+        The Ikonoverde Internal Marketing Assistant is an internal Laravel-based marketing tool used by authorized Ikonoverde staff to support SEO and paid search planning for Ikonoverde's ecommerce business. The tool helps staff research search demand, evaluate keyword opportunities, review advertising performance, and prepare advertising campaigns for products sold by Ikonoverde.
+    </p>
+    <p>
+        The tool is not offered to third parties, external customers, agencies, resellers, or the general public. It is used only by authorized internal personnel for Google Ads accounts owned or controlled by Ikonoverde.
+    </p>
+
+    <h2>2. Google Ads API Capabilities</h2>
+    <p>The tool provides or is intended to provide the following Google Ads API capabilities:</p>
+    <ul>
+        <li>Keyword Planning Services</li>
+        <li>Reporting</li>
+        <li>Campaign Creation</li>
+        <li>Campaign Management</li>
+    </ul>
+    <p>
+        The initial implementation focuses on Keyword Planner keyword ideas, average monthly search volume, competition, and CPC bid range data. Planned near-term capabilities include creating and managing Search campaigns, followed by support for Performance Max and Display campaign workflows where appropriate for Ikonoverde's ecommerce advertising strategy.
+    </p>
+
+    <h2>3. Supported Campaign Types</h2>
+    <p>The tool is designed to support the following campaign types:</p>
+    <ul>
+        <li>Search</li>
+        <li>Performance Max</li>
+        <li>Display</li>
+    </ul>
+    <p>
+        Search campaign support is the first priority because the current tool focuses on keyword research and keyword-based campaign planning. Performance Max and Display support are planned for future internal campaign creation and management workflows.
+    </p>
+
+    <h2>4. Intended Users</h2>
+    <p>
+        The tool is used only by authorized Ikonoverde staff members responsible for marketing, ecommerce, analytics, and advertising operations. Users must authenticate into the Ikonoverde application before accessing marketing assistant functionality.
+    </p>
+
+    <h2>5. Account Scope</h2>
+    <p>
+        The Google Ads API integration is limited to Ikonoverde-owned Google Ads accounts and manager/client accounts controlled by Ikonoverde. The tool is not intended to manage advertising accounts for unrelated third parties.
+    </p>
+
+    <h2>6. Current API Workflow</h2>
+    <p>The current keyword planning workflow is:</p>
+    <ul>
+        <li>An authorized internal user enters a seed keyword, product topic, product category, country, language, and result limit.</li>
+        <li>The application sends a Google Ads API Keyword Planner request using the configured Google Ads customer account.</li>
+        <li>The application receives keyword ideas and metrics from Google Ads.</li>
+        <li>The application normalizes the response into keyword, average monthly searches, competition, competition index, bid range, and monthly volume fields.</li>
+        <li>The normalized response is displayed to the internal user for planning and analysis.</li>
+    </ul>
+
+    <h2>7. Planned Campaign Creation Workflow</h2>
+    <p>The planned campaign creation workflow is:</p>
+    <ul>
+        <li>An authorized internal user reviews keyword and campaign recommendations inside the application.</li>
+        <li>The user confirms campaign settings, budgets, targeting, keywords, ad groups, ads, and assets before any write operation is performed.</li>
+        <li>The application creates or updates Google Ads entities only after internal user approval.</li>
+        <li>The application records the result of API operations for internal audit and troubleshooting.</li>
+    </ul>
+    <p>
+        The tool will not automatically create or modify campaigns without an authorized internal user action.
+    </p>
+
+    <h2>8. Data Accessed</h2>
+    <p>The tool may access the following Google Ads data:</p>
+    <ul>
+        <li>Keyword ideas and keyword planning metrics.</li>
+        <li>Average monthly searches, competition, and CPC bid range metrics.</li>
+        <li>Campaign, ad group, keyword, ad, asset, budget, and targeting configuration.</li>
+        <li>Advertising performance and reporting data for Ikonoverde-owned accounts.</li>
+    </ul>
+
+    <h2>9. Data Storage and Retention</h2>
+    <p>
+        Keyword research and campaign planning outputs may be displayed inside the internal application and may be stored in application logs or database records for internal analysis, debugging, and audit purposes. Google Ads OAuth credentials, developer tokens, and other secrets are stored server-side in environment variables or secure deployment configuration and are not exposed to browser clients or unauthenticated users.
+    </p>
+    <p>
+        Google Ads data is not sold, resold, published, or shared externally. It is used only to support Ikonoverde's own marketing and advertising operations.
+    </p>
+
+    <h2>10. Security Controls</h2>
+    <ul>
+        <li>The Google Ads API integration is available only to authenticated internal users.</li>
+        <li>OAuth credentials are generated by a Google user with authorized access to the Google Ads account.</li>
+        <li>Developer tokens, client secrets, and refresh tokens are stored server-side only.</li>
+        <li>The application does not expose Google Ads credentials to users or third-party clients.</li>
+        <li>Future write operations for campaign creation and management will require explicit internal user approval.</li>
+    </ul>
+
+    <h2>11. Compliance and Policy Use</h2>
+    <p>
+        The tool will be used in accordance with Google Ads policies. It will not scrape, resell, redistribute, or publicly expose Google Ads data. Campaign creation and management workflows will be used only for Ikonoverde-owned advertising accounts and will be reviewed by authorized staff before launch or modification.
+    </p>
+
+    <h2>12. Third-Party Access</h2>
+    <p>
+        The tool is not a software-as-a-service product, agency dashboard, public API, or third-party reporting product. No external customers can use the tool to access or manage Google Ads accounts.
+    </p>
+
+    <h2>13. Technical Implementation Summary</h2>
+    <p>
+        The application is built with Laravel and uses the Google Ads REST API. Authentication uses OAuth 2.0 with the Google Ads scope https://www.googleapis.com/auth/adwords. The application stores Google Ads configuration in server-side environment variables, including developer token, customer ID, OAuth client ID, OAuth client secret, and refresh token.
+    </p>
+</body>
+</html>

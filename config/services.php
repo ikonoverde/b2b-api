@@ -106,6 +106,8 @@ return [
         'client_id' => env('GOOGLE_ADS_CLIENT_ID'),
         'client_secret' => env('GOOGLE_ADS_CLIENT_SECRET'),
         'refresh_token' => env('GOOGLE_ADS_REFRESH_TOKEN'),
+        'base_url' => env('GOOGLE_ADS_BASE_URL', 'https://googleads.googleapis.com'),
+        'api_version' => env('GOOGLE_ADS_API_VERSION', 'v22'),
     ],
 
     'semrush' => [
