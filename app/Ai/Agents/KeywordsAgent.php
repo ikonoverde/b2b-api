@@ -2,23 +2,14 @@
 
 namespace App\Ai\Agents;
 
-use App\Ai\Tools\GetAnalyticsAccountSummaries;
-use App\Ai\Tools\GetAnalyticsPropertyDetails;
-use App\Ai\Tools\GetCustomDimensionsAndMetrics;
 use App\Ai\Tools\Keywords\AhrefsKeywordResearch;
 use App\Ai\Tools\Keywords\DataForSeoKeywordResearch;
 use App\Ai\Tools\Keywords\GoogleAdsKeywordPlannerIdeas;
 use App\Ai\Tools\Keywords\GoogleSearchConsoleKeywordPerformance;
 use App\Ai\Tools\Keywords\SemrushKeywordResearch;
 use App\Ai\Tools\Keywords\SerpApiSearchInsights;
-use App\Ai\Tools\ListAnalyticsPropertyAnnotations;
-use App\Ai\Tools\ListGoogleAdsLinks;
 use App\Ai\Tools\MarketingProductCatalog;
 use App\Ai\Tools\MarketingSalesSummary;
-use App\Ai\Tools\RunAnalyticsConversionsReport;
-use App\Ai\Tools\RunAnalyticsFunnelReport;
-use App\Ai\Tools\RunAnalyticsRealtimeReport;
-use App\Ai\Tools\RunAnalyticsReport;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Conversational;
@@ -104,15 +95,7 @@ PROMPT;
         return [
             app(MarketingProductCatalog::class),
             app(MarketingSalesSummary::class),
-            app(GetAnalyticsAccountSummaries::class),
-            app(GetAnalyticsPropertyDetails::class),
-            app(ListGoogleAdsLinks::class),
-            app(GetCustomDimensionsAndMetrics::class),
-            app(RunAnalyticsReport::class),
-            app(RunAnalyticsConversionsReport::class),
-            app(RunAnalyticsFunnelReport::class),
-            app(RunAnalyticsRealtimeReport::class),
-            app(ListAnalyticsPropertyAnnotations::class),
+            new GoogleAnalyticsAgent,
             app(DataForSeoKeywordResearch::class),
             app(SerpApiSearchInsights::class),
             app(GoogleSearchConsoleKeywordPerformance::class),

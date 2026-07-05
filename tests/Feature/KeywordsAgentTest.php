@@ -1,24 +1,16 @@
 <?php
 
+use App\Ai\Agents\GoogleAnalyticsAgent;
 use App\Ai\Agents\KeywordsAgent;
-use App\Ai\Tools\GetAnalyticsAccountSummaries;
-use App\Ai\Tools\GetAnalyticsPropertyDetails;
-use App\Ai\Tools\GetCustomDimensionsAndMetrics;
 use App\Ai\Tools\Keywords\AhrefsKeywordResearch;
 use App\Ai\Tools\Keywords\DataForSeoKeywordResearch;
 use App\Ai\Tools\Keywords\GoogleAdsKeywordPlannerIdeas;
 use App\Ai\Tools\Keywords\GoogleSearchConsoleKeywordPerformance;
 use App\Ai\Tools\Keywords\SemrushKeywordResearch;
 use App\Ai\Tools\Keywords\SerpApiSearchInsights;
-use App\Ai\Tools\ListAnalyticsPropertyAnnotations;
-use App\Ai\Tools\ListGoogleAdsLinks;
 use App\Ai\Tools\MarketingProductCatalog;
 use App\Ai\Tools\MarketingSalesSummary;
-use App\Ai\Tools\RunAnalyticsConversionsReport;
-use App\Ai\Tools\RunAnalyticsFunnelReport;
-use App\Ai\Tools\RunAnalyticsRealtimeReport;
-use App\Ai\Tools\RunAnalyticsReport;
-use Laravel\Ai\Contracts\Tool;
+use Laravel\Ai\Tools\AgentTool;
 use Laravel\Ai\Tools\Request;
 
 it('carries the keyword research operating rules', function () {
@@ -36,20 +28,14 @@ it('carries the keyword research operating rules', function () {
 });
 
 it('exposes product sales analytics and SEO keyword tools', function () {
-    $tools = collect((new KeywordsAgent)->tools())->map(fn (object $tool): string => $tool::class);
+    $toolClasses = collect((new KeywordsAgent)->tools())
+        ->map(fn (object $tool): string => $tool instanceof AgentTool ? $tool->agent()::class : $tool::class)
+        ->all();
 
-    expect($tools->all())
+    expect($toolClasses)
         ->toContain(MarketingProductCatalog::class)
         ->toContain(MarketingSalesSummary::class)
-        ->toContain(GetAnalyticsAccountSummaries::class)
-        ->toContain(GetAnalyticsPropertyDetails::class)
-        ->toContain(ListGoogleAdsLinks::class)
-        ->toContain(GetCustomDimensionsAndMetrics::class)
-        ->toContain(RunAnalyticsReport::class)
-        ->toContain(RunAnalyticsConversionsReport::class)
-        ->toContain(RunAnalyticsFunnelReport::class)
-        ->toContain(RunAnalyticsRealtimeReport::class)
-        ->toContain(ListAnalyticsPropertyAnnotations::class)
+        ->toContain(GoogleAnalyticsAgent::class)
         ->toContain(DataForSeoKeywordResearch::class)
         ->toContain(SerpApiSearchInsights::class)
         ->toContain(GoogleSearchConsoleKeywordPerformance::class)
@@ -60,10 +46,17 @@ it('exposes product sales analytics and SEO keyword tools', function () {
 
 it('exposes expected SEO keyword tool names', function () {
     $toolNames = collect((new KeywordsAgent)->tools())
-        ->map(fn (Tool $tool): string => $tool->name())
+        ->map(function (object $tool): string {
+            if ($tool instanceof AgentTool) {
+                return $tool->name();
+            }
+
+            return is_callable([$tool, 'name']) ? $tool->name() : $tool::class;
+        })
         ->all();
 
     expect($toolNames)->toContain(
+        'google_analytics_specialist',
         'keywords_dataforseo_keyword_research',
         'keywords_serpapi_search_insights',
         'keywords_google_search_console_performance',
