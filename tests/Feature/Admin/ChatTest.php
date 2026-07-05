@@ -3,6 +3,7 @@
 use App\Ai\Agents\AdminChatAgent;
 use App\Ai\Agents\AdsAgent;
 use App\Ai\Agents\GoogleAnalyticsAgent;
+use App\Ai\Agents\IkonoverdeContext;
 use App\Ai\Agents\KeywordsAgent;
 use App\Ai\Agents\MarketingIdeasAgent;
 use App\Ai\Agents\MetaAgent;
@@ -45,6 +46,15 @@ test('admin can view chat page with agents and conversations', function () {
         ->where('selectedConversation', null)
         ->has('messages', 0)
     );
+});
+
+test('admin chat agent carries shared Ikonoverde context', function () {
+    $instructions = (string) (new AdminChatAgent)->instructions();
+
+    expect($instructions)
+        ->toContain('internal admin assistant')
+        ->toContain(IkonoverdeContext::prompt())
+        ->toContain('You do not currently have tools that can read or modify live store data');
 });
 
 test('admin can load a persisted conversation', function () {

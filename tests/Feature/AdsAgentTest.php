@@ -1,40 +1,66 @@
 <?php
 
 use App\Ai\Agents\AdsAgent;
-use Laravel\Ai\Contracts\Tool;
+use App\Ai\Agents\IkonoverdeContext;
+use App\Ai\Tools\GetAnalyticsAccountSummaries;
+use App\Ai\Tools\GetAnalyticsPropertyDetails;
+use App\Ai\Tools\GetCustomDimensionsAndMetrics;
+use App\Ai\Tools\GetInstagramAccountInfo;
+use App\Ai\Tools\GetInstagramPostComments;
+use App\Ai\Tools\GetInstagramPostInsights;
+use App\Ai\Tools\GetInstagramPosts;
+use App\Ai\Tools\GetMetaPageInfo;
+use App\Ai\Tools\GetMetaPagePosts;
+use App\Ai\Tools\GetMetaPostComments;
+use App\Ai\Tools\GetMetaPostInsights;
+use App\Ai\Tools\ListAnalyticsPropertyAnnotations;
+use App\Ai\Tools\ListGoogleAdsLinks;
+use App\Ai\Tools\RunAnalyticsConversionsReport;
+use App\Ai\Tools\RunAnalyticsFunnelReport;
+use App\Ai\Tools\RunAnalyticsRealtimeReport;
+use App\Ai\Tools\RunAnalyticsReport;
+use Laravel\Ai\Contracts\HasTools;
 
 it('exposes only read and reporting ads tools', function () {
     $toolNames = collect((new AdsAgent)->tools())
-        ->map(fn (Tool $tool): string => $tool->name())
+        ->flatMap(function (object $tool): array {
+            if ($tool instanceof HasTools) {
+                return collect($tool->tools())
+                    ->map(fn (object $nestedTool): string => $nestedTool::class)
+                    ->all();
+            }
+
+            return [$tool::class];
+        })
         ->all();
 
     expect($toolNames)->toContain(
-        'analytics_get_account_summaries',
-        'analytics_get_property_details',
-        'analytics_list_google_ads_links',
-        'analytics_get_custom_dimensions_and_metrics',
-        'analytics_run_report',
-        'analytics_run_conversions_report',
-        'analytics_run_funnel_report',
-        'analytics_run_realtime_report',
-        'analytics_list_property_annotations',
-        'meta_get_page_info',
-        'meta_get_page_posts',
-        'meta_get_post_insights',
-        'meta_get_post_comments',
-        'meta_get_instagram_account_info',
-        'meta_get_instagram_posts',
-        'meta_get_instagram_post_insights',
-        'meta_get_instagram_post_comments',
+        GetAnalyticsAccountSummaries::class,
+        GetAnalyticsPropertyDetails::class,
+        ListGoogleAdsLinks::class,
+        GetCustomDimensionsAndMetrics::class,
+        RunAnalyticsReport::class,
+        RunAnalyticsConversionsReport::class,
+        RunAnalyticsFunnelReport::class,
+        RunAnalyticsRealtimeReport::class,
+        ListAnalyticsPropertyAnnotations::class,
+        GetMetaPageInfo::class,
+        GetMetaPagePosts::class,
+        GetMetaPostInsights::class,
+        GetMetaPostComments::class,
+        GetInstagramAccountInfo::class,
+        GetInstagramPosts::class,
+        GetInstagramPostInsights::class,
+        GetInstagramPostComments::class,
     );
 
     expect($toolNames)->not->toContain(
-        'meta_delete_post',
-        'meta_hide_comment',
-        'meta_reply_to_comment',
-        'meta_send_dm_to_user',
-        'meta_post_to_facebook',
-        'meta_post_image_to_instagram',
+        'App\Ai\Tools\DeleteMetaPost',
+        'App\Ai\Tools\HideMetaComment',
+        'App\Ai\Tools\ReplyToMetaComment',
+        'App\Ai\Tools\SendMetaDirectMessage',
+        'App\Ai\Tools\PostToFacebook',
+        'App\Ai\Tools\PostImageToInstagram',
     );
 });
 
@@ -43,6 +69,8 @@ it('carries the paid ads and Ikonoverde operating rules', function () {
 
     expect($instructions)
         ->toContain('Do not create, edit, pause, publish, delete, hide, unhide, reply to, DM, moderate')
+        ->toContain(IkonoverdeContext::prompt())
+        ->toContain('brand-new company/project')
         ->toContain('public prices, no minimum order')
         ->toContain('Use precise Mexican Spanish');
 });

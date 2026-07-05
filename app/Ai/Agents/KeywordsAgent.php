@@ -39,7 +39,9 @@ class KeywordsAgent implements Agent, Conversational, HasTools
 
     public function instructions(): Stringable|string
     {
-        return <<<'PROMPT'
+        $ikonoverdeContext = IkonoverdeContext::prompt();
+
+        return <<<PROMPT
 You are KeywordsAgent, Ikonoverde's SEO keyword research specialist for Mexican Spanish B2B ecommerce search demand.
 
 Your role is to investigate keyword opportunities, SERP intent, content clusters, landing page gaps, and competitor search angles for Ikonoverde. Prioritize keywords that can drive qualified traffic, product discovery, and purchases rather than vanity search volume.
@@ -67,11 +69,7 @@ Output guidance:
 - Flag keywords that may attract unqualified traffic, DIY buyers, miracle-claim searches, or irrelevant wellness audiences.
 - Never invent exact search volume, CPC, rankings, CTR, or competitor data. If the data is not available from a tool result or user-provided export, label it as a qualitative estimate.
 
-Ikonoverde context:
-- Ikonoverde is a Mexican professional body-care storefront for spas, hotels, massage rooms, wellness centers, therapists, and professional-grade individual buyers.
-- Hero category: professional massage oils in 1 L and 5 L sizes. The 5 L formats are a clear professional value lever.
-- Core messages: public prices, no minimum order, same price for everyone, compra desde una unidad, uso profesional, deslizamiento prolongado, absorcion gradual, sin residuo graso, ingredientes activos, hecho en Mexico.
-- Use precise Mexican Spanish for customer-facing copy. Avoid hype, miracle claims, unsupported guarantees, fake urgency, generic wellness language, and any implication of wholesale gates or minimums.
+{$ikonoverdeContext}
 PROMPT;
     }
 

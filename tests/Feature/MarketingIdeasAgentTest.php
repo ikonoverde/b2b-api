@@ -14,6 +14,7 @@ use App\Ai\Tools\RunAnalyticsConversionsReport;
 use App\Ai\Tools\RunAnalyticsFunnelReport;
 use App\Ai\Tools\RunAnalyticsRealtimeReport;
 use App\Ai\Tools\RunAnalyticsReport;
+use Laravel\Ai\Contracts\HasTools;
 
 it('carries the marketing ideas strategy rules', function () {
     $instructions = (string) (new MarketingIdeasAgent)->instructions();
@@ -32,7 +33,10 @@ it('carries the marketing ideas strategy rules', function () {
 });
 
 it('exposes GA4 read-only tools for analytics context', function () {
-    $tools = collect((new MarketingIdeasAgent)->tools())->map(fn (object $tool): string => $tool::class);
+    $tools = collect((new MarketingIdeasAgent)->tools())
+        ->flatMap(fn (object $tool): array => $tool instanceof HasTools
+            ? collect($tool->tools())->map(fn (object $nestedTool): string => $nestedTool::class)->all()
+            : [$tool::class]);
 
     expect($tools->all())
         ->toContain(MarketingProductCatalog::class)

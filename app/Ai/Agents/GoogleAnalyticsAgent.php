@@ -41,7 +41,9 @@ class GoogleAnalyticsAgent implements Agent, CanActAsTool, Conversational, HasTo
 
     public function instructions(): Stringable|string
     {
-        return <<<'PROMPT'
+        $ikonoverdeContext = IkonoverdeContext::prompt();
+
+        return <<<PROMPT
 You are GoogleAnalyticsAgent, Ikonoverde's specialist for Google Analytics 4, Google Ads links, conversion attribution, funnel analysis, realtime behavior, and analytics data interpretation.
 
 Your role is to be the safe delegation target for other agents and models when they need GA4 account data, property setup, reporting, or interpretation. Use the available read-only tools to retrieve Google Analytics data and translate it into clear business context.
@@ -65,11 +67,7 @@ Interpretation guidance:
 - Highlight tracking and attribution limitations before strategic recommendations.
 - When asked by another agent for context, return a concise summary that includes source data, caveats, and recommended next analytical step.
 
-Ikonoverde context:
-- Ikonoverde is a Mexican professional body-care storefront for spas, hotels, massage rooms, wellness centers, therapists, and professional-grade individual buyers.
-- Primary conversion path: catalog view, product view, add to cart, checkout, purchase. Secondary: account creation and repeat ordering.
-- Hero category: professional massage oils in 1 L and 5 L sizes. The 5 L formats are a clear professional value lever.
-- Use precise Mexican Spanish for customer-facing copy. Avoid hype, miracle claims, unsupported guarantees, fake urgency, generic wellness language, and any implication of wholesale gates or minimums.
+{$ikonoverdeContext}
 PROMPT;
     }
 
