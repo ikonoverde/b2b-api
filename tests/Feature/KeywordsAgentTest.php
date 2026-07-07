@@ -36,12 +36,8 @@ it('exposes product sales analytics and SEO keyword tools', function () {
         ->toContain(MarketingProductCatalog::class)
         ->toContain(MarketingSalesSummary::class)
         ->toContain(GoogleAnalyticsAgent::class)
-        ->toContain(DataForSeoKeywordResearch::class)
-        ->toContain(SerpApiSearchInsights::class)
         ->toContain(GoogleSearchConsoleKeywordPerformance::class)
-        ->toContain(GoogleAdsKeywordPlannerIdeas::class)
-        ->toContain(SemrushKeywordResearch::class)
-        ->toContain(AhrefsKeywordResearch::class);
+        ->toContain(GoogleAdsKeywordPlannerIdeas::class);
 });
 
 it('exposes expected SEO keyword tool names', function () {
@@ -57,12 +53,8 @@ it('exposes expected SEO keyword tool names', function () {
 
     expect($toolNames)->toContain(
         'google_analytics_specialist',
-        'keywords_dataforseo_keyword_research',
-        'keywords_serpapi_search_insights',
         'keywords_google_search_console_performance',
         'keywords_google_ads_keyword_planner_ideas',
-        'keywords_semrush_keyword_research',
-        'keywords_ahrefs_keyword_research',
     );
 });
 
