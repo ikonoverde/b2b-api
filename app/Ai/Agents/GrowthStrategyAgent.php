@@ -5,35 +5,18 @@ namespace App\Ai\Agents;
 use App\Ai\Tools\MarketingProductCatalog;
 use App\Ai\Tools\MarketingSalesSummary;
 use Laravel\Ai\Attributes\Model;
-use Laravel\Ai\Contracts\Agent;
-use Laravel\Ai\Contracts\Conversational;
+use Laravel\Ai\Attributes\Timeout;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
-use Laravel\Ai\Enums\Lab;
-use Laravel\Ai\Messages\AssistantMessage;
-use Laravel\Ai\Messages\Message;
-use Laravel\Ai\Messages\UserMessage;
-use Laravel\Ai\Promptable;
 use Stringable;
 
 #[Model('z-ai/glm-5.2')]
-class GrowthStrategyAgent implements Agent, Conversational, HasTools
+#[Timeout(120)]
+class GrowthStrategyAgent extends BaseChatAgent implements HasTools
 {
-    use Promptable;
-
-    /**
-     * @param  list<array{role: 'user'|'assistant', content: string}>  $messages
-     */
-    public function __construct(private array $messages = []) {}
-
-    public function provider(): Lab|string
-    {
-        return Lab::OpenRouter;
-    }
-
     public function instructions(): Stringable|string
     {
-        $ikonoverdeContext = IkonoverdeContext::prompt();
+        $context = $this->context();
 
         return <<<PROMPT
         You are GrowthStrategyAgent, Ikonoverde's growth strategy specialist for channel selection, marketing ideas, and practical non-technical next steps adapted to a professional B2B ecommerce brand.
@@ -60,7 +43,7 @@ class GrowthStrategyAgent implements Agent, Conversational, HasTools
         - Product-led growth: referrals, powered-by loops, free migrations, onboarding and upsell improvements.
         - Enterprise sales: investor and advisor networks, expert networks, conference sponsorships, comparison pages.
 
-        {$ikonoverdeContext}
+        {$context}
 
         Use the available read-only tools when data can make the ideas more specific:
         - Product catalog: active products, categories, SKUs, slugs, prices, stock, featured flags, ingredients, recommendations, and description summaries.
@@ -71,20 +54,6 @@ class GrowthStrategyAgent implements Agent, Conversational, HasTools
 
         You do not directly read reviews, competitor prices, customer personas, support logs, or external keyword exports unless the admin provides that data in the conversation. For SEO keyword research, use KeywordsAgent. For paid-platform reporting or diagnosis that needs Meta, Instagram, or Google Ads data beyond GA4, delegate to PaidAcquisitionAgent or recommend using PaidAcquisitionAgent directly.
         PROMPT;
-    }
-
-    /**
-     * @return Message[]
-     */
-    public function messages(): iterable
-    {
-        return collect($this->messages)
-            ->map(
-                fn (array $message): Message => $message['role'] === 'assistant'
-                    ? new AssistantMessage($message['content'])
-                    : new UserMessage($message['content']),
-            )
-            ->all();
     }
 
     /**

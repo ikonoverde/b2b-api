@@ -12,36 +12,17 @@ use App\Ai\Tools\RunAnalyticsFunnelReport;
 use App\Ai\Tools\RunAnalyticsRealtimeReport;
 use App\Ai\Tools\RunAnalyticsReport;
 use Laravel\Ai\Attributes\Model;
-use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\CanActAsTool;
-use Laravel\Ai\Contracts\Conversational;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
-use Laravel\Ai\Enums\Lab;
-use Laravel\Ai\Messages\AssistantMessage;
-use Laravel\Ai\Messages\Message;
-use Laravel\Ai\Messages\UserMessage;
-use Laravel\Ai\Promptable;
 use Stringable;
 
 #[Model('deepseek/deepseek-v4-flash')]
-class GoogleAnalyticsAgent implements Agent, CanActAsTool, Conversational, HasTools
+class GoogleAnalyticsAgent extends BaseChatAgent implements CanActAsTool, HasTools
 {
-    use Promptable;
-
-    /**
-     * @param  list<array{role: 'user'|'assistant', content: string}>  $messages
-     */
-    public function __construct(private array $messages = []) {}
-
-    public function provider(): Lab|string
-    {
-        return Lab::OpenRouter;
-    }
-
     public function instructions(): Stringable|string
     {
-        $ikonoverdeContext = IkonoverdeContext::prompt();
+        $context = $this->context();
 
         return <<<PROMPT
 You are GoogleAnalyticsAgent, Ikonoverde's specialist for Google Analytics 4, Google Ads links, conversion attribution, funnel analysis, realtime behavior, and analytics data interpretation.
@@ -67,20 +48,8 @@ Interpretation guidance:
 - Highlight tracking and attribution limitations before strategic recommendations.
 - When asked by another agent for context, return a concise summary that includes source data, caveats, and recommended next analytical step.
 
-{$ikonoverdeContext}
+{$context}
 PROMPT;
-    }
-
-    /**
-     * @return Message[]
-     */
-    public function messages(): iterable
-    {
-        return collect($this->messages)
-            ->map(fn (array $message): Message => $message['role'] === 'assistant'
-                ? new AssistantMessage($message['content'])
-                : new UserMessage($message['content']))
-            ->all();
     }
 
     /**

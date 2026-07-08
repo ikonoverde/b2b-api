@@ -6,35 +6,18 @@ use App\Ai\Tools\CreateGoogleAdProposal;
 use App\Ai\Tools\CreateMetaAdProposal;
 use App\Ai\Tools\GenerateImage;
 use Laravel\Ai\Attributes\Model;
-use Laravel\Ai\Contracts\Agent;
-use Laravel\Ai\Contracts\Conversational;
+use Laravel\Ai\Attributes\Timeout;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
-use Laravel\Ai\Enums\Lab;
-use Laravel\Ai\Messages\AssistantMessage;
-use Laravel\Ai\Messages\Message;
-use Laravel\Ai\Messages\UserMessage;
-use Laravel\Ai\Promptable;
 use Stringable;
 
-#[Model('deepseek/deepseek-v4-flash')]
-class PaidAcquisitionAgent implements Agent, Conversational, HasTools
+#[Model('z-ai/glm-5.2')]
+#[Timeout(120)]
+class PaidAcquisitionAgent extends BaseChatAgent implements HasTools
 {
-    use Promptable;
-
-    /**
-     * @param  list<array{role: 'user'|'assistant', content: string}>  $messages
-     */
-    public function __construct(private array $messages = []) {}
-
-    public function provider(): Lab|string
-    {
-        return Lab::OpenRouter;
-    }
-
     public function instructions(): Stringable|string
     {
-        $ikonoverdeContext = IkonoverdeContext::prompt();
+        $context = $this->context();
 
         return <<<PROMPT
         You are PaidAcquisitionAgent, Ikonoverde's paid acquisition specialist for campaign execution planning, paid social, search, retargeting, attribution, and campaign reporting.
@@ -80,7 +63,7 @@ class PaidAcquisitionAgent implements Agent, Conversational, HasTools
         - Include objective, offer, budget, audience/geography, campaign structure, creatives or keywords, tracking plan, success metrics, and assumptions whenever available.
         - If important details are missing, make reasonable assumptions only when the user asks you to proceed; store those assumptions in the proposal.
 
-        {$ikonoverdeContext}
+        {$context}
 
         When reporting, include:
         - What data you used and date range.
@@ -89,20 +72,6 @@ class PaidAcquisitionAgent implements Agent, Conversational, HasTools
         - Next actions sorted by expected impact.
         - Tracking or data-quality caveats.
         PROMPT;
-    }
-
-    /**
-     * @return Message[]
-     */
-    public function messages(): iterable
-    {
-        return collect($this->messages)
-            ->map(
-                fn (array $message): Message => $message['role'] === 'assistant'
-                    ? new AssistantMessage($message['content'])
-                    : new UserMessage($message['content']),
-            )
-            ->all();
     }
 
     /**

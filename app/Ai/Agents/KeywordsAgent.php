@@ -7,36 +7,17 @@ use App\Ai\Tools\Keywords\GoogleSearchConsoleKeywordPerformance;
 use App\Ai\Tools\MarketingProductCatalog;
 use App\Ai\Tools\MarketingSalesSummary;
 use Laravel\Ai\Attributes\Model;
-use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\CanActAsTool;
-use Laravel\Ai\Contracts\Conversational;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
-use Laravel\Ai\Enums\Lab;
-use Laravel\Ai\Messages\AssistantMessage;
-use Laravel\Ai\Messages\Message;
-use Laravel\Ai\Messages\UserMessage;
-use Laravel\Ai\Promptable;
 use Stringable;
 
 #[Model('deepseek/deepseek-v4-flash')]
-class KeywordsAgent implements Agent, CanActAsTool, Conversational, HasTools
+class KeywordsAgent extends BaseChatAgent implements CanActAsTool, HasTools
 {
-    use Promptable;
-
-    /**
-     * @param  list<array{role: 'user'|'assistant', content: string}>  $messages
-     */
-    public function __construct(private array $messages = []) {}
-
-    public function provider(): Lab|string
-    {
-        return Lab::OpenRouter;
-    }
-
     public function instructions(): Stringable|string
     {
-        $ikonoverdeContext = IkonoverdeContext::prompt();
+        $context = $this->context();
 
         return <<<PROMPT
         You are KeywordsAgent, Ikonoverde's SEO keyword research specialist for Mexican Spanish B2B ecommerce search demand.
@@ -66,22 +47,8 @@ class KeywordsAgent implements Agent, CanActAsTool, Conversational, HasTools
         - Flag keywords that may attract unqualified traffic, DIY buyers, miracle-claim searches, or irrelevant wellness audiences.
         - Never invent exact search volume, CPC, rankings, CTR, or competitor data. If the data is not available from a tool result or user-provided export, label it as a qualitative estimate.
 
-        {$ikonoverdeContext}
+        {$context}
         PROMPT;
-    }
-
-    /**
-     * @return Message[]
-     */
-    public function messages(): iterable
-    {
-        return collect($this->messages)
-            ->map(
-                fn (array $message): Message => $message['role'] === 'assistant'
-                    ? new AssistantMessage($message['content'])
-                    : new UserMessage($message['content']),
-            )
-            ->all();
     }
 
     /**
