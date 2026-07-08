@@ -3,11 +3,11 @@
 namespace App\Ai;
 
 use App\Ai\Agents\AdminChatAgent;
-use App\Ai\Agents\AdsAgent;
 use App\Ai\Agents\GoogleAnalyticsAgent;
+use App\Ai\Agents\GrowthStrategyAgent;
 use App\Ai\Agents\KeywordsAgent;
-use App\Ai\Agents\MarketingIdeasAgent;
 use App\Ai\Agents\MetaAgent;
+use App\Ai\Agents\PaidAcquisitionAgent;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\In;
 
@@ -20,11 +20,11 @@ class AdminChatAgents
     {
         return [
             'ads' => [
-                'class' => AdsAgent::class,
-                'name' => 'AdsAgent',
-                'description' => 'Diagnostica GA4, Meta, Instagram, Google Ads, atribucion y rendimiento de campanas.',
-                'status' => 'Reportes y diagnostico',
-                'welcome' => 'Puedo ayudarte a revisar conexiones de GA4 y Meta, explicar problemas de tracking y preparar reportes de campanas.',
+                'class' => PaidAcquisitionAgent::class,
+                'name' => 'PaidAcquisitionAgent',
+                'description' => 'Diagnostica paid media, GA4, Meta, Instagram, Google Ads, atribucion y rendimiento de campanas.',
+                'status' => 'Paid media y diagnostico',
+                'welcome' => 'Puedo ayudarte a revisar paid media, conexiones de GA4 y Meta, problemas de tracking, propuestas de anuncios y reportes de campanas.',
                 'suggestions' => [
                     'Revisa si GA4 esta listo para reportes',
                     'Diagnostica la conexion de Meta',
@@ -59,11 +59,11 @@ class AdminChatAgents
                 ],
             ],
             'marketing_ideas' => [
-                'class' => MarketingIdeasAgent::class,
-                'name' => 'MarketingIdeasAgent',
-                'description' => 'Propone ideas de marketing, crecimiento y promocion segun etapa, presupuesto y recursos.',
+                'class' => GrowthStrategyAgent::class,
+                'name' => 'GrowthStrategyAgent',
+                'description' => 'Prioriza canales e ideas de crecimiento segun etapa, presupuesto, recursos, catalogo y ventas.',
                 'status' => 'Estrategia de crecimiento',
-                'welcome' => 'Puedo ayudarte a elegir ideas de marketing relevantes, priorizarlas y convertirlas en proximos pasos claros.',
+                'welcome' => 'Puedo ayudarte a elegir canales e ideas de crecimiento, priorizarlas y convertirlas en proximos pasos claros.',
                 'suggestions' => [
                     'Dame ideas para vender mas aceites de masaje 5 L',
                     'Sugiere tacticas de bajo presupuesto para spas',

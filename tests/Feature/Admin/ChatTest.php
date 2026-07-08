@@ -1,12 +1,12 @@
 <?php
 
 use App\Ai\Agents\AdminChatAgent;
-use App\Ai\Agents\AdsAgent;
 use App\Ai\Agents\GoogleAnalyticsAgent;
+use App\Ai\Agents\GrowthStrategyAgent;
 use App\Ai\Agents\IkonoverdeContext;
 use App\Ai\Agents\KeywordsAgent;
-use App\Ai\Agents\MarketingIdeasAgent;
 use App\Ai\Agents\MetaAgent;
+use App\Ai\Agents\PaidAcquisitionAgent;
 use App\Models\AgentConversation;
 use App\Models\AgentConversationMessage;
 use App\Models\User;
@@ -82,7 +82,7 @@ test('admin can load a persisted conversation', function () {
 test('admin can send first message and create a persisted ads conversation', function () {
     $admin = User::factory()->admin()->create();
 
-    AdsAgent::fake(['GA4 esta listo para revisar reportes.']);
+    PaidAcquisitionAgent::fake(['GA4 esta listo para revisar reportes.']);
 
     $response = $this->actingAs($admin)->postJson('/admin/chat/messages', [
         'agent' => 'ads',
@@ -117,7 +117,7 @@ test('admin can send first message and create a persisted ads conversation', fun
         'content' => 'GA4 esta listo para revisar reportes.',
     ]);
 
-    AdsAgent::assertPrompted('Revisa si GA4 esta conectado.');
+    PaidAcquisitionAgent::assertPrompted('Revisa si GA4 esta conectado.');
 });
 
 test('admin can send first message and create a persisted Google Analytics conversation', function () {
@@ -193,7 +193,7 @@ test('admin can send first message and create a persisted Meta conversation', fu
 test('admin can send first message and create a persisted marketing ideas conversation', function () {
     $admin = User::factory()->admin()->create();
 
-    MarketingIdeasAgent::fake(['Prioriza SEO local, alianzas con spas y muestras para terapeutas.']);
+    GrowthStrategyAgent::fake(['Prioriza SEO local, alianzas con spas y muestras para terapeutas.']);
 
     $response = $this->actingAs($admin)->postJson('/admin/chat/messages', [
         'agent' => 'marketing_ideas',
@@ -222,7 +222,7 @@ test('admin can send first message and create a persisted marketing ideas conver
         'content' => 'Prioriza SEO local, alianzas con spas y muestras para terapeutas.',
     ]);
 
-    MarketingIdeasAgent::assertPrompted('Dame ideas para vender mas aceite 5 L.');
+    GrowthStrategyAgent::assertPrompted('Dame ideas para vender mas aceite 5 L.');
 });
 
 test('admin can send first message and create a persisted keywords conversation', function () {

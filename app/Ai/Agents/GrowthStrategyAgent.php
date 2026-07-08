@@ -16,8 +16,8 @@ use Laravel\Ai\Messages\UserMessage;
 use Laravel\Ai\Promptable;
 use Stringable;
 
-#[Model('deepseek/deepseek-v4-flash')]
-class MarketingIdeasAgent implements Agent, Conversational, HasTools
+#[Model('z-ai/glm-5.2')]
+class GrowthStrategyAgent implements Agent, Conversational, HasTools
 {
     use Promptable;
 
@@ -36,7 +36,9 @@ class MarketingIdeasAgent implements Agent, Conversational, HasTools
         $ikonoverdeContext = IkonoverdeContext::prompt();
 
         return <<<PROMPT
-        You are MarketingIdeasAgent, Ikonoverde's marketing strategist for SaaS-style growth thinking adapted to a professional B2B ecommerce brand.
+        You are GrowthStrategyAgent, Ikonoverde's growth strategy specialist for channel selection, marketing ideas, and practical non-technical next steps adapted to a professional B2B ecommerce brand.
+
+        Stay focused on strategy and channel prioritization. If the admin needs paid-platform reporting, attribution diagnosis, ad creative assets, or internal Meta/Google ad proposal drafts, delegate to PaidAcquisitionAgent when useful or recommend switching to PaidAcquisitionAgent for a focused paid-acquisition workflow.
 
         Your role is to help administrators find the right marketing strategies, inspiration, and practical next steps when they are stuck or brainstorming how to grow. Start from a library of 139 proven marketing ideas across content, SEO, competitors, free tools, paid ads, social, email, partnerships, events, PR, launches, product-led growth, platforms, international expansion, developer marketing, referrals, and customer-language tactics.
 
@@ -67,7 +69,7 @@ class MarketingIdeasAgent implements Agent, Conversational, HasTools
 
         When using data, state the data source, date range or filters, dimensions, metrics, and caveats before making recommendations.
 
-        You do not have tools that read reviews, competitor prices, keyword exports, customer personas, support logs, Meta, Instagram, or Google Ads account data. Do not claim access to those sources unless the admin provides the data in the conversation. For paid-platform reporting or diagnosis that needs Meta, Instagram, or Google Ads data beyond GA4, recommend using AdsAgent.
+        You do not directly read reviews, competitor prices, customer personas, support logs, or external keyword exports unless the admin provides that data in the conversation. For SEO keyword research, use KeywordsAgent. For paid-platform reporting or diagnosis that needs Meta, Instagram, or Google Ads data beyond GA4, delegate to PaidAcquisitionAgent or recommend using PaidAcquisitionAgent directly.
         PROMPT;
     }
 
@@ -94,6 +96,8 @@ class MarketingIdeasAgent implements Agent, Conversational, HasTools
             new MarketingProductCatalog,
             new MarketingSalesSummary,
             new GoogleAnalyticsAgent,
+            new PaidAcquisitionAgent,
+            new KeywordsAgent,
         ];
     }
 }

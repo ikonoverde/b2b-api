@@ -1,6 +1,6 @@
 <?php
 
-use App\Ai\Agents\MarketingIdeasAgent;
+use App\Ai\Agents\GrowthStrategyAgent;
 use App\Ai\Tools\GetAnalyticsAccountSummaries;
 use App\Ai\Tools\GetAnalyticsPropertyDetails;
 use App\Ai\Tools\GetCustomDimensionsAndMetrics;
@@ -17,10 +17,12 @@ use App\Ai\Tools\RunAnalyticsReport;
 use Laravel\Ai\Contracts\HasTools;
 
 it('carries the marketing ideas strategy rules', function () {
-    $instructions = (string) (new MarketingIdeasAgent)->instructions();
+    $instructions = (string) (new GrowthStrategyAgent)->instructions();
 
     expect($instructions)
         ->toContain('139 proven marketing ideas')
+        ->toContain('growth strategy specialist')
+        ->toContain('delegate to PaidAcquisitionAgent')
         ->toContain('Suggest the 3-5 most relevant ideas')
         ->toContain('idea name, why it fits, how to start')
         ->toContain('public prices, no minimum order')
@@ -28,12 +30,12 @@ it('carries the marketing ideas strategy rules', function () {
         ->toContain('Sales summary: completed non-cancelled order totals by product')
         ->toContain('GA4 analytics: traffic, channels, campaigns')
         ->toContain('state the data source, date range or filters, dimensions, metrics, and caveats')
-        ->toContain('You do not have tools that read reviews, competitor prices')
-        ->toContain('recommend using AdsAgent');
+        ->toContain('You do not directly read reviews, competitor prices')
+        ->toContain('recommend using PaidAcquisitionAgent directly');
 });
 
 it('exposes GA4 read-only tools for analytics context', function () {
-    $tools = collect((new MarketingIdeasAgent)->tools())
+    $tools = collect((new GrowthStrategyAgent)->tools())
         ->flatMap(fn (object $tool): array => $tool instanceof HasTools
             ? collect($tool->tools())->map(fn (object $nestedTool): string => $nestedTool::class)->all()
             : [$tool::class]);
@@ -55,7 +57,7 @@ it('exposes GA4 read-only tools for analytics context', function () {
 });
 
 it('maps conversation history into Laravel AI messages', function () {
-    $messages = iterator_to_array(new MarketingIdeasAgent([
+    $messages = iterator_to_array(new GrowthStrategyAgent([
         ['role' => 'user', 'content' => 'Dame ideas de marketing'],
         ['role' => 'assistant', 'content' => 'Necesito etapa y presupuesto.'],
     ])->messages());

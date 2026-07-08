@@ -1,7 +1,7 @@
 <?php
 
-use App\Ai\Agents\AdsAgent;
 use App\Ai\Agents\IkonoverdeContext;
+use App\Ai\Agents\PaidAcquisitionAgent;
 use App\Ai\Tools\CreateGoogleAdProposal;
 use App\Ai\Tools\CreateMetaAdProposal;
 use App\Ai\Tools\GenerateImage;
@@ -25,7 +25,7 @@ use App\Ai\Tools\RunAnalyticsReport;
 use Laravel\Ai\Contracts\HasTools;
 
 it('exposes reporting and creative ads tools', function () {
-    $toolNames = collect((new AdsAgent)->tools())
+    $toolNames = collect((new PaidAcquisitionAgent)->tools())
         ->flatMap(function (object $tool): array {
             if ($tool instanceof HasTools) {
                 return collect($tool->tools())
@@ -71,10 +71,12 @@ it('exposes reporting and creative ads tools', function () {
 });
 
 it('carries the paid ads and Ikonoverde operating rules', function () {
-    $instructions = (string) (new AdsAgent)->instructions();
+    $instructions = (string) (new PaidAcquisitionAgent)->instructions();
 
     expect($instructions)
         ->toContain('Do not create, edit, pause, publish, delete, hide, unhide, reply to, DM, moderate')
+        ->toContain('paid acquisition specialist')
+        ->toContain('recommend GrowthStrategyAgent')
         ->toContain('internal draft ad proposal creation')
         ->toContain('plus image generation')
         ->toContain('Create proposals only as internal drafts')
@@ -85,7 +87,7 @@ it('carries the paid ads and Ikonoverde operating rules', function () {
 });
 
 it('maps conversation history into Laravel AI messages', function () {
-    $messages = iterator_to_array(new AdsAgent([
+    $messages = iterator_to_array(new PaidAcquisitionAgent([
         ['role' => 'user', 'content' => 'Analiza Meta Ads'],
         ['role' => 'assistant', 'content' => 'Necesito el periodo.'],
     ])->messages());
