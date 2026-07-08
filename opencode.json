@@ -7,14 +7,7 @@
         },
         "laravel-telescope": {
             "type": "local",
-            "command": [
-                "php",
-                "/home/eric/projects/b2b/api/artisan",
-                "telescope-mcp:server"
-            ],
-            "environment": {
-                "APP_ENV": "local"
-            }
+            "command": ["php", "artisan", "telescope-mcp:server"]
         },
         "linear": {
             "type": "remote",
