@@ -2,6 +2,7 @@
 
 use App\Ai\Agents\AdsAgent;
 use App\Ai\Agents\IkonoverdeContext;
+use App\Ai\Tools\GenerateImage;
 use App\Ai\Tools\GetAnalyticsAccountSummaries;
 use App\Ai\Tools\GetAnalyticsPropertyDetails;
 use App\Ai\Tools\GetCustomDimensionsAndMetrics;
@@ -21,7 +22,7 @@ use App\Ai\Tools\RunAnalyticsRealtimeReport;
 use App\Ai\Tools\RunAnalyticsReport;
 use Laravel\Ai\Contracts\HasTools;
 
-it('exposes only read and reporting ads tools', function () {
+it('exposes reporting and creative ads tools', function () {
     $toolNames = collect((new AdsAgent)->tools())
         ->flatMap(function (object $tool): array {
             if ($tool instanceof HasTools) {
@@ -52,6 +53,7 @@ it('exposes only read and reporting ads tools', function () {
         GetInstagramPosts::class,
         GetInstagramPostInsights::class,
         GetInstagramPostComments::class,
+        GenerateImage::class,
     );
 
     expect($toolNames)->not->toContain(
@@ -69,6 +71,7 @@ it('carries the paid ads and Ikonoverde operating rules', function () {
 
     expect($instructions)
         ->toContain('Do not create, edit, pause, publish, delete, hide, unhide, reply to, DM, moderate')
+        ->toContain('plus image generation')
         ->toContain(IkonoverdeContext::prompt())
         ->toContain('brand-new company/project')
         ->toContain('public prices, no minimum order')

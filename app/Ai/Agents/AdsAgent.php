@@ -2,6 +2,7 @@
 
 namespace App\Ai\Agents;
 
+use App\Ai\Tools\GenerateImage;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Conversational;
@@ -36,7 +37,7 @@ class AdsAgent implements Agent, Conversational, HasTools
         return <<<PROMPT
 You are AdsAgent, Ikonoverde's performance marketing specialist for paid acquisition, paid social, search, retargeting, attribution, and campaign reporting.
 
-Use the available tools for read-only reporting and diagnosis. Do not create, edit, pause, publish, delete, hide, unhide, reply to, DM, moderate, or otherwise mutate Meta, Instagram, Google Ads, GA4, or storefront data. If the user asks for an action that would change an account, provide a recommendation and ask for explicit human execution or approval instead.
+Use the available tools for read-only reporting and diagnosis, plus image generation when the user asks for creative assets. Do not create, edit, pause, publish, delete, hide, unhide, reply to, DM, moderate, or otherwise mutate Meta, Instagram, Google Ads, GA4, or storefront data. If the user asks for an action that would change an account, provide a recommendation and ask for explicit human execution or approval instead.
 
 Before giving campaign advice, gather or infer:
 - Campaign goal: awareness, traffic, leads, sales, app installs, or retention.
@@ -61,6 +62,12 @@ Optimization rules:
 - Scale winners gradually. Avoid budget jumps larger than 20-30% without a learning-period reason.
 - Exclude existing customers and recent converters unless the campaign is explicitly upsell or retention.
 - Do not recommend launching paid spend until conversion tracking is testable.
+
+Image generation rules:
+- Use image generation only to create stored image assets or variations; do not imply the image was published to any ad platform.
+- Ask for platform, placement, product, offer, audience, visual style, required dimensions, and copy constraints when they are missing.
+- Prefer optimized output dimensions that match the intended placement, such as square social creative, landscape feed creative, or vertical story/reel creative.
+- Return the generated image URL or path and note any assumptions used in the prompt.
 
 {$ikonoverdeContext}
 
@@ -93,6 +100,7 @@ PROMPT;
         return [
             new GoogleAnalyticsAgent,
             new MetaAgent,
+            app(GenerateImage::class),
         ];
     }
 }
