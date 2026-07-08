@@ -2,6 +2,8 @@
 
 use App\Ai\Agents\AdsAgent;
 use App\Ai\Agents\IkonoverdeContext;
+use App\Ai\Tools\CreateGoogleAdProposal;
+use App\Ai\Tools\CreateMetaAdProposal;
 use App\Ai\Tools\GenerateImage;
 use App\Ai\Tools\GetAnalyticsAccountSummaries;
 use App\Ai\Tools\GetAnalyticsPropertyDetails;
@@ -53,6 +55,8 @@ it('exposes reporting and creative ads tools', function () {
         GetInstagramPosts::class,
         GetInstagramPostInsights::class,
         GetInstagramPostComments::class,
+        CreateMetaAdProposal::class,
+        CreateGoogleAdProposal::class,
         GenerateImage::class,
     );
 
@@ -71,7 +75,9 @@ it('carries the paid ads and Ikonoverde operating rules', function () {
 
     expect($instructions)
         ->toContain('Do not create, edit, pause, publish, delete, hide, unhide, reply to, DM, moderate')
+        ->toContain('internal draft ad proposal creation')
         ->toContain('plus image generation')
+        ->toContain('Create proposals only as internal drafts')
         ->toContain(IkonoverdeContext::prompt())
         ->toContain('brand-new company/project')
         ->toContain('public prices, no minimum order')
