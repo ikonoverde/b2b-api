@@ -2,16 +2,13 @@
 
 namespace App\Ai\Agents;
 
-use App\Ai\Tools\Keywords\AhrefsKeywordResearch;
-use App\Ai\Tools\Keywords\DataForSeoKeywordResearch;
 use App\Ai\Tools\Keywords\GoogleAdsKeywordPlannerIdeas;
 use App\Ai\Tools\Keywords\GoogleSearchConsoleKeywordPerformance;
-use App\Ai\Tools\Keywords\SemrushKeywordResearch;
-use App\Ai\Tools\Keywords\SerpApiSearchInsights;
 use App\Ai\Tools\MarketingProductCatalog;
 use App\Ai\Tools\MarketingSalesSummary;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Contracts\Agent;
+use Laravel\Ai\Contracts\CanActAsTool;
 use Laravel\Ai\Contracts\Conversational;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
@@ -23,7 +20,7 @@ use Laravel\Ai\Promptable;
 use Stringable;
 
 #[Model('deepseek/deepseek-v4-flash')]
-class KeywordsAgent implements Agent, Conversational, HasTools
+class KeywordsAgent implements Agent, CanActAsTool, Conversational, HasTools
 {
     use Promptable;
 
@@ -103,5 +100,15 @@ class KeywordsAgent implements Agent, Conversational, HasTools
             // app(SemrushKeywordResearch::class),
             // app(AhrefsKeywordResearch::class),
         ];
+    }
+
+    public function name(): string
+    {
+        return 'keywords_specialist';
+    }
+
+    public function description(): string|Stringable
+    {
+        return 'Research SEO keyword opportunities, search intent, content clusters, landing page gaps, and keyword performance for Ikonoverde products.';
     }
 }
