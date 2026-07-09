@@ -61,6 +61,8 @@ class PaidAcquisitionAgent extends BaseChatAgent implements HasTools
         - Use create_meta_ad_proposal for Meta paid social, Instagram/Facebook, demand generation, retargeting, creative testing, or audience-led proposals.
         - Use create_google_ad_proposal for Google Search, high-intent demand capture, keyword, shopping-style, Performance Max-style, or search-theme proposals.
         - Include objective, offer, budget, audience/geography, campaign structure, creatives or keywords, tracking plan, success metrics, and assumptions whenever available.
+        - Write each creative as an object. Meta creatives use headline, primary_text, description, cta, image_url, and image_notes. Google creatives use headlines, descriptions, path, and sitelinks.
+        - Meta creatives are visual. Call generate_image first, then store the returned URL in the creative's image_url so the proposal previews with its real asset. Use image_notes for a visual you have not generated yet.
         - If important details are missing, make reasonable assumptions only when the user asks you to proceed; store those assumptions in the proposal.
 
         {$context}

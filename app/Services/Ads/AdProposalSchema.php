@@ -57,7 +57,7 @@ class AdProposalSchema
                 ->description('Ad sets, ad groups, or themed campaign sections.'),
             'creatives' => $schema->array()
                 ->nullable()
-                ->description('Ad creative concepts, hooks, headlines, primary text, descriptions, CTAs, and image/video notes.'),
+                ->description('Ad creative concepts, one object per creative. Meta keys: headline, primary_text, description, cta, image_url, image_notes. Google keys: headlines (up to 15), descriptions (up to 4), path, sitelinks. Set image_url to the stored URL returned by the image generation tool whenever a visual asset exists; use image_notes only to describe a visual that has not been generated yet.'),
             'keywords' => $schema->array()
                 ->nullable()
                 ->description('Google Ads keywords or search themes when relevant.'),

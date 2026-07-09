@@ -30,6 +30,25 @@ it('normalizes alternate meta creative key names', function () {
         ->image_url->toBeNull();
 });
 
+it('surfaces a generated image url on meta creatives', function () {
+    $proposal = AdProposal::factory()->make([
+        'platform' => 'meta',
+        'creatives' => [
+            [
+                'headline' => 'Aceites al mayoreo',
+                'image_url' => 'https://cdn.ikonoverde.com/ads/aceites-mayoreo.webp',
+                'image_notes' => 'Frascos ambar sobre madera clara',
+            ],
+        ],
+    ]);
+
+    $preview = $this->previewer->preview($proposal);
+
+    expect($preview['meta'][0])
+        ->image_url->toBe('https://cdn.ikonoverde.com/ads/aceites-mayoreo.webp')
+        ->media_note->toBe('Frascos ambar sobre madera clara');
+});
+
 it('treats a bare string creative as a headline', function () {
     $proposal = AdProposal::factory()->make([
         'platform' => 'meta',

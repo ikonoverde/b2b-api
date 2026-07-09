@@ -48,6 +48,26 @@ it('creates a draft meta ad proposal', function () {
         ->and($proposal->creatives[0]['hook'])->toBe('Compra profesional sin minimo');
 });
 
+it('stores a generated image url on a meta creative', function () {
+    app(CreateMetaAdProposal::class)->handle(new Request([
+        'name' => 'Retargeting viveros Merida',
+        'objective' => 'sales',
+        'creatives' => [
+            [
+                'headline' => 'Aceites al mayoreo',
+                'primary_text' => 'Compra profesional sin minimo',
+                'cta' => 'Comprar ahora',
+                'image_url' => 'https://cdn.ikonoverde.com/ads/aceites-mayoreo.webp',
+            ],
+        ],
+    ]));
+
+    $proposal = AdProposal::query()->sole();
+
+    expect($proposal->creatives[0]['image_url'])
+        ->toBe('https://cdn.ikonoverde.com/ads/aceites-mayoreo.webp');
+});
+
 it('creates a draft google ads proposal', function () {
     $payload = json_decode((string) app(CreateGoogleAdProposal::class)->handle(new Request([
         'name' => 'Busqueda fertilizantes profesionales',
