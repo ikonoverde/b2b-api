@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AdProposals\IndexAdProposalsController;
+use App\Http\Controllers\Admin\AdProposals\ShowAdProposalController;
 use App\Http\Controllers\Admin\BlogPosts\CreateBlogPostController;
 use App\Http\Controllers\Admin\BlogPosts\DestroyBlogPostController;
 use App\Http\Controllers\Admin\BlogPosts\EditBlogPostController;
@@ -117,6 +119,9 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
     Route::get('/chat', ShowChatController::class)->name('chat');
     Route::post('/chat/messages', SendChatMessageController::class)->name('chat.messages');
     Route::get('/sample-requests', IndexMeridaSampleRequestsController::class)->name('sample-requests');
+
+    Route::get('/ad-proposals', IndexAdProposalsController::class)->name('ad-proposals');
+    Route::get('/ad-proposals/{adProposal}', ShowAdProposalController::class)->name('ad-proposals.show');
 
     Route::get('/settings', ShowSettingsController::class)->name('settings.show');
     Route::put('/settings', UpdateSettingsController::class)->name('settings.update');

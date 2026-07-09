@@ -395,3 +395,65 @@ export interface MeridaSampleRequestItem {
     created_at: string;
     user: AdminOrderCustomer | null;
 }
+
+export interface AdProposalListItem {
+    id: number;
+    platform: 'meta' | 'google';
+    name: string;
+    objective: string;
+    status: string;
+    budget_amount: string | null;
+    budget_period: string | null;
+    currency: string;
+    start_date: string | null;
+    end_date: string | null;
+    created_by_agent: boolean;
+    created_at: string;
+}
+
+export interface AdProposalDetail extends AdProposalListItem {
+    audience: string | null;
+    geography: string | null;
+    landing_page_url: string | null;
+    offer: string | null;
+    campaign_structure: Record<string, unknown> | null;
+    ad_groups: unknown[] | null;
+    keywords: unknown[] | null;
+    negative_keywords: unknown[] | null;
+    tracking_plan: Record<string, unknown> | null;
+    success_metrics: Record<string, unknown> | null;
+    assumptions: unknown[] | null;
+    notes: string | null;
+}
+
+export interface AdProposalBrand {
+    name: string;
+    display_url: string;
+    initial: string;
+}
+
+export interface MetaAdCreative {
+    primary_text: string | null;
+    headline: string | null;
+    description: string | null;
+    cta: string;
+    image_url: string | null;
+    media_note: string | null;
+}
+
+export interface GoogleAdCreative {
+    headlines: string[];
+    descriptions: string[];
+    display_url: string;
+    path: string | null;
+    sitelinks: string[];
+    keywords: string[];
+    ad_group: string | null;
+}
+
+export interface AdProposalPreview {
+    platform: 'meta' | 'google';
+    brand: AdProposalBrand;
+    meta: MetaAdCreative[];
+    google: GoogleAdCreative[];
+}
