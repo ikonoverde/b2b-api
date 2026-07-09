@@ -23,22 +23,6 @@
         "images": {
             "type": "http",
             "url": "http://localhost:8000/mcp/images"
-        },
-        "analytics-mcp": {
-            "command": "pipx",
-            "args": ["run", "analytics-mcp"],
-            "env": {
-                "GOOGLE_APPLICATION_CREDENTIALS": "${GOOGLE_APPLICATION_CREDENTIALS}",
-                "GOOGLE_PROJECT_ID": "ikonoverde"
-            }
-        },
-        "marketing": {
-            "type": "http",
-            "url": "http://localhost:8000/mcp/marketing"
-        },
-        "google-search": {
-            "type": "http",
-            "url": "http://localhost:8000/mcp/google-search"
         }
     }
 }

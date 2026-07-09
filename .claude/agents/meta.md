@@ -1,6 +1,11 @@
 ---
 name: meta
 description: Ikonoverde's specialist for Meta and Instagram account data, organic/social content reporting, post insights, comments, and social data interpretation. Use as the safe delegation target when other agents need Facebook Page or Instagram account data, post performance, comment context, or interpretation. Read-only.
+mcpServers:
+    - facebook:
+        type: stdio
+        command: uv
+        args: ["run", "--directory", "/home/eric/projects/facebook-mcp-server", "--with", "mcp[cli]", "--with", "requests", "--with", "python-dotenv", "mcp", "run", "/home/eric/projects/facebook-mcp-server/server.py"]
 model: haiku
 ---
 

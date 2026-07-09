@@ -82,8 +82,8 @@ class PaidAcquisitionAgent extends BaseChatAgent implements HasTools
         return [
             new GoogleAnalyticsAgent,
             new MetaAgent,
-            new CreateMetaAdProposal,
-            new CreateGoogleAdProposal,
+            app(CreateMetaAdProposal::class),
+            app(CreateGoogleAdProposal::class),
             app(GenerateImage::class),
         ];
     }
