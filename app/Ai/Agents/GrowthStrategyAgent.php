@@ -62,8 +62,8 @@ class GrowthStrategyAgent extends BaseChatAgent implements HasTools
     public function tools(): iterable
     {
         return [
-            new MarketingProductCatalog,
-            new MarketingSalesSummary,
+            app(MarketingProductCatalog::class),
+            app(MarketingSalesSummary::class),
             new GoogleAnalyticsAgent,
             new PaidAcquisitionAgent,
             new KeywordsAgent,
