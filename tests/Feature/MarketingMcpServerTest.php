@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Testing\Fluent\AssertableJson;
 
 it('returns active products with marketing catalog fields', function () {
     $admin = User::factory()->admin()->create();
@@ -74,7 +75,8 @@ it('returns sales performance for completed non cancelled orders', function () {
     ]);
 
     $order = Order::factory()->delivered()->create([
-        'total_amount' => 800.00,
+        'total_amount' => 810.00,
+        'shipping_cost' => 10.00,
         'created_at' => '2026-07-01 10:00:00',
     ]);
     OrderItem::factory()->create([
@@ -112,6 +114,45 @@ it('returns sales performance for completed non cancelled orders', function () {
             'Aceites profesionales',
         ])
         ->assertDontSee('999');
+});
+
+it('separates product revenue from shipping so the totals reconcile', function () {
+    $admin = User::factory()->admin()->create();
+    $product = Product::factory()->create(['name' => 'Aceite romero 1 L']);
+
+    $order = Order::factory()->delivered()->create([
+        'total_amount' => 565.50,
+        'shipping_cost' => 65.50,
+        'created_at' => '2026-07-01 10:00:00',
+    ]);
+    OrderItem::factory()->create([
+        'order_id' => $order->id,
+        'product_id' => $product->id,
+        'quantity' => 2,
+        'unit_price' => 250.00,
+        'subtotal' => 500.00,
+    ]);
+
+    MarketingServer::actingAs($admin)->tool(MarketingSalesSummary::class, [
+        'start_date' => '2026-07-01',
+        'end_date' => '2026-07-02',
+    ])
+        ->assertOk()
+        ->assertStructuredContent(fn (AssertableJson $json) => $json
+            ->where('summary.total_revenue', 565.5)
+            ->where('summary.product_revenue', 500.0)
+            ->where('summary.total_shipping', 65.5)
+            ->etc()
+        );
+});
+
+it('builds orders whose total matches their items plus shipping', function () {
+    $order = Order::factory()->withItems(3)->create(['shipping_cost' => 25.00]);
+
+    $expected = round((float) $order->items()->sum('subtotal') + 25.00, 2);
+
+    expect((float) $order->fresh()->total_amount)->toBe($expected)
+        ->and($order->items)->toHaveCount(3);
 });
 
 it('rejects sales summary dates that are not in Y-m-d format', function () {

@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use Carbon\CarbonImmutable;
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Builder;
 
 class MarketingSalesSummaryService
 {
@@ -13,7 +14,7 @@ class MarketingSalesSummaryService
      * Build the sales performance payload from raw tool arguments.
      *
      * @param  array<string, mixed>  $arguments
-     * @return array{date_range: array{start_date: string, end_date: string}, filters: array{payment_status: string, excluded_order_statuses: array<int, string>, limit: int}, summary: array{order_count: int, total_revenue: float, average_order_value: float}, top_products: array<int, array<string, mixed>>}
+     * @return array{date_range: array{start_date: string, end_date: string}, filters: array{payment_status: string, excluded_order_statuses: array<int, string>, limit: int}, summary: array{order_count: int, total_revenue: float, product_revenue: float, total_shipping: float, average_order_value: float}, top_products: array<int, array<string, mixed>>}
      */
     public function build(array $arguments): array
     {
@@ -28,8 +29,10 @@ class MarketingSalesSummaryService
 
         $orderCount = (clone $orders)->count();
         $totalRevenue = (float) (clone $orders)->sum('total_amount');
+        $totalShipping = (float) (clone $orders)->sum('shipping_cost');
+        $productRevenue = (float) $this->qualifyingOrderItems($startDate, $endDate)->sum('order_items.subtotal');
 
-        $topProducts = OrderItem::query()
+        $topProducts = $this->qualifyingOrderItems($startDate, $endDate)
             ->select('order_items.product_id')
             ->selectRaw('COALESCE(products.name, order_items.product_name) as product_name')
             ->selectRaw('products.sku as sku')
@@ -38,12 +41,8 @@ class MarketingSalesSummaryService
             ->selectRaw('SUM(order_items.quantity) as quantity_sold')
             ->selectRaw('SUM(order_items.subtotal) as revenue')
             ->selectRaw('COUNT(DISTINCT order_items.order_id) as order_count')
-            ->join('orders', 'orders.id', '=', 'order_items.order_id')
             ->leftJoin('products', 'products.id', '=', 'order_items.product_id')
             ->leftJoin('categories', 'categories.id', '=', 'products.category_id')
-            ->where('orders.payment_status', 'completed')
-            ->where('orders.status', '!=', 'cancelled')
-            ->whereBetween('orders.created_at', [$startDate, $endDate])
             ->groupBy('order_items.product_id', 'products.name', 'order_items.product_name', 'products.sku', 'products.slug', 'categories.name')
             ->orderByDesc('revenue')
             ->limit($limit)
@@ -72,10 +71,26 @@ class MarketingSalesSummaryService
             'summary' => [
                 'order_count' => $orderCount,
                 'total_revenue' => $totalRevenue,
+                'product_revenue' => $productRevenue,
+                'total_shipping' => $totalShipping,
                 'average_order_value' => $orderCount > 0 ? round($totalRevenue / $orderCount, 2) : 0.0,
             ],
             'top_products' => $topProducts->all(),
         ];
+    }
+
+    /**
+     * Order items belonging to completed, non-cancelled orders within the range.
+     *
+     * @return Builder<OrderItem>
+     */
+    private function qualifyingOrderItems(CarbonImmutable $startDate, CarbonImmutable $endDate): Builder
+    {
+        return OrderItem::query()
+            ->join('orders', 'orders.id', '=', 'order_items.order_id')
+            ->where('orders.payment_status', 'completed')
+            ->where('orders.status', '!=', 'cancelled')
+            ->whereBetween('orders.created_at', [$startDate, $endDate]);
     }
 
     private function date(mixed $value, DateTimeInterface $default): CarbonImmutable

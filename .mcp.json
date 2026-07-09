@@ -31,6 +31,10 @@
                 "GOOGLE_APPLICATION_CREDENTIALS": "${GOOGLE_APPLICATION_CREDENTIALS}",
                 "GOOGLE_PROJECT_ID": "ikonoverde"
             }
+        },
+        "marketing": {
+            "type": "http",
+            "url": "http://localhost:8000/mcp/marketing"
         }
     }
 }

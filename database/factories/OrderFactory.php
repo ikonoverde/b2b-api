@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -45,6 +46,25 @@ class OrderFactory extends Factory
             'shipping_quote_source' => null,
             'parcel_dimensions' => null,
         ];
+    }
+
+    /**
+     * Attach order items and set total_amount to match them, mirroring checkout:
+     * total_amount = sum(item subtotal) + shipping_cost.
+     *
+     * @param  array<string, mixed>  $attributes
+     */
+    public function withItems(int $count = 1, array $attributes = []): static
+    {
+        return $this->afterCreating(function (Order $order) use ($count, $attributes): void {
+            OrderItem::factory()
+                ->count($count)
+                ->create([...$attributes, 'order_id' => $order->id]);
+
+            $order->forceFill([
+                'total_amount' => round((float) $order->items()->sum('subtotal') + (float) $order->shipping_cost, 2),
+            ])->save();
+        });
     }
 
     public function processing(): static

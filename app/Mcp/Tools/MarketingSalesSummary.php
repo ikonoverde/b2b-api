@@ -81,7 +81,9 @@ class MarketingSalesSummary extends Tool
             ])->description('The filters applied to the sales query.')->required(),
             'summary' => $schema->object([
                 'order_count' => $schema->integer()->description('Number of qualifying orders.')->required(),
-                'total_revenue' => $schema->number()->description('Total revenue across qualifying orders.')->required(),
+                'total_revenue' => $schema->number()->description('Total revenue across qualifying orders, including shipping. Equals product_revenue plus total_shipping.')->required(),
+                'product_revenue' => $schema->number()->description('Revenue from product line items only, excluding shipping. This is the basis for each top_products revenue figure.')->required(),
+                'total_shipping' => $schema->number()->description('Shipping charged across qualifying orders.')->required(),
                 'average_order_value' => $schema->number()->description('Total revenue divided by order count, or 0 when there are no orders.')->required(),
             ])->description('Aggregate order performance.')->required(),
             'top_products' => $schema->array()->items($schema->object([
