@@ -62,7 +62,7 @@ class MarketingProductCatalog extends Tool
                 ->description('Whether to return only featured products.'),
             'limit' => $schema->integer()
                 ->nullable()
-                ->description('Maximum products to return. Defaults to 25 and caps at 100.'),
+                ->description('Maximum products to return. Defaults to 25. Must be between 1 and 100; larger values are rejected.'),
         ];
     }
 

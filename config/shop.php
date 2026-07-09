@@ -12,6 +12,14 @@ return [
     |
     */
 
+    /*
+    | The timezone the business operates in. Timestamps are stored in UTC, so
+    | reporting must convert calendar-day boundaries through this timezone to
+    | bucket orders into the correct business day.
+    */
+
+    'timezone' => env('SHOP_TIMEZONE', 'America/Merida'),
+
     'shipping_cost' => env('SHOP_SHIPPING_COST', 150.00),
 
     'shipping_origin_postal_code' => env('SHOP_ORIGIN_POSTAL_CODE', '06600'),

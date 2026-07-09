@@ -8,6 +8,8 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\User;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Testing\Fluent\AssertableJson;
 
 it('returns active products with marketing catalog fields', function () {
@@ -55,6 +57,30 @@ it('rejects limits above the supported maximum', function () {
     MarketingServer::actingAs($admin)->tool(MarketingProductCatalog::class, [
         'limit' => 500,
     ])->assertHasErrors();
+});
+
+it('accepts a limit at the supported maximum', function () {
+    $admin = User::factory()->admin()->create();
+
+    MarketingServer::actingAs($admin)->tool(MarketingProductCatalog::class, [
+        'limit' => 100,
+    ])->assertOk();
+});
+
+it('rejects sales summary limits above the supported maximum', function () {
+    $admin = User::factory()->admin()->create();
+
+    MarketingServer::actingAs($admin)->tool(MarketingSalesSummary::class, [
+        'limit' => 51,
+    ])->assertHasErrors();
+});
+
+it('accepts a sales summary limit at the supported maximum', function () {
+    $admin = User::factory()->admin()->create();
+
+    MarketingServer::actingAs($admin)->tool(MarketingSalesSummary::class, [
+        'limit' => 50,
+    ])->assertOk();
 });
 
 it('denies access to non admin users', function () {
@@ -153,6 +179,74 @@ it('builds orders whose total matches their items plus shipping', function () {
 
     expect((float) $order->fresh()->total_amount)->toBe($expected)
         ->and($order->items)->toHaveCount(3);
+});
+
+it('buckets orders into shop-timezone days rather than utc days', function () {
+    config(['shop.timezone' => 'America/Merida']);
+
+    $admin = User::factory()->admin()->create();
+
+    Order::factory()->delivered()->create([
+        'total_amount' => 500.00,
+        'shipping_cost' => 0.00,
+        'created_at' => '2026-07-09 02:00:00',
+    ]);
+
+    Order::factory()->delivered()->create([
+        'total_amount' => 700.00,
+        'shipping_cost' => 0.00,
+        'created_at' => '2026-07-08 05:00:00',
+    ]);
+
+    MarketingServer::actingAs($admin)->tool(MarketingSalesSummary::class, [
+        'start_date' => '2026-07-08',
+        'end_date' => '2026-07-08',
+    ])
+        ->assertOk()
+        ->assertStructuredContent(fn (AssertableJson $json) => $json
+            ->where('summary.order_count', 1)
+            ->where('summary.total_revenue', 500.0)
+            ->etc()
+        );
+});
+
+it('excludes an order that falls on the previous shop-timezone day', function () {
+    config(['shop.timezone' => 'America/Merida']);
+
+    $admin = User::factory()->admin()->create();
+
+    Order::factory()->delivered()->create([
+        'total_amount' => 700.00,
+        'shipping_cost' => 0.00,
+        'created_at' => '2026-07-08 05:00:00',
+    ]);
+
+    MarketingServer::actingAs($admin)->tool(MarketingSalesSummary::class, [
+        'start_date' => '2026-07-08',
+        'end_date' => '2026-07-08',
+    ])
+        ->assertOk()
+        ->assertStructuredContent(fn (AssertableJson $json) => $json
+            ->where('summary.order_count', 0)
+            ->where('summary.total_revenue', 0.0)
+            ->etc()
+        );
+});
+
+it('defaults the sales summary end date to today in the shop timezone', function () {
+    config(['shop.timezone' => 'America/Merida']);
+
+    Carbon::setTestNow(CarbonImmutable::parse('2026-07-09 04:00:00', 'UTC'));
+
+    $admin = User::factory()->admin()->create();
+
+    MarketingServer::actingAs($admin)->tool(MarketingSalesSummary::class, [])
+        ->assertOk()
+        ->assertStructuredContent(fn (AssertableJson $json) => $json
+            ->where('date_range.end_date', '2026-07-08')
+            ->where('date_range.start_date', '2026-06-08')
+            ->etc()
+        );
 });
 
 it('rejects sales summary dates that are not in Y-m-d format', function () {

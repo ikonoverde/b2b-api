@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Carbon\CarbonImmutable;
-use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
 
 class MarketingSalesSummaryService
@@ -18,21 +17,27 @@ class MarketingSalesSummaryService
      */
     public function build(array $arguments): array
     {
-        $startDate = $this->date($arguments['start_date'] ?? null, now()->subDays(30)->startOfDay());
-        $endDate = $this->date($arguments['end_date'] ?? null, now()->endOfDay())->endOfDay();
+        $timezone = (string) config('shop.timezone');
+        $today = CarbonImmutable::now($timezone);
+
+        $startDate = $this->date($arguments['start_date'] ?? null, $timezone, $today->subDays(30))->startOfDay();
+        $endDate = $this->date($arguments['end_date'] ?? null, $timezone, $today)->endOfDay();
         $limit = min(max((int) ($arguments['limit'] ?? 10), 1), 50);
+
+        $rangeStart = $startDate->utc();
+        $rangeEnd = $endDate->utc();
 
         $orders = Order::query()
             ->where('payment_status', 'completed')
             ->where('status', '!=', 'cancelled')
-            ->whereBetween('created_at', [$startDate, $endDate]);
+            ->whereBetween('created_at', [$rangeStart, $rangeEnd]);
 
         $orderCount = (clone $orders)->count();
         $totalRevenue = (float) (clone $orders)->sum('total_amount');
         $totalShipping = (float) (clone $orders)->sum('shipping_cost');
-        $productRevenue = (float) $this->qualifyingOrderItems($startDate, $endDate)->sum('order_items.subtotal');
+        $productRevenue = (float) $this->qualifyingOrderItems($rangeStart, $rangeEnd)->sum('order_items.subtotal');
 
-        $topProducts = $this->qualifyingOrderItems($startDate, $endDate)
+        $topProducts = $this->qualifyingOrderItems($rangeStart, $rangeEnd)
             ->select('order_items.product_id')
             ->selectRaw('COALESCE(products.name, order_items.product_name) as product_name')
             ->selectRaw('products.sku as sku')
@@ -93,12 +98,12 @@ class MarketingSalesSummaryService
             ->whereBetween('orders.created_at', [$startDate, $endDate]);
     }
 
-    private function date(mixed $value, DateTimeInterface $default): CarbonImmutable
+    private function date(mixed $value, string $timezone, CarbonImmutable $default): CarbonImmutable
     {
         if (! is_string($value) || trim($value) === '') {
-            return CarbonImmutable::instance($default);
+            return $default;
         }
 
-        return CarbonImmutable::parse($value);
+        return CarbonImmutable::parse($value, $timezone);
     }
 }

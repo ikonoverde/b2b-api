@@ -60,7 +60,7 @@ class MarketingSalesSummary extends Tool
                 ->description('Optional end date in YYYY-MM-DD format. Defaults to today.'),
             'limit' => $schema->integer()
                 ->nullable()
-                ->description('Maximum top products to return. Defaults to 10 and caps at 50.'),
+                ->description('Maximum top products to return. Defaults to 10. Must be between 1 and 50; larger values are rejected.'),
         ];
     }
 
