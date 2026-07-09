@@ -1,6 +1,7 @@
 <?php
 
 use App\Mcp\Servers\BlogServer;
+use App\Mcp\Servers\GoogleSearchServer;
 use App\Mcp\Servers\ImageServer;
 use App\Mcp\Servers\MarketingServer;
 use Laravel\Mcp\Facades\Mcp;
@@ -16,4 +17,7 @@ Mcp::web('/mcp/blog', BlogServer::class)
     ->middleware('auth:api');
 
 Mcp::web('/mcp/marketing', MarketingServer::class)
+    ->middleware('auth:api');
+
+Mcp::web('/mcp/google-search', GoogleSearchServer::class)
     ->middleware('auth:api');

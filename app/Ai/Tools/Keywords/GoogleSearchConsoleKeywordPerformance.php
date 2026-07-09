@@ -26,13 +26,7 @@ class GoogleSearchConsoleKeywordPerformance extends KeywordResearchTool
         $missingConfig = $this->missingConfig();
 
         if ($missingConfig !== []) {
-            return $this->json([
-                'error' => true,
-                'provider' => $this->providerKey(),
-                'message' => $this->providerName().' API is not configured.',
-                'required_config' => $missingConfig,
-                'received_arguments' => $request->all(),
-            ]);
+            return $this->json($this->configErrorPayload($missingConfig, $request->all()));
         }
 
         return $this->json($this->searchConsole->queryPerformance($request->all()));
@@ -75,25 +69,14 @@ class GoogleSearchConsoleKeywordPerformance extends KeywordResearchTool
 
     protected function requiredConfig(): array
     {
-        return ['services.google_search_console.site_url'];
+        return $this->searchConsole->requiredConfig();
     }
 
     /**
      * @return list<string>
      */
-    private function missingConfig(): array
+    protected function missingConfig(): array
     {
-        if (blank(config('services.google_search_console.site_url'))) {
-            return ['services.google_search_console.site_url'];
-        }
-
-        if (blank(config('services.google_search_console.credentials_path')) && blank(config('services.google_search_console.credentials_json'))) {
-            return [
-                'services.google_search_console.credentials_path',
-                'services.google_search_console.credentials_json',
-            ];
-        }
-
-        return [];
+        return $this->searchConsole->missingConfig();
     }
 }

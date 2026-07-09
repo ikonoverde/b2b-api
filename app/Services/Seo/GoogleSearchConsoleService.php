@@ -2,6 +2,7 @@
 
 namespace App\Services\Seo;
 
+use App\Services\Keywords\ProviderConfig;
 use Google\Client;
 use Google\Service\SearchConsole;
 use Google\Service\SearchConsole\ApiDataRow;
@@ -21,6 +22,35 @@ class GoogleSearchConsoleService
      * @param  array<string, mixed>|null  $credentials
      */
     public function __construct(private ?array $credentials = null) {}
+
+    /**
+     * Config keys Search Console requires before the site URL can be queried.
+     *
+     * @return list<string>
+     */
+    public function requiredConfig(): array
+    {
+        return ['services.google_search_console.site_url'];
+    }
+
+    /**
+     * Credentials may arrive as a file path or inline JSON, so either one satisfies the requirement.
+     *
+     * @return list<string>
+     */
+    public function missingConfig(): array
+    {
+        $missingSiteUrl = ProviderConfig::missing($this->requiredConfig());
+
+        if ($missingSiteUrl !== []) {
+            return $missingSiteUrl;
+        }
+
+        return ProviderConfig::missingUnlessAnyPresent([
+            'services.google_search_console.credentials_path',
+            'services.google_search_console.credentials_json',
+        ]);
+    }
 
     /**
      * @param  array<string, mixed>  $arguments

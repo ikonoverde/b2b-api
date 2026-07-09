@@ -77,15 +77,4 @@ class SerpApiSearchInsights extends KeywordResearchTool
     {
         return ['services.serpapi.api_key'];
     }
-
-    /**
-     * @return list<string>
-     */
-    private function missingConfig(): array
-    {
-        return collect($this->requiredConfig())
-            ->filter(fn (string $key): bool => blank(config($key)))
-            ->values()
-            ->all();
-    }
 }

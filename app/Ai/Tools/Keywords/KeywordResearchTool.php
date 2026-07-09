@@ -2,6 +2,8 @@
 
 namespace App\Ai\Tools\Keywords;
 
+use App\Services\Keywords\KeywordResearchSchema;
+use App\Services\Keywords\ProviderConfig;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Tools\Request;
@@ -14,13 +16,7 @@ abstract class KeywordResearchTool implements Tool
         $missingConfig = $this->missingConfig();
 
         if ($missingConfig !== []) {
-            return $this->json([
-                'error' => true,
-                'provider' => $this->providerKey(),
-                'message' => $this->providerName().' API is not configured.',
-                'required_config' => $missingConfig,
-                'received_arguments' => $request->all(),
-            ]);
+            return $this->json($this->configErrorPayload($missingConfig, $request->all()));
         }
 
         return $this->json([
@@ -36,32 +32,7 @@ abstract class KeywordResearchTool implements Tool
      */
     public function schema(JsonSchema $schema): array
     {
-        return [
-            'query' => $schema->string()
-                ->nullable()
-                ->description('Seed keyword, topic, product, category, or search query to investigate.'),
-            'keywords' => $schema->array()
-                ->nullable()
-                ->description('Optional list of seed keywords when researching a cluster.'),
-            'domain' => $schema->string()
-                ->nullable()
-                ->description('Optional target domain for keyword gap, ranking, or Search Console style analysis.'),
-            'competitors' => $schema->array()
-                ->nullable()
-                ->description('Optional competitor domains to compare against.'),
-            'country' => $schema->string()
-                ->nullable()
-                ->description('Country or market code. Prefer MX for Ikonoverde unless the user asks otherwise.'),
-            'language' => $schema->string()
-                ->nullable()
-                ->description('Language code. Prefer es for Mexican Spanish keyword research unless the user asks otherwise.'),
-            'date_range' => $schema->string()
-                ->nullable()
-                ->description('Optional reporting date range such as last_28_days, last_3_months, or 2026-01-01:2026-01-31.'),
-            'limit' => $schema->integer()
-                ->nullable()
-                ->description('Maximum records to return when the provider integration is implemented.'),
-        ];
+        return KeywordResearchSchema::commonFields($schema);
     }
 
     abstract protected function providerKey(): string;
@@ -76,12 +47,25 @@ abstract class KeywordResearchTool implements Tool
     /**
      * @return list<string>
      */
-    private function missingConfig(): array
+    protected function missingConfig(): array
     {
-        return collect($this->requiredConfig())
-            ->filter(fn (string $key): bool => blank(config($key)))
-            ->values()
-            ->all();
+        return ProviderConfig::missing($this->requiredConfig());
+    }
+
+    /**
+     * @param  list<string>  $missingConfig
+     * @param  array<string, mixed>  $arguments
+     * @return array<string, mixed>
+     */
+    protected function configErrorPayload(array $missingConfig, array $arguments): array
+    {
+        return [
+            'error' => true,
+            'provider' => $this->providerKey(),
+            'message' => $this->providerName().' API is not configured.',
+            'required_config' => $missingConfig,
+            'received_arguments' => $arguments,
+        ];
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Services\Ads;
 
+use App\Services\Keywords\ProviderConfig;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
@@ -30,6 +31,30 @@ class GoogleAdsKeywordPlannerService
         private ?string $baseUrl = null,
         private ?string $apiVersion = null,
     ) {}
+
+    /**
+     * Config keys the Google Ads API requires before any request can be made.
+     *
+     * @return list<string>
+     */
+    public function requiredConfig(): array
+    {
+        return [
+            'services.google_ads.developer_token',
+            'services.google_ads.customer_id',
+            'services.google_ads.client_id',
+            'services.google_ads.client_secret',
+            'services.google_ads.refresh_token',
+        ];
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function missingConfig(): array
+    {
+        return ProviderConfig::missing($this->requiredConfig());
+    }
 
     /**
      * @param  array<string, mixed>  $arguments
@@ -115,9 +140,9 @@ class GoogleAdsKeywordPlannerService
             ->acceptJson()
             ->timeout(15)
             ->post('https://oauth2.googleapis.com/token', [
-                'client_id' => $this->requiredConfig('services.google_ads.client_id'),
-                'client_secret' => $this->requiredConfig('services.google_ads.client_secret'),
-                'refresh_token' => $this->requiredConfig('services.google_ads.refresh_token'),
+                'client_id' => $this->configValue('services.google_ads.client_id'),
+                'client_secret' => $this->configValue('services.google_ads.client_secret'),
+                'refresh_token' => $this->configValue('services.google_ads.refresh_token'),
                 'grant_type' => 'refresh_token',
             ]);
 
@@ -218,7 +243,7 @@ class GoogleAdsKeywordPlannerService
             ->all();
     }
 
-    private function requiredConfig(string $key): string
+    private function configValue(string $key): string
     {
         $value = config($key);
 

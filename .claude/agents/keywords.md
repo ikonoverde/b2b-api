@@ -1,6 +1,7 @@
 ---
 name: keywords
 description: Ikonoverde's SEO keyword research specialist for Mexican Spanish B2B ecommerce search demand. Use to investigate keyword opportunities, SERP intent, content clusters, landing page gaps, competitor search angles, and keyword performance. Prioritizes keywords that drive qualified traffic, product discovery, and purchases over vanity search volume.
+tools: mcp__google-search, mcp__marketing
 model: sonnet
 ---
 

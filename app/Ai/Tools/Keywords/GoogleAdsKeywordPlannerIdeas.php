@@ -26,13 +26,7 @@ class GoogleAdsKeywordPlannerIdeas extends KeywordResearchTool
         $missingConfig = $this->missingConfig();
 
         if ($missingConfig !== []) {
-            return $this->json([
-                'error' => true,
-                'provider' => $this->providerKey(),
-                'message' => $this->providerName().' API is not configured.',
-                'required_config' => $missingConfig,
-                'received_arguments' => $request->all(),
-            ]);
+            return $this->json($this->configErrorPayload($missingConfig, $request->all()));
         }
 
         return $this->json($this->keywordPlanner->keywordIdeas($request->all()));
@@ -69,23 +63,6 @@ class GoogleAdsKeywordPlannerIdeas extends KeywordResearchTool
 
     protected function requiredConfig(): array
     {
-        return [
-            'services.google_ads.developer_token',
-            'services.google_ads.customer_id',
-            'services.google_ads.client_id',
-            'services.google_ads.client_secret',
-            'services.google_ads.refresh_token',
-        ];
-    }
-
-    /**
-     * @return list<string>
-     */
-    private function missingConfig(): array
-    {
-        return collect($this->requiredConfig())
-            ->filter(fn (string $key): bool => blank(config($key)))
-            ->values()
-            ->all();
+        return $this->keywordPlanner->requiredConfig();
     }
 }

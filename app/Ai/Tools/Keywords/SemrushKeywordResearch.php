@@ -74,15 +74,4 @@ class SemrushKeywordResearch extends KeywordResearchTool
     {
         return ['services.semrush.api_key'];
     }
-
-    /**
-     * @return list<string>
-     */
-    private function missingConfig(): array
-    {
-        return collect($this->requiredConfig())
-            ->filter(fn (string $key): bool => blank(config($key)))
-            ->values()
-            ->all();
-    }
 }
