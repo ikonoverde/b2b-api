@@ -84,6 +84,24 @@ class Order extends Model
     }
 
     /**
+     * The deduplication key shared by the browser Meta Pixel and the server-side
+     * Conversions API. Both sides must derive it here: if they ever disagree,
+     * Meta silently counts every purchase twice.
+     */
+    public function metaPurchaseEventId(): string
+    {
+        return "order_{$this->id}";
+    }
+
+    /**
+     * @return HasMany<MetaConversionEvent, $this>
+     */
+    public function metaConversionEvents(): HasMany
+    {
+        return $this->hasMany(MetaConversionEvent::class);
+    }
+
+    /**
      * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo

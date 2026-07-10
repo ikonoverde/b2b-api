@@ -2,11 +2,6 @@
 name: paid-acquisition
 description: Ikonoverde's paid acquisition specialist for campaign execution planning, paid social, search, retargeting, attribution, campaign reporting, ad creative generation, and internal Meta/Google ad proposal drafts. Use when the primary next step is paid media. For broad growth strategy, SEO, partnerships, lifecycle email, content, PR, or events, recommend the growth-strategy agent.
 tools: mcp__ads, mcp__images, SendMessage
-mcpServers:
-    - ads:
-        type: http
-        url: http://localhost:8000/mcp/ads
-    - images
 model: opus
 ---
 

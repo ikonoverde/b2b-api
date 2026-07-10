@@ -23,6 +23,38 @@
         "images": {
             "type": "http",
             "url": "http://localhost:8000/mcp/images"
+        },
+        "analytics-mcp": {
+            "command": "pipx",
+            "args": ["run", "analytics-mcp"],
+            "env": {
+                "GOOGLE_APPLICATION_CREDENTIALS": "/home/eric/secrets/pro.ikonoverde.com/ikonoverde-2068e429cc04.json",
+                "GOOGLE_PROJECT_ID": "ikonoverde"
+            }
+        },
+        "marketing": {
+            "type": "http",
+            "url": "http://localhost:8000/mcp/marketing"
+        },
+        "google-search": {
+            "type": "http",
+            "url": "http://localhost:8000/mcp/google-search"
+        },
+        "meta": {
+            "command": "uv",
+            "args": ["run", "--directory", "/home/eric/projects/facebook-instagram-mcp", "--with", "mcp[cli]", "--with", "requests", "--with", "python-dotenv", "mcp", "run", "/home/eric/projects/facebook-instagram-mcp/server.py"]
+        },
+        "ads": {
+            "type": "http",
+            "url": "http://localhost:8000/mcp/ads"
+        },
+        "blog": {
+            "type": "http",
+            "url": "http://localhost:8000/mcp/blog"
+        },
+        "tracking": {
+            "type": "http",
+            "url": "http://localhost:8000/mcp/tracking"
         }
     }
 }

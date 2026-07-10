@@ -5,6 +5,7 @@ use App\Mcp\Servers\BlogServer;
 use App\Mcp\Servers\GoogleSearchServer;
 use App\Mcp\Servers\ImageServer;
 use App\Mcp\Servers\MarketingServer;
+use App\Mcp\Servers\TrackingServer;
 use Laravel\Mcp\Facades\Mcp;
 
 // Mcp::web('/mcp/demo', \App\Mcp\Servers\PublicServer::class);
@@ -24,4 +25,7 @@ Mcp::web('/mcp/google-search', GoogleSearchServer::class)
     ->middleware('auth:api');
 
 Mcp::web('/mcp/ads', AdsServer::class)
+    ->middleware('auth:api');
+
+Mcp::web('/mcp/tracking', TrackingServer::class)
     ->middleware('auth:api');

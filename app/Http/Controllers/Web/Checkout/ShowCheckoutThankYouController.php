@@ -22,7 +22,7 @@ class ShowCheckoutThankYouController extends Controller
                 'id' => $order->id,
                 'status' => $order->status,
                 'payment_status' => $order->payment_status,
-                'meta_purchase_event_id' => $order->payment_status === 'completed' ? "order_{$order->id}" : null,
+                'meta_purchase_event_id' => $order->payment_status === 'completed' ? $order->metaPurchaseEventId() : null,
                 'total_amount' => (float) $order->total_amount,
                 'shipping_cost' => (float) $order->shipping_cost,
                 'shipping_address' => $order->shipping_address,
