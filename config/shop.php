@@ -20,6 +20,15 @@ return [
 
     'timezone' => env('SHOP_TIMEZONE', 'America/Merida'),
 
+    /*
+    | Identifies this storefront on the Stripe account shared with the retail
+    | site. Stripe broadcasts every event to every endpoint on the account, so
+    | this key is stamped onto Stripe metadata at checkout and checked again on
+    | the way back in to discard events belonging to the other storefront.
+    */
+
+    'site_key' => env('SHOP_SITE_KEY', 'pro'),
+
     'shipping_cost' => env('SHOP_SHIPPING_COST', 150.00),
 
     'shipping_origin_postal_code' => env('SHOP_ORIGIN_POSTAL_CODE', '06600'),

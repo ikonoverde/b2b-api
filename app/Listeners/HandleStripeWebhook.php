@@ -181,10 +181,20 @@ class HandleStripeWebhook implements ShouldQueue
     }
 
     /**
+     * Resolve the order an event refers to, discarding events from the retail
+     * storefront. Both sites share one Stripe account, which delivers every
+     * event to every endpoint, and order_id/user_id are per-database
+     * autoincrements that collide across the two. Without the site check a
+     * retail sale would match — and fulfil — an unrelated order here.
+     *
      * @param  array<string, mixed>  $metadata
      */
     private function findOrderByMetadata(array $metadata): ?Order
     {
+        if (($metadata['site'] ?? null) !== config('shop.site_key')) {
+            return null;
+        }
+
         $orderId = $metadata['order_id'] ?? null;
         $userId = $metadata['user_id'] ?? null;
 

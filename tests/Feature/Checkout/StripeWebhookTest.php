@@ -21,13 +21,23 @@ beforeEach(function () {
     ]);
 });
 
+/**
+ * Stamp this site's key onto webhook metadata the way the checkout controllers
+ * stamp it onto Stripe objects. Pass an explicit `site` to simulate an event
+ * from the retail storefront on the shared Stripe account.
+ */
+function siteMetadata(array $metadata): array
+{
+    return array_merge(['site' => config('shop.site_key')], $metadata);
+}
+
 function checkoutCompletedPayload(array $metadata = [], ?string $paymentIntent = 'pi_test_123'): array
 {
     return [
         'type' => 'checkout.session.completed',
         'data' => [
             'object' => [
-                'metadata' => $metadata,
+                'metadata' => siteMetadata($metadata),
                 'payment_intent' => $paymentIntent,
             ],
         ],
@@ -40,7 +50,7 @@ function checkoutExpiredPayload(array $metadata = []): array
         'type' => 'checkout.session.expired',
         'data' => [
             'object' => [
-                'metadata' => $metadata,
+                'metadata' => siteMetadata($metadata),
             ],
         ],
     ];
@@ -355,7 +365,7 @@ function paymentIntentSucceededPayload(string $paymentIntentId = 'pi_test_123', 
         'data' => [
             'object' => [
                 'id' => $paymentIntentId,
-                'metadata' => $metadata,
+                'metadata' => siteMetadata($metadata),
             ],
         ],
     ];
@@ -695,6 +705,112 @@ it('does not notify staff for already completed orders', function () {
     )));
 
     Notification::assertNotSentTo($admin, NewOrderReceived::class);
+});
+
+// Shared Stripe account: events from the retail storefront
+
+it('does not fulfill an order when checkout completed belongs to the retail site', function () {
+    Bus::fake(CreateShippingLabel::class);
+    Notification::fake();
+
+    $user = User::factory()->create();
+    $product = Product::factory()->create(['stock' => 50]);
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'pending',
+        'payment_status' => 'pending',
+    ]);
+    OrderItem::factory()->create([
+        'order_id' => $order->id,
+        'product_id' => $product->id,
+        'quantity' => 5,
+    ]);
+    $cart = Cart::factory()->create(['user_id' => $user->id, 'status' => 'active']);
+    CartItem::factory()->create(['cart_id' => $cart->id, 'product_id' => $product->id]);
+
+    event(new WebhookReceived(checkoutCompletedPayload(
+        metadata: ['site' => 'retail', 'order_id' => $order->id, 'user_id' => $user->id],
+    )));
+
+    $order->refresh();
+    expect($order->payment_status)->toBe('pending');
+    expect($order->status)->toBe('pending');
+    expect($product->fresh()->stock)->toBe(50);
+    expect($cart->fresh()->status)->toBe('active');
+    Bus::assertNotDispatched(CreateShippingLabel::class);
+    Notification::assertNothingSent();
+});
+
+it('does not fulfill an order when payment_intent.succeeded belongs to the retail site', function () {
+    $user = User::factory()->create();
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'payment_pending',
+        'payment_status' => 'pending',
+        'payment_intent_id' => 'pi_test_retail',
+    ]);
+
+    event(new WebhookReceived(paymentIntentSucceededPayload(
+        paymentIntentId: 'pi_test_retail',
+        metadata: ['site' => 'retail', 'order_id' => $order->id, 'user_id' => $user->id],
+    )));
+
+    expect($order->fresh()->payment_status)->toBe('pending');
+});
+
+it('does not cancel an order when checkout expired belongs to the retail site', function () {
+    $user = User::factory()->create();
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'pending',
+        'payment_status' => 'pending',
+    ]);
+
+    event(new WebhookReceived(checkoutExpiredPayload(
+        metadata: ['site' => 'retail', 'order_id' => $order->id, 'user_id' => $user->id],
+    )));
+
+    $order->refresh();
+    expect($order->payment_status)->toBe('pending');
+    expect($order->status)->toBe('pending');
+});
+
+it('ignores events with no site metadata rather than assuming they are ours', function () {
+    $user = User::factory()->create();
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'pending',
+        'payment_status' => 'pending',
+    ]);
+
+    event(new WebhookReceived([
+        'type' => 'checkout.session.completed',
+        'data' => [
+            'object' => [
+                'metadata' => ['order_id' => $order->id, 'user_id' => $user->id],
+                'payment_intent' => 'pi_test_unstamped',
+            ],
+        ],
+    ]));
+
+    expect($order->fresh()->payment_status)->toBe('pending');
+});
+
+it('fulfills an order when the site key is configured to something other than the default', function () {
+    config(['shop.site_key' => 'some-other-site']);
+
+    $user = User::factory()->create();
+    $order = Order::factory()->create([
+        'user_id' => $user->id,
+        'status' => 'pending',
+        'payment_status' => 'pending',
+    ]);
+
+    event(new WebhookReceived(checkoutCompletedPayload(
+        metadata: ['order_id' => $order->id, 'user_id' => $user->id],
+    )));
+
+    expect($order->fresh()->payment_status)->toBe('completed');
 });
 
 // Unrecognized events

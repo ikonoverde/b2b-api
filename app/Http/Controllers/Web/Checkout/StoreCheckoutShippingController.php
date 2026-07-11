@@ -86,6 +86,7 @@ class StoreCheckoutShippingController extends Controller
             'amount' => (int) ($totalAmount * 100),
             'currency' => 'mxn',
             'metadata' => [
+                'site' => config('shop.site_key'),
                 'order_id' => $order->id,
                 'user_id' => $request->user()->id,
             ],

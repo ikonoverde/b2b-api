@@ -86,6 +86,7 @@ class CreateCheckoutController extends Controller
             'success_url' => $validated['success_url'],
             'cancel_url' => $validated['cancel_url'],
             'metadata' => [
+                'site' => config('shop.site_key'),
                 'order_id' => $order->id,
                 'user_id' => auth()->id(),
             ],
