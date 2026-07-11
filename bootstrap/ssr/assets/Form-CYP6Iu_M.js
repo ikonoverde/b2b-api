@@ -2,7 +2,7 @@ import { jsx, jsxs } from "react/jsx-runtime";
 import { useForm, Link } from "@inertiajs/react";
 import { ArrowLeft } from "lucide-react";
 import { Suspense, lazy } from "react";
-import { A as AppLayout } from "./AppLayout-ca4ZqyB9.js";
+import { A as AppLayout } from "./AppLayout-Q3nFYZ7E.js";
 const MDEditor = lazy(() => import("@uiw/react-md-editor"));
 function BlogPostForm({ post }) {
   const form = useForm({

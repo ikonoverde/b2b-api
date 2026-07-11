@@ -1,7 +1,7 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useState } from "react";
 import { usePage } from "@inertiajs/react";
-import { A as AppLayout } from "./AppLayout-ca4ZqyB9.js";
+import { A as AppLayout } from "./AppLayout-Q3nFYZ7E.js";
 import { ShoppingCart, Users, AlertTriangle, Search, Bell, Settings, ChevronDown, TrendingUp, TrendingDown, Package, X, Star, UserPlus, Check } from "lucide-react";
 const statusColorMap = {
   delivered: "bg-[#4CAF50]",

@@ -2,7 +2,7 @@ import { jsxs, jsx } from "react/jsx-runtime";
 import { usePage, useForm, router } from "@inertiajs/react";
 import { Plus, ArrowUp, ArrowDown, Eye, EyeOff, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { A as AppLayout } from "./AppLayout-ca4ZqyB9.js";
+import { A as AppLayout } from "./AppLayout-Q3nFYZ7E.js";
 import { a as formatDateShort } from "./date-ClVPp3mI.js";
 const statusConfig = {
   active: { label: "Activo", bg: "bg-green-50", text: "text-green-700" },

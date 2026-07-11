@@ -1,6 +1,6 @@
 import { jsxs, jsx, Fragment } from "react/jsx-runtime";
 import { usePage, useForm, Link, Head } from "@inertiajs/react";
-import { ShoppingCart, Package, Folder, Truck, Building2, MessageSquareText, Gift, FileText, Leaf, LayoutGrid, ChartBar, Users, Star, Image, PenLine, Newspaper, Settings, LogOut } from "lucide-react";
+import { ShoppingCart, Package, Folder, Truck, Building2, MessageSquareText, Gift, Megaphone, FileText, Leaf, LayoutGrid, ChartBar, Users, Star, Image, PenLine, Newspaper, Settings, LogOut } from "lucide-react";
 const mainNav = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutGrid, id: "dashboard" },
   { name: "Analiticas", href: "/admin/analytics", icon: ChartBar, id: "analytics" },
@@ -14,6 +14,7 @@ const managementNav = [
   { name: "Negocios", href: "/admin/businesses", icon: Building2, id: "businesses" },
   { name: "Chat", href: "/admin/chat", icon: MessageSquareText, id: "chat" },
   { name: "Muestras gratis", href: "/admin/sample-requests", icon: Gift, id: "sample-requests" },
+  { name: "Propuestas de anuncios", href: "/admin/ad-proposals", icon: Megaphone, id: "ad-proposals" },
   { name: "Facturas", href: "/admin/invoices", icon: FileText, id: "invoices" }
 ];
 const contentNav = [

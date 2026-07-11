@@ -1,6 +1,6 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { usePage, useForm } from "@inertiajs/react";
-import { A as AppLayout } from "./AppLayout-ca4ZqyB9.js";
+import { A as AppLayout } from "./AppLayout-Q3nFYZ7E.js";
 import "lucide-react";
 function SettingsIndex() {
   const { settings, flash } = usePage().props;

@@ -1,7 +1,7 @@
 import { jsx, jsxs, Fragment } from "react/jsx-runtime";
 import { useState, useMemo } from "react";
 import { usePage, useForm, router } from "@inertiajs/react";
-import { A as AppLayout } from "./AppLayout-ca4ZqyB9.js";
+import { A as AppLayout } from "./AppLayout-Q3nFYZ7E.js";
 import { Folder, Search, Bell, Settings, ChevronDown, Plus, ChevronRight, GripVertical, Package, X, AlertTriangle, FolderOpen, Eye, EyeOff, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 function CategoryFormModal({
   modalMode,

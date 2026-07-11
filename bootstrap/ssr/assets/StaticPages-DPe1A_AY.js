@@ -1,7 +1,7 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { usePage, Link } from "@inertiajs/react";
 import { Pencil } from "lucide-react";
-import { A as AppLayout } from "./AppLayout-ca4ZqyB9.js";
+import { A as AppLayout } from "./AppLayout-Q3nFYZ7E.js";
 import { b as formatDate } from "./date-ClVPp3mI.js";
 function StaticPages({ pages }) {
   const { flash } = usePage().props;

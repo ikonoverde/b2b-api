@@ -1,6 +1,6 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { usePage, Link } from "@inertiajs/react";
-import { A as AppLayout } from "./AppLayout-ca4ZqyB9.js";
+import { A as AppLayout } from "./AppLayout-Q3nFYZ7E.js";
 import { Search, ChevronLeft, ChevronRight, ArrowUpDown } from "lucide-react";
 import { useState, useEffect } from "react";
 const roleLabels = {

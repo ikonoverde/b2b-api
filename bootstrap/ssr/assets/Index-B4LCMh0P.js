@@ -2,7 +2,7 @@ import { jsx, jsxs } from "react/jsx-runtime";
 import { usePage, Link, router } from "@inertiajs/react";
 import { Plus, Search, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { A as AppLayout } from "./AppLayout-ca4ZqyB9.js";
+import { A as AppLayout } from "./AppLayout-Q3nFYZ7E.js";
 import { b as formatDate, a as formatDateShort } from "./date-ClVPp3mI.js";
 const statusConfig = {
   draft: { label: "Borrador", className: "bg-gray-100 text-gray-600" },

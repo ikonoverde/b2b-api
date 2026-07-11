@@ -1,6 +1,6 @@
 import { jsxs, jsx, Fragment } from "react/jsx-runtime";
 import { usePage, Link, useForm, router } from "@inertiajs/react";
-import { A as AppLayout } from "./AppLayout-ca4ZqyB9.js";
+import { A as AppLayout } from "./AppLayout-Q3nFYZ7E.js";
 import { User, Truck, DollarSign, MapPin, Package, Printer, AlertTriangle, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { g as getStatusColor, p as paymentStatusLabels, a as getPaymentStatusColor, b as allowedTransitions } from "./helpers-CnpaKXV5.js";

@@ -1,9 +1,9 @@
 import { jsx } from "react/jsx-runtime";
-import BlogPostForm from "./Form-UC76y3v6.js";
+import BlogPostForm from "./Form-CYP6Iu_M.js";
 import "@inertiajs/react";
 import "lucide-react";
 import "react";
-import "./AppLayout-ca4ZqyB9.js";
+import "./AppLayout-Q3nFYZ7E.js";
 function CreateBlogPost() {
   return /* @__PURE__ */ jsx(BlogPostForm, {});
 }

@@ -1,6 +1,7 @@
 import { jsx, jsxs } from "react/jsx-runtime";
+import { useState } from "react";
 import { useForm } from "@inertiajs/react";
-import { A as AppLayout } from "./AppLayout-ca4ZqyB9.js";
+import { A as AppLayout } from "./AppLayout-Q3nFYZ7E.js";
 import ProductFormHeader from "./ProductFormHeader-B-3p6RCs.js";
 import BasicInfoCard from "./BasicInfoCard-DUl2Poqc.js";
 import PricingInventoryCard from "./PricingInventoryCard-C7okmkMR.js";
@@ -8,43 +9,49 @@ import ShippingDimensionsCard from "./ShippingDimensionsCard-mTz3hsad.js";
 import ImageSection from "./ImageSection-CSsqV-Zx.js";
 import StatusCard from "./StatusCard-Cy1NVGJC.js";
 import "lucide-react";
-import "react";
 import "./CategoryDropdown-LCDDgS9l.js";
 import "./ToggleSwitch-CFm40GDN.js";
-function Create({ categories, formulas }) {
+function Edit({ product, categories, formulas }) {
+  const [existingImages, setExistingImages] = useState(product.images);
   const { data, setData, post, processing, errors } = useForm({
-    name: "",
-    slug: "",
-    sku: "",
-    category_id: "",
-    formula_id: "",
-    description: "",
-    active_ingredients: "",
-    recommendations: "",
-    price: "",
-    cost: "",
-    stock: "",
-    min_stock: "",
-    weight_kg: "",
-    width_cm: "",
-    height_cm: "",
-    depth_cm: "",
-    shipping_packages: [],
-    is_active: true,
-    is_featured: false,
-    images: []
+    name: product.name,
+    slug: product.slug,
+    sku: product.sku,
+    category_id: String(product.category_id),
+    formula_id: product.formula_id ? String(product.formula_id) : "",
+    description: product.description,
+    active_ingredients: product.active_ingredients,
+    recommendations: product.recommendations,
+    price: product.price,
+    cost: product.cost,
+    stock: product.stock,
+    min_stock: product.min_stock,
+    weight_kg: product.weight_kg,
+    width_cm: product.width_cm,
+    height_cm: product.height_cm,
+    depth_cm: product.depth_cm,
+    shipping_packages: product.shipping_packages,
+    is_active: product.is_active,
+    is_featured: product.is_featured,
+    images: [],
+    delete_images: [],
+    _method: "put"
   });
   const handleSubmit = (e) => {
     e.preventDefault();
-    post("/admin/products");
+    post(`/admin/products/${product.id}`);
   };
-  return /* @__PURE__ */ jsx(AppLayout, { title: "Agregar Producto", active: "products", children: /* @__PURE__ */ jsxs("form", { onSubmit: handleSubmit, className: "flex flex-col gap-8 p-10 pr-12", children: [
+  const removeExistingImage = (id) => {
+    setExistingImages(existingImages.filter((img) => img.id !== id));
+    setData("delete_images", [...data.delete_images ?? [], id]);
+  };
+  return /* @__PURE__ */ jsx(AppLayout, { title: "Editar Producto", active: "products", children: /* @__PURE__ */ jsxs("form", { onSubmit: handleSubmit, className: "flex flex-col gap-8 p-10 pr-12", children: [
     /* @__PURE__ */ jsx(
       ProductFormHeader,
       {
-        title: "Agregar Producto",
-        breadcrumbLabel: "Agregar Producto",
-        submitLabel: "Guardar Producto",
+        title: "Editar Producto",
+        breadcrumbLabel: "Editar Producto",
+        submitLabel: "Actualizar Producto",
         processing
       }
     ),
@@ -82,7 +89,9 @@ function Create({ categories, formulas }) {
           ImageSection,
           {
             images: data.images,
-            onImagesChange: (images) => setData("images", images)
+            onImagesChange: (images) => setData("images", images),
+            existingImages,
+            onExistingImageRemove: removeExistingImage
           }
         ),
         /* @__PURE__ */ jsx(
@@ -99,5 +108,5 @@ function Create({ categories, formulas }) {
   ] }) });
 }
 export {
-  Create as default
+  Edit as default
 };

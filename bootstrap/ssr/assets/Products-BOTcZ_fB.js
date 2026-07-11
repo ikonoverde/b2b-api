@@ -1,7 +1,7 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useState } from "react";
 import { usePage, Link, router } from "@inertiajs/react";
-import { A as AppLayout } from "./AppLayout-ca4ZqyB9.js";
+import { A as AppLayout } from "./AppLayout-Q3nFYZ7E.js";
 import { Search, Bell, Settings, ChevronDown, Download, Plus, Package, MoreHorizontal, Trash2, AlertTriangle } from "lucide-react";
 const tabs = [
   { id: "all", label: "Todos" },
