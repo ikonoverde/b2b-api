@@ -1,6 +1,6 @@
 ---
 name: report
-description: Use when the user wants a status report on Ikonoverde's marketing baseline, or asks "how are we doing", "what do the numbers say", "give me a status report", "any traffic yet", "check GA4 and Instagram". Runs google-analytics and meta in parallel and returns provenance-tagged observed facts. Not for deciding what to do about those facts — that is growth-strategy, reached through the campaign-proposal skill.
+description: Use when the user wants a status report on Ikonoverde's marketing baseline, or asks "how are we doing", "what do the numbers say", "give me a status report", "any traffic yet", "check GA4 and Instagram". Runs google-analytics and meta in parallel, returns provenance-tagged observed facts, and reports what moved since the last four reports. Not for deciding what to do about those facts — that is growth-strategy, reached through the campaign-proposal skill.
 ---
 
 # Report
@@ -16,6 +16,17 @@ Neither depends on anything. Both are read-only. Both mount stdio MCP servers wi
 Run them together. They do not interact, and parallelism costs nothing.
 
 They emit observed facts and nothing else — no recommendations, no readiness verdicts, no next steps. If a run comes back with either agent proposing an action, that is the agent exceeding its own prompt, and the proposal does not belong in the report. Drop it and say you dropped it.
+
+## Read the last four reports before you run anything
+
+Spawn the agents, and while they run, read the four most recent files in `context/report/` — newest first, by the date in the filename, excluding today's if one already exists. Fewer than four is normal; read what is there and say how many you found. Zero is also normal, and then this run is the first baseline and there is nothing to compare against — say that, in one line, rather than inventing a trend.
+
+You read them for one reason: to say what moved. A single report is a photograph, and the user cannot tell from it whether the pixel started firing last week, whether the follower count is climbing from zero or sitting at it, or whether the GA4 filter is still Testing three reports later. Four reports make those visible, and surfacing them is the point of keeping the files.
+
+Two rules keep this honest:
+
+- **The prior reports are not a data source for today's numbers.** They record what was true when they were written. Every value in today's report comes from a tool call made today, and if an agent could not reach an account, that line is unreachable — you do not backfill it from last week's file. A number carried forward from an old report and printed as current is the worst thing this skill can produce.
+- **A delta between two OBSERVED values is OBSERVED. Anything else is not.** If last week's follower count was ESTIMATED, or the account was unreachable, then there is no measured change — there is a gap, and you say so. Do not subtract an estimate from an observation and present the difference as movement.
 
 ## What this skill is not
 
@@ -52,6 +63,14 @@ OBSERVED   ig.followers = 0                      (account unreachable → say "u
 ESTIMATED  ga4.sessions_are_internal ≈ all of them  (model priors; no filter state observed)
 ```
 
+A change carries the provenance of the weaker of its two endpoints, and names both:
+
+```
+OBSERVED   ga4.sessions 32 → 41                  (+9 vs 2026-07-09; both OBSERVED)
+OBSERVED   ga4.purchase_events 0 → 0             (unchanged across 3 reports)
+UNKNOWN    ig.followers ? → 0                    (unreachable on 2026-07-09; no measured change)
+```
+
 A status report should be almost entirely OBSERVED. That is what distinguishes it from a conversation. If more than a line or two is ESTIMATED, say so at the top — the report is thinner than it looks.
 
 ## Two caveats that belong in every run
@@ -66,7 +85,11 @@ The agents deliver via `SendMessage`. Plain text only: tables and code blocks ha
 
 ## The report
 
-Open with what was reachable and what was not. Then the observed facts, tagged, grouped by source. Then the two standing caveats. Then stop.
+Open with what was reachable and what was not, and which prior reports you read (by date). Then the observed facts, tagged, grouped by source. Then **what changed** — every value whose prior reading you have, shown as `then → now`, including the ones that did not move. Then the two standing caveats. Then stop.
+
+The change section is a log, not an argument. "Followers 0 → 3" is a fact. "Followers 0 → 3, so the Instagram push is working" is a causal claim you did not observe, and "purchases still 0 after four reports" is not evidence of a broken pixel any more than a single zero was — the store has had no orders to record. State the movement, name the window it happened in, and leave it there.
+
+Unchanged is worth printing. Four reports of `purchase_events = 0` tell the user how long the store has been silent, and a filter that has read Testing since the first report is a stalled human action, not a number — flag it as still open rather than repeating the caveat as if it were new.
 
 There is no closing recommendation. The user is looking at a pre-launch baseline, and the honest summary of it is that the numbers cannot yet tell them anything — which is worth one sentence, not a plan.
 
@@ -79,5 +102,9 @@ Save the report as markdown to `context/report/YYYY-MM-DD.md`, named for today's
 - Name the date range and the GA4 property inside the document. A file called `2026-07-09.md` says when the report was written, not what window it covers, and those diverge the moment anyone asks for last month's numbers.
 - Keep the provenance tags in the saved file. Stripping them for readability is how an ESTIMATED number becomes a historical fact.
 - Say which agents ran and which tools failed. A file recording zeros, with no note that the Graph API was unreachable, is worse than no file — it will be read as a measurement.
+- Keep the change section in the saved file, and name the reports it compares against by date. The next run reads this file as one of its four, and a delta with no stated baseline cannot be chained.
+- Write today's absolute values as absolute values. A file that records only "+9 sessions" is useless to the run four weeks from now that needs the number, not the difference.
 
-If a report for today already exists, read it before writing. A second run supersedes the first only if the user says so; otherwise ask, because the two runs may have observed different things and the difference is the interesting part.
+Because each report is read by the next four, a laundered value does not just mislead once — it propagates. That is the reason the two rules above are rules.
+
+If a report for today already exists, read it before writing. A second run supersedes the first only if the user says so; otherwise ask, because the two runs may have observed different things and the difference is the interesting part. If the user does say so, the superseded file is replaced, not appended to — and the four reports you compare against are still the four *previous* days, not this morning's run of the same day.
