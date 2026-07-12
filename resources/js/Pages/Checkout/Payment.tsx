@@ -5,6 +5,7 @@ import CustomerShell from '@/Layouts/CustomerShell';
 import CheckoutStepIndicator from '@/Components/CheckoutStepIndicator';
 import OrderSummary from '@/Components/OrderSummary';
 import { formatCurrency } from '@/utils/currency';
+import { paymentErrorMessage } from '@/utils/stripeErrors';
 import type { PaymentMethod } from '@/types';
 
 interface OrderItem {
@@ -47,7 +48,7 @@ function formatExpiry(method: PaymentMethod): string {
 }
 
 export default function Payment({ order, client_secret, stripe_key, payment_methods }: PaymentProps) {
-    const stripePromise = useMemo(() => loadStripe(stripe_key), [stripe_key]);
+    const stripePromise = useMemo(() => loadStripe(stripe_key, { locale: 'es' }), [stripe_key]);
 
     return (
         <CustomerShell title="Pago · Compra">
@@ -158,7 +159,7 @@ function PaymentForm({
             });
 
             if (savedCardError) {
-                setError(savedCardError.message ?? 'Ocurrió un error al procesar el pago.');
+                setError(paymentErrorMessage(savedCardError));
                 setProcessing(false);
 
                 return;
@@ -183,7 +184,7 @@ function PaymentForm({
         });
 
         if (submitError) {
-            setError(submitError.message ?? 'Ocurrió un error al procesar el pago.');
+            setError(paymentErrorMessage(submitError));
             setProcessing(false);
         }
     }
