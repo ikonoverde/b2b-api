@@ -7,7 +7,7 @@
 
     <title inertia>{{ config('app.name', 'Ikonoverde') }}</title>
 
-    @if ($googleAnalyticsMeasurementId = config('services.google_analytics.measurement_id'))
+    @if (config('services.google_analytics.enabled') && $googleAnalyticsMeasurementId = config('services.google_analytics.measurement_id'))
         <script async src="https://www.googletagmanager.com/gtag/js?id={{ $googleAnalyticsMeasurementId }}"></script>
         <script>
             window.googleAnalyticsMeasurementId = @js($googleAnalyticsMeasurementId);
@@ -23,7 +23,7 @@
         <script async defer src="https://tools.luckyorange.com/core/lo.js?site-id=1b9d2b4c"></script>
     @endif
 
-    @if ($metaPixelId = config('services.meta_pixel.pixel_id'))
+    @if (config('services.meta_pixel.enabled') && $metaPixelId = config('services.meta_pixel.pixel_id'))
         <script>
             !function (f, b, e, v, n, t, s) {
                 if (f.fbq) return;

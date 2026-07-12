@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 
 beforeEach(function () {
+    // Off by default outside production; these tests exercise the dispatch itself.
+    config()->set('services.meta_pixel.enabled', true);
     config()->set('services.meta_pixel.pixel_id', '1234567890');
     config()->set('services.meta_pixel.conversions_api_access_token', 'test-token');
     config()->set('services.meta_pixel.api_version', 'v22.0');
@@ -144,3 +146,33 @@ it('does not break checkout when the event cannot be recorded', function () {
 
     app(MetaConversionsApiService::class)->sendPurchase($order);
 })->throwsNoExceptions();
+
+it('sends nothing to meta when tracking is disabled, even with working production credentials', function () {
+    // The exact shape of the 2026-06-25 leak: real credentials, non-production environment.
+    config()->set('services.meta_pixel.enabled', false);
+
+    Http::fake();
+
+    new MetaConversionsApiService()->sendPurchase(completedOrder());
+
+    Http::assertNothingSent();
+
+    expect(MetaConversionEvent::sole()->status)
+        ->toBe(MetaConversionEvent::STATUS_SKIPPED_NOT_ENABLED);
+});
+
+it('distinguishes a disabled environment from missing credentials', function () {
+    config()->set('services.meta_pixel.enabled', false);
+    config()->set('services.meta_pixel.pixel_id', null);
+
+    Http::fake();
+
+    new MetaConversionsApiService()->sendPurchase(completedOrder());
+
+    // Credentials are also absent, but the guard is why nothing was sent. Reporting this as a
+    // config gap would send someone hunting a bug that is not there.
+    expect(MetaConversionEvent::sole()->status)
+        ->toBe(MetaConversionEvent::STATUS_SKIPPED_NOT_ENABLED);
+
+    Http::assertNothingSent();
+});

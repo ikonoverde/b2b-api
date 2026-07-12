@@ -3,6 +3,7 @@
 namespace App\Mcp\Servers;
 
 use App\Mcp\Tools\GetConversionEventsTool;
+use App\Mcp\Tools\GetMetaDatasetTool;
 use Laravel\Mcp\Server;
 use Laravel\Mcp\Server\Attributes\Instructions;
 use Laravel\Mcp\Server\Attributes\Name;
@@ -13,7 +14,7 @@ use Laravel\Mcp\Server\Tool;
 
 #[Name('Tracking Server')]
 #[Version('1.0.0')]
-#[Instructions('Verify server-side conversion tracking. Use get-conversion-events to read every Meta Conversions API purchase dispatch, including ones skipped because Meta credentials are unset. A browser cannot observe server-side events, so this is the only evidence that the Conversions API half of purchase tracking works. An empty result means no dispatch was attempted, which is different from a dispatch that failed. Rows carrying a test_event_code went to Meta Test Events, not to production stats, and are not sales.')]
+#[Instructions('Verify server-side conversion tracking, from both ends. Use get-conversion-events to read what this app dispatched to the Meta Conversions API, including attempts skipped because credentials are unset. Use get-meta-dataset to read what Meta actually received: event counts, the browser-versus-server split, and which match keys arrived. The two disagree in ways that matter — a dispatch recorded as sent is not proof Meta counted it, and an event Meta counted may have come from a developer laptop rather than a customer. A browser cannot observe server-side events, so these tools are the only evidence the Conversions API half of purchase tracking works. An empty result means nothing was attempted, which is different from something that failed. Rows carrying a test_event_code went to Meta Test Events, not to production stats. No count from either tool is a sale until someone has ruled out test orders.')]
 class TrackingServer extends Server
 {
     /**
@@ -21,6 +22,7 @@ class TrackingServer extends Server
      */
     protected array $tools = [
         GetConversionEventsTool::class,
+        GetMetaDatasetTool::class,
     ];
 
     /**

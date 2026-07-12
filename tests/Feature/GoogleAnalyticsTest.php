@@ -14,6 +14,7 @@ it('does not render google analytics when it is not configured', function () {
 });
 
 it('renders google analytics when a measurement id is configured', function () {
+    Config::set('services.google_analytics.enabled', true);
     Config::set('services.google_analytics.measurement_id', 'G-TEST123');
 
     $response = $this->get('/');

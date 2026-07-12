@@ -6,6 +6,7 @@ use App\Ai\Tools\GetInstagramAccountInfo;
 use App\Ai\Tools\GetInstagramPostComments;
 use App\Ai\Tools\GetInstagramPostInsights;
 use App\Ai\Tools\GetInstagramPosts;
+use App\Ai\Tools\GetMetaDataset;
 use App\Ai\Tools\GetMetaPageInfo;
 use App\Ai\Tools\GetMetaPagePosts;
 use App\Ai\Tools\GetMetaPostComments;
@@ -35,7 +36,17 @@ it('exposes only Meta and Instagram read-only tools', function () {
         ->toContain(GetInstagramPosts::class)
         ->toContain(GetInstagramPostInsights::class)
         ->toContain(GetInstagramPostComments::class)
+        ->toContain(GetMetaDataset::class)
         ->not->toContain(GetAnalyticsAccountSummaries::class);
+});
+
+it('warns that a dataset Purchase count is not a sales count', function () {
+    // The dataset is polluted with developer traffic. An agent that reports its Purchase count as
+    // revenue would be reporting a developer's checkout walk as a customer.
+    expect((string) (new MetaAgent)->instructions())
+        ->toContain('A Purchase count is not a sales count')
+        ->toContain('test orders have not been ruled out')
+        ->toContain('silently clamps an older window');
 });
 
 it('maps conversation history into Laravel AI messages', function () {

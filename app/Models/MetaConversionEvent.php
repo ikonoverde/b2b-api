@@ -33,12 +33,22 @@ class MetaConversionEvent extends Model
      */
     public const STATUS_SKIPPED_MISSING_CREDENTIALS = 'skipped_missing_credentials';
 
+    /**
+     * No request was attempted because tracking is disabled in this environment.
+     * The credentials are present and would work — that is the point. Local .env carries the
+     * production pixel, so a dispatch here would land in the production dataset and Meta would
+     * count a developer as a customer. Distinct from skipped_missing_credentials: that is a
+     * misconfiguration, this is the guard doing its job.
+     */
+    public const STATUS_SKIPPED_NOT_ENABLED = 'skipped_not_enabled';
+
     /** @var string[] */
     public const STATUSES = [
         self::STATUS_SENT,
         self::STATUS_REJECTED,
         self::STATUS_FAILED,
         self::STATUS_SKIPPED_MISSING_CREDENTIALS,
+        self::STATUS_SKIPPED_NOT_ENABLED,
     ];
 
     protected $fillable = [

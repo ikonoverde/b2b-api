@@ -429,6 +429,7 @@ it('is idempotent for payment_intent.succeeded on already completed order', func
 
 it('sends a meta conversions api purchase event on checkout completed', function () {
     config([
+        'services.meta_pixel.enabled' => true,
         'services.meta_pixel.pixel_id' => 'pixel-123',
         'services.meta_pixel.conversions_api_access_token' => 'token-123',
         'services.meta_pixel.api_version' => 'v21.0',

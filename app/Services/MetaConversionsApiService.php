@@ -17,6 +17,12 @@ class MetaConversionsApiService
         $accessToken = config('services.meta_pixel.conversions_api_access_token');
         $testEventCode = config('services.meta_pixel.test_event_code');
 
+        if (! config('services.meta_pixel.enabled')) {
+            $this->record($order, MetaConversionEvent::STATUS_SKIPPED_NOT_ENABLED, $testEventCode);
+
+            return;
+        }
+
         if (! $pixelId || ! $accessToken) {
             $this->record($order, MetaConversionEvent::STATUS_SKIPPED_MISSING_CREDENTIALS, $testEventCode);
 

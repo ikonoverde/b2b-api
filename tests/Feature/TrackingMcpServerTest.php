@@ -2,10 +2,12 @@
 
 use App\Mcp\Servers\TrackingServer;
 use App\Mcp\Tools\GetConversionEventsTool;
+use App\Mcp\Tools\GetMetaDatasetTool;
 use App\Models\MetaConversionEvent;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Passport\Passport;
 
@@ -158,5 +160,68 @@ it('caps the limit', function () {
 
     TrackingServer::actingAs($admin)
         ->tool(GetConversionEventsTool::class, ['limit' => 500])
+        ->assertHasErrors();
+});
+
+it('denies non-admin users on the dataset tool', function () {
+    $user = User::factory()->create();
+
+    TrackingServer::actingAs($user)
+        ->tool(GetMetaDatasetTool::class, [])
+        ->assertHasErrors();
+});
+
+it('reads the meta dataset, reporting what meta received rather than what we sent', function () {
+    $admin = User::factory()->admin()->create();
+
+    config()->set('services.meta_ads.access_token', 'token-123');
+    config()->set('services.meta_ads.dataset_id', 'dataset-123');
+
+    Http::fake([
+        '*/stats*' => Http::response([
+            'data' => [[
+                'aggregation' => 'event_total_counts',
+                'data' => [['value' => 'Purchase', 'count' => 3]],
+            ]],
+        ]),
+        '*' => Http::response([
+            'id' => '2222947471863923',
+            'name' => 'IkonoverdePro Web',
+            'last_fired_time' => '2026-07-11T17:54:37-0600',
+        ]),
+    ]);
+
+    TrackingServer::actingAs($admin)->tool(GetMetaDatasetTool::class, [])
+        ->assertOk()
+        ->assertName('get-meta-dataset')
+        ->assertStructuredContent(fn (AssertableJson $json) => $json
+            ->where('details.name', 'IkonoverdePro Web')
+            ->where('event_counts.data.0.data.0.count', 3)
+            ->etc()
+        );
+});
+
+it('reads a single section when asked', function () {
+    $admin = User::factory()->admin()->create();
+
+    config()->set('services.meta_ads.access_token', 'token-123');
+    config()->set('services.meta_ads.dataset_id', 'dataset-123');
+
+    Http::fake(['*' => Http::response(['id' => '123', 'name' => 'IkonoverdePro Web'])]);
+
+    TrackingServer::actingAs($admin)->tool(GetMetaDatasetTool::class, ['section' => 'details'])
+        ->assertOk()
+        ->assertStructuredContent(fn (AssertableJson $json) => $json
+            ->where('details.name', 'IkonoverdePro Web')
+            ->missing('event_counts')
+            ->etc()
+        );
+});
+
+it('rejects an unknown dataset section', function () {
+    $admin = User::factory()->admin()->create();
+
+    TrackingServer::actingAs($admin)
+        ->tool(GetMetaDatasetTool::class, ['section' => 'event_match_quality'])
         ->assertHasErrors();
 });

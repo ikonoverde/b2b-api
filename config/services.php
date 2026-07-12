@@ -58,6 +58,14 @@ return [
         'credentials_path' => env('GOOGLE_ANALYTICS_CREDENTIALS_PATH'),
         'credentials_json' => env('GOOGLE_ANALYTICS_CREDENTIALS_JSON'),
         'default_property_id' => env('GOOGLE_ANALYTICS_PROPERTY_ID'),
+
+        /*
+         * The browser tag only loads in production. A developer's page views are otherwise
+         * indistinguishable from a customer's in the reported numbers. Set GOOGLE_ANALYTICS_ENABLED
+         * true to load it deliberately elsewhere — for DebugView work, say — and remember that
+         * whatever you then do is recorded.
+         */
+        'enabled' => env('GOOGLE_ANALYTICS_ENABLED', env('APP_ENV') === 'production'),
     ],
 
     'meta_graph' => [
@@ -74,6 +82,36 @@ return [
         'api_version' => env('META_CONVERSIONS_API_VERSION', 'v21.0'),
         'test_event_code' => env('META_CONVERSIONS_API_TEST_EVENT_CODE'),
         'currency' => env('META_PIXEL_CURRENCY', 'MXN'),
+
+        /*
+         * Both the browser pixel and the Conversions API only fire in production.
+         *
+         * Local .env carries the production pixel ID, so before this guard every page load on a
+         * developer's laptop initialised the live pixel and every checkout fired a Purchase into
+         * the production dataset. Two of the three Purchases Meta held on 2026-07-11 were a
+         * developer walking the funnel; Meta counts them as customers and will optimise ad
+         * delivery toward people who resemble them.
+         *
+         * Set META_PIXEL_ENABLED true to fire deliberately from a non-production environment, and
+         * set META_CONVERSIONS_API_TEST_EVENT_CODE alongside it so the events land in Test Events
+         * rather than in the dataset proper.
+         */
+        'enabled' => env('META_PIXEL_ENABLED', env('APP_ENV') === 'production'),
+    ],
+
+    /*
+     * Reading the dataset (details, event counts, event match quality) needs ads_read, which
+     * the Conversions API token does not carry — it is scoped to POST /{dataset}/events and
+     * returns "(#100) Missing Permission" on every read. Use a System User token, which does
+     * not expire; META_GRAPH_ACCESS_TOKEN is a user token and silently expired on 2026-07-02.
+     */
+    'meta_ads' => [
+        // ?: not env()'s second argument: a key present but empty in .env resolves to '', and
+        // env() only falls back when the key is absent entirely.
+        'access_token' => env('META_ADS_ACCESS_TOKEN') ?: env('META_GRAPH_ACCESS_TOKEN'),
+        'dataset_id' => env('META_ADS_DATASET_ID') ?: env('META_PIXEL_ID'),
+        'api_version' => env('META_ADS_API_VERSION', 'v21.0'),
+        'base_url' => env('META_GRAPH_BASE_URL', 'https://graph.facebook.com'),
     ],
 
     'outscraper' => [
