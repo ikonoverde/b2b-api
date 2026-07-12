@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
+use Laravel\Telescope\Jobs\ProcessPendingUpdates;
 
 return [
 
@@ -133,7 +134,7 @@ return [
 
     'silenced' => [
         // App\Jobs\ExampleJob::class,
-        Laravel\Telescope\Jobs\ProcessPendingUpdates::class,
+        ProcessPendingUpdates::class,
     ],
 
     'silenced_tags' => [
@@ -211,6 +212,28 @@ return [
             'timeout' => 60,
             'nice' => 0,
         ],
+
+        /*
+         * Agent-driven jobs, on their own connection and queue.
+         *
+         * They are kept off `default` for two reasons: a run takes minutes, so it would hold a
+         * worker that short jobs are waiting on, and it needs a timeout far past the 60 seconds
+         * that suits everything else. The timeout here stays below the connection's retry_after
+         * (1800s), or Redis releases the job to a second worker while the first is still running it.
+         */
+        'supervisor-agents' => [
+            'connection' => 'redis-agents',
+            'queue' => ['agents'],
+            'balance' => 'auto',
+            'autoScalingStrategy' => 'time',
+            'maxProcesses' => 1,
+            'maxTime' => 0,
+            'maxJobs' => 0,
+            'memory' => 256,
+            'tries' => 2,
+            'timeout' => 900,
+            'nice' => 0,
+        ],
     ],
 
     'environments' => [
@@ -220,11 +243,19 @@ return [
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
             ],
+
+            'supervisor-agents' => [
+                'maxProcesses' => 2,
+            ],
         ],
 
         'local' => [
             'supervisor-1' => [
                 'maxProcesses' => 3,
+            ],
+
+            'supervisor-agents' => [
+                'maxProcesses' => 1,
             ],
         ],
     ],

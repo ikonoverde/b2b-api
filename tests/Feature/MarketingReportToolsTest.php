@@ -1,6 +1,9 @@
 <?php
 
+use App\Ai\Agents\GoogleAnalyticsAgent;
 use App\Ai\Agents\GrowthStrategyAgent;
+use App\Ai\Agents\MarketingReportAgent;
+use App\Ai\Agents\MetaAgent;
 use App\Ai\Tools\GetMarketingMetricHistory;
 use App\Ai\Tools\GetMarketingReports;
 use App\Ai\Tools\SaveMarketingReport;
@@ -269,18 +272,36 @@ it('says an unrecorded metric key has no measurement rather than returning zero'
         ->and($payload['headline_keys'])->toContain('ga4.sessions');
 });
 
-it('gives the growth strategy agent the report tools', function () {
+it('gives the report agent the tools to read the history and write the report', function () {
+    $tools = collect(new MarketingReportAgent([])->tools())
+        ->map(fn (object $tool): string => $tool::class);
+
+    expect($tools)
+        ->toContain(GetMarketingReports::class)
+        ->toContain(GetMarketingMetricHistory::class)
+        ->toContain(SaveMarketingReport::class)
+        // It cannot observe anything itself; the numbers come from the two specialists.
+        ->toContain(GoogleAnalyticsAgent::class)
+        ->toContain(MetaAgent::class);
+});
+
+it('lets the strategist read reports but never write one', function () {
+    // An agent that both decides what the numbers mean and records what the numbers were will
+    // eventually record the number that supports what it decided.
     $tools = collect(new GrowthStrategyAgent([])->tools())
         ->map(fn (object $tool): string => $tool::class);
 
     expect($tools)
         ->toContain(GetMarketingReports::class)
         ->toContain(GetMarketingMetricHistory::class)
-        ->toContain(SaveMarketingReport::class);
+        ->not->toContain(SaveMarketingReport::class);
 });
 
-it('tells the agent never to store an unobserved value as zero', function () {
-    expect((string) new GrowthStrategyAgent([])->instructions())
-        ->toContain('Never save an unobserved value as 0')
-        ->toContain('both endpoints were observed');
+it('tells the report agent never to store an unobserved value as zero', function () {
+    expect((string) new MarketingReportAgent([])->instructions())
+        ->toContain('An unobserved value is never 0')
+        ->toContain('both endpoints were observed')
+        ->toContain('Never carry a number forward')
+        // It observes and files. It does not advise; that is the strategist's job.
+        ->toContain('You do not advise');
 });

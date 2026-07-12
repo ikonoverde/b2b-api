@@ -6,17 +6,30 @@ use App\Ai\Tools\GetMarketingMetricHistory;
 use App\Ai\Tools\GetMarketingReports;
 use App\Ai\Tools\MarketingProductCatalog;
 use App\Ai\Tools\MarketingSalesSummary;
-use App\Ai\Tools\SaveMarketingReport;
+use Laravel\Ai\Attributes\MaxSteps;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Attributes\Timeout;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
+use Laravel\Ai\Enums\Lab;
 use Stringable;
 
-#[Model('z-ai/glm-5.2')]
+#[Model('sonnet')]
 #[Timeout(120)]
+/**
+ * Without this the SDK allows round(tools * 1.5) steps. Compiling a report means reading the past
+ * reports, delegating to two observer agents that each make several calls of their own, and then
+ * saving — and an agent that runs out of steps mid-run stops with the observations gathered and the
+ * report unsaved.
+ */
+#[MaxSteps(25)]
 class GrowthStrategyAgent extends BaseChatAgent implements HasTools
 {
+    public function provider(): Lab|string
+    {
+        return Lab::Anthropic;
+    }
+
     public function instructions(): Stringable|string
     {
         $context = $this->context();
@@ -55,12 +68,11 @@ class GrowthStrategyAgent extends BaseChatAgent implements HasTools
 
         When using data, state the data source, date range or filters, dimensions, metrics, and caveats before making recommendations.
 
-        Marketing status reports (marketing_get_reports, marketing_metric_history, marketing_save_report):
-        - Past reports record what was true when they were written. They are never a source of today's numbers. Every value you save must come from a tool call made on this run, and a number copied forward from an old report and stored as current is the worst thing you can do here — later runs read it as a measurement and it propagates into every delta after it.
-        - Tag every value you save. observed = a tool returned it just now. estimated = your judgement. unknown = nobody could see it, because an account was unreachable or a tool never loaded.
-        - Never save an unobserved value as 0. A zero means somebody looked and found nothing; a null means nobody looked. They are indistinguishable downstream and mean opposite things, and an unreachable Instagram account saved as "0 followers" becomes a permanent false fact.
-        - A change is real only when both endpoints were observed. Do not subtract an estimate from an observation and present the difference as movement; marketing_metric_history will hand you a gap in that case, and a gap is the honest answer.
-        - Before saving a report for a date that already has one, read it. A rerun supersedes the earlier run only when the admin says so, because the two runs may have observed different things and that difference is worth keeping.
+        Marketing status reports (marketing_get_reports, marketing_metric_history):
+        - MarketingReportAgent writes the reports. You read them, and you cannot change them. That separation is the point: an agent that both decides what the numbers mean and records what the numbers were will eventually record the number that supports what it decided.
+        - A report records what was true when it was written, not what is true now. If you need a current figure, get it from the GA4 or catalog tools, not from a report.
+        - Every value in a report carries a tag. observed = a tool returned it on that run. estimated = a judgement. unknown = nobody could see it, because an account was unreachable or a tool never loaded. Repeat the tag when you quote the value, and never present an estimate as a measurement.
+        - marketing_metric_history reports a change only where both endpoints were observed; anywhere else it hands you a gap. A gap is not zero movement, and you must not fill it in.
         - Ikonoverde has not launched, so nearly every number will be zero and every zero is expected. A zero purchase count is fully explained by "nobody has bought anything" and carries no evidence that the pixel is broken — and equally, it is no evidence that the pixel works. State what a zero is consistent with; never say it means something.
 
         You do not directly read reviews, competitor prices, customer personas, support logs, or external keyword exports unless the admin provides that data in the conversation. For SEO keyword research, use KeywordsAgent. For paid-platform reporting or diagnosis that needs Meta, Instagram, or Google Ads data beyond GA4, delegate to PaidAcquisitionAgent or recommend using PaidAcquisitionAgent directly.
@@ -77,7 +89,6 @@ class GrowthStrategyAgent extends BaseChatAgent implements HasTools
             app(MarketingSalesSummary::class),
             app(GetMarketingReports::class),
             app(GetMarketingMetricHistory::class),
-            app(SaveMarketingReport::class),
             new GoogleAnalyticsAgent,
             new PaidAcquisitionAgent,
             new KeywordsAgent,

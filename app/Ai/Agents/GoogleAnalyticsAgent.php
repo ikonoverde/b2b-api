@@ -15,11 +15,17 @@ use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Contracts\CanActAsTool;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
+use Laravel\Ai\Enums\Lab;
 use Stringable;
 
-#[Model('deepseek/deepseek-v4-flash')]
+#[Model('claude-haiku-4-5')]
 class GoogleAnalyticsAgent extends BaseChatAgent implements CanActAsTool, HasTools
 {
+    public function provider(): Lab|string
+    {
+        return Lab::Anthropic;
+    }
+
     public function instructions(): Stringable|string
     {
         $context = $this->context();

@@ -73,6 +73,26 @@ return [
             'after_commit' => false,
         ],
 
+        /*
+         * For jobs that drive an AI agent, where a single run is minutes of tool calls rather than
+         * seconds of work.
+         *
+         * retry_after must be longer than the job's timeout. Redis hands a reserved job to another
+         * worker once retry_after passes, whether or not the first worker is still working on it —
+         * so a job that outlives retry_after is quietly run again, concurrently, every retry_after
+         * seconds, its attempts climb, and it is eventually marked failed for taking the time it was
+         * told it could take. The default connection allows 90 seconds and an agent run does not fit
+         * in it.
+         */
+        'redis-agents' => [
+            'driver' => 'redis',
+            'connection' => env('REDIS_QUEUE_CONNECTION', 'default'),
+            'queue' => env('REDIS_AGENT_QUEUE', 'agents'),
+            'retry_after' => (int) env('REDIS_AGENT_QUEUE_RETRY_AFTER', 1800),
+            'block_for' => null,
+            'after_commit' => false,
+        ],
+
         'deferred' => [
             'driver' => 'deferred',
         ],
