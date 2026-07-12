@@ -12,6 +12,11 @@ class OrderConfirmation extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    public int $tries = 3;
+
+    /** @var array<int, int> */
+    public array $backoff = [30, 120, 600];
+
     /**
      * Create a new notification instance.
      */

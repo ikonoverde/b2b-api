@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Auth\Notifications\ResetPassword;
+use App\Notifications\Auth\ResetPassword;
 use Illuminate\Support\Facades\Notification;
 
 describe('POST /api/forgot-password', function () {

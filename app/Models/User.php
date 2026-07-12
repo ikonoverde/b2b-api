@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\Auth\ResetPassword;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -61,6 +62,11 @@ class User extends Authenticatable
             'notify_promotional_emails' => 'boolean',
             'notify_newsletter' => 'boolean',
         ];
+    }
+
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new ResetPassword($token));
     }
 
     public function orders(): HasMany
