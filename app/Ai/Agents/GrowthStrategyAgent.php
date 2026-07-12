@@ -14,7 +14,7 @@ use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Enums\Lab;
 use Stringable;
 
-#[Model('sonnet')]
+#[Model('claude-sonnet-5')]
 #[Timeout(120)]
 /**
  * Without this the SDK allows round(tools * 1.5) steps. Compiling a report means reading the past

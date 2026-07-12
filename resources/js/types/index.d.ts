@@ -432,6 +432,55 @@ export interface AdProposalBrand {
     initial: string;
 }
 
+export type MetricProvenance = 'observed' | 'estimated' | 'unknown';
+
+/**
+ * A headline value is `number | null`, never `number | undefined`. Null means nobody observed it —
+ * an unreachable account, a tool that never loaded. It is not zero, and it must never render as one.
+ */
+export interface MarketingReportListItem {
+    id: number;
+    reported_on: string;
+    window_start: string | null;
+    window_end: string | null;
+    ga4_sessions: number | null;
+    ga4_total_users: number | null;
+    ga4_purchase_events: number | null;
+    ig_followers: number | null;
+    superseded_at: string | null;
+    created_at: string;
+}
+
+export interface MarketingReportMetric {
+    id: number;
+    key: string;
+    provenance: MetricProvenance;
+    numeric_value: string | null;
+    text_value: string | null;
+    note: string | null;
+}
+
+export interface MarketingReportDetail {
+    id: number;
+    reported_on: string;
+    window_start: string | null;
+    window_end: string | null;
+    ga4_property_id: string | null;
+    body: string;
+    agents_run: string[];
+    reachability: Record<string, string>;
+    compared_against: string[];
+    superseded_at: string | null;
+    created_at: string;
+    metrics: MarketingReportMetric[];
+}
+
+export interface MarketingReportPreviousReading {
+    id: number;
+    reported_on: string;
+    headlines: Record<string, number | null>;
+}
+
 export interface MetaAdCreative {
     primary_text: string | null;
     headline: string | null;
@@ -456,4 +505,41 @@ export interface AdProposalPreview {
     brand: AdProposalBrand;
     meta: MetaAdCreative[];
     google: GoogleAdCreative[];
+}
+
+export type SocialPlatform = 'facebook' | 'instagram';
+
+/**
+ * A draft is published only when Meta said so. `published_at` and `remote_post_id` arrive together
+ * from a confirmed response, so a row carrying neither has never been posted, whatever else it says.
+ * `publishing` is not a failure: it means we called Meta and never recorded an answer, and only a
+ * human looking at the page can settle it.
+ */
+export type SocialPostStatus = 'pending' | 'publishing' | 'published' | 'rejected' | 'failed';
+
+export interface SocialPostDraftListItem {
+    id: number;
+    platform: SocialPlatform;
+    status: SocialPostStatus;
+    caption: string;
+    image_url: string | null;
+    proposed_for: string | null;
+    published_at: string | null;
+    remote_permalink: string | null;
+    reviewer: string | null;
+    created_at: string | null;
+}
+
+export interface SocialPostDraftDetail extends SocialPostDraftListItem {
+    image_path: string | null;
+    link: string | null;
+    rationale: string | null;
+    brand_review: string | null;
+    created_by_agent: boolean;
+    reviewed_at: string | null;
+    rejection_reason: string | null;
+    remote_post_id: string | null;
+    publish_error: string | null;
+    requires_image: boolean;
+    is_publishable: boolean;
 }

@@ -3,11 +3,14 @@
 namespace App\Ai;
 
 use App\Ai\Agents\AdminChatAgent;
+use App\Ai\Agents\BrandAgent;
+use App\Ai\Agents\ContentAgent;
 use App\Ai\Agents\GoogleAnalyticsAgent;
 use App\Ai\Agents\GrowthStrategyAgent;
 use App\Ai\Agents\KeywordsAgent;
 use App\Ai\Agents\MetaAgent;
 use App\Ai\Agents\PaidAcquisitionAgent;
+use App\Ai\Agents\SocialMediaAgent;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\In;
 
@@ -82,6 +85,45 @@ class AdminChatAgents
                     'Encuentra oportunidades SEO para spas en Mexico',
                     'Agrupa keywords por intencion de busqueda',
                     'Propone paginas SEO para productos 5 L',
+                ],
+            ],
+            'content' => [
+                'class' => ContentAgent::class,
+                'name' => 'ContentAgent',
+                'description' => 'Escribe borradores de blog y copy de tienda en espanol mexicano, apoyado en el catalogo.',
+                'status' => 'Contenido editorial',
+                'welcome' => 'Puedo escribir borradores de blog y copy de tienda. Guardo todo como borrador sin publicar: publicar lo decide una persona.',
+                'suggestions' => [
+                    'Escribe un borrador sobre aceites 5 L para spas',
+                    'Propone un plan editorial para el primer trimestre',
+                    'Redacta una guia de dilucion para terapeutas',
+                    'Revisa y mejora un post existente',
+                ],
+            ],
+            'social_media' => [
+                'class' => SocialMediaAgent::class,
+                'name' => 'SocialMediaAgent',
+                'description' => 'Propone publicaciones organicas de Facebook e Instagram para que una persona las apruebe.',
+                'status' => 'Redes organicas',
+                'welcome' => 'Puedo proponer publicaciones para Facebook e Instagram. No publico nada: los borradores van a revision y una persona decide.',
+                'suggestions' => [
+                    'Propone tres publicaciones sobre el formato 5 L',
+                    'Prepara una publicacion para terapeutas independientes',
+                    'Sugiere una serie de posts para presentar la marca',
+                    'Redacta una respuesta para un comentario sobre dilucion',
+                ],
+            ],
+            'brand' => [
+                'class' => BrandAgent::class,
+                'name' => 'BrandAgent',
+                'description' => 'Revisa copy antes de publicarlo: precision en espanol mexicano, claims verificables y consistencia de marca.',
+                'status' => 'Revision de marca',
+                'welcome' => 'Pegame el texto que vas a publicar y te digo si sale, que corregir, o que claim no se puede sostener.',
+                'suggestions' => [
+                    'Revisa este texto antes de publicarlo',
+                    'Verifica si este claim se sostiene con el catalogo',
+                    'Revisa el espanol de esta publicacion',
+                    'Compara el tono de estos dos textos',
                 ],
             ],
             'admin' => [

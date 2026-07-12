@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\Businesses\IndexBusinessesController;
 use App\Http\Controllers\Admin\Businesses\StartBusinessScrapeController;
 use App\Http\Controllers\Admin\Chat\SendChatMessageController;
 use App\Http\Controllers\Admin\Chat\ShowChatController;
+use App\Http\Controllers\Admin\MarketingReports\IndexMarketingReportsController;
+use App\Http\Controllers\Admin\MarketingReports\ShowMarketingReportController;
 use App\Http\Controllers\Admin\MeridaSampleRequests\IndexMeridaSampleRequestsController;
 use App\Http\Controllers\Admin\Orders\CreateOrderRefundController;
 use App\Http\Controllers\Admin\Orders\IndexOrdersController;
@@ -23,6 +25,10 @@ use App\Http\Controllers\Admin\Orders\UpdateOrderStatusController;
 use App\Http\Controllers\Admin\Orders\UpdateOrderTrackingController;
 use App\Http\Controllers\Admin\Settings\ShowSettingsController;
 use App\Http\Controllers\Admin\Settings\UpdateSettingsController;
+use App\Http\Controllers\Admin\SocialPosts\IndexSocialPostDraftsController;
+use App\Http\Controllers\Admin\SocialPosts\PublishSocialPostDraftController;
+use App\Http\Controllers\Admin\SocialPosts\RejectSocialPostDraftController;
+use App\Http\Controllers\Admin\SocialPosts\ShowSocialPostDraftController;
 use App\Http\Controllers\Admin\Users\IndexUsersController;
 use App\Http\Controllers\Admin\Users\SendUserPasswordResetController;
 use App\Http\Controllers\Admin\Users\ShowUserController;
@@ -122,6 +128,17 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
 
     Route::get('/ad-proposals', IndexAdProposalsController::class)->name('ad-proposals');
     Route::get('/ad-proposals/{adProposal}', ShowAdProposalController::class)->name('ad-proposals.show');
+
+    Route::get('/marketing-reports', IndexMarketingReportsController::class)->name('marketing-reports');
+    Route::get('/marketing-reports/{marketingReport}', ShowMarketingReportController::class)
+        ->name('marketing-reports.show');
+
+    Route::get('/social-posts', IndexSocialPostDraftsController::class)->name('social-posts');
+    Route::get('/social-posts/{socialPostDraft}', ShowSocialPostDraftController::class)->name('social-posts.show');
+    Route::post('/social-posts/{socialPostDraft}/publish', PublishSocialPostDraftController::class)
+        ->name('social-posts.publish');
+    Route::post('/social-posts/{socialPostDraft}/reject', RejectSocialPostDraftController::class)
+        ->name('social-posts.reject');
 
     Route::get('/settings', ShowSettingsController::class)->name('settings.show');
     Route::put('/settings', UpdateSettingsController::class)->name('settings.update');
