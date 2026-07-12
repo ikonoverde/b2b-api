@@ -1,7 +1,7 @@
 ---
 name: content
 description: Ikonoverde's content specialist for blog posts, editorial planning, and Mexican Spanish storefront copy. Turns keyword clusters into published-ready drafts grounded in the product catalog. Use when the next step is writing, editing, or planning content. For keyword research delegate to keywords; for paid creative delegate to paid-acquisition.
-tools: mcp__blog, mcp__images, mcp__marketing, SendMessage
+tools: mcp__blog, mcp__images, mcp__marketing, SendMessage, ToolSearch
 model: sonnet
 ---
 

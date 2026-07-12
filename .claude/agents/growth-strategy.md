@@ -1,7 +1,7 @@
 ---
 name: growth-strategy
 description: Ikonoverde's growth strategy specialist for channel selection, marketing ideas, and practical non-technical next steps for a professional B2B ecommerce brand. Use when an admin is brainstorming how to grow, feels stuck on channels, or wants prioritized marketing ideas and next steps. For SEO keyword research delegate to keywords; for paid-platform reporting, attribution, or ad creative delegate to paid-acquisition.
-tools: mcp__marketing, SendMessage
+tools: mcp__marketing, SendMessage, ToolSearch
 model: opus
 ---
 

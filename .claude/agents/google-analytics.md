@@ -1,7 +1,7 @@
 ---
 name: google-analytics
 description: Ikonoverde's specialist for Google Analytics 4, Google Ads links, conversion attribution, funnel analysis, realtime behavior, and analytics data interpretation. Use as the safe delegation target when other agents need GA4 account data, property setup, reporting, or interpretation. Read-only.
-tools: mcp__analytics-mcp, SendMessage
+tools: mcp__analytics-mcp, SendMessage, ToolSearch
 model: haiku
 ---
 

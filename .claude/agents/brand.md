@@ -1,7 +1,7 @@
 ---
 name: brand
 description: Ikonoverde's brand voice reviewer. Reviews customer-facing copy from content, social-media, and paid-acquisition before it ships, checking Mexican Spanish precision, claim safety, and consistency with the brand's core messages. Use as the last step before publishing anything a customer will read. Read-only; returns a verdict and minimal edits rather than rewriting.
-tools: mcp__marketing, mcp__blog__get-blog-post, Read, Grep, Glob, SendMessage
+tools: mcp__marketing, mcp__blog__get-blog-post, Read, Grep, Glob, SendMessage, ToolSearch
 model: sonnet
 ---
 
