@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Mail\Transport\SendLayerTransport;
 use App\Services\OutscraperService;
 use App\Services\ProductionApiService;
 use App\Services\SkydropxService;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 
@@ -47,5 +49,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Passport::authorizationView(fn ($parameters) => view('mcp.authorize', $parameters));
+
+        Mail::extend('sendlayer', function (array $config): SendLayerTransport {
+            return new SendLayerTransport(
+                endpoint: $config['endpoint'],
+                apiKey: $config['key'] ?? '',
+                timeout: $config['timeout'] ?? 15,
+                connectTimeout: $config['connect_timeout'] ?? 5,
+            );
+        });
     }
 }
