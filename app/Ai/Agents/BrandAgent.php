@@ -3,6 +3,7 @@
 namespace App\Ai\Agents;
 
 use App\Ai\Tools\Blog\GetBlogPost;
+use App\Ai\Tools\Blog\ListBlogPosts;
 use App\Ai\Tools\MarketingProductCatalog;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Contracts\CanActAsTool;
@@ -71,6 +72,7 @@ PROMPT;
     {
         return [
             app(MarketingProductCatalog::class),
+            app(ListBlogPosts::class),
             app(GetBlogPost::class),
         ];
     }

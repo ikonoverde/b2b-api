@@ -5,8 +5,12 @@ use App\Ai\Agents\ContentAgent;
 use App\Ai\Tools\Blog\CreateBlogPost;
 use App\Ai\Tools\Blog\EditBlogPost;
 use App\Ai\Tools\Blog\GetBlogPost;
+use App\Ai\Tools\Blog\ListBlogPosts;
 use App\Ai\Tools\GenerateImage;
 use App\Ai\Tools\MarketingProductCatalog;
+use App\Ai\Tools\StaticPages\EditStaticPage;
+use App\Ai\Tools\StaticPages\GetStaticPage;
+use App\Ai\Tools\StaticPages\ListStaticPages;
 use App\Models\BlogPost;
 use Illuminate\JsonSchema\JsonSchemaTypeFactory;
 use Laravel\Ai\Tools\Request;
@@ -22,14 +26,32 @@ it('carries the pre-launch editorial rules', function () {
         ->toContain('send it to brand_reviewer');
 });
 
-it('can write and revise posts, and can ask the brand reviewer', function () {
+/**
+ * A static page edit lands on a live URL with no draft step in between, which is the opposite of how
+ * the blog tools behave. The agent is told so, because a model that treats a page like a draft will
+ * send a fragment and delete a terms of service.
+ */
+it('knows that static page edits are live immediately', function () {
+    $instructions = (string) (new ContentAgent)->instructions();
+
+    expect($instructions)
+        ->toContain('Static pages are the exception')
+        ->toContain('Never send a fragment')
+        ->toContain('Treat terms and privacy as legal copy');
+});
+
+it('can write and revise posts, edit the static pages, and ask the brand reviewer', function () {
     $tools = collect((new ContentAgent)->tools())->map(fn (object $tool): string => $tool::class);
 
     expect($tools->all())
         ->toContain(MarketingProductCatalog::class)
+        ->toContain(ListBlogPosts::class)
         ->toContain(GetBlogPost::class)
         ->toContain(CreateBlogPost::class)
         ->toContain(EditBlogPost::class)
+        ->toContain(ListStaticPages::class)
+        ->toContain(GetStaticPage::class)
+        ->toContain(EditStaticPage::class)
         ->toContain(GenerateImage::class)
         ->toContain(BrandAgent::class);
 });

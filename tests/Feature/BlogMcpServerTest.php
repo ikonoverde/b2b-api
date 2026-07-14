@@ -4,6 +4,7 @@ use App\Mcp\Servers\BlogServer;
 use App\Mcp\Tools\CreateBlogPostTool;
 use App\Mcp\Tools\EditBlogPostTool;
 use App\Mcp\Tools\GetBlogPostTool;
+use App\Mcp\Tools\ListBlogPostsTool;
 use App\Models\BlogPost;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -50,6 +51,33 @@ it('allows mcp initialization with oauth authentication', function () {
         ->assertOk()
         ->assertHeader('MCP-Session-Id')
         ->assertJsonPath('result.serverInfo.name', 'Blog Server');
+});
+
+it('lists blog posts through the mcp tool, filtered by status', function () {
+    $admin = User::factory()->admin()->create();
+
+    BlogPost::factory()->create(['title' => 'Aceites en vivo', 'is_published' => true, 'published_at' => now()->subDay()]);
+    BlogPost::factory()->unpublished()->create(['title' => 'Velas en borrador']);
+
+    BlogServer::actingAs($admin)
+        ->tool(ListBlogPostsTool::class)
+        ->assertOk()
+        ->assertName('list-blog-posts')
+        ->assertSee(['Aceites en vivo', 'Velas en borrador']);
+
+    BlogServer::actingAs($admin)
+        ->tool(ListBlogPostsTool::class, ['status' => 'draft'])
+        ->assertOk()
+        ->assertSee('Velas en borrador')
+        ->assertDontSee('Aceites en vivo');
+});
+
+it('denies the blog listing to non-admin users', function () {
+    $customer = User::factory()->create();
+
+    BlogServer::actingAs($customer)
+        ->tool(ListBlogPostsTool::class)
+        ->assertHasErrors(['Permission denied.']);
 });
 
 it('creates a draft blog post through the mcp tool', function () {
