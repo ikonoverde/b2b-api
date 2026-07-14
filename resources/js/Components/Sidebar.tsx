@@ -21,6 +21,7 @@ import {
     Megaphone,
     ClipboardList,
     Send,
+    Compass,
 } from 'lucide-react';
 import type { PageProps } from '@/types';
 
@@ -52,6 +53,7 @@ const managementNav: NavItem[] = [
     { name: 'Muestras gratis', href: '/admin/sample-requests', icon: Gift, id: 'sample-requests' },
     { name: 'Propuestas de anuncios', href: '/admin/ad-proposals', icon: Megaphone, id: 'ad-proposals' },
     { name: 'Reportes de marketing', href: '/admin/marketing-reports', icon: ClipboardList, id: 'marketing-reports' },
+    { name: 'Plan de crecimiento', href: '/admin/growth-plan', icon: Compass, id: 'growth-plan' },
     { name: 'Publicaciones sociales', href: '/admin/social-posts', icon: Send, id: 'social-posts' },
     { name: 'Facturas', href: '/admin/invoices', icon: FileText, id: 'invoices' },
 ];
