@@ -299,11 +299,14 @@ class BlogPostService
                 ->where(fn (Builder $draft) => $draft
                     ->where('is_published', false)
                     ->orWhereNull('published_at')))
-            ->when($search !== null, fn (Builder $query) => $query
-                ->where(fn (Builder $match) => $match
-                    ->where('title', 'like', "%{$search}%")
-                    ->orWhere('slug', 'like', "%{$search}%")
-                    ->orWhere('excerpt', 'like', "%{$search}%")));
+            ->when($search !== null, function (Builder $query) use ($search) {
+                $term = '%'.addcslashes($search, '%_\\').'%';
+
+                $query->where(fn (Builder $match) => $match
+                    ->where('title', 'like', $term)
+                    ->orWhere('slug', 'like', $term)
+                    ->orWhere('excerpt', 'like', $term));
+            });
 
         $totalMatching = (clone $query)->count();
 

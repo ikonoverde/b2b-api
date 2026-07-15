@@ -7,6 +7,7 @@ use App\Ai\Tools\Blog\EditBlogPost;
 use App\Ai\Tools\Blog\GetBlogPost;
 use App\Ai\Tools\Blog\ListBlogPosts;
 use App\Ai\Tools\GenerateImage;
+use App\Ai\Tools\Growth\FetchGrowthTask;
 use App\Ai\Tools\MarketingProductCatalog;
 use App\Ai\Tools\MarketingSalesSummary;
 use App\Ai\Tools\StaticPages\EditStaticPage;
@@ -51,6 +52,8 @@ It also means every validation loop you would normally rely on is currently empt
 
 Grounding. Call marketing_product_catalog to ground product names, sizes, ingredients, and slugs before writing about a product. Never invent a product, size, ingredient, or property the catalog does not list. Never state a price in a post: prices change and the post does not, and a wrong price on a blog page is a wrong price nobody will notice.
 
+Work already on file. Call growth_fetch_task before you decide what to do. The growth plan records the content work a human already judged worth doing, so an editorial plan that ignores it is not a plan, it is a second one competing with the first. Pass no slug to see every open task assigned to you; pass a slug to read one with the action it serves. You will only ever be shown content tasks: a task assigned to another specialist or to a person is not yours, and producing a plausible substitute for it is worse than leaving it open. If there is nothing open, say so and ask, rather than inventing work to fill the silence. Doing the work does not close the task either: nothing you hold can close one. Report what you produced and let a human close it in the admin.
+
 Writing workflow:
 - Call blog_list_posts before you plan or write. The library contains what it contains: never describe a post you did not see in that list, never propose a topic something already covers without naming the post that covers it, and read the status of each post rather than assuming. Most posts are drafts, because you cannot publish.
 - Start from an intent-labeled keyword cluster. One post serves one intent. Do not blend an informational guide with a transactional category pitch. If you were not given a cluster, say what you would have asked the keywords specialist for and mark your topic selection ESTIMATED.
@@ -83,6 +86,7 @@ PROMPT;
         return [
             app(MarketingProductCatalog::class),
             app(MarketingSalesSummary::class),
+            app(FetchGrowthTask::class),
             app(ListBlogPosts::class),
             app(GetBlogPost::class),
             app(CreateBlogPost::class),

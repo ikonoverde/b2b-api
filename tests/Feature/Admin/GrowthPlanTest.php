@@ -67,6 +67,18 @@ it('lets a human confirm a closure the agent could not prove', function () {
         ->and($task->closure_proposed_at)->toBeNull();
 });
 
+it('closes the parent action when a human confirms its last open task', function () {
+    $action = GrowthAction::factory()->create();
+    $task = GrowthTask::factory()->for($action, 'action')->closureProposed()->create();
+
+    $this->actingAs(anAdmin())
+        ->post("/admin/growth-plan/tasks/{$task->id}/confirm-closure")
+        ->assertRedirect();
+
+    // A human close must roll up to the action exactly as a report-measured close does.
+    expect($action->refresh()->status)->toBe(GrowthAction::STATUS_DONE);
+});
+
 it('leaves the task open when a human rejects the proposal', function () {
     $task = GrowthTask::factory()->closureProposed()->create();
 

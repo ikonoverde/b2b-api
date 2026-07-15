@@ -69,6 +69,14 @@ it('searches title, slug, and excerpt', function () {
 /**
  * The count is taken before the limit, so a truncated page cannot be read as the whole library.
  */
+it('treats a LIKE wildcard in the search as a literal, not a match-everything', function () {
+    BlogPost::factory()->create(['title' => 'Aceites de masaje', 'slug' => 'aceites-de-masaje', 'excerpt' => 'Guía.']);
+    BlogPost::factory()->create(['title' => 'Velas de soya', 'slug' => 'velas-de-soya', 'excerpt' => 'Spas.']);
+
+    // A raw % would match every row; escaped, it matches only a title actually containing a percent sign.
+    expect(listBlogPosts(['search' => '%'])['total_matching'])->toBe(0);
+});
+
 it('reports how many posts exist beyond the limit', function () {
     BlogPost::factory(5)->create();
 

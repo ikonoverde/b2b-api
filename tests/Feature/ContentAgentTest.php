@@ -7,6 +7,7 @@ use App\Ai\Tools\Blog\EditBlogPost;
 use App\Ai\Tools\Blog\GetBlogPost;
 use App\Ai\Tools\Blog\ListBlogPosts;
 use App\Ai\Tools\GenerateImage;
+use App\Ai\Tools\Growth\FetchGrowthTask;
 use App\Ai\Tools\MarketingProductCatalog;
 use App\Ai\Tools\StaticPages\EditStaticPage;
 use App\Ai\Tools\StaticPages\GetStaticPage;
@@ -40,11 +41,25 @@ it('knows that static page edits are live immediately', function () {
         ->toContain('Treat terms and privacy as legal copy');
 });
 
+/**
+ * The agent that invents its own editorial plan while open tasks sit on file is doing a second plan
+ * that competes with the first, and its report reads like progress either way.
+ */
+it('is told to read the growth plan before deciding what to do', function () {
+    $instructions = (string) (new ContentAgent)->instructions();
+
+    expect($instructions)
+        ->toContain('Call growth_fetch_task before you decide what to do')
+        ->toContain('rather than inventing work to fill the silence')
+        ->toContain('nothing you hold can close one');
+});
+
 it('can write and revise posts, edit the static pages, and ask the brand reviewer', function () {
     $tools = collect((new ContentAgent)->tools())->map(fn (object $tool): string => $tool::class);
 
     expect($tools->all())
         ->toContain(MarketingProductCatalog::class)
+        ->toContain(FetchGrowthTask::class)
         ->toContain(ListBlogPosts::class)
         ->toContain(GetBlogPost::class)
         ->toContain(CreateBlogPost::class)

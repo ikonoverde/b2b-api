@@ -382,7 +382,7 @@ class GrowthPlanService
      * claimed here — it is bookkeeping over its tasks, and it comes straight back open the moment a
      * task under it does.
      */
-    private function closeActionIfFinished(GrowthAction $action): void
+    public function closeActionIfFinished(GrowthAction $action): void
     {
         $openTasks = $action->tasks()->open()->count();
 
@@ -418,7 +418,7 @@ class GrowthPlanService
         $current = GrowthPlan::current();
 
         $actions = GrowthAction::query()
-            ->with(['tasks' => fn ($query) => $query->orderBy('id')])
+            ->with(['tasks' => fn ($query) => $query->orderBy('id'), 'tasks.sourceReport:id,reported_on'])
             ->orderBy('status')
             ->orderBy('id')
             ->get();
@@ -441,6 +441,51 @@ class GrowthPlanService
                 'tasks' => $action->tasks->map(fn (GrowthTask $task): array => $this->taskPayload($task))->all(),
             ])->all(),
             'note' => 'Everything open here is work outstanding, whatever it looks like. Nothing in this system executes these tasks and nothing writes back, so a task that has been open a long time is not evidence it was done, and silence is not evidence of anything.',
+        ];
+    }
+
+    /**
+     * The open tasks one agent is allowed to pick up, oldest first.
+     *
+     * Scoped by assignee on purpose. An agent that can read every task can do the one it was never
+     * meant to touch, and the mislabel this guards against is not symmetrical: a `human` task handed to
+     * an agent does not fail loudly, it produces something adjacent and plausible.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function openTasksFor(string $agent): array
+    {
+        return GrowthTask::query()
+            ->with(['action', 'sourceReport'])
+            ->open()
+            ->where('agent', $agent)
+            ->orderBy('id')
+            ->get()
+            ->map(fn (GrowthTask $task): array => $this->taskDetail($task))
+            ->all();
+    }
+
+    public function taskBySlug(string $slug): ?GrowthTask
+    {
+        return GrowthTask::query()->with(['action', 'sourceReport'])->where('slug', $slug)->first();
+    }
+
+    /**
+     * One task, with the action it serves. The action is the reason the task exists, and a task read
+     * without it is an instruction with no argument behind it.
+     *
+     * @return array<string, mixed>
+     */
+    public function taskDetail(GrowthTask $task): array
+    {
+        return [
+            ...$this->taskPayload($task),
+            'action' => [
+                'slug' => $task->action->slug,
+                'name' => $task->action->name,
+                'summary' => $task->action->summary,
+                'status' => $task->action->status,
+            ],
         ];
     }
 
