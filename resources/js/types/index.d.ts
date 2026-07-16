@@ -610,6 +610,25 @@ export interface GrowthBoardTask {
     closure_proposal_reason: string | null;
 }
 
+export interface GrowthTaskDetail {
+    id: number;
+    slug: string;
+    name: string;
+    body: string;
+    agent: GrowthTaskAgent;
+    action: string;
+    status: GrowthStatus;
+    column: GrowthBoardColumn | null;
+    source_report: string | null;
+    started_at: string | null;
+    closed_at: string | null;
+    closed_by: GrowthClosedBy | null;
+    close_evidence: string | null;
+    closure_proposed: boolean;
+    closure_proposal_reason: string | null;
+    drop_reason: string | null;
+}
+
 export interface GrowthPaidGate {
     verdict: 'open' | 'closed';
     reason: string;

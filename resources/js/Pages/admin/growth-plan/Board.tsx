@@ -48,7 +48,16 @@ function TaskBoardCard({
                 onDragStart();
             }}
             onDragEnd={onDragEnd}
-            className="cursor-grab gap-3 border-[#E5E5E5] bg-white shadow-none transition-shadow select-none hover:shadow-sm active:cursor-grabbing"
+            onClick={() => router.visit(`/admin/growth-plan/tasks/${task.id}`)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    router.visit(`/admin/growth-plan/tasks/${task.id}`);
+                }
+            }}
+            className="cursor-pointer gap-3 border-[#E5E5E5] bg-white shadow-none transition-shadow select-none hover:shadow-sm active:cursor-grabbing"
         >
             <CardHeader className="gap-2">
                 <div className="flex items-start gap-1.5">
