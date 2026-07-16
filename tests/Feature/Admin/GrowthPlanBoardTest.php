@@ -1,8 +1,14 @@
 <?php
 
+use App\Jobs\ExecuteGrowthTask;
 use App\Models\GrowthAction;
 use App\Models\GrowthTask;
 use App\Models\User;
+use Illuminate\Support\Facades\Queue;
+
+beforeEach(function () {
+    Queue::fake();
+});
 
 function boardAdmin(): User
 {
@@ -146,6 +152,54 @@ it('does nothing when a card is dropped on the column it is already in', functio
         ->assertRedirect();
 
     expect($task->refresh()->started_at->toISOString())->toBe($startedAt->toISOString());
+});
+
+/**
+ * The drag into En curso is more than bookkeeping when the assignee is an agent: it is the instruction
+ * to execute, and the job that carries it is dispatched right there.
+ */
+it('puts the assigned agent to work when its task moves into En curso', function () {
+    $task = GrowthTask::factory()->agent(GrowthTask::AGENT_SOCIAL_MEDIA)->create();
+
+    $this->actingAs(boardAdmin())
+        ->post("/admin/growth-plan/tasks/{$task->id}/move", ['column' => 'in_progress'])
+        ->assertRedirect();
+
+    Queue::assertPushed(ExecuteGrowthTask::class, fn (ExecuteGrowthTask $job): bool => $job->task->is($task));
+});
+
+it('dispatches no agent for a task no agent can execute', function (string $agent) {
+    $task = GrowthTask::factory()->agent($agent)->create();
+
+    $this->actingAs(boardAdmin())
+        ->post("/admin/growth-plan/tasks/{$task->id}/move", ['column' => 'in_progress'])
+        ->assertRedirect();
+
+    expect($task->refresh()->started_at)->not->toBeNull();
+
+    Queue::assertNotPushed(ExecuteGrowthTask::class);
+})->with([
+    'human' => GrowthTask::AGENT_HUMAN,
+    'generic' => GrowthTask::AGENT_GENERIC,
+]);
+
+it('dispatches nothing when a card moves anywhere but En curso', function (string $column) {
+    $task = GrowthTask::factory()->started()->create();
+
+    $this->actingAs(boardAdmin())
+        ->post("/admin/growth-plan/tasks/{$task->id}/move", ['column' => $column]);
+
+    Queue::assertNotPushed(ExecuteGrowthTask::class);
+})->with(['todo', 'review', 'done']);
+
+it('does not re-dispatch when a card is dropped on En curso where it already sits', function () {
+    $task = GrowthTask::factory()->started()->create();
+
+    $this->actingAs(boardAdmin())
+        ->post("/admin/growth-plan/tasks/{$task->id}/move", ['column' => 'in_progress'])
+        ->assertRedirect();
+
+    Queue::assertNotPushed(ExecuteGrowthTask::class);
 });
 
 it('rejects a column the board does not have', function () {

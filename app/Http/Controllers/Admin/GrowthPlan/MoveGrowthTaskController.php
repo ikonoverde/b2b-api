@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\GrowthPlan;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\GrowthPlan\MoveGrowthTaskRequest;
+use App\Jobs\ExecuteGrowthTask;
 use App\Models\GrowthTask;
 use App\Services\Growth\GrowthPlanService;
 use Illuminate\Http\RedirectResponse;
@@ -40,9 +41,23 @@ class MoveGrowthTaskController extends Controller
         /** The action's state is bookkeeping over its tasks, in both directions, on every move. */
         $this->plans->closeActionIfFinished($growthTask->action);
 
+        /**
+         * Dragging an agent's task into En curso puts the agent to work on it. The four specialists
+         * are the only assignees a job can execute for: a human task waits for its person, and a
+         * generic one waits for whoever spawns the right agent by hand.
+         */
+        $agentWillExecute = $column === GrowthTask::COLUMN_IN_PROGRESS
+            && ExecuteGrowthTask::executorFor($growthTask->agent) !== null;
+
+        if ($agentWillExecute) {
+            ExecuteGrowthTask::dispatch($growthTask);
+        }
+
         return back()->with('success', match ($column) {
             GrowthTask::COLUMN_TODO => 'Tarea de vuelta en Por hacer.',
-            GrowthTask::COLUMN_IN_PROGRESS => 'Tarea en curso.',
+            GrowthTask::COLUMN_IN_PROGRESS => $agentWillExecute
+                ? sprintf('Tarea en curso. El agente %s va a ejecutarla; lo que produzca quedará como borrador o propuesta para revisión.', $growthTask->agent)
+                : 'Tarea en curso.',
             GrowthTask::COLUMN_REVIEW => 'Tarea en revisión. Sigue abierta hasta que alguien confirme el cierre.',
             GrowthTask::COLUMN_DONE => 'Tarea cerrada. Queda registrada como cerrada por una persona, no por el reporte.',
         });

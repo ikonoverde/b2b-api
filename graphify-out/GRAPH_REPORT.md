@@ -1,12 +1,12 @@
 # Graph Report - pro.ikonoverde.com  (2026-07-15)
 
 ## Corpus Check
-- 352 files · ~81,473 words
+- 353 files · ~82,487 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1903 nodes · 2200 edges · 199 communities detected
-- Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 211 edges (avg confidence: 0.8)
+- 1910 nodes · 2209 edges · 199 communities detected
+- Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 212 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -235,16 +235,16 @@ Cohesion: 0.02
 Nodes (14): BlogPostSchema, BlogPostService, CreateBlogPost, EditBlogPost, GetBlogPost, IndexBlogPostsController, ListBlogPosts, IndexBlogPostsController (+6 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.03
-Nodes (16): BannersController, FeaturedProductsController, ProductsController, Banner, Product, IndexProductsController, StoreProductController, BannerResource (+8 more)
+Cohesion: 0.04
+Nodes (12): CreateCheckoutController, ShowCheckoutThankYouController, PaymentCompleted, CreateShippingLabel, HandleStripeWebhook, OrderItem, OrderNote, IndexOrdersController (+4 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.04
-Nodes (8): InsufficientStockException, GoogleAdsKeywordPlannerIdeas, SemrushKeywordResearch, SerpApiSearchInsights, HandleInertiaRequests, Category, HorizonServiceProvider, SocialPostAlreadyHandled
+Cohesion: 0.03
+Nodes (15): CategoriesController, FeaturedProductsController, ProductsController, Product, CreateProductController, EditProductController, IndexProductsController, StoreProductController (+7 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.04
-Nodes (12): CreateCheckoutController, ShowCheckoutThankYouController, OrderItem, OrderNote, GetOrdersController, IndexOrdersController, OrderItemResource, OrderResource (+4 more)
+Nodes (8): InsufficientStockException, GoogleSearchConsoleKeywordPerformance, SemrushKeywordResearch, SerpApiSearchInsights, HandleInertiaRequests, Category, HorizonServiceProvider, SocialPostAlreadyHandled
 
 ### Community 4 - "Community 4"
 Cohesion: 0.05
@@ -267,12 +267,12 @@ Cohesion: 0.07
 Nodes (5): LoginController, MetaConversionEvent, MetaConversionsApiService, VisitorLocationService, GetConversionEventsTool
 
 ### Community 9 - "Community 9"
-Cohesion: 0.07
-Nodes (4): SocialPostDraft, SocialPostDraftService, SocialPostPublisher, IndexSocialPostDraftsController
-
-### Community 10 - "Community 10"
 Cohesion: 0.06
 Nodes (6): EditStaticPage, EditStaticPageTool, GetStaticPage, GetStaticPageTool, ListStaticPagesTool, StaticPageSchema
+
+### Community 10 - "Community 10"
+Cohesion: 0.07
+Nodes (4): SocialPostDraft, SocialPostDraftService, SocialPostPublisher, IndexSocialPostDraftsController
 
 ### Community 11 - "Community 11"
 Cohesion: 0.09
@@ -283,8 +283,8 @@ Cohesion: 0.06
 Nodes (5): Order, ShippingMethodResource, ParcelCalculator, ShippingQuoteService, GetShippingMethodsController
 
 ### Community 13 - "Community 13"
-Cohesion: 0.08
-Nodes (6): CategoriesController, CreateProductController, EditProductController, CategoryResource, CatalogController, CategoriesController
+Cohesion: 0.07
+Nodes (7): BannersController, Banner, BannerResource, MobileBannerResource, BannersController, CustomerDashboardController, HomeController
 
 ### Community 14 - "Community 14"
 Cohesion: 0.07
@@ -303,48 +303,48 @@ Cohesion: 0.09
 Nodes (5): AdminChatAgents, SendChatMessageController, SendChatMessageRequest, ShowChatController, AgentConversation
 
 ### Community 18 - "Community 18"
-Cohesion: 0.13
-Nodes (4): PaymentCompleted, CreateShippingLabel, HandleStripeWebhook, RetryShippingLabelController
-
-### Community 19 - "Community 19"
 Cohesion: 0.09
 Nodes (6): GetAddressesController, StoreAddressController, ShowCheckoutShippingController, AddressResource, SendLayerTransport, AddressesController
 
-### Community 20 - "Community 20"
+### Community 19 - "Community 19"
 Cohesion: 0.15
 Nodes (1): SerpApiSearchInsightsService
 
-### Community 21 - "Community 21"
+### Community 20 - "Community 20"
 Cohesion: 0.18
 Nodes (1): SemrushKeywordResearchService
 
-### Community 22 - "Community 22"
+### Community 21 - "Community 21"
 Cohesion: 0.2
 Nodes (1): MetaGraphService
 
-### Community 23 - "Community 23"
+### Community 22 - "Community 22"
 Cohesion: 0.13
 Nodes (4): ShowCheckoutPaymentController, PaymentMethodData, VerifySetupSessionController, PaymentMethodController
 
-### Community 24 - "Community 24"
+### Community 23 - "Community 23"
 Cohesion: 0.19
 Nodes (1): SkydropxService
 
-### Community 25 - "Community 25"
+### Community 24 - "Community 24"
 Cohesion: 0.18
 Nodes (2): KeywordResearchSchema, KeywordResearchTool
 
-### Community 26 - "Community 26"
+### Community 25 - "Community 25"
 Cohesion: 0.14
 Nodes (4): ProcessProductImage, ProductImage, deleteProductImages(), storeNewImages()
 
-### Community 27 - "Community 27"
-Cohesion: 0.15
-Nodes (1): GoogleSearchConsoleKeywordPerformance
+### Community 26 - "Community 26"
+Cohesion: 0.14
+Nodes (1): GoogleAdsKeywordPlannerIdeas
 
-### Community 28 - "Community 28"
+### Community 27 - "Community 27"
 Cohesion: 0.23
 Nodes (1): ImageService
+
+### Community 28 - "Community 28"
+Cohesion: 0.2
+Nodes (2): MoveGrowthTaskController, ExecuteGrowthTask
 
 ### Community 29 - "Community 29"
 Cohesion: 0.15
@@ -359,88 +359,88 @@ Cohesion: 0.3
 Nodes (1): MetaDatasetService
 
 ### Community 32 - "Community 32"
+Cohesion: 0.17
+Nodes (4): GetOrdersController, OrderItemResource, OrderResource, OrderStatusHistoryResource
+
+### Community 33 - "Community 33"
 Cohesion: 0.44
 Nodes (1): AdProposalPreviewer
 
-### Community 33 - "Community 33"
+### Community 34 - "Community 34"
 Cohesion: 0.2
 Nodes (2): BaseChatAgent, IkonoverdeContext
 
-### Community 34 - "Community 34"
+### Community 35 - "Community 35"
 Cohesion: 0.22
 Nodes (3): AppSettings, ShowSettingsController, UpdateSettingsController
 
-### Community 35 - "Community 35"
+### Community 36 - "Community 36"
 Cohesion: 0.25
 Nodes (1): MarketingSalesSummary
 
-### Community 36 - "Community 36"
+### Community 37 - "Community 37"
 Cohesion: 0.25
 Nodes (1): MarketingProductCatalog
 
-### Community 37 - "Community 37"
+### Community 38 - "Community 38"
 Cohesion: 0.31
 Nodes (1): FetchGrowthTask
 
-### Community 38 - "Community 38"
+### Community 39 - "Community 39"
 Cohesion: 0.32
 Nodes (1): GenerateImage
 
-### Community 39 - "Community 39"
+### Community 40 - "Community 40"
 Cohesion: 0.43
 Nodes (1): OutscraperService
 
-### Community 40 - "Community 40"
+### Community 41 - "Community 41"
 Cohesion: 0.29
 Nodes (1): User
 
-### Community 41 - "Community 41"
+### Community 42 - "Community 42"
 Cohesion: 0.29
 Nodes (1): GoogleAnalyticsAgent
 
-### Community 42 - "Community 42"
+### Community 43 - "Community 43"
 Cohesion: 0.33
 Nodes (1): GetMarketingMetricHistory
 
-### Community 43 - "Community 43"
+### Community 44 - "Community 44"
 Cohesion: 0.33
 Nodes (1): SaveMarketingReport
 
-### Community 44 - "Community 44"
+### Community 45 - "Community 45"
 Cohesion: 0.33
 Nodes (1): GetMetaDataset
 
-### Community 45 - "Community 45"
+### Community 46 - "Community 46"
 Cohesion: 0.33
 Nodes (1): GetMarketingReports
 
-### Community 46 - "Community 46"
+### Community 47 - "Community 47"
 Cohesion: 0.29
 Nodes (1): ListStaticPages
 
-### Community 47 - "Community 47"
+### Community 48 - "Community 48"
 Cohesion: 0.29
 Nodes (1): DataForSeoKeywordResearch
 
-### Community 48 - "Community 48"
+### Community 49 - "Community 49"
 Cohesion: 0.29
 Nodes (1): AhrefsKeywordResearch
 
-### Community 49 - "Community 49"
+### Community 50 - "Community 50"
 Cohesion: 0.33
 Nodes (1): CreateSocialPostDraft
 
-### Community 50 - "Community 50"
+### Community 51 - "Community 51"
 Cohesion: 0.29
 Nodes (1): GetGrowthPlan
 
-### Community 51 - "Community 51"
+### Community 52 - "Community 52"
 Cohesion: 0.33
 Nodes (1): SaveGrowthPlan
-
-### Community 52 - "Community 52"
-Cohesion: 0.43
-Nodes (1): MoveGrowthTaskController
 
 ### Community 53 - "Community 53"
 Cohesion: 0.29
@@ -1031,63 +1031,63 @@ Nodes (1): Controller
   These have ≤1 connection - possible missing edges or undocumented components.
 - **Thin community `Community 15`** (29 nodes): `GoogleAnalyticsService`, `.accessToken()`, `.accountSummaries()`, `.adminClient()`, `.alphaDataClient()`, `.camel()`, `.clientOptions()`, `.__construct()`, `.credentials()`, `.credentialsJson()`, `.customDimensionsAndMetrics()`, `.dataClient()`, `.dateRanges()`, `.error()`, `.funnelSteps()`, `.googleAdsLinks()`, `.messageToArray()`, `.namedItems()`, `.normalizeKeys()`, `.pagedItemsToArray()`, `.propertyAnnotations()`, `.propertyDetails()`, `.propertyName()`, `.reportPayload()`, `.runConversionsReport()`, `.runFunnelReport()`, `.runRealtimeReport()`, `.runReport()`, `GoogleAnalyticsService.php`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 20`** (25 nodes): `SerpApiSearchInsightsService`, `.apiKey()`, `.baseUrl()`, `.__construct()`, `.device()`, `.domain()`, `.googleDomain()`, `.intentAnalysis()`, `.intOrNull()`, `.keywordScore()`, `.language()`, `.limit()`, `.location()`, `.organicCompetitors()`, `.organicResults()`, `.peopleAlsoAsk()`, `.query()`, `.relatedSearches()`, `.request()`, `.safe()`, `.searchInformation()`, `.searchInsights()`, `.serpFeatures()`, `.start()`, `SerpApiSearchInsightsService.php`
+- **Thin community `Community 19`** (25 nodes): `SerpApiSearchInsightsService`, `.apiKey()`, `.baseUrl()`, `.__construct()`, `.device()`, `.domain()`, `.googleDomain()`, `.intentAnalysis()`, `.intOrNull()`, `.keywordScore()`, `.language()`, `.limit()`, `.location()`, `.organicCompetitors()`, `.organicResults()`, `.peopleAlsoAsk()`, `.query()`, `.relatedSearches()`, `.request()`, `.safe()`, `.searchInformation()`, `.searchInsights()`, `.serpFeatures()`, `.start()`, `SerpApiSearchInsightsService.php`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 21`** (24 nodes): `SemrushKeywordResearchService`, `.apiKey()`, `.baseUrl()`, `.competitors()`, `.__construct()`, `.database()`, `.domain()`, `.domainResearch()`, `.domainRows()`, `.floatList()`, `.floatOrNull()`, `.intOrNull()`, `.keywordMetricRow()`, `.keywordMetrics()`, `.keywords()`, `.legacyRequest()`, `.limit()`, `.month()`, `.offset()`, `.request()`, `.research()`, `.sort()`, `.stringList()`, `SemrushKeywordResearchService.php`
+- **Thin community `Community 20`** (24 nodes): `SemrushKeywordResearchService`, `.apiKey()`, `.baseUrl()`, `.competitors()`, `.__construct()`, `.database()`, `.domain()`, `.domainResearch()`, `.domainRows()`, `.floatList()`, `.floatOrNull()`, `.intOrNull()`, `.keywordMetricRow()`, `.keywordMetrics()`, `.keywords()`, `.legacyRequest()`, `.limit()`, `.month()`, `.offset()`, `.request()`, `.research()`, `.sort()`, `.stringList()`, `SemrushKeywordResearchService.php`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 22`** (22 nodes): `MetaGraphService`, `.__construct()`, `.createInstagramMediaContainer()`, `.get()`, `.instagramAccountId()`, `.instagramAccountInfo()`, `.instagramPostComments()`, `.instagramPostInsights()`, `.instagramPosts()`, `.pageId()`, `.pageInfo()`, `.pagePosts()`, `.permalink()`, `.post()`, `.postComments()`, `.postInsights()`, `.publishInstagramMediaContainer()`, `.publishPagePhoto()`, `.publishPagePost()`, `.request()`, `.token()`, `MetaGraphService.php`
+- **Thin community `Community 21`** (22 nodes): `MetaGraphService`, `.__construct()`, `.createInstagramMediaContainer()`, `.get()`, `.instagramAccountId()`, `.instagramAccountInfo()`, `.instagramPostComments()`, `.instagramPostInsights()`, `.instagramPosts()`, `.pageId()`, `.pageInfo()`, `.pagePosts()`, `.permalink()`, `.post()`, `.postComments()`, `.postInsights()`, `.publishInstagramMediaContainer()`, `.publishPagePhoto()`, `.publishPagePost()`, `.request()`, `.token()`, `MetaGraphService.php`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 24`** (21 nodes): `SkydropxService.php`, `SkydropxService`, `.addressFrom()`, `.buildShipmentPayload()`, `.cacheTokenResponse()`, `.__construct()`, `.createShipment()`, `.fetchQuotes()`, `.fullAddressFrom()`, `.getLabel()`, `.getOauthToken()`, `.getQuote()`, `.getQuotes()`, `.getTracking()`, `.getTrackingInfo()`, `.normalizeResponse()`, `.pollUntilCompleted()`, `.pollUntilTracking()`, `.requestQuotation()`, `.requestTokenViaCredentials()`, `.requestTokenViaRefresh()`
+- **Thin community `Community 23`** (21 nodes): `SkydropxService.php`, `SkydropxService`, `.addressFrom()`, `.buildShipmentPayload()`, `.cacheTokenResponse()`, `.__construct()`, `.createShipment()`, `.fetchQuotes()`, `.fullAddressFrom()`, `.getLabel()`, `.getOauthToken()`, `.getQuote()`, `.getQuotes()`, `.getTracking()`, `.getTrackingInfo()`, `.normalizeResponse()`, `.pollUntilCompleted()`, `.pollUntilTracking()`, `.requestQuotation()`, `.requestTokenViaCredentials()`, `.requestTokenViaRefresh()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 25`** (18 nodes): `KeywordResearchTool.php`, `KeywordResearchSchema`, `.commonFields()`, `KeywordResearchTool`, `.commonRules()`, `.configErrorPayload()`, `.errorMessage()`, `.fetch()`, `.handle()`, `.json()`, `.missingConfig()`, `.providerKey()`, `.providerName()`, `.requiredConfig()`, `.rules()`, `.schema()`, `KeywordResearchTool.php`, `KeywordResearchSchema.php`
+- **Thin community `Community 24`** (18 nodes): `KeywordResearchTool.php`, `KeywordResearchSchema`, `.commonFields()`, `KeywordResearchTool`, `.commonRules()`, `.configErrorPayload()`, `.errorMessage()`, `.fetch()`, `.handle()`, `.json()`, `.missingConfig()`, `.providerKey()`, `.providerName()`, `.requiredConfig()`, `.rules()`, `.schema()`, `KeywordResearchTool.php`, `KeywordResearchSchema.php`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 27`** (15 nodes): `GoogleSearchConsoleKeywordPerformance.php`, `GoogleSearchConsoleKeywordPerformance`, `.__construct()`, `.description()`, `.fetch()`, `.handle()`, `.missingConfig()`, `.name()`, `.outputSchema()`, `.providerKey()`, `.providerName()`, `.requiredConfig()`, `.rules()`, `.schema()`, `GoogleSearchConsoleKeywordPerformance.php`
+- **Thin community `Community 26`** (15 nodes): `GoogleAdsKeywordPlannerIdeas.php`, `GoogleAdsKeywordPlannerIdeas`, `.__construct()`, `.description()`, `.fetch()`, `.handle()`, `.missingConfig()`, `.name()`, `.outputSchema()`, `.providerKey()`, `.providerName()`, `.requiredConfig()`, `.rules()`, `.schema()`, `GoogleAdsKeywordPlannerIdeas.php`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 28`** (14 nodes): `ImageService`, `.destinationPath()`, `.encode()`, `.generate()`, `.humanBytes()`, `.imageManager()`, `.isImage()`, `.optimize()`, `.optimizeFile()`, `.resolveFiles()`, `.savings()`, `.storageUrl()`, `.targetExtension()`, `ImageService.php`
+- **Thin community `Community 27`** (14 nodes): `ImageService`, `.destinationPath()`, `.encode()`, `.generate()`, `.humanBytes()`, `.imageManager()`, `.isImage()`, `.optimize()`, `.optimizeFile()`, `.resolveFiles()`, `.savings()`, `.storageUrl()`, `.targetExtension()`, `ImageService.php`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 28`** (14 nodes): `MoveGrowthTaskController`, `.closeAsHuman()`, `.__construct()`, `.__invoke()`, `.reopen()`, `.sendToReview()`, `MoveGrowthTaskController.php`, `ExecuteGrowthTask`, `.__construct()`, `.executorFor()`, `.flagForReview()`, `.handle()`, `.prompt()`, `ExecuteGrowthTask.php`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 30`** (13 nodes): `AdProposalSchema`, `.fields()`, `AdProposalTool`, `.__construct()`, `.description()`, `.handle()`, `.outputSchema()`, `.platform()`, `.platformLabel()`, `.schema()`, `AdProposalTool.php`, `AdProposalTool.php`, `AdProposalSchema.php`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 31`** (12 nodes): `MetaDatasetService`, `.__construct()`, `.datasetId()`, `.details()`, `.eventCounts()`, `.eventSources()`, `.get()`, `.matchKeys()`, `.request()`, `.stats()`, `.token()`, `MetaDatasetService.php`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 32`** (11 nodes): `AdProposalPreviewer`, `.collectCreatives()`, `.displayUrl()`, `.firstOf()`, `.googleAds()`, `.metaAds()`, `.normalizeCreatives()`, `.pick()`, `.preview()`, `.stringList()`, `AdProposalPreviewer.php`
+- **Thin community `Community 33`** (11 nodes): `AdProposalPreviewer`, `.collectCreatives()`, `.displayUrl()`, `.firstOf()`, `.googleAds()`, `.metaAds()`, `.normalizeCreatives()`, `.pick()`, `.preview()`, `.stringList()`, `AdProposalPreviewer.php`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 33`** (10 nodes): `BaseChatAgent`, `.__construct()`, `.context()`, `.messages()`, `.provider()`, `.timeout()`, `IkonoverdeContext`, `.prompt()`, `BaseChatAgent.php`, `IkonoverdeContext.php`
+- **Thin community `Community 34`** (10 nodes): `BaseChatAgent`, `.__construct()`, `.context()`, `.messages()`, `.provider()`, `.timeout()`, `IkonoverdeContext`, `.prompt()`, `BaseChatAgent.php`, `IkonoverdeContext.php`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 35`** (9 nodes): `MarketingSalesSummary.php`, `MarketingSalesSummary.php`, `MarketingSalesSummary`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.outputSchema()`, `.schema()`
+- **Thin community `Community 36`** (9 nodes): `MarketingSalesSummary.php`, `MarketingSalesSummary.php`, `MarketingSalesSummary`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.outputSchema()`, `.schema()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 36`** (9 nodes): `MarketingProductCatalog.php`, `MarketingProductCatalog.php`, `MarketingProductCatalog`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.outputSchema()`, `.schema()`
+- **Thin community `Community 37`** (9 nodes): `MarketingProductCatalog.php`, `MarketingProductCatalog.php`, `MarketingProductCatalog`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.outputSchema()`, `.schema()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 37`** (9 nodes): `FetchGrowthTask.php`, `FetchGrowthTask`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.openTasks()`, `.schema()`, `.task()`
+- **Thin community `Community 38`** (9 nodes): `FetchGrowthTask.php`, `FetchGrowthTask`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.openTasks()`, `.schema()`, `.task()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 38`** (8 nodes): `GenerateImage.php`, `GenerateImage`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.normalizeArguments()`, `.schema()`
+- **Thin community `Community 39`** (8 nodes): `GenerateImage.php`, `GenerateImage`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.normalizeArguments()`, `.schema()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 39`** (7 nodes): `OutscraperService`, `.__construct()`, `.flattenData()`, `.getRequestStatus()`, `.request()`, `.startSearch()`, `OutscraperService.php`
+- **Thin community `Community 40`** (7 nodes): `OutscraperService`, `.__construct()`, `.flattenData()`, `.getRequestStatus()`, `.request()`, `.startSearch()`, `OutscraperService.php`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 40`** (7 nodes): `User.php`, `User`, `.addresses()`, `.agentConversations()`, `.casts()`, `.orders()`, `.sendPasswordResetNotification()`
+- **Thin community `Community 41`** (7 nodes): `User.php`, `User`, `.addresses()`, `.agentConversations()`, `.casts()`, `.orders()`, `.sendPasswordResetNotification()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 41`** (7 nodes): `GoogleAnalyticsAgent`, `.description()`, `.instructions()`, `.name()`, `.provider()`, `.tools()`, `GoogleAnalyticsAgent.php`
+- **Thin community `Community 42`** (7 nodes): `GoogleAnalyticsAgent`, `.description()`, `.instructions()`, `.name()`, `.provider()`, `.tools()`, `GoogleAnalyticsAgent.php`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 42`** (7 nodes): `GetMarketingMetricHistory.php`, `GetMarketingMetricHistory`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.schema()`
+- **Thin community `Community 43`** (7 nodes): `GetMarketingMetricHistory.php`, `GetMarketingMetricHistory`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.schema()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 43`** (7 nodes): `SaveMarketingReport.php`, `SaveMarketingReport`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.schema()`
+- **Thin community `Community 44`** (7 nodes): `SaveMarketingReport.php`, `SaveMarketingReport`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.schema()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 44`** (7 nodes): `GetMetaDataset.php`, `GetMetaDataset`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.schema()`
+- **Thin community `Community 45`** (7 nodes): `GetMetaDataset.php`, `GetMetaDataset`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.schema()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 45`** (7 nodes): `GetMarketingReports.php`, `GetMarketingReports`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.schema()`
+- **Thin community `Community 46`** (7 nodes): `GetMarketingReports.php`, `GetMarketingReports`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.schema()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 46`** (7 nodes): `ListStaticPages.php`, `ListStaticPages`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.schema()`
+- **Thin community `Community 47`** (7 nodes): `ListStaticPages.php`, `ListStaticPages`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.schema()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 47`** (7 nodes): `DataForSeoKeywordResearch.php`, `DataForSeoKeywordResearch`, `.description()`, `.name()`, `.providerKey()`, `.providerName()`, `.requiredConfig()`
+- **Thin community `Community 48`** (7 nodes): `DataForSeoKeywordResearch.php`, `DataForSeoKeywordResearch`, `.description()`, `.name()`, `.providerKey()`, `.providerName()`, `.requiredConfig()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 48`** (7 nodes): `AhrefsKeywordResearch.php`, `AhrefsKeywordResearch`, `.description()`, `.name()`, `.providerKey()`, `.providerName()`, `.requiredConfig()`
+- **Thin community `Community 49`** (7 nodes): `AhrefsKeywordResearch.php`, `AhrefsKeywordResearch`, `.description()`, `.name()`, `.providerKey()`, `.providerName()`, `.requiredConfig()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 49`** (7 nodes): `CreateSocialPostDraft.php`, `CreateSocialPostDraft`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.schema()`
+- **Thin community `Community 50`** (7 nodes): `CreateSocialPostDraft.php`, `CreateSocialPostDraft`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.schema()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 50`** (7 nodes): `GetGrowthPlan.php`, `GetGrowthPlan`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.schema()`
+- **Thin community `Community 51`** (7 nodes): `GetGrowthPlan.php`, `GetGrowthPlan`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.schema()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 51`** (7 nodes): `SaveGrowthPlan.php`, `SaveGrowthPlan`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.schema()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 52`** (7 nodes): `MoveGrowthTaskController`, `.closeAsHuman()`, `.__construct()`, `.__invoke()`, `.reopen()`, `.sendToReview()`, `MoveGrowthTaskController.php`
+- **Thin community `Community 52`** (7 nodes): `SaveGrowthPlan.php`, `SaveGrowthPlan`, `.__construct()`, `.description()`, `.handle()`, `.name()`, `.schema()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 53`** (7 nodes): `RegisterRequest`, `.authorize()`, `.bodyParameters()`, `.messages()`, `.rules()`, `RegisterRequest.php`, `RegisterRequest.php`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
@@ -1385,12 +1385,12 @@ Nodes (1): Controller
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Cart` connect `Community 5` to `Community 2`, `Community 3`, `Community 14`, `Community 18`, `Community 19`?**
-  _High betweenness centrality (0.045) - this node is a cross-community bridge._
-- **Why does `Product` connect `Community 1` to `Community 3`, `Community 2`, `Community 5`, `Community 13`?**
+- **Why does `Cart` connect `Community 5` to `Community 1`, `Community 18`, `Community 3`, `Community 14`?**
   _High betweenness centrality (0.040) - this node is a cross-community bridge._
-- **Why does `BlogPost` connect `Community 0` to `Community 2`?**
-  _High betweenness centrality (0.023) - this node is a cross-community bridge._
+- **Why does `Product` connect `Community 2` to `Community 1`, `Community 13`, `Community 3`, `Community 5`?**
+  _High betweenness centrality (0.030) - this node is a cross-community bridge._
+- **Why does `BlogPost` connect `Community 0` to `Community 3`?**
+  _High betweenness centrality (0.026) - this node is a cross-community bridge._
 - **Are the 14 inferred relationships involving `Product` (e.g. with `.build()` and `.__invoke()`) actually correct?**
   _`Product` has 14 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `MarketingServer`, `TrackingServer`, `GoogleSearchServer` to the rest of the system?**
@@ -1398,4 +1398,4 @@ _Questions this graph is uniquely positioned to answer:_
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.02 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
-  _Cohesion score 0.03 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.04 - nodes in this community are weakly interconnected._
