@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\BlogPosts\CreateBlogPostController;
 use App\Http\Controllers\Admin\BlogPosts\DestroyBlogPostController;
 use App\Http\Controllers\Admin\BlogPosts\EditBlogPostController;
 use App\Http\Controllers\Admin\BlogPosts\IndexBlogPostsController;
+use App\Http\Controllers\Admin\BlogPosts\PreviewBlogPostController;
 use App\Http\Controllers\Admin\BlogPosts\StoreBlogPostController;
 use App\Http\Controllers\Admin\BlogPosts\UpdateBlogPostController;
 use App\Http\Controllers\Admin\Businesses\ExportBusinessesForMetaController;
@@ -105,6 +106,7 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
     Route::get('/blog-posts/create', CreateBlogPostController::class)->name('blog-posts.create');
     Route::post('/blog-posts', StoreBlogPostController::class)->name('blog-posts.store');
     Route::get('/blog-posts/{blogPost}/edit', EditBlogPostController::class)->name('blog-posts.edit');
+    Route::get('/blog-posts/{blogPost}/preview', PreviewBlogPostController::class)->name('blog-posts.preview');
     Route::put('/blog-posts/{blogPost}', UpdateBlogPostController::class)->name('blog-posts.update');
     Route::delete('/blog-posts/{blogPost}', DestroyBlogPostController::class)->name('blog-posts.destroy');
 

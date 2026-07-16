@@ -1,5 +1,5 @@
 import { Link, router, usePage } from '@inertiajs/react';
-import { Pencil, Plus, Search, Trash2 } from 'lucide-react';
+import { Eye, Pencil, Plus, Search, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import AppLayout from '@/Layouts/AppLayout';
 import type { PageProps } from '@/types';
@@ -137,6 +137,15 @@ export default function BlogPostsIndex() {
                                     </td>
                                     <td className="px-4 py-4">
                                         <div className="flex justify-end gap-3">
+                                            <a
+                                                href={`/admin/blog-posts/${post.id}/preview`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center gap-1.5 font-[Outfit] text-sm font-medium text-[#4A5D4A] hover:underline"
+                                            >
+                                                <Eye className="h-3.5 w-3.5" />
+                                                Vista previa
+                                            </a>
                                             <Link
                                                 href={`/admin/blog-posts/${post.id}/edit`}
                                                 className="inline-flex items-center gap-1.5 font-[Outfit] text-sm font-medium text-[#4A5D4A] hover:underline"

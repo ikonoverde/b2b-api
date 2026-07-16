@@ -96,6 +96,31 @@ test('admin can delete a blog post', function () {
     Storage::disk('public')->assertMissing('blog/covers/delete.jpg');
 });
 
+test('admin can preview a blog post regardless of state', function (BlogPost $post) {
+    $admin = User::factory()->admin()->create();
+
+    $response = $this->actingAs($admin)->get("/admin/blog-posts/{$post->id}/preview");
+
+    $response->assertSuccessful();
+    $response->assertInertia(fn ($page) => $page
+        ->component('Blog/Show')
+        ->where('post.id', $post->id)
+        ->where('post.slug', $post->slug)
+    );
+})->with([
+    'draft' => fn () => BlogPost::factory()->unpublished()->create(['slug' => 'draft-post']),
+    'scheduled' => fn () => BlogPost::factory()->scheduled()->create(['slug' => 'scheduled-post']),
+    'published' => fn () => BlogPost::factory()->create(['slug' => 'published-post']),
+]);
+
+test('guest cannot preview a blog post', function () {
+    $post = BlogPost::factory()->unpublished()->create();
+
+    $response = $this->get("/admin/blog-posts/{$post->id}/preview");
+
+    $response->assertRedirect('/admin/login');
+});
+
 test('blog post create requires title and content', function () {
     $admin = User::factory()->admin()->create();
 
