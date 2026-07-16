@@ -1,4 +1,4 @@
-import type { GrowthClosedBy, GrowthStatus, GrowthTaskAgent } from '@/types';
+import type { GrowthBoardColumn, GrowthClosedBy, GrowthStatus, GrowthTaskAgent } from '@/types';
 
 export const agentLabels: Record<GrowthTaskAgent, string> = {
     content: 'Contenido',
@@ -58,6 +58,25 @@ export const closedByLabels: Record<GrowthClosedBy, string> = {
 export const closedByDescriptions: Record<GrowthClosedBy, string> = {
     report: 'Un reporte observó que el trabajo se hizo, y la evidencia quedó registrada.',
     human: 'Alguien confirmó que el trabajo se hizo. No hay una medición detrás.',
+};
+
+export const boardColumnLabels: Record<GrowthBoardColumn, string> = {
+    todo: 'Por hacer',
+    in_progress: 'En curso',
+    review: 'En revisión',
+    done: 'Hechas',
+};
+
+/**
+ * What dropping a card on each column actually does. The board changes real state — En revisión leaves
+ * la tarea abierta a la espera de una decisión, y Hechas la cierra a nombre de la persona que soltó la
+ * tarjeta.
+ */
+export const boardColumnDescriptions: Record<GrowthBoardColumn, string> = {
+    todo: 'Trabajo abierto que nadie ha tomado.',
+    in_progress: 'Trabajo abierto que alguien ya tomó.',
+    review: 'Alguien cree que ya está hecha. Sigue abierta hasta que una persona confirme el cierre.',
+    done: 'Cerradas. Soltar una tarjeta aquí la cierra a tu nombre.',
 };
 
 export const paidGateLabels: Record<'open' | 'closed', string> = {

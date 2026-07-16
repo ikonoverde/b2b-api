@@ -13,8 +13,10 @@ use App\Http\Controllers\Admin\Businesses\IndexBusinessesController;
 use App\Http\Controllers\Admin\Businesses\StartBusinessScrapeController;
 use App\Http\Controllers\Admin\Chat\SendChatMessageController;
 use App\Http\Controllers\Admin\Chat\ShowChatController;
+use App\Http\Controllers\Admin\GrowthPlan\BoardGrowthPlanController;
 use App\Http\Controllers\Admin\GrowthPlan\ConfirmGrowthTaskClosureController;
 use App\Http\Controllers\Admin\GrowthPlan\IndexGrowthPlanController;
+use App\Http\Controllers\Admin\GrowthPlan\MoveGrowthTaskController;
 use App\Http\Controllers\Admin\GrowthPlan\RejectGrowthTaskClosureController;
 use App\Http\Controllers\Admin\GrowthPlan\ReopenGrowthTaskController;
 use App\Http\Controllers\Admin\GrowthPlan\ShowGrowthPlanController;
@@ -139,7 +141,10 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
         ->name('marketing-reports.show');
 
     Route::get('/growth-plan', IndexGrowthPlanController::class)->name('growth-plan');
+    Route::get('/growth-plan/board', BoardGrowthPlanController::class)->name('growth-plan.board');
     Route::get('/growth-plan/runs/{growthPlan}', ShowGrowthPlanController::class)->name('growth-plan.show');
+    Route::post('/growth-plan/tasks/{growthTask}/move', MoveGrowthTaskController::class)
+        ->name('growth-plan.tasks.move');
     Route::post('/growth-plan/tasks/{growthTask}/confirm-closure', ConfirmGrowthTaskClosureController::class)
         ->name('growth-plan.tasks.confirm-closure');
     Route::post('/growth-plan/tasks/{growthTask}/reject-closure', RejectGrowthTaskClosureController::class)

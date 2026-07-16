@@ -37,6 +37,14 @@ class GrowthTaskFactory extends Factory
     }
 
     /**
+     * Somebody picked it up. Still open — starting says nothing about finishing.
+     */
+    public function started(): static
+    {
+        return $this->state(fn (): array => ['started_at' => now()]);
+    }
+
+    /**
      * Closed because a report observed the work landed. The evidence is the point: a done task with no
      * stated evidence is indistinguishable from a guess.
      */

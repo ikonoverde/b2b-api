@@ -589,6 +589,27 @@ export interface GrowthActionItem {
     tasks: GrowthTaskItem[];
 }
 
+/**
+ * The kanban columns, a reading of state the system already keeps: `todo` and `in_progress` split open
+ * tasks by started_at, `review` is the open tasks awaiting a closure decision, `done` is the closed
+ * ones. Dropped tasks appear on no column.
+ */
+export type GrowthBoardColumn = 'todo' | 'in_progress' | 'review' | 'done';
+
+export interface GrowthBoardTask {
+    id: number;
+    slug: string;
+    name: string;
+    body: string;
+    agent: GrowthTaskAgent;
+    action: string;
+    source_report: string | null;
+    started_at: string | null;
+    closed_by: GrowthClosedBy | null;
+    close_evidence: string | null;
+    closure_proposal_reason: string | null;
+}
+
 export interface GrowthPaidGate {
     verdict: 'open' | 'closed';
     reason: string;

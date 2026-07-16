@@ -1,6 +1,7 @@
 import { Link, usePage } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
-import { AlertCircle, ArrowRight, Compass, TrendingUp } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { AlertCircle, ArrowRight, Compass, Kanban, TrendingUp } from 'lucide-react';
 import type {
     GrowthActionItem,
     GrowthPaidGate,
@@ -195,14 +196,22 @@ export default function GrowthPlanIndex() {
     return (
         <AppLayout title="Plan de crecimiento" active="growth-plan">
             <div className="flex flex-col gap-6 p-10 pr-12">
-                <div className="flex flex-col gap-1">
-                    <h1 className="font-[Outfit] text-[28px] font-semibold text-[#1A1A1A]">
-                        Plan de crecimiento
-                    </h1>
-                    <p className="max-w-2xl font-[Outfit] text-sm text-[#666666]">
-                        El trabajo que el agente propone a partir del último reporte observado. Nada de
-                        esto se ejecuta solo: son tareas para que alguien las tome.
-                    </p>
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="flex flex-col gap-1">
+                        <h1 className="font-[Outfit] text-[28px] font-semibold text-[#1A1A1A]">
+                            Plan de crecimiento
+                        </h1>
+                        <p className="max-w-2xl font-[Outfit] text-sm text-[#666666]">
+                            El trabajo que el agente propone a partir del último reporte observado. Nada
+                            de esto se ejecuta solo: son tareas para que alguien las tome.
+                        </p>
+                    </div>
+                    <Button asChild variant="outline" className="font-[Outfit]">
+                        <Link href="/admin/growth-plan/board">
+                            <Kanban data-icon="inline-start" />
+                            Tablero de tareas
+                        </Link>
+                    </Button>
                 </div>
 
                 {awaitingDecisionCount > 0 && (

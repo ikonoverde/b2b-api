@@ -89,6 +89,28 @@ class GrowthTask extends Model
         self::CLOSED_BY_HUMAN,
     ];
 
+    public const COLUMN_TODO = 'todo';
+
+    public const COLUMN_IN_PROGRESS = 'in_progress';
+
+    public const COLUMN_REVIEW = 'review';
+
+    public const COLUMN_DONE = 'done';
+
+    /**
+     * The kanban columns, and they are a reading of existing state rather than a new one. To Do and In
+     * Progress split open tasks by started_at, Review is the open tasks waiting on a closure decision,
+     * and Done is the closed ones. Dropped tasks are on no column: they were discarded, not finished.
+     *
+     * @var string[]
+     */
+    public const COLUMNS = [
+        self::COLUMN_TODO,
+        self::COLUMN_IN_PROGRESS,
+        self::COLUMN_REVIEW,
+        self::COLUMN_DONE,
+    ];
+
     protected $fillable = [
         'growth_action_id',
         'slug',
@@ -96,6 +118,7 @@ class GrowthTask extends Model
         'body',
         'agent',
         'status',
+        'started_at',
         'source_marketing_report_id',
         'created_by_growth_plan_id',
         'updated_by_growth_plan_id',
@@ -114,6 +137,7 @@ class GrowthTask extends Model
     protected function casts(): array
     {
         return [
+            'started_at' => 'datetime',
             'closed_at' => 'datetime',
             'closure_proposed_at' => 'datetime',
         ];
@@ -175,5 +199,25 @@ class GrowthTask extends Model
     public function hasProposedClosure(): bool
     {
         return $this->isOpen() && $this->closure_proposed_at !== null;
+    }
+
+    /**
+     * Where this task sits on the kanban board, or null for a dropped task, which sits nowhere.
+     */
+    public function boardColumn(): ?string
+    {
+        if ($this->isDone()) {
+            return self::COLUMN_DONE;
+        }
+
+        if ($this->hasProposedClosure()) {
+            return self::COLUMN_REVIEW;
+        }
+
+        if ($this->isOpen()) {
+            return $this->started_at === null ? self::COLUMN_TODO : self::COLUMN_IN_PROGRESS;
+        }
+
+        return null;
     }
 }
