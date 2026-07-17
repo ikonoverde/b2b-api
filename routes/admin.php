@@ -32,6 +32,7 @@ use App\Http\Controllers\Admin\Orders\ShowOrderController;
 use App\Http\Controllers\Admin\Orders\StoreOrderNoteController;
 use App\Http\Controllers\Admin\Orders\UpdateOrderStatusController;
 use App\Http\Controllers\Admin\Orders\UpdateOrderTrackingController;
+use App\Http\Controllers\Admin\Reports\ShowReportController;
 use App\Http\Controllers\Admin\Settings\ShowSettingsController;
 use App\Http\Controllers\Admin\Settings\UpdateSettingsController;
 use App\Http\Controllers\Admin\SocialPosts\IndexSocialPostDraftsController;
@@ -142,6 +143,8 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
     Route::get('/marketing-reports', IndexMarketingReportsController::class)->name('marketing-reports');
     Route::get('/marketing-reports/{marketingReport}', ShowMarketingReportController::class)
         ->name('marketing-reports.show');
+
+    Route::get('/reports/{report}', ShowReportController::class)->name('reports.show');
 
     Route::get('/growth-plan', IndexGrowthPlanController::class)->name('growth-plan');
     Route::get('/growth-plan/board', BoardGrowthPlanController::class)->name('growth-plan.board');

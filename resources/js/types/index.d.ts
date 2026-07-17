@@ -642,6 +642,17 @@ export interface GrowthTaskDetail {
     artifacts: GrowthTaskArtifact[];
 }
 
+export interface ReportDetail {
+    id: number;
+    type: string;
+    type_label: string;
+    title: string;
+    summary: string | null;
+    body: string;
+    agent: string | null;
+    created_at: string | null;
+}
+
 export interface GrowthPaidGate {
     verdict: 'open' | 'closed';
     reason: string;

@@ -50,11 +50,8 @@ class Report extends Artifact
         return $this->title;
     }
 
-    /**
-     * Reports have no per-record admin page yet, so the task page shows the report without a link.
-     */
     public function adminUrl(): ?string
     {
-        return null;
+        return "/admin/reports/{$this->id}";
     }
 }
