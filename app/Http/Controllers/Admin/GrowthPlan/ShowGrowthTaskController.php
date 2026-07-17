@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\GrowthPlan;
 
 use App\Http\Controllers\Controller;
+use App\Models\Artifact;
 use App\Models\GrowthTask;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -35,6 +36,15 @@ class ShowGrowthTaskController extends Controller
                 'closure_proposed' => $growthTask->hasProposedClosure(),
                 'closure_proposal_reason' => $growthTask->closure_proposal_reason,
                 'drop_reason' => $growthTask->drop_reason,
+                'artifacts' => $growthTask->artifacts()
+                    ->map(fn (Artifact $artifact): array => [
+                        'type' => class_basename($artifact),
+                        'label' => $artifact->artifactLabel(),
+                        'title' => $artifact->artifactTitle(),
+                        'url' => $artifact->adminUrl(),
+                        'created_at' => $artifact->created_at?->toISOString(),
+                    ])
+                    ->all(),
             ],
         ]);
     }

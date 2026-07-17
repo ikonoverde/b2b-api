@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Ai\GrowthTaskContext;
 use App\Mail\Transport\SendLayerTransport;
 use App\Services\OutscraperService;
 use App\Services\ProductionApiService;
@@ -17,6 +18,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->singleton(GrowthTaskContext::class);
+
         $this->app->singleton(ProductionApiService::class, function () {
             $config = config('services.produccion');
 

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Collection;
 
 /**
  * One unit of work under an action, assigned to exactly one agent.
@@ -219,5 +220,22 @@ class GrowthTask extends Model
         }
 
         return null;
+    }
+
+    /**
+     * Everything an agent filed while executing this task, across the separate artifact tables, newest
+     * first. Kept as a gathered collection rather than a single relation because artifacts do not share
+     * a table.
+     *
+     * @return Collection<int, Artifact>
+     */
+    public function artifacts(): Collection
+    {
+        return collect(Artifact::ARTIFACT_MODELS)
+            ->flatMap(fn (string $model): Collection => $model::query()
+                ->where('growth_task_id', $this->id)
+                ->get())
+            ->sortByDesc('created_at')
+            ->values();
     }
 }

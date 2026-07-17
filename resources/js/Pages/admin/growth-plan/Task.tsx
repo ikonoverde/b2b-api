@@ -4,7 +4,9 @@ import {
     ArrowLeft,
     CheckCircle2,
     CircleSlash,
+    ExternalLink,
     FileText,
+    Package,
     RotateCcw,
     User,
 } from 'lucide-react';
@@ -17,7 +19,7 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import type { GrowthTaskDetail, PageProps } from '@/types';
+import type { GrowthTaskArtifact, GrowthTaskDetail, PageProps } from '@/types';
 import {
     agentChipClasses,
     agentDescriptions,
@@ -152,6 +154,77 @@ function ClosedNote({ task }: { task: GrowthTaskDetail }) {
     );
 }
 
+function ArtifactRow({ artifact }: { artifact: GrowthTaskArtifact }) {
+    const content = (
+        <>
+            <div className="flex flex-col gap-0.5">
+                <span className="font-[Outfit] text-sm text-[#1A1A1A]">{artifact.title}</span>
+                <span className="font-[Outfit] text-xs text-[#999999]">
+                    {formatDateTime(artifact.created_at)}
+                </span>
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+                <Badge
+                    variant="outline"
+                    className="font-[Outfit] border-[#C8D3C8] bg-[#EEF2EE] text-[#3D4D3D]"
+                >
+                    {artifact.label}
+                </Badge>
+                {artifact.url !== null && (
+                    <ExternalLink className="h-3.5 w-3.5 text-[#999999]" />
+                )}
+            </div>
+        </>
+    );
+
+    if (artifact.url !== null) {
+        return (
+            <Link
+                href={artifact.url}
+                className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[#E5E5E5] bg-white px-4 py-3 transition-colors hover:bg-[#F9F8F6]"
+            >
+                {content}
+            </Link>
+        );
+    }
+
+    return (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[#E5E5E5] bg-white px-4 py-3">
+            {content}
+        </div>
+    );
+}
+
+function ArtifactsCard({ artifacts }: { artifacts: GrowthTaskArtifact[] }) {
+    return (
+        <Card className="border-[#E5E5E5] bg-white shadow-none">
+            <CardHeader className="gap-2">
+                <div className="flex items-center gap-2">
+                    <Package className="h-4 w-4 text-[#999999]" />
+                    <CardTitle className="font-[Outfit] text-sm font-medium text-[#666666]">
+                        Artefactos generados
+                    </CardTitle>
+                </div>
+                <CardDescription className="font-[Outfit] text-xs text-[#999999]">
+                    Lo que el agente filó al ejecutar esta tarea. Cada uno sigue siendo un borrador o
+                    propuesta hasta que una persona lo apruebe.
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-2">
+                {artifacts.length === 0 ? (
+                    <p className="font-[Outfit] text-sm text-[#999999]">
+                        Este run todavía no ha generado nada.
+                    </p>
+                ) : (
+                    artifacts.map((artifact) => (
+                        <ArtifactRow key={`${artifact.type}-${artifact.title}-${artifact.created_at}`} artifact={artifact} />
+                    ))
+                )}
+            </CardContent>
+        </Card>
+    );
+}
+
 export default function GrowthTaskShow() {
     const { task } = usePage<Props>().props;
 
@@ -225,6 +298,8 @@ export default function GrowthTaskShow() {
                         </dl>
                     </CardContent>
                 </Card>
+
+                <ArtifactsCard artifacts={task.artifacts} />
 
                 {task.closure_proposed && <ClosureProposal task={task} />}
                 {task.status !== 'open' && <ClosedNote task={task} />}

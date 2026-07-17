@@ -5,15 +5,15 @@ namespace App\Models;
 use App\Http\Resources\BannerResource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 
-class Banner extends Model
+class Banner extends Artifact
 {
     use HasFactory;
 
     protected $fillable = [
+        'growth_task_id',
         'title',
         'subtitle',
         'image_path',
@@ -75,5 +75,24 @@ class Banner extends Model
         return $query->where('is_active', true)
             ->where(fn (Builder $q) => $q->whereNull('starts_at')->orWhere('starts_at', '<=', now()))
             ->where(fn (Builder $q) => $q->whereNull('ends_at')->orWhere('ends_at', '>=', now()));
+    }
+
+    public function artifactLabel(): string
+    {
+        return 'Banner';
+    }
+
+    public function artifactTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * Banners have no per-record admin page — they are managed on the index — so the task page shows
+     * the banner without a link.
+     */
+    public function adminUrl(): ?string
+    {
+        return null;
     }
 }

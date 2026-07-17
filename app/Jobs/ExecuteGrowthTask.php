@@ -7,6 +7,7 @@ use App\Ai\Agents\ContentAgent;
 use App\Ai\Agents\KeywordsAgent;
 use App\Ai\Agents\PaidAcquisitionAgent;
 use App\Ai\Agents\SocialMediaAgent;
+use App\Ai\GrowthTaskContext;
 use App\Models\GrowthTask;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -90,7 +91,20 @@ class ExecuteGrowthTask implements ShouldQueue
             return;
         }
 
-        $response = new $executor()->prompt($this->prompt($task));
+        /**
+         * The task is held in ambient context for the length of the run so that every artifact the
+         * agent files through its tools is stamped with the task that produced it. It must be cleared
+         * afterwards: this worker is long-lived, and a task left here would be stamped onto the next
+         * job's artifacts.
+         */
+        $context = app(GrowthTaskContext::class);
+        $context->set($task);
+
+        try {
+            $response = new $executor()->prompt($this->prompt($task));
+        } finally {
+            $context->clear();
+        }
 
         /**
          * The run's durable output is whatever the agent filed through its tools — a blog draft, a

@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\AdProposal;
+use App\Models\Banner;
+use App\Models\BlogPost;
 use App\Models\GrowthAction;
 use App\Models\GrowthTask;
 use App\Models\User;
@@ -46,6 +49,39 @@ it('surfaces the closure proposal so a person can decide from the details page',
             ->where('task.closure_proposed', true)
             ->where('task.column', GrowthTask::COLUMN_REVIEW)
             ->whereNot('task.closure_proposal_reason', null));
+});
+
+it('lists generated artifacts newest first, with a link where one exists and none where it does not', function () {
+    $task = GrowthTask::factory()->create();
+    $post = BlogPost::factory()->create([
+        'growth_task_id' => $task->id,
+        'title' => 'Guía de aceites',
+        'created_at' => now()->subDay(),
+    ]);
+    Banner::factory()->create(['growth_task_id' => $task->id, 'title' => 'Promo 5L', 'created_at' => now()]);
+    AdProposal::factory()->create();
+
+    $this->actingAs(taskShowAdmin())
+        ->get("/admin/growth-plan/tasks/{$task->id}")
+        ->assertInertia(fn ($page) => $page
+            ->component('admin/growth-plan/Task')
+            ->has('task.artifacts', 2)
+            ->where('task.artifacts.0.label', 'Banner')
+            ->where('task.artifacts.0.title', 'Promo 5L')
+            ->where('task.artifacts.0.url', null)
+            ->where('task.artifacts.1.label', 'Entrada de blog')
+            ->where('task.artifacts.1.title', 'Guía de aceites')
+            ->where('task.artifacts.1.url', "/admin/blog-posts/{$post->id}/edit"));
+});
+
+it('exposes an empty artifacts array for a task that generated nothing', function () {
+    $task = GrowthTask::factory()->create();
+
+    $this->actingAs(taskShowAdmin())
+        ->get("/admin/growth-plan/tasks/{$task->id}")
+        ->assertInertia(fn ($page) => $page
+            ->component('admin/growth-plan/Task')
+            ->has('task.artifacts', 0));
 });
 
 it('shows a dropped task with its drop reason and no board column', function () {

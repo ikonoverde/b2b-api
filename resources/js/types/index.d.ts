@@ -610,6 +610,18 @@ export interface GrowthBoardTask {
     closure_proposal_reason: string | null;
 }
 
+/**
+ * One record an agent generated while executing a task — a blog draft, an ad proposal, a social post
+ * draft. `url` is the artifact's own admin detail page, or null when it has none (e.g. banners).
+ */
+export interface GrowthTaskArtifact {
+    type: string;
+    label: string;
+    title: string;
+    url: string | null;
+    created_at: string | null;
+}
+
 export interface GrowthTaskDetail {
     id: number;
     slug: string;
@@ -627,6 +639,7 @@ export interface GrowthTaskDetail {
     closure_proposed: boolean;
     closure_proposal_reason: string | null;
     drop_reason: string | null;
+    artifacts: GrowthTaskArtifact[];
 }
 
 export interface GrowthPaidGate {

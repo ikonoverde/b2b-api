@@ -5,11 +5,11 @@ namespace App\Models;
 use Database\Factories\SocialPostDraftFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
-class SocialPostDraft extends Model
+class SocialPostDraft extends Artifact
 {
     /** @use HasFactory<SocialPostDraftFactory> */
     use HasFactory;
@@ -67,6 +67,7 @@ class SocialPostDraft extends Model
     ];
 
     protected $fillable = [
+        'growth_task_id',
         'platform',
         'status',
         'caption',
@@ -150,5 +151,20 @@ class SocialPostDraft extends Model
         }
 
         return Storage::disk('public')->url($this->image_path);
+    }
+
+    public function artifactLabel(): string
+    {
+        return 'Borrador de redes';
+    }
+
+    public function artifactTitle(): string
+    {
+        return Str::limit((string) $this->caption, 60);
+    }
+
+    public function adminUrl(): ?string
+    {
+        return "/admin/social-posts/{$this->id}";
     }
 }

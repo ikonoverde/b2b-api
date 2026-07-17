@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Database\Factories\AdProposalFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class AdProposal extends Model
+class AdProposal extends Artifact
 {
     /** @use HasFactory<AdProposalFactory> */
     use HasFactory;
 
     protected $fillable = [
+        'growth_task_id',
         'platform',
         'name',
         'objective',
@@ -56,5 +56,20 @@ class AdProposal extends Model
             'assumptions' => 'array',
             'created_by_agent' => 'boolean',
         ];
+    }
+
+    public function artifactLabel(): string
+    {
+        return 'Propuesta de anuncio';
+    }
+
+    public function artifactTitle(): string
+    {
+        return $this->name;
+    }
+
+    public function adminUrl(): ?string
+    {
+        return "/admin/ad-proposals/{$this->id}";
     }
 }
