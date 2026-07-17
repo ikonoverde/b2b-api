@@ -25,7 +25,7 @@ abstract class BaseChatAgent implements Agent, Conversational
      */
     public function provider(): Lab|string
     {
-        return Lab::OpenRouter;
+        return Lab::Anthropic;
     }
 
     /**

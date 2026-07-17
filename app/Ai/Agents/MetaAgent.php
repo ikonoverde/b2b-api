@@ -17,7 +17,7 @@ use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
 use Stringable;
 
-#[Model('claude-haiku-4-5')]
+#[Model('claude-haiku-4-5-20251001')]
 class MetaAgent extends BaseChatAgent implements CanActAsTool, HasTools
 {
     public function instructions(): Stringable|string

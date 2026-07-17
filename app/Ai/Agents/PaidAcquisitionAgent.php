@@ -9,12 +9,18 @@ use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Attributes\Timeout;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
+use Laravel\Ai\Enums\Lab;
 use Stringable;
 
-#[Model('z-ai/glm-5.2')]
+#[Model('claude-sonnet-5')]
 #[Timeout(120)]
 class PaidAcquisitionAgent extends BaseChatAgent implements HasTools
 {
+    public function provider(): string|Lab
+    {
+        return Lab::Anthropic;
+    }
+
     public function instructions(): Stringable|string
     {
         $context = $this->context();

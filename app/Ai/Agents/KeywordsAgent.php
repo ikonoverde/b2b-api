@@ -13,7 +13,7 @@ use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
 use Stringable;
 
-#[Model('deepseek/deepseek-v4-flash')]
+#[Model('claude-sonnet-5')]
 class KeywordsAgent extends BaseChatAgent implements CanActAsTool, HasTools
 {
     public function instructions(): Stringable|string

@@ -48,6 +48,41 @@ it('reads a single task by slug', function () {
         ->and($payload['task']['action'])->toHaveKey('summary');
 });
 
+it('reads a single task by id', function () {
+    $task = GrowthTask::factory()->create([
+        'slug' => 'post-aceites-de-masaje',
+        'body' => '## Why\n\nTherapists choose an oil by slip.',
+    ]);
+
+    $payload = fetchGrowthTask(['id' => $task->id]);
+
+    expect($payload['task']['slug'])->toBe('post-aceites-de-masaje')
+        ->and($payload['task']['body'])->toContain('Therapists choose an oil by slip')
+        ->and($payload['task']['action'])->toHaveKey('summary');
+});
+
+it('lets an id take precedence over a slug', function () {
+    $wanted = GrowthTask::factory()->create(['slug' => 'la-que-quiero']);
+    GrowthTask::factory()->create(['slug' => 'la-otra']);
+
+    expect(fetchGrowthTask(['id' => $wanted->id, 'slug' => 'la-otra'])['task']['slug'])
+        ->toBe('la-que-quiero');
+});
+
+it('refuses a task fetched by id that belongs to another specialist', function () {
+    $task = GrowthTask::factory()->agent(GrowthTask::AGENT_PAID_ACQUISITION)->create([
+        'slug' => 'campana-de-retargeting',
+    ]);
+
+    expect(fetchGrowthTask(['id' => $task->id])['error'])
+        ->toContain('assigned to paid-acquisition, not to content');
+});
+
+it('explains itself when the id matches nothing', function () {
+    expect(fetchGrowthTask(['id' => 9999])['error'])
+        ->toContain('No growth task exists with id 9999');
+});
+
 /**
  * The scope is the point of the tool. A task assigned to a person is blocked on a body, a credential,
  * or a signature, and an agent handed one produces a plausible substitute rather than failing.
@@ -109,6 +144,41 @@ it('says the empty list is empty rather than inviting invented work', function (
 it('explains itself when the slug matches nothing', function () {
     expect(fetchGrowthTask(['slug' => 'no-existe'])['error'])
         ->toContain("No growth task exists with slug 'no-existe'");
+});
+
+/**
+ * The growth strategist coordinates rather than executes, so it holds the tool with a null scope and
+ * reads across every specialist's lane.
+ */
+it('lists open tasks for every agent when the scope is null', function () {
+    GrowthTask::factory()->create(['slug' => 'abierta-de-contenido']);
+    GrowthTask::factory()->agent(GrowthTask::AGENT_SOCIAL_MEDIA)->create(['slug' => 'reel-de-instagram']);
+    GrowthTask::factory()->agent(GrowthTask::AGENT_HUMAN)->create(['slug' => 'fotografiar-los-productos']);
+    GrowthTask::factory()->closedByReport()->create(['slug' => 'ya-cerrada']);
+
+    $tool = new FetchGrowthTask(app(GrowthPlanService::class), null);
+    $payload = json_decode((string) $tool->handle(new Request([])), true);
+
+    expect($payload['agent'])->toBe('all')
+        ->and(array_column($payload['open_tasks'], 'slug'))
+        ->toEqualCanonicalizing(['abierta-de-contenido', 'reel-de-instagram', 'fotografiar-los-productos'])
+        ->and(array_column($payload['open_tasks'], 'agent'))->toContain('social-media', 'human', 'content');
+});
+
+it('reads any agent single task when the scope is null', function () {
+    $task = GrowthTask::factory()->agent(GrowthTask::AGENT_PAID_ACQUISITION)->create([
+        'slug' => 'campana-de-retargeting',
+    ]);
+
+    $tool = new FetchGrowthTask(app(GrowthPlanService::class), null);
+
+    $bySlug = json_decode((string) $tool->handle(new Request(['slug' => 'campana-de-retargeting'])), true);
+    $byId = json_decode((string) $tool->handle(new Request(['id' => $task->id])), true);
+
+    expect($bySlug)->not->toHaveKey('error')
+        ->and($bySlug['agent'])->toBe('paid-acquisition')
+        ->and($bySlug['task']['slug'])->toBe('campana-de-retargeting')
+        ->and($byId['task']['slug'])->toBe('campana-de-retargeting');
 });
 
 /**

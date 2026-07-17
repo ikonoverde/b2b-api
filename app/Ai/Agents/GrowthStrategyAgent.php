@@ -9,6 +9,7 @@ use App\Ai\Tools\Marketing\GetMarketingMetricHistory;
 use App\Ai\Tools\Marketing\GetMarketingReports;
 use App\Ai\Tools\Marketing\MarketingProductCatalog;
 use App\Ai\Tools\Marketing\MarketingSalesSummary;
+use App\Services\Growth\GrowthPlanService;
 use Laravel\Ai\Attributes\MaxSteps;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Attributes\Timeout;
@@ -105,7 +106,7 @@ class GrowthStrategyAgent extends BaseChatAgent implements HasTools
             app(GetMarketingMetricHistory::class),
             app(GetGrowthPlan::class),
             app(SaveGrowthPlan::class),
-            app(FetchGrowthTask::class),
+            new FetchGrowthTask(app(GrowthPlanService::class), null),
             new GoogleAnalyticsAgent,
             new PaidAcquisitionAgent,
             new KeywordsAgent,

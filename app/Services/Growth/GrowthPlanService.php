@@ -465,9 +465,32 @@ class GrowthPlanService
             ->all();
     }
 
+    /**
+     * Every open task, whatever specialist it belongs to. The coordinator's view: the growth strategist
+     * reads across the whole plan rather than one lane of it, so each task carries its own agent.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function openTasks(): array
+    {
+        return GrowthTask::query()
+            ->with(['action', 'sourceReport'])
+            ->open()
+            ->orderBy('agent')
+            ->orderBy('id')
+            ->get()
+            ->map(fn (GrowthTask $task): array => $this->taskDetail($task))
+            ->all();
+    }
+
     public function taskBySlug(string $slug): ?GrowthTask
     {
         return GrowthTask::query()->with(['action', 'sourceReport'])->where('slug', $slug)->first();
+    }
+
+    public function taskById(int $id): ?GrowthTask
+    {
+        return GrowthTask::query()->with(['action', 'sourceReport'])->find($id);
     }
 
     /**

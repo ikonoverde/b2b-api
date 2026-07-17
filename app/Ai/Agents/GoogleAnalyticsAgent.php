@@ -18,7 +18,7 @@ use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Enums\Lab;
 use Stringable;
 
-#[Model('claude-haiku-4-5')]
+#[Model('claude-haiku-4-5-20251001')]
 class GoogleAnalyticsAgent extends BaseChatAgent implements CanActAsTool, HasTools
 {
     public function provider(): Lab|string
