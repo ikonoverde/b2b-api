@@ -1,15 +1,27 @@
 import { Button } from '@/components/ui/button';
-import { ChatContainerContent, ChatContainerRoot, ChatContainerScrollAnchor } from '@/components/ui/chat-container';
+import { ChatContainerContent, ChatContainerRoot } from '@/components/ui/chat-container';
 import { Loader } from '@/components/ui/loader';
+import { Message, MessageAction, MessageActions, MessageContent } from '@/components/ui/message';
 import { PromptInput, PromptInputAction, PromptInputActions, PromptInputTextarea } from '@/components/ui/prompt-input';
 import { PromptSuggestion } from '@/components/ui/prompt-suggestion';
-import { Head, Link } from '@inertiajs/react';
+import { ScrollButton } from '@/components/ui/scroll-button';
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarGroup,
+    SidebarGroupLabel,
+    SidebarHeader,
+    SidebarInset,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarProvider,
+    SidebarTrigger,
+} from '@/components/ui/sidebar';
+import { cn } from '@/lib/utils';
+import { Head, Link, router } from '@inertiajs/react';
 import axios from 'axios';
-import { ArrowLeft, ArrowUp, Bot, Brain, LineChart, MessageSquarePlus, MessagesSquare, Paperclip, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowUp, Bot, Copy, MessageSquarePlus, Mic, Paperclip, Plus, Sparkles } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import type { ComponentPropsWithoutRef } from 'react';
-import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 
 type Agent = {
     name: string;
@@ -109,274 +121,306 @@ export default function AdminChatIndex({ agents, conversations, selectedConversa
         }
     };
 
+    const copyMessage = (content: string) => {
+        navigator.clipboard?.writeText(content).catch(() => undefined);
+    };
+
+    const conversationGroups = groupConversations(conversationList);
+    const headerTitle = activeConversation?.title ?? `${activeAgent.name} · Nueva conversacion`;
+
     return (
         <>
             <Head title="Chat" />
-            <div className="grid min-h-screen bg-[#FBF9F7] font-[Outfit] text-[#1A1A1A] lg:grid-cols-[340px_minmax(0,1fr)]">
-                <aside className="flex max-h-[48svh] min-h-0 flex-col border-b border-[#E5E5E5] bg-[#F5F3F0] lg:max-h-none lg:min-h-screen lg:border-b-0 lg:border-r">
-                    <div className="border-b border-[#E5E5E5] px-5 py-5">
-                        <Link href="/admin/dashboard" className="inline-flex items-center gap-2 text-xs font-medium text-[#666666] hover:text-[#1A1A1A]">
-                            <ArrowLeft className="h-3.5 w-3.5" />
+            <SidebarProvider>
+                <Sidebar>
+                    <SidebarHeader className="gap-4 px-2 py-4">
+                        <div className="flex flex-row items-center gap-2 px-2">
+                            <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-md">
+                                <Bot className="size-4" />
+                            </div>
+                            <div className="text-md text-foreground font-medium tracking-tight">Ikonoverde AI</div>
+                        </div>
+                        <Link
+                            href="/admin/dashboard"
+                            className="text-muted-foreground hover:text-foreground flex items-center gap-2 px-2 text-xs font-medium"
+                        >
+                            <ArrowLeft className="size-3.5" />
                             Volver al admin
                         </Link>
-                        <div className="mt-5 flex items-start gap-3">
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#4A5D4A] text-white">
-                                <Bot className="h-5 w-5" />
-                            </div>
-                            <div>
-                                <p className="text-sm font-semibold text-[#1A1A1A]">Ikonoverde AI</p>
-                                <p className="mt-1 text-xs leading-5 text-[#666666]">Conversaciones internas persistentes para diagnostico y trabajo administrativo.</p>
-                            </div>
+                    </SidebarHeader>
+                    <SidebarContent className="pt-2">
+                        <div className="px-4">
+                            <Button variant="outline" className="mb-2 flex w-full items-center gap-2" onClick={startNewConversation}>
+                                <MessageSquarePlus className="size-4" />
+                                <span>Nueva conversacion</span>
+                            </Button>
                         </div>
-                        <Button type="button" className="mt-5 w-full rounded-full bg-[#4A5D4A] text-white" onClick={startNewConversation}>
-                            <MessageSquarePlus className="h-4 w-4" />
-                            Nueva conversacion
-                        </Button>
-                    </div>
 
-                    <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5">
-                        <section>
-                            <div className="mb-3 flex items-center justify-between px-1">
-                                <p className="text-xs font-medium tracking-[0.14em] text-[#999999]">CONVERSACIONES</p>
-                                <MessagesSquare className="h-4 w-4 text-[#999999]" />
-                            </div>
-                            <div className="flex flex-col gap-1.5">
-                                {conversationList.length === 0 ? (
-                                    <div className="rounded-2xl border border-[#E5E5E5] bg-[#FBF9F7] px-4 py-4 text-sm leading-6 text-[#666666]">
-                                        Todavia no hay conversaciones. Escribe un mensaje para guardar la primera.
-                                    </div>
-                                ) : conversationList.map((conversation) => (
-                                    <Link
-                                        key={conversation.id}
-                                        href={`/admin/chat?conversation=${conversation.id}`}
-                                        className={`rounded-2xl px-4 py-3 transition-colors ${activeConversation?.id === conversation.id
-                                            ? 'bg-white text-[#1A1A1A]'
-                                            : 'text-[#666666] hover:bg-white/60'}`}
-                                    >
-                                        <span className="block truncate text-sm font-medium">{conversation.title}</span>
-                                        <span className="mt-1 block text-xs text-[#999999]">{formatDate(conversation.updated_at)}</span>
-                                    </Link>
-                                ))}
-                            </div>
-                        </section>
-
-                        <section className="mt-7">
-                            <div className="mb-3 flex items-center justify-between px-1">
-                                <p className="text-xs font-medium tracking-[0.14em] text-[#999999]">AGENTES</p>
-                                <Sparkles className="h-4 w-4 text-[#999999]" />
-                            </div>
-                            <div className="flex flex-col gap-2">
+                        <SidebarGroup>
+                            <SidebarGroupLabel className="flex items-center gap-2">
+                                <Sparkles className="size-3.5" />
+                                Agentes
+                            </SidebarGroupLabel>
+                            <SidebarMenu>
                                 {Object.entries(agents).map(([key, agent]) => (
-                                    <button
+                                    <SidebarMenuButton
                                         key={key}
-                                        type="button"
-                                        className={`rounded-2xl border px-4 py-3 text-left transition-colors ${activeAgentKey === key
-                                            ? 'border-[#D9D6D0] bg-white'
-                                            : 'border-transparent bg-transparent hover:border-[#E5E5E5] hover:bg-white/60'}`}
+                                        isActive={activeAgentKey === key}
                                         onClick={() => setActiveAgentKey(key)}
                                     >
-                                        <span className="flex items-center justify-between gap-3">
-                                            <span className="text-sm font-semibold text-[#1A1A1A]">{agent.name}</span>
-                                            <span className="rounded-full bg-[#FBF9F7] px-2 py-1 text-[11px] text-[#4A5D4A]">{agent.status}</span>
+                                        <span className="truncate">{agent.name}</span>
+                                        <span className="text-muted-foreground ml-auto text-[10px] tracking-wide uppercase">
+                                            {agent.status}
                                         </span>
-                                        <span className="mt-2 block text-xs leading-5 text-[#666666]">{agent.description}</span>
-                                    </button>
+                                    </SidebarMenuButton>
                                 ))}
-                            </div>
-                        </section>
-                    </div>
-                </aside>
+                            </SidebarMenu>
+                        </SidebarGroup>
 
-                <main className="flex min-h-0 flex-col">
-                    <header className="border-b border-[#E5E5E5] bg-[#FBF9F7] px-6 py-5 lg:px-8">
-                        <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
-                            <div className="max-w-3xl">
-                                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#D9D6D0] bg-white px-3 py-1 text-xs font-medium text-[#4A5D4A]">
-                                    <LineChart className="h-3.5 w-3.5" />
-                                    {activeAgent.status}
-                                </div>
-                                <h1 className="text-2xl font-semibold tracking-tight text-[#1A1A1A]">{activeAgent.name}</h1>
-                                <p className="mt-2 max-w-2xl text-sm leading-6 text-[#666666]">{activeAgent.description}</p>
-                            </div>
-                            <div className="rounded-2xl border border-[#E5E5E5] bg-white px-4 py-3 text-sm leading-6 text-[#666666] xl:w-[360px]">
-                                <span className="font-medium text-[#1A1A1A]">Conversacion:</span>{' '}
-                                {activeConversation ? activeConversation.title : 'Nueva conversacion sin guardar'}
-                            </div>
-                        </div>
-                    </header>
+                        {conversationGroups.length === 0 ? (
+                            <SidebarGroup>
+                                <SidebarGroupLabel>Conversaciones</SidebarGroupLabel>
+                                <p className="text-muted-foreground px-2 text-xs leading-5">
+                                    Todavia no hay conversaciones. Escribe un mensaje para guardar la primera.
+                                </p>
+                            </SidebarGroup>
+                        ) : (
+                            conversationGroups.map((group) => (
+                                <SidebarGroup key={group.period}>
+                                    <SidebarGroupLabel>{group.period}</SidebarGroupLabel>
+                                    <SidebarMenu>
+                                        {group.conversations.map((conversation) => (
+                                            <SidebarMenuButton
+                                                key={conversation.id}
+                                                isActive={activeConversation?.id === conversation.id}
+                                                onClick={() => router.get(`/admin/chat?conversation=${conversation.id}`)}
+                                            >
+                                                <span className="truncate">{conversation.title}</span>
+                                            </SidebarMenuButton>
+                                        ))}
+                                    </SidebarMenu>
+                                </SidebarGroup>
+                            ))
+                        )}
+                    </SidebarContent>
+                </Sidebar>
 
-                    <section className="flex min-h-0 flex-1 flex-col bg-[#FBF9F7]">
-                        <ChatContainerRoot className="min-h-0 flex-1 px-5 py-7 lg:px-8">
-                            <ChatContainerContent className="mx-auto w-full max-w-3xl gap-6">
-                                {messages.length === 0 && (
-                                    <div className="rounded-3xl border border-[#E5E5E5] bg-white p-6">
-                                        <div className="flex items-start gap-4">
-                                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#4A5D4A] text-white">
-                                                <Brain className="h-5 w-5" />
+                <SidebarInset>
+                    <main className="flex h-svh flex-col overflow-hidden">
+                        <header className="bg-background z-10 flex h-16 w-full shrink-0 items-center gap-2 border-b px-4">
+                            <SidebarTrigger className="-ml-1" />
+                            <div className="text-foreground truncate">{headerTitle}</div>
+                        </header>
+
+                        <div className="relative flex-1 overflow-y-auto">
+                            <ChatContainerRoot className="h-full">
+                                <ChatContainerContent className="space-y-0 px-5 py-12">
+                                    {messages.length === 0 && (
+                                        <div className="mx-auto w-full max-w-3xl px-6">
+                                            <div className="bg-card rounded-3xl border p-6">
+                                                <div className="flex items-start gap-4">
+                                                    <div className="bg-primary text-primary-foreground flex size-11 shrink-0 items-center justify-center rounded-2xl">
+                                                        <Sparkles className="size-5" />
+                                                    </div>
+                                                    <div>
+                                                        <h2 className="text-foreground text-base font-semibold">{activeAgent.name} listo</h2>
+                                                        <p className="text-muted-foreground mt-1 text-sm leading-6">{activeAgent.welcome}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="mt-5 flex flex-wrap gap-2">
+                                                    {activeAgent.suggestions.map((suggestion) => (
+                                                        <PromptSuggestion key={suggestion} size="sm" onClick={() => setInput(suggestion)}>
+                                                            {suggestion}
+                                                        </PromptSuggestion>
+                                                    ))}
+                                                </div>
                                             </div>
-                                            <div>
-                                                <h2 className="text-base font-semibold text-[#1A1A1A]">{activeAgent.name} listo</h2>
-                                                <p className="mt-1 text-sm leading-6 text-[#666666]">{activeAgent.welcome}</p>
-                                            </div>
                                         </div>
-                                        <div className="mt-5 flex flex-wrap gap-2">
-                                            {activeAgent.suggestions.map((suggestion) => (
-                                                <PromptSuggestion
-                                                    key={suggestion}
-                                                    size="sm"
-                                                    className="rounded-full border-[#D9D6D0] bg-[#FBF9F7] text-[#4A5D4A] hover:bg-white"
-                                                    onClick={() => setInput(suggestion)}
-                                                >
-                                                    {suggestion}
-                                                </PromptSuggestion>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
+                                    )}
 
-                                {messages.map((message) => (
-                                    <div key={message.id} className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                        {message.role === 'assistant' && <AssistantAvatar label={agents[message.agent]?.name ?? 'AI'} />}
-                                        <div className={message.role === 'user'
-                                            ? 'max-w-[82%] rounded-2xl bg-[#4A5D4A] px-4 py-3 text-sm leading-6 text-white prose-p:m-0'
-                                            : 'max-w-[82%] rounded-2xl border border-[#E5E5E5] bg-white px-4 py-3 text-sm leading-6 text-[#1A1A1A] prose-p:m-0'}>
-                                            {message.role === 'assistant' ? <ChatMarkdown>{message.content}</ChatMarkdown> : message.content}
-                                        </div>
-                                    </div>
-                                ))}
+                                    {messages.map((message, index) => {
+                                        const isAssistant = message.role === 'assistant';
+                                        const isLastMessage = index === messages.length - 1;
 
-                                {isSending && (
-                                    <div className="flex justify-start gap-3">
-                                        <AssistantAvatar label={activeAgent.name} />
-                                        <div className="flex items-center gap-3 rounded-2xl border border-[#E5E5E5] bg-white px-4 py-3 text-sm text-[#666666]">
+                                        return (
+                                            <Message
+                                                key={message.id}
+                                                className={cn(
+                                                    'mx-auto flex w-full max-w-3xl flex-col gap-2 px-6',
+                                                    isAssistant ? 'items-start' : 'items-end',
+                                                )}
+                                            >
+                                                {isAssistant ? (
+                                                    <div className="group flex w-full flex-col gap-0">
+                                                        <MessageContent
+                                                            className="text-foreground prose dark:prose-invert flex-1 rounded-lg bg-transparent p-0"
+                                                            markdown
+                                                        >
+                                                            {message.content}
+                                                        </MessageContent>
+                                                        <MessageActions
+                                                            className={cn(
+                                                                '-ml-2.5 flex gap-0 opacity-0 transition-opacity duration-150 group-hover:opacity-100',
+                                                                isLastMessage && 'opacity-100',
+                                                            )}
+                                                        >
+                                                            <MessageAction tooltip="Copiar">
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="icon"
+                                                                    className="rounded-full"
+                                                                    onClick={() => copyMessage(message.content)}
+                                                                >
+                                                                    <Copy />
+                                                                </Button>
+                                                            </MessageAction>
+                                                        </MessageActions>
+                                                    </div>
+                                                ) : (
+                                                    <div className="group flex flex-col items-end gap-1">
+                                                        <MessageContent className="bg-muted text-foreground max-w-[85%] rounded-3xl px-5 py-2.5 sm:max-w-[75%]">
+                                                            {message.content}
+                                                        </MessageContent>
+                                                        <MessageActions className="flex gap-0 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+                                                            <MessageAction tooltip="Copiar">
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="icon"
+                                                                    className="rounded-full"
+                                                                    onClick={() => copyMessage(message.content)}
+                                                                >
+                                                                    <Copy />
+                                                                </Button>
+                                                            </MessageAction>
+                                                        </MessageActions>
+                                                    </div>
+                                                )}
+                                            </Message>
+                                        );
+                                    })}
+
+                                    {isSending && (
+                                        <div className="mx-auto flex w-full max-w-3xl items-center gap-3 px-6 py-2">
                                             <Loader variant="typing" size="sm" />
-                                            Pensando
+                                            <span className="text-muted-foreground text-sm">Pensando</span>
                                         </div>
-                                    </div>
-                                )}
+                                    )}
 
-                                {error && (
-                                    <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                                        {error}
-                                    </div>
-                                )}
-                                <ChatContainerScrollAnchor />
-                            </ChatContainerContent>
-                        </ChatContainerRoot>
+                                    {error && (
+                                        <div className="mx-auto w-full max-w-3xl px-6">
+                                            <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300">
+                                                {error}
+                                            </div>
+                                        </div>
+                                    )}
+                                </ChatContainerContent>
+                                <div className="absolute bottom-4 left-1/2 flex w-full max-w-3xl -translate-x-1/2 justify-end px-5">
+                                    <ScrollButton className="shadow-sm" />
+                                </div>
+                            </ChatContainerRoot>
+                        </div>
 
-                        <div className="border-t border-[#E5E5E5] bg-[#FBF9F7] px-5 py-5 lg:px-8">
+                        <div className="bg-background z-10 shrink-0 px-3 pb-3 md:px-5 md:pb-5">
                             <div className="mx-auto max-w-3xl">
                                 <PromptInput
+                                    isLoading={isSending}
                                     value={input}
                                     onValueChange={setInput}
                                     onSubmit={sendMessage}
-                                    isLoading={isSending}
-                                    className="rounded-3xl border-[#D9D6D0] bg-white p-3 shadow-none"
+                                    className="border-input bg-popover relative z-10 w-full rounded-3xl border p-0 pt-1 shadow-xs"
                                 >
-                                    <PromptInputTextarea
-                                        placeholder={`Escribe para ${activeAgent.name}...`}
-                                        className="min-h-12 text-sm text-[#1A1A1A] placeholder:text-[#999999]"
-                                    />
-                                    <PromptInputActions className="justify-between border-t border-[#EDEAE5] pt-3">
-                                        <PromptInputAction tooltip="Adjuntar archivos estara disponible despues">
-                                            <Button type="button" variant="ghost" size="icon" disabled className="rounded-full text-[#666666]">
-                                                <Paperclip className="h-4 w-4" />
-                                            </Button>
-                                        </PromptInputAction>
-                                        <Button
-                                            type="button"
-                                            disabled={isSending || input.trim() === ''}
-                                            className="rounded-full bg-[#4A5D4A] px-4 text-white"
-                                            onClick={sendMessage}
-                                        >
-                                            {isSending ? 'Enviando' : 'Enviar'}
-                                            <ArrowUp className="h-4 w-4" />
-                                        </Button>
-                                    </PromptInputActions>
+                                    <div className="flex flex-col">
+                                        <PromptInputTextarea
+                                            placeholder={`Escribe para ${activeAgent.name}...`}
+                                            className="min-h-[44px] pt-3 pl-4 text-base leading-[1.3] sm:text-base md:text-base"
+                                        />
+
+                                        <PromptInputActions className="mt-5 flex w-full items-center justify-between gap-2 px-3 pb-3">
+                                            <div className="flex items-center gap-2">
+                                                <PromptInputAction tooltip="Nueva conversacion">
+                                                    <Button
+                                                        variant="outline"
+                                                        size="icon"
+                                                        className="size-9 rounded-full"
+                                                        onClick={startNewConversation}
+                                                    >
+                                                        <Plus size={18} />
+                                                    </Button>
+                                                </PromptInputAction>
+
+                                                <PromptInputAction tooltip="Adjuntar archivos estara disponible despues">
+                                                    <Button variant="outline" size="icon" disabled className="size-9 rounded-full">
+                                                        <Paperclip size={18} />
+                                                    </Button>
+                                                </PromptInputAction>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <PromptInputAction tooltip="Dictado estara disponible despues">
+                                                    <Button variant="outline" size="icon" disabled className="size-9 rounded-full">
+                                                        <Mic size={18} />
+                                                    </Button>
+                                                </PromptInputAction>
+
+                                                <Button
+                                                    size="icon"
+                                                    disabled={!input.trim() || isSending}
+                                                    onClick={sendMessage}
+                                                    className="size-9 rounded-full"
+                                                >
+                                                    {!isSending ? <ArrowUp size={18} /> : <span className="size-3 rounded-xs bg-white" />}
+                                                </Button>
+                                            </div>
+                                        </PromptInputActions>
+                                    </div>
                                 </PromptInput>
-                                <p className="mt-3 text-center text-xs text-[#999999]">
+                                <p className="text-muted-foreground mt-3 text-center text-xs">
                                     Las conversaciones se guardan para tu usuario. Verifica cualquier accion operativa antes de aplicarla.
                                 </p>
                             </div>
                         </div>
-                    </section>
-                </main>
-            </div>
+                    </main>
+                </SidebarInset>
+            </SidebarProvider>
         </>
     );
 }
 
-function AssistantAvatar({ label }: { label: string }) {
-    return (
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#D9D6D0] bg-white text-[10px] font-semibold text-[#4A5D4A]">
-            {label.slice(0, 2).toUpperCase()}
-        </div>
-    );
-}
+type ConversationGroup = {
+    period: string;
+    conversations: Conversation[];
+};
 
-function ChatMarkdown({ children }: { children: string }) {
-    return (
-        <Markdown remarkPlugins={[remarkGfm]} components={MARKDOWN_COMPONENTS}>
-            {children}
-        </Markdown>
-    );
-}
+function groupConversations(conversations: Conversation[]): ConversationGroup[] {
+    const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    const day = 86_400_000;
+    const startOfYesterday = startOfToday - day;
+    const sevenDaysAgo = startOfToday - 7 * day;
+    const thirtyDaysAgo = startOfToday - 30 * day;
 
-function formatDate(value: string | null) {
-    if (!value) {
-        return 'Sin fecha';
+    const groups: ConversationGroup[] = [
+        { period: 'Hoy', conversations: [] },
+        { period: 'Ayer', conversations: [] },
+        { period: 'Ultimos 7 dias', conversations: [] },
+        { period: 'Ultimos 30 dias', conversations: [] },
+        { period: 'Anteriores', conversations: [] },
+    ];
+
+    for (const conversation of conversations) {
+        const timestamp = conversation.updated_at ? new Date(conversation.updated_at).getTime() : 0;
+
+        if (timestamp >= startOfToday) {
+            groups[0].conversations.push(conversation);
+        } else if (timestamp >= startOfYesterday) {
+            groups[1].conversations.push(conversation);
+        } else if (timestamp >= sevenDaysAgo) {
+            groups[2].conversations.push(conversation);
+        } else if (timestamp >= thirtyDaysAgo) {
+            groups[3].conversations.push(conversation);
+        } else {
+            groups[4].conversations.push(conversation);
+        }
     }
 
-    return new Intl.DateTimeFormat('es-MX', {
-        day: '2-digit',
-        month: 'short',
-        hour: '2-digit',
-        minute: '2-digit',
-    }).format(new Date(value));
+    return groups.filter((group) => group.conversations.length > 0);
 }
-
-const MARKDOWN_COMPONENTS = {
-    p: ({ children }: ComponentPropsWithoutRef<'p'>) => (
-        <p className="mb-3 last:mb-0">{children}</p>
-    ),
-    ul: ({ children }: ComponentPropsWithoutRef<'ul'>) => (
-        <ul className="mb-3 flex flex-col gap-1.5 pl-0 last:mb-0">{children}</ul>
-    ),
-    ol: ({ children }: ComponentPropsWithoutRef<'ol'>) => (
-        <ol className="mb-3 flex list-decimal flex-col gap-1.5 pl-5 last:mb-0">{children}</ol>
-    ),
-    li: ({ children }: ComponentPropsWithoutRef<'li'>) => (
-        <li className="relative list-none pl-5 before:absolute before:left-0 before:top-[0.72em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-[#4A5D4A]">
-            {children}
-        </li>
-    ),
-    a: ({ children, href, ...rest }: ComponentPropsWithoutRef<'a'>) => (
-        <a
-            {...rest}
-            href={href}
-            className="font-medium text-[#4A5D4A] underline decoration-[#D9D6D0] underline-offset-4 hover:decoration-[#4A5D4A]"
-            target={href?.startsWith('http') ? '_blank' : undefined}
-            rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
-        >
-            {children}
-        </a>
-    ),
-    code: ({ children }: ComponentPropsWithoutRef<'code'>) => (
-        <code className="rounded-md bg-[#F5F3F0] px-1.5 py-0.5 font-mono text-[0.86em] text-[#4A5D4A]">
-            {children}
-        </code>
-    ),
-    pre: ({ children }: ComponentPropsWithoutRef<'pre'>) => (
-        <pre className="mb-3 overflow-x-auto rounded-xl bg-[#F5F3F0] p-3 text-xs leading-5 text-[#1A1A1A] last:mb-0">
-            {children}
-        </pre>
-    ),
-    strong: ({ children }: ComponentPropsWithoutRef<'strong'>) => (
-        <strong className="font-semibold text-[#1A1A1A]">{children}</strong>
-    ),
-    blockquote: ({ children }: ComponentPropsWithoutRef<'blockquote'>) => (
-        <blockquote className="mb-3 rounded-xl border border-[#D9D6D0] bg-[#FBF9F7] px-3 py-2 text-[#666666] last:mb-0">
-            {children}
-        </blockquote>
-    ),
-};
