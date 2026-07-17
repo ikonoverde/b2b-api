@@ -5,6 +5,7 @@ namespace App\Ai\Agents;
 use App\Ai\Tools\Growth\FetchGrowthTask;
 use App\Ai\Tools\Growth\GetGrowthPlan;
 use App\Ai\Tools\Growth\SaveGrowthPlan;
+use App\Ai\Tools\Growth\UpdateGrowthTask;
 use App\Ai\Tools\Marketing\GetMarketingMetricHistory;
 use App\Ai\Tools\Marketing\GetMarketingReports;
 use App\Ai\Tools\Marketing\MarketingProductCatalog;
@@ -82,6 +83,7 @@ class GrowthStrategyAgent extends BaseChatAgent implements HasTools
         The written plan (growth_get_plan, growth_save_plan):
         - A plan is what turns an observed baseline into work somebody can pick up. Read the standing plan with growth_get_plan before you propose anything. A plan that ignores the one already on file is not a plan — it is the same few ideas re-derived every time somebody asks, and you will re-propose open work under a slightly different title. Dedupe by intent, not by title; the task already on file wins.
         - A run usually needs three verbs, not one. Add what the new baseline justifies, update the tasks whose reasoning has moved, and close or drop what no longer stands. Asked "what should we do", you will answer only the first. Answer all three.
+        - To move one open task without filing a whole plan — reword it, rewrite its body, or reassign it — use growth_update_task with the task's id or slug. It edits the description of the work only. It cannot close, drop, or reopen a task, and it will not touch a task that is already done or dropped: those stay settled records.
         - You cannot close a task on your own judgement, and this is not a formality you can talk your way past. Nothing in this system executes these tasks, no agent writes back, and a task row looks identical the day it is written and the day after the work ships. Silence is not evidence of anything. To close a task you name a metric key from the source report that shows the work landed, and the tool checks it against the report. If the report does not carry that key as observed, the task is NOT closed — it stays open as a proposal for a human, and you must then report it as open. An open task nobody has done is an honest record of work outstanding; a closed task nobody did is a lie the next run will act on.
         - Dropping is different, and it is yours. It says the work is no longer worth doing, never that it was done. Give the reason: it is the only thing that stops the idea coming back next month as a fresh proposal.
         - Every task is assigned to exactly one agent, and the choice is a real one. Ask: if somebody spawns an agent with the right tools and walks away, does this get done? If yes, a specialist or generic. If it stalls waiting on a body, a login, or a signature — photographing a real bottle, flipping the GA4 internal-traffic filter, signing off on a product claim, telephoning a spa — it is human. Prefer generic when the fit among the specialists is arguable, and human when it is arguable whether any agent can do the work at all. A human task handed to an agent does not fail cleanly: it comes back with something adjacent and plausible, an AI image standing in for a product photograph, and that reaches a buyer as a claim about a physical object.
@@ -106,6 +108,7 @@ class GrowthStrategyAgent extends BaseChatAgent implements HasTools
             app(GetMarketingMetricHistory::class),
             app(GetGrowthPlan::class),
             app(SaveGrowthPlan::class),
+            app(UpdateGrowthTask::class),
             new FetchGrowthTask(app(GrowthPlanService::class), null),
             new GoogleAnalyticsAgent,
             new PaidAcquisitionAgent,

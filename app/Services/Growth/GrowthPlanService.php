@@ -494,6 +494,29 @@ class GrowthPlanService
     }
 
     /**
+     * Edit the content of one task in place, outside a plan run. Only the fields that describe the work
+     * move — name, body, assignee — and only those present in $changes. The lifecycle is deliberately
+     * out of reach: a task closes, drops, or reopens through the verified paths in save() or a human in
+     * the admin, never by an agent editing a status field here.
+     *
+     * @param  array<string, mixed>  $changes  A subset of name, body, agent.
+     * @return array<string, mixed>
+     */
+    public function updateTask(GrowthTask $task, array $changes): array
+    {
+        $task->fill(array_intersect_key($changes, array_flip(['name', 'body', 'agent'])));
+        $task->save();
+
+        return [
+            'slug' => $task->slug,
+            'name' => $task->name,
+            'agent' => $task->agent,
+            'status' => $task->status,
+            'outcome' => 'updated',
+        ];
+    }
+
+    /**
      * One task, with the action it serves. The action is the reason the task exists, and a task read
      * without it is an instruction with no argument behind it.
      *
