@@ -52,6 +52,10 @@
             "type": "http",
             "url": "http://localhost:8000/mcp/blog"
         },
+        "pages": {
+            "type": "http",
+            "url": "http://localhost:8000/mcp/pages"
+        },
         "tracking": {
             "type": "http",
             "url": "http://localhost:8000/mcp/tracking"

@@ -1,7 +1,7 @@
 <?php
 
 use App\Ai\Agents\MarketingReportAgent;
-use App\Ai\Tools\SaveMarketingReport;
+use App\Ai\Tools\Marketing\SaveMarketingReport;
 use App\Jobs\GenerateMarketingReport;
 use App\Models\MarketingReport;
 use Illuminate\Contracts\Queue\ShouldBeUnique;

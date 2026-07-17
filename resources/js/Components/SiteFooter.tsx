@@ -8,7 +8,7 @@ interface SiteFooterProps {
 const FOOTER_FACTS = [
     { label: 'Sin mínimo', value: 'Desde 1 unidad' },
     { label: 'Precios visibles', value: 'Sin iniciar sesión' },
-    { label: 'Cuenta opcional', value: 'Compra como invitado' },
+    { label: 'Mismo precio', value: 'Para todos' },
 ] as const;
 
 const footerLinkClass =

@@ -99,6 +99,46 @@ final class BlogPostSchema
     /**
      * @return array<string, Type>
      */
+    public static function listFields(JsonSchema $schema): array
+    {
+        return [
+            'status' => $schema->string()
+                ->nullable()
+                ->enum(BlogPostService::STATUSES)
+                ->description('Which posts to return. live: on the storefront now. scheduled: published with a future date. draft: not published, or published with no date. Defaults to all.'),
+            'search' => $schema->string()
+                ->nullable()
+                ->description('Optional term matched against title, slug, and excerpt.'),
+            'limit' => $schema->integer()
+                ->nullable()
+                ->description('Maximum posts to return. Defaults to 25. Must be between 1 and 100; total_matching reports how many exist beyond that.'),
+        ];
+    }
+
+    /**
+     * @return array<string, Type>
+     */
+    public static function listOutputFields(JsonSchema $schema): array
+    {
+        return [
+            'filters' => $schema->object([
+                'status' => $schema->string()->description('Applied status filter.')->required(),
+                'search' => $schema->string()->nullable()->description('Applied search term.'),
+                'limit' => $schema->integer()->description('Applied maximum post count.')->required(),
+            ])->description('The filters applied to the query.')->required(),
+            'total_matching' => $schema->integer()
+                ->description('How many posts match the filters, before the limit is applied.')
+                ->required(),
+            'posts' => $schema->array()
+                ->items($schema->object(self::outputFields($schema, withVisibility: true)))
+                ->description('The matching posts, newest first, without their markdown bodies.')
+                ->required(),
+        ];
+    }
+
+    /**
+     * @return array<string, Type>
+     */
     public static function lookupFields(JsonSchema $schema): array
     {
         return [

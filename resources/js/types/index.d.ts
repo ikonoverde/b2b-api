@@ -543,3 +543,149 @@ export interface SocialPostDraftDetail extends SocialPostDraftListItem {
     requires_image: boolean;
     is_publishable: boolean;
 }
+
+export type GrowthTaskAgent =
+    | 'content'
+    | 'keywords'
+    | 'paid-acquisition'
+    | 'social-media'
+    | 'generic'
+    | 'human';
+
+export type GrowthStatus = 'open' | 'done' | 'dropped';
+
+/**
+ * How a task was closed, and the two must never render the same.
+ *
+ * `report` means a marketing report observed the work landed, and the service checked that claim
+ * against the metric. `human` means a person said so. They are different kinds of truth, and a single
+ * green check over both is how a plan quietly stops distinguishing what was measured from what was
+ * asserted.
+ */
+export type GrowthClosedBy = 'report' | 'human';
+
+export interface GrowthTaskItem {
+    id: number;
+    slug: string;
+    name: string;
+    body: string;
+    agent: GrowthTaskAgent;
+    status: GrowthStatus;
+    source_report: string | null;
+    closed_at: string | null;
+    closed_by: GrowthClosedBy | null;
+    close_evidence: string | null;
+    drop_reason: string | null;
+    closure_proposed: boolean;
+    closure_proposal_reason: string | null;
+}
+
+export interface GrowthActionItem {
+    id: number;
+    slug: string;
+    name: string;
+    summary: string | null;
+    status: GrowthStatus;
+    tasks: GrowthTaskItem[];
+}
+
+/**
+ * The kanban columns, a reading of state the system already keeps: `todo` and `in_progress` split open
+ * tasks by started_at, `review` is the open tasks awaiting a closure decision, `done` is the closed
+ * ones. Dropped tasks appear on no column.
+ */
+export type GrowthBoardColumn = 'todo' | 'in_progress' | 'review' | 'done';
+
+export interface GrowthBoardTask {
+    id: number;
+    slug: string;
+    name: string;
+    body: string;
+    agent: GrowthTaskAgent;
+    action: string;
+    source_report: string | null;
+    started_at: string | null;
+    closed_by: GrowthClosedBy | null;
+    close_evidence: string | null;
+    closure_proposal_reason: string | null;
+}
+
+/**
+ * One record an agent generated while executing a task — a blog draft, an ad proposal, a social post
+ * draft. `url` is the artifact's own admin detail page, or null when it has none (e.g. banners).
+ */
+export interface GrowthTaskArtifact {
+    type: string;
+    label: string;
+    title: string;
+    url: string | null;
+    created_at: string | null;
+}
+
+export interface GrowthTaskDetail {
+    id: number;
+    slug: string;
+    name: string;
+    body: string;
+    agent: GrowthTaskAgent;
+    action: string;
+    status: GrowthStatus;
+    column: GrowthBoardColumn | null;
+    source_report: string | null;
+    started_at: string | null;
+    closed_at: string | null;
+    closed_by: GrowthClosedBy | null;
+    close_evidence: string | null;
+    closure_proposed: boolean;
+    closure_proposal_reason: string | null;
+    drop_reason: string | null;
+    artifacts: GrowthTaskArtifact[];
+}
+
+export interface ReportDetail {
+    id: number;
+    type: string;
+    type_label: string;
+    title: string;
+    summary: string | null;
+    body: string;
+    agent: string | null;
+    created_at: string | null;
+}
+
+export interface GrowthPaidGate {
+    verdict: 'open' | 'closed';
+    reason: string;
+    preconditions: string[];
+    decided_on: string;
+}
+
+export interface GrowthPlanRun {
+    id: number;
+    planned_on: string;
+    source_report: string;
+    paid_gate: 'open' | 'closed';
+    created_actions_count: number;
+    created_tasks_count: number;
+}
+
+export interface GrowthPlanDetail {
+    id: number;
+    planned_on: string;
+    body: string;
+    paid_gate: 'open' | 'closed';
+    paid_gate_reason: string;
+    paid_gate_preconditions: string[];
+    created_at: string | null;
+    source_report: { id: number; reported_on: string };
+}
+
+export interface GrowthTouchedTask {
+    id: number;
+    name: string;
+    action_name: string;
+    agent: GrowthTaskAgent;
+    status: GrowthStatus;
+    closure_proposed: boolean;
+    created_here: boolean;
+}

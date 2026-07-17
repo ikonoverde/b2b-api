@@ -2,26 +2,26 @@
 
 use App\Ai\Agents\IkonoverdeContext;
 use App\Ai\Agents\PaidAcquisitionAgent;
-use App\Ai\Tools\CreateGoogleAdProposal;
-use App\Ai\Tools\CreateMetaAdProposal;
-use App\Ai\Tools\GenerateImage;
-use App\Ai\Tools\GetAnalyticsAccountSummaries;
-use App\Ai\Tools\GetAnalyticsPropertyDetails;
-use App\Ai\Tools\GetCustomDimensionsAndMetrics;
-use App\Ai\Tools\GetInstagramAccountInfo;
-use App\Ai\Tools\GetInstagramPostComments;
-use App\Ai\Tools\GetInstagramPostInsights;
-use App\Ai\Tools\GetInstagramPosts;
-use App\Ai\Tools\GetMetaPageInfo;
-use App\Ai\Tools\GetMetaPagePosts;
-use App\Ai\Tools\GetMetaPostComments;
-use App\Ai\Tools\GetMetaPostInsights;
-use App\Ai\Tools\ListAnalyticsPropertyAnnotations;
-use App\Ai\Tools\ListGoogleAdsLinks;
-use App\Ai\Tools\RunAnalyticsConversionsReport;
-use App\Ai\Tools\RunAnalyticsFunnelReport;
-use App\Ai\Tools\RunAnalyticsRealtimeReport;
-use App\Ai\Tools\RunAnalyticsReport;
+use App\Ai\Tools\Ads\CreateGoogleAdProposal;
+use App\Ai\Tools\Ads\CreateMetaAdProposal;
+use App\Ai\Tools\Analytics\GetAnalyticsAccountSummaries;
+use App\Ai\Tools\Analytics\GetAnalyticsPropertyDetails;
+use App\Ai\Tools\Analytics\GetCustomDimensionsAndMetrics;
+use App\Ai\Tools\Analytics\ListAnalyticsPropertyAnnotations;
+use App\Ai\Tools\Analytics\ListGoogleAdsLinks;
+use App\Ai\Tools\Analytics\RunAnalyticsConversionsReport;
+use App\Ai\Tools\Analytics\RunAnalyticsFunnelReport;
+use App\Ai\Tools\Analytics\RunAnalyticsRealtimeReport;
+use App\Ai\Tools\Analytics\RunAnalyticsReport;
+use App\Ai\Tools\Images\GenerateImage;
+use App\Ai\Tools\Meta\GetInstagramAccountInfo;
+use App\Ai\Tools\Meta\GetInstagramPostComments;
+use App\Ai\Tools\Meta\GetInstagramPostInsights;
+use App\Ai\Tools\Meta\GetInstagramPosts;
+use App\Ai\Tools\Meta\GetMetaPageInfo;
+use App\Ai\Tools\Meta\GetMetaPagePosts;
+use App\Ai\Tools\Meta\GetMetaPostComments;
+use App\Ai\Tools\Meta\GetMetaPostInsights;
 use Laravel\Ai\Contracts\HasTools;
 
 it('exposes reporting and creative ads tools', function () {

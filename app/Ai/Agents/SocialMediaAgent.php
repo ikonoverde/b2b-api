@@ -2,9 +2,10 @@
 
 namespace App\Ai\Agents;
 
-use App\Ai\Tools\GenerateImage;
-use App\Ai\Tools\MarketingProductCatalog;
-use App\Ai\Tools\MarketingSalesSummary;
+use App\Ai\Tools\Images\GenerateImage;
+use App\Ai\Tools\Marketing\MarketingProductCatalog;
+use App\Ai\Tools\Marketing\MarketingSalesSummary;
+use App\Ai\Tools\Reports\CreateReport;
 use App\Ai\Tools\Social\CreateSocialPostDraft;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Contracts\CanActAsTool;
@@ -75,6 +76,7 @@ PROMPT;
             app(MarketingSalesSummary::class),
             app(GenerateImage::class),
             app(CreateSocialPostDraft::class),
+            app(CreateReport::class),
             new MetaAgent,
             new BrandAgent,
         ];

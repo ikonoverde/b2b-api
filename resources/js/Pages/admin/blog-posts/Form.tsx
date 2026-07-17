@@ -1,5 +1,5 @@
 import { Link, useForm } from '@inertiajs/react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Eye } from 'lucide-react';
 import { lazy, Suspense } from 'react';
 import AppLayout from '@/Layouts/AppLayout';
 
@@ -67,13 +67,26 @@ export default function BlogPostForm({ post }: Props) {
                         Volver al Blog
                     </Link>
 
-                    <div className="mb-8">
-                        <h1 className="font-[Outfit] text-2xl font-bold text-[#1A1A1A]">
-                            {isEditing ? 'Editar Entrada' : 'Nueva Entrada'}
-                        </h1>
-                        <p className="mt-1 font-[Outfit] text-sm text-[#666666]">
-                            Administra el contenido, portada y publicación de la entrada.
-                        </p>
+                    <div className="mb-8 flex items-start justify-between">
+                        <div>
+                            <h1 className="font-[Outfit] text-2xl font-bold text-[#1A1A1A]">
+                                {isEditing ? 'Editar Entrada' : 'Nueva Entrada'}
+                            </h1>
+                            <p className="mt-1 font-[Outfit] text-sm text-[#666666]">
+                                Administra el contenido, portada y publicación de la entrada.
+                            </p>
+                        </div>
+                        {post && (
+                            <a
+                                href={`/admin/blog-posts/${post.id}/preview`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 rounded-lg border border-[#E5E5E5] bg-white px-4 py-2.5 font-[Outfit] text-sm font-medium text-[#4A5D4A] hover:bg-gray-50"
+                            >
+                                <Eye className="h-4 w-4" />
+                                Vista previa
+                            </a>
+                        )}
                     </div>
 
                     <form onSubmit={handleSubmit} className="flex flex-col gap-6">

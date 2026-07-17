@@ -5,12 +5,11 @@ namespace App\Models;
 use Database\Factories\BlogPostFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class BlogPost extends Model
+class BlogPost extends Artifact
 {
     /** @use HasFactory<BlogPostFactory> */
     use HasFactory;
@@ -18,6 +17,7 @@ class BlogPost extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'growth_task_id',
         'title',
         'slug',
         'excerpt',
@@ -75,5 +75,20 @@ class BlogPost extends Model
         return $this->is_published
             && $this->published_at !== null
             && ! $this->published_at->isFuture();
+    }
+
+    public function artifactLabel(): string
+    {
+        return 'Entrada de blog';
+    }
+
+    public function artifactTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function adminUrl(): ?string
+    {
+        return "/admin/blog-posts/{$this->id}/edit";
     }
 }

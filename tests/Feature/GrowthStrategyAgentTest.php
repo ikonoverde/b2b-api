@@ -1,19 +1,21 @@
 <?php
 
 use App\Ai\Agents\GrowthStrategyAgent;
-use App\Ai\Tools\GetAnalyticsAccountSummaries;
-use App\Ai\Tools\GetAnalyticsPropertyDetails;
-use App\Ai\Tools\GetCustomDimensionsAndMetrics;
-use App\Ai\Tools\GetInstagramPosts;
-use App\Ai\Tools\GetMetaPagePosts;
-use App\Ai\Tools\ListAnalyticsPropertyAnnotations;
-use App\Ai\Tools\ListGoogleAdsLinks;
-use App\Ai\Tools\MarketingProductCatalog;
-use App\Ai\Tools\MarketingSalesSummary;
-use App\Ai\Tools\RunAnalyticsConversionsReport;
-use App\Ai\Tools\RunAnalyticsFunnelReport;
-use App\Ai\Tools\RunAnalyticsRealtimeReport;
-use App\Ai\Tools\RunAnalyticsReport;
+use App\Ai\Tools\Analytics\GetAnalyticsAccountSummaries;
+use App\Ai\Tools\Analytics\GetAnalyticsPropertyDetails;
+use App\Ai\Tools\Analytics\GetCustomDimensionsAndMetrics;
+use App\Ai\Tools\Analytics\ListAnalyticsPropertyAnnotations;
+use App\Ai\Tools\Analytics\ListGoogleAdsLinks;
+use App\Ai\Tools\Analytics\RunAnalyticsConversionsReport;
+use App\Ai\Tools\Analytics\RunAnalyticsFunnelReport;
+use App\Ai\Tools\Analytics\RunAnalyticsRealtimeReport;
+use App\Ai\Tools\Analytics\RunAnalyticsReport;
+use App\Ai\Tools\Growth\GetGrowthPlan;
+use App\Ai\Tools\Growth\SaveGrowthPlan;
+use App\Ai\Tools\Marketing\MarketingProductCatalog;
+use App\Ai\Tools\Marketing\MarketingSalesSummary;
+use App\Ai\Tools\Meta\GetInstagramPosts;
+use App\Ai\Tools\Meta\GetMetaPagePosts;
 use Laravel\Ai\Contracts\HasTools;
 
 it('carries the marketing ideas strategy rules', function () {
@@ -54,6 +56,34 @@ it('exposes GA4 read-only tools for analytics context', function () {
         ->toContain(ListAnalyticsPropertyAnnotations::class)
         ->not->toContain(GetMetaPagePosts::class)
         ->not->toContain(GetInstagramPosts::class);
+});
+
+it('can read the standing plan and file a new one', function () {
+    $tools = collect((new GrowthStrategyAgent)->tools())
+        ->map(fn (object $tool): string => $tool::class);
+
+    expect($tools->all())
+        ->toContain(GetGrowthPlan::class)
+        ->toContain(SaveGrowthPlan::class);
+});
+
+/**
+ * The gate is architectural, not a sentence in a prompt. The agent's only write tool files a plan into
+ * a table a person reads; nothing in its reach publishes, spends, or emails. Its instructions say it
+ * cannot close a task on its own judgement, and GrowthPlanService is what makes that true.
+ */
+it('carries the rules of the plan it is allowed to write', function () {
+    $instructions = (string) (new GrowthStrategyAgent)->instructions();
+
+    expect($instructions)
+        ->toContain('You cannot close a task on your own judgement')
+        ->toContain('the tool checks it against the report')
+        ->toContain('a closed task nobody did is a lie the next run will act on')
+        ->toContain('Dropping is different, and it is yours')
+        ->toContain('The paid gate is yours to decide')
+        ->toContain('file no paid-acquisition tasks')
+        ->toContain('The sales summary reads the local development database')
+        ->toContain('Dedupe by intent, not by title');
 });
 
 it('maps conversation history into Laravel AI messages', function () {

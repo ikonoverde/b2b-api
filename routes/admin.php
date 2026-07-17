@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\BlogPosts\CreateBlogPostController;
 use App\Http\Controllers\Admin\BlogPosts\DestroyBlogPostController;
 use App\Http\Controllers\Admin\BlogPosts\EditBlogPostController;
 use App\Http\Controllers\Admin\BlogPosts\IndexBlogPostsController;
+use App\Http\Controllers\Admin\BlogPosts\PreviewBlogPostController;
 use App\Http\Controllers\Admin\BlogPosts\StoreBlogPostController;
 use App\Http\Controllers\Admin\BlogPosts\UpdateBlogPostController;
 use App\Http\Controllers\Admin\Businesses\ExportBusinessesForMetaController;
@@ -13,6 +14,14 @@ use App\Http\Controllers\Admin\Businesses\IndexBusinessesController;
 use App\Http\Controllers\Admin\Businesses\StartBusinessScrapeController;
 use App\Http\Controllers\Admin\Chat\SendChatMessageController;
 use App\Http\Controllers\Admin\Chat\ShowChatController;
+use App\Http\Controllers\Admin\GrowthPlan\BoardGrowthPlanController;
+use App\Http\Controllers\Admin\GrowthPlan\ConfirmGrowthTaskClosureController;
+use App\Http\Controllers\Admin\GrowthPlan\IndexGrowthPlanController;
+use App\Http\Controllers\Admin\GrowthPlan\MoveGrowthTaskController;
+use App\Http\Controllers\Admin\GrowthPlan\RejectGrowthTaskClosureController;
+use App\Http\Controllers\Admin\GrowthPlan\ReopenGrowthTaskController;
+use App\Http\Controllers\Admin\GrowthPlan\ShowGrowthPlanController;
+use App\Http\Controllers\Admin\GrowthPlan\ShowGrowthTaskController;
 use App\Http\Controllers\Admin\MarketingReports\IndexMarketingReportsController;
 use App\Http\Controllers\Admin\MarketingReports\ShowMarketingReportController;
 use App\Http\Controllers\Admin\MeridaSampleRequests\IndexMeridaSampleRequestsController;
@@ -23,6 +32,7 @@ use App\Http\Controllers\Admin\Orders\ShowOrderController;
 use App\Http\Controllers\Admin\Orders\StoreOrderNoteController;
 use App\Http\Controllers\Admin\Orders\UpdateOrderStatusController;
 use App\Http\Controllers\Admin\Orders\UpdateOrderTrackingController;
+use App\Http\Controllers\Admin\Reports\ShowReportController;
 use App\Http\Controllers\Admin\Settings\ShowSettingsController;
 use App\Http\Controllers\Admin\Settings\UpdateSettingsController;
 use App\Http\Controllers\Admin\SocialPosts\IndexSocialPostDraftsController;
@@ -98,6 +108,7 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
     Route::get('/blog-posts/create', CreateBlogPostController::class)->name('blog-posts.create');
     Route::post('/blog-posts', StoreBlogPostController::class)->name('blog-posts.store');
     Route::get('/blog-posts/{blogPost}/edit', EditBlogPostController::class)->name('blog-posts.edit');
+    Route::get('/blog-posts/{blogPost}/preview', PreviewBlogPostController::class)->name('blog-posts.preview');
     Route::put('/blog-posts/{blogPost}', UpdateBlogPostController::class)->name('blog-posts.update');
     Route::delete('/blog-posts/{blogPost}', DestroyBlogPostController::class)->name('blog-posts.destroy');
 
@@ -132,6 +143,21 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
     Route::get('/marketing-reports', IndexMarketingReportsController::class)->name('marketing-reports');
     Route::get('/marketing-reports/{marketingReport}', ShowMarketingReportController::class)
         ->name('marketing-reports.show');
+
+    Route::get('/reports/{report}', ShowReportController::class)->name('reports.show');
+
+    Route::get('/growth-plan', IndexGrowthPlanController::class)->name('growth-plan');
+    Route::get('/growth-plan/board', BoardGrowthPlanController::class)->name('growth-plan.board');
+    Route::get('/growth-plan/runs/{growthPlan}', ShowGrowthPlanController::class)->name('growth-plan.show');
+    Route::get('/growth-plan/tasks/{growthTask}', ShowGrowthTaskController::class)->name('growth-plan.tasks.show');
+    Route::post('/growth-plan/tasks/{growthTask}/move', MoveGrowthTaskController::class)
+        ->name('growth-plan.tasks.move');
+    Route::post('/growth-plan/tasks/{growthTask}/confirm-closure', ConfirmGrowthTaskClosureController::class)
+        ->name('growth-plan.tasks.confirm-closure');
+    Route::post('/growth-plan/tasks/{growthTask}/reject-closure', RejectGrowthTaskClosureController::class)
+        ->name('growth-plan.tasks.reject-closure');
+    Route::post('/growth-plan/tasks/{growthTask}/reopen', ReopenGrowthTaskController::class)
+        ->name('growth-plan.tasks.reopen');
 
     Route::get('/social-posts', IndexSocialPostDraftsController::class)->name('social-posts');
     Route::get('/social-posts/{socialPostDraft}', ShowSocialPostDraftController::class)->name('social-posts.show');

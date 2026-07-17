@@ -4,7 +4,8 @@ use App\Ai\Agents\BrandAgent;
 use App\Ai\Tools\Blog\CreateBlogPost;
 use App\Ai\Tools\Blog\EditBlogPost;
 use App\Ai\Tools\Blog\GetBlogPost;
-use App\Ai\Tools\MarketingProductCatalog;
+use App\Ai\Tools\Blog\ListBlogPosts;
+use App\Ai\Tools\Marketing\MarketingProductCatalog;
 use App\Ai\Tools\Social\CreateSocialPostDraft;
 
 it('carries the review contract and the claim bans', function () {
@@ -30,6 +31,7 @@ it('holds no tool that can write anything', function () {
 
     expect($tools->all())
         ->toContain(MarketingProductCatalog::class)
+        ->toContain(ListBlogPosts::class)
         ->toContain(GetBlogPost::class)
         ->not->toContain(CreateBlogPost::class)
         ->not->toContain(EditBlogPost::class)

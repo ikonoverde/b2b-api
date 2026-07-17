@@ -1,6 +1,7 @@
 import { Head } from '@inertiajs/react';
-import Sidebar from '@/Components/Sidebar';
-import type { ReactNode } from 'react';
+import AdminSidebar from '@/Components/Sidebar';
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import type { CSSProperties, ReactNode } from 'react';
 
 interface AppLayoutProps {
     children: ReactNode;
@@ -12,10 +13,15 @@ export default function AppLayout({ children, title, active }: AppLayoutProps) {
     return (
         <>
             <Head title={title} />
-            <div className="flex min-h-screen bg-[#FBF9F7]">
-                <Sidebar active={active} />
-                <main className="flex-1 overflow-auto">{children}</main>
-            </div>
+            <SidebarProvider style={{ '--sidebar-width': '280px' } as CSSProperties}>
+                <AdminSidebar active={active} />
+                <SidebarInset className="bg-[#FBF9F7]">
+                    <header className="flex h-12 items-center gap-2 px-4 md:hidden">
+                        <SidebarTrigger />
+                    </header>
+                    {children}
+                </SidebarInset>
+            </SidebarProvider>
         </>
     );
 }

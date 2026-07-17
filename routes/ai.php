@@ -5,6 +5,7 @@ use App\Mcp\Servers\BlogServer;
 use App\Mcp\Servers\GoogleSearchServer;
 use App\Mcp\Servers\ImageServer;
 use App\Mcp\Servers\MarketingServer;
+use App\Mcp\Servers\StaticPagesServer;
 use App\Mcp\Servers\TrackingServer;
 use Laravel\Mcp\Facades\Mcp;
 
@@ -16,6 +17,9 @@ Mcp::web('/mcp/images', ImageServer::class)
     ->middleware('auth:api');
 
 Mcp::web('/mcp/blog', BlogServer::class)
+    ->middleware('auth:api');
+
+Mcp::web('/mcp/pages', StaticPagesServer::class)
     ->middleware('auth:api');
 
 Mcp::web('/mcp/marketing', MarketingServer::class)

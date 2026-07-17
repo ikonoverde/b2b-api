@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class StaticPage extends Model
+class StaticPage extends Artifact
 {
     use HasFactory;
 
     protected $fillable = [
+        'growth_task_id',
+        'slug',
         'title',
         'content',
         'is_published',
@@ -23,5 +24,20 @@ class StaticPage extends Model
         return [
             'is_published' => 'boolean',
         ];
+    }
+
+    public function artifactLabel(): string
+    {
+        return 'Página estática';
+    }
+
+    public function artifactTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function adminUrl(): ?string
+    {
+        return "/admin/static-pages/{$this->id}/edit";
     }
 }

@@ -1,4 +1,4 @@
-import { Link, usePage, useForm } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import {
     LayoutGrid,
     ChartBar,
@@ -21,10 +21,24 @@ import {
     Megaphone,
     ClipboardList,
     Send,
+    Compass,
 } from 'lucide-react';
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuBadge,
+    SidebarMenuButton,
+    SidebarMenuItem,
+} from '@/components/ui/sidebar';
 import type { PageProps } from '@/types';
 
-interface SidebarProps {
+interface AdminSidebarProps {
     active?: string;
 }
 
@@ -37,7 +51,7 @@ interface NavItem {
 }
 
 const mainNav: NavItem[] = [
-    { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutGrid, id: 'dashboard' },
+    { name: 'Dashboard', href: '/admin', icon: LayoutGrid, id: 'dashboard' },
     { name: 'Analiticas', href: '/admin/analytics', icon: ChartBar, id: 'analytics' },
     { name: 'Usuarios', href: '/admin/users', icon: Users, id: 'users' },
 ];
@@ -52,6 +66,7 @@ const managementNav: NavItem[] = [
     { name: 'Muestras gratis', href: '/admin/sample-requests', icon: Gift, id: 'sample-requests' },
     { name: 'Propuestas de anuncios', href: '/admin/ad-proposals', icon: Megaphone, id: 'ad-proposals' },
     { name: 'Reportes de marketing', href: '/admin/marketing-reports', icon: ClipboardList, id: 'marketing-reports' },
+    { name: 'Plan de crecimiento', href: '/admin/growth-plan', icon: Compass, id: 'growth-plan' },
     { name: 'Publicaciones sociales', href: '/admin/social-posts', icon: Send, id: 'social-posts' },
     { name: 'Facturas', href: '/admin/invoices', icon: FileText, id: 'invoices' },
 ];
@@ -67,156 +82,110 @@ const systemNav: NavItem[] = [
     { name: 'Configuracion', href: '/admin/settings', icon: Settings, id: 'settings' },
 ];
 
-export default function Sidebar({ active }: SidebarProps) {
+const navSections: { label: string; items: NavItem[] }[] = [
+    { label: 'Principal', items: mainNav },
+    { label: 'Gestion', items: managementNav },
+    { label: 'Contenido', items: contentNav },
+    { label: 'Sistema', items: systemNav },
+];
+
+export default function AdminSidebar({ active }: AdminSidebarProps) {
     const { auth, adminNavigation } = usePage<PageProps>().props;
     const user = auth.user;
     const ordersCount = adminNavigation?.ordersCount ?? 0;
-    const managementItems = managementNav.map((item) => item.id === 'orders' ? { ...item, badge: ordersCount } : item);
     const { post, processing } = useForm({});
 
     const handleLogout = () => post('/admin/logout');
 
+    const sections = navSections.map((section) => ({
+        ...section,
+        items: section.items.map((item) =>
+            item.id === 'orders' ? { ...item, badge: ordersCount } : item,
+        ),
+    }));
+
     return (
-        <aside className="w-[280px] min-h-screen bg-[#F5F3F0] flex flex-col py-6">
-            {/* Logo Section */}
-            <div className="flex items-center gap-3 px-6 pb-4">
-                <div className="w-10 h-10 bg-[#4A5D4A] rounded-lg flex items-center justify-center">
-                    <Leaf className="w-6 h-6 text-white" />
+        <Sidebar className="font-body">
+            <SidebarHeader>
+                <div className="flex items-center gap-3 px-2 py-2">
+                    <div className="flex size-10 items-center justify-center rounded-lg bg-sidebar-primary">
+                        <Leaf className="size-6 text-sidebar-primary-foreground" />
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="text-lg font-semibold text-sidebar-foreground">
+                            Ikonoverde
+                        </span>
+                        <span className="text-[11px] text-muted-foreground">
+                            Admin
+                        </span>
+                    </div>
                 </div>
-                <div className="flex flex-col">
-                    <span className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
-                        Ikonoverde
-                    </span>
-                    <span className="text-[11px] text-[#999999] font-[Outfit]">
-                        Admin
-                    </span>
-                </div>
-            </div>
+            </SidebarHeader>
 
-            {/* Principal Section */}
-            <div className="flex flex-col gap-1 px-4 mt-4">
-                <span className="text-[11px] font-medium text-[#999999] tracking-wider px-4 mb-1 font-[Outfit]">
-                    PRINCIPAL
-                </span>
-                {mainNav.map((item) => (
-                    <NavLink
-                        key={item.id}
-                        item={item}
-                        isActive={active === item.id}
-                    />
+            <SidebarContent>
+                {sections.map((section) => (
+                    <SidebarGroup key={section.label}>
+                        <SidebarGroupLabel className="tracking-wider uppercase">
+                            {section.label}
+                        </SidebarGroupLabel>
+                        <SidebarGroupContent>
+                            <SidebarMenu>
+                                {section.items.map((item) => (
+                                    <SidebarMenuItem key={item.id}>
+                                        <SidebarMenuButton
+                                            asChild
+                                            isActive={active === item.id}
+                                            className="data-active:[&>svg]:text-sidebar-primary"
+                                        >
+                                            <Link href={item.href}>
+                                                <item.icon />
+                                                <span>{item.name}</span>
+                                            </Link>
+                                        </SidebarMenuButton>
+                                        {typeof item.badge === 'number' && (
+                                            <SidebarMenuBadge className="rounded-full bg-sidebar-primary px-2 text-sidebar-primary-foreground">
+                                                {item.badge}
+                                            </SidebarMenuBadge>
+                                        )}
+                                    </SidebarMenuItem>
+                                ))}
+                            </SidebarMenu>
+                        </SidebarGroupContent>
+                    </SidebarGroup>
                 ))}
-            </div>
+            </SidebarContent>
 
-            {/* Gestion Section */}
-            <div className="flex flex-col gap-1 px-4 mt-4">
-                <span className="text-[11px] font-medium text-[#999999] tracking-wider px-4 mb-1 font-[Outfit]">
-                    GESTION
-                </span>
-                {managementItems.map((item) => (
-                    <NavLink
-                        key={item.id}
-                        item={item}
-                        isActive={active === item.id}
-                    />
-                ))}
-            </div>
-
-            {/* Contenido Section */}
-            <div className="flex flex-col gap-1 px-4 mt-4">
-                <span className="text-[11px] font-medium text-[#999999] tracking-wider px-4 mb-1 font-[Outfit]">
-                    CONTENIDO
-                </span>
-                {contentNav.map((item) => (
-                    <NavLink
-                        key={item.id}
-                        item={item}
-                        isActive={active === item.id}
-                    />
-                ))}
-            </div>
-
-            {/* Sistema Section */}
-            <div className="flex flex-col gap-1 px-4 mt-4">
-                <span className="text-[11px] font-medium text-[#999999] tracking-wider px-4 mb-1 font-[Outfit]">
-                    SISTEMA
-                </span>
-                {systemNav.map((item) => (
-                    <NavLink
-                        key={item.id}
-                        item={item}
-                        isActive={active === item.id}
-                    />
-                ))}
-            </div>
-
-            {/* Spacer */}
-            <div className="flex-1" />
-
-            {/* User Section */}
             {user && (
-                <div className="flex items-center gap-3 px-6 pt-4 border-t border-[#E5E5E5]">
-                    <div className="w-10 h-10 bg-[#4A5D4A] rounded-full flex items-center justify-center">
-                        <span className="text-sm font-medium text-white font-[Outfit]">
-                            {user.initials}
-                        </span>
+                <SidebarFooter className="border-t border-sidebar-border">
+                    <div className="flex items-center gap-3 px-2 py-1">
+                        <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-sidebar-primary">
+                            <span className="text-sm font-medium text-sidebar-primary-foreground">
+                                {user.initials}
+                            </span>
+                        </div>
+                        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                            <span className="truncate text-sm font-medium text-sidebar-foreground">
+                                {user.name}
+                            </span>
+                            <span className="truncate text-xs text-muted-foreground">
+                                {user.email}
+                            </span>
+                        </div>
+                        <button
+                            onClick={handleLogout}
+                            disabled={processing}
+                            className={`rounded-lg p-2 transition-all duration-200 ${
+                                processing
+                                    ? 'cursor-not-allowed opacity-50'
+                                    : 'cursor-pointer opacity-60 hover:scale-105 hover:opacity-100'
+                            }`}
+                            title="Cerrar sesión"
+                        >
+                            <LogOut className="size-5 text-sidebar-primary" />
+                        </button>
                     </div>
-                    <div className="flex flex-col gap-0.5 flex-1">
-                        <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
-                            {user.name}
-                        </span>
-                        <span className="text-xs text-[#999999] font-[Outfit]">
-                            {user.email}
-                        </span>
-                    </div>
-                    <button
-                        onClick={handleLogout}
-                        disabled={processing}
-                        className={`p-2 rounded-lg transition-all duration-200 ${
-                            processing
-                                ? 'opacity-50 cursor-not-allowed'
-                                : 'opacity-60 hover:opacity-100 hover:scale-105 cursor-pointer'
-                        }`}
-                        title="Cerrar sesión"
-                    >
-                        <LogOut className="w-5 h-5 text-[#4A5D4A]" />
-                    </button>
-                </div>
+                </SidebarFooter>
             )}
-        </aside>
-    );
-}
-
-function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
-    const Icon = item.icon;
-
-    return (
-        <Link
-            href={item.href}
-            className={`flex items-center justify-between gap-3 px-4 py-3 rounded-lg transition-colors font-[Outfit] ${
-                isActive
-                    ? 'bg-white text-[#1A1A1A]'
-                    : 'text-[#666666] hover:bg-white/50'
-            }`}
-        >
-            <div className="flex items-center gap-3">
-                <Icon
-                    className={`w-5 h-5 ${
-                        isActive ? 'text-[#4A5D4A]' : 'text-[#666666]'
-                    }`}
-                />
-                <span
-                    className={`text-sm ${
-                        isActive ? 'font-medium' : 'font-normal'
-                    }`}
-                >
-                    {item.name}
-                </span>
-            </div>
-            {typeof item.badge === 'number' && (
-                <span className="flex h-[22px] min-w-7 items-center justify-center rounded-full bg-[#4A5D4A] px-2 text-[11px] font-medium text-white">
-                    {item.badge}
-                </span>
-            )}
-        </Link>
+        </Sidebar>
     );
 }

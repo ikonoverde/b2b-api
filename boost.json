@@ -1,10 +1,24 @@
 {
     "agents": [
-        "opencode"
+        "claude_code"
     ],
     "cloud": false,
-    "editors": [
-        "opencode"
+    "guidelines": true,
+    "packages": [
+        "lucianotonet/laravel-telescope-mcp"
     ],
-    "guidelines": true
+    "skills": [
+        "ai-sdk-development",
+        "cashier-stripe-development",
+        "laravel-best-practices",
+        "configuring-horizon",
+        "mcp-development",
+        "configure-nightwatch",
+        "passport-development",
+        "socialite-development",
+        "pest-testing",
+        "inertia-react-development",
+        "tailwindcss-development",
+        "telescope-mcp-debugging"
+    ]
 }

@@ -3,6 +3,7 @@
 use App\Models\MetaConversionEvent;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\User;
 use App\Services\MetaConversionsApiService;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Request;
@@ -133,6 +134,76 @@ it('sends the same event id the browser pixel uses so meta deduplicates', functi
     app(MetaConversionsApiService::class)->sendPurchase($order);
 
     Http::assertSent(fn (Request $request) => $request['data'][0]['event_id'] === $order->metaPurchaseEventId());
+});
+
+it('sends hashed advanced-matching fields from the shipping address', function () {
+    Http::fake([
+        'graph.facebook.com/*' => Http::response(['events_received' => 1], 200),
+    ]);
+
+    $user = User::factory()->create([
+        'email' => 'Cliente@Example.com',
+        'phone' => '+52 (999) 123-4567',
+    ]);
+
+    $order = Order::factory()->for($user)->create([
+        'payment_status' => 'completed',
+        'shipping_address' => [
+            'name' => 'Juan Pérez García',
+            'address_line_1' => 'Calle 60 123',
+            'address_line_2' => 'Centro',
+            'city' => 'Mérida',
+            'state' => 'Yucatán',
+            'postal_code' => '97000',
+            'phone' => '+52 (999) 123-4567',
+        ],
+    ]);
+    OrderItem::factory()->for($order)->create(['quantity' => 1]);
+
+    app(MetaConversionsApiService::class)->sendPurchase($order->refresh());
+
+    $hash = fn (string $value): string => hash('sha256', $value);
+
+    Http::assertSent(function (Request $request) use ($hash, $user) {
+        $userData = $request['data'][0]['user_data'];
+
+        return $userData['em'] === $hash('cliente@example.com')
+            && $userData['ph'] === $hash('529991234567')
+            && $userData['fn'] === $hash('juan')
+            && $userData['ln'] === $hash('pérezgarcía')
+            && $userData['ct'] === $hash('mérida')
+            && $userData['st'] === $hash('yucatán')
+            && $userData['zp'] === $hash('97000')
+            && $userData['country'] === $hash('mx')
+            && $userData['external_id'] === $hash((string) $user->id);
+    });
+});
+
+it('omits advanced-matching fields that are absent rather than sending empty hashes', function () {
+    Http::fake([
+        'graph.facebook.com/*' => Http::response(['events_received' => 1], 200),
+    ]);
+
+    $order = Order::factory()->create([
+        'payment_status' => 'completed',
+        'shipping_address' => null,
+    ]);
+    OrderItem::factory()->for($order)->create(['quantity' => 1]);
+
+    app(MetaConversionsApiService::class)->sendPurchase($order->refresh());
+
+    Http::assertSent(function (Request $request) {
+        $userData = $request['data'][0]['user_data'];
+
+        // No name/city/state/zip on the order, so those keys must be absent...
+        return ! array_key_exists('fn', $userData)
+            && ! array_key_exists('ln', $userData)
+            && ! array_key_exists('ct', $userData)
+            && ! array_key_exists('st', $userData)
+            && ! array_key_exists('zp', $userData)
+            // ...but country is always known for this Mexico-only storefront.
+            && $userData['country'] === hash('sha256', 'mx');
+    });
 });
 
 it('does not break checkout when the event cannot be recorded', function () {

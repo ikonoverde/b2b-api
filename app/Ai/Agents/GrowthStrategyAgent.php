@@ -2,10 +2,15 @@
 
 namespace App\Ai\Agents;
 
-use App\Ai\Tools\GetMarketingMetricHistory;
-use App\Ai\Tools\GetMarketingReports;
-use App\Ai\Tools\MarketingProductCatalog;
-use App\Ai\Tools\MarketingSalesSummary;
+use App\Ai\Tools\Growth\FetchGrowthTask;
+use App\Ai\Tools\Growth\GetGrowthPlan;
+use App\Ai\Tools\Growth\SaveGrowthPlan;
+use App\Ai\Tools\Growth\UpdateGrowthTask;
+use App\Ai\Tools\Marketing\GetMarketingMetricHistory;
+use App\Ai\Tools\Marketing\GetMarketingReports;
+use App\Ai\Tools\Marketing\MarketingProductCatalog;
+use App\Ai\Tools\Marketing\MarketingSalesSummary;
+use App\Services\Growth\GrowthPlanService;
 use Laravel\Ai\Attributes\MaxSteps;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Attributes\Timeout;
@@ -17,12 +22,12 @@ use Stringable;
 #[Model('claude-sonnet-5')]
 #[Timeout(120)]
 /**
- * Without this the SDK allows round(tools * 1.5) steps. Compiling a report means reading the past
- * reports, delegating to two observer agents that each make several calls of their own, and then
- * saving — and an agent that runs out of steps mid-run stops with the observations gathered and the
- * report unsaved.
+ * Without this the SDK allows round(tools * 1.5) steps. Compiling a plan means reading the standing
+ * plan, reading the past reports, delegating to observer agents that each make several calls of their
+ * own, and then filing — and an agent that runs out of steps mid-run stops with the thinking done and
+ * the plan unsaved.
  */
-#[MaxSteps(25)]
+#[MaxSteps(30)]
 class GrowthStrategyAgent extends BaseChatAgent implements HasTools
 {
     public function provider(): Lab|string
@@ -75,6 +80,18 @@ class GrowthStrategyAgent extends BaseChatAgent implements HasTools
         - marketing_metric_history reports a change only where both endpoints were observed; anywhere else it hands you a gap. A gap is not zero movement, and you must not fill it in.
         - Ikonoverde has not launched, so nearly every number will be zero and every zero is expected. A zero purchase count is fully explained by "nobody has bought anything" and carries no evidence that the pixel is broken — and equally, it is no evidence that the pixel works. State what a zero is consistent with; never say it means something.
 
+        The written plan (growth_get_plan, growth_save_plan):
+        - A plan is what turns an observed baseline into work somebody can pick up. Read the standing plan with growth_get_plan before you propose anything. A plan that ignores the one already on file is not a plan — it is the same few ideas re-derived every time somebody asks, and you will re-propose open work under a slightly different title. Dedupe by intent, not by title; the task already on file wins.
+        - A run usually needs three verbs, not one. Add what the new baseline justifies, update the tasks whose reasoning has moved, and close or drop what no longer stands. Asked "what should we do", you will answer only the first. Answer all three.
+        - To move one open task without filing a whole plan — reword it, rewrite its body, or reassign it — use growth_update_task with the task's id or slug. It edits the description of the work only. It cannot close, drop, or reopen a task, and it will not touch a task that is already done or dropped: those stay settled records.
+        - You cannot close a task on your own judgement, and this is not a formality you can talk your way past. Nothing in this system executes these tasks, no agent writes back, and a task row looks identical the day it is written and the day after the work ships. Silence is not evidence of anything. To close a task you name a metric key from the source report that shows the work landed, and the tool checks it against the report. If the report does not carry that key as observed, the task is NOT closed — it stays open as a proposal for a human, and you must then report it as open. An open task nobody has done is an honest record of work outstanding; a closed task nobody did is a lie the next run will act on.
+        - Dropping is different, and it is yours. It says the work is no longer worth doing, never that it was done. Give the reason: it is the only thing that stops the idea coming back next month as a fresh proposal.
+        - Every task is assigned to exactly one agent, and the choice is a real one. Ask: if somebody spawns an agent with the right tools and walks away, does this get done? If yes, a specialist or generic. If it stalls waiting on a body, a login, or a signature — photographing a real bottle, flipping the GA4 internal-traffic filter, signing off on a product claim, telephoning a spa — it is human. Prefer generic when the fit among the specialists is arguable, and human when it is arguable whether any agent can do the work at all. A human task handed to an agent does not fail cleanly: it comes back with something adjacent and plausible, an AI image standing in for a product photograph, and that reaches a buyer as a claim about a physical object.
+        - The paid gate is yours to decide, and you decide it every run rather than inheriting it. If you say spend nothing yet, file no paid-acquisition tasks. Do not soften the verdict into a small test, and do not create a paid task because four channels look unbalanced without one — a plan that names three agents is a normal outcome, and one that names a single agent is a legitimate one.
+        - Almost every line of a plan is ESTIMATED, and that is correct: a plan is judgement. What must stay honest is the boundary. A fact carried in from the report keeps the tag it had there, and everything you conclude from it is yours.
+
+        The sales summary reads the local development database. Those orders are seeded fixtures on a laptop, not sales. Record them as fixtures if you record them at all, and let no task depend on their numbers — the catalog is usable with care, but its stock counts and featured flags are dev-local until somebody confirms them.
+
         You do not directly read reviews, competitor prices, customer personas, support logs, or external keyword exports unless the admin provides that data in the conversation. For SEO keyword research, use KeywordsAgent. For paid-platform reporting or diagnosis that needs Meta, Instagram, or Google Ads data beyond GA4, delegate to PaidAcquisitionAgent or recommend using PaidAcquisitionAgent directly.
         PROMPT;
     }
@@ -89,6 +106,10 @@ class GrowthStrategyAgent extends BaseChatAgent implements HasTools
             app(MarketingSalesSummary::class),
             app(GetMarketingReports::class),
             app(GetMarketingMetricHistory::class),
+            app(GetGrowthPlan::class),
+            app(SaveGrowthPlan::class),
+            app(UpdateGrowthTask::class),
+            new FetchGrowthTask(app(GrowthPlanService::class), null),
             new GoogleAnalyticsAgent,
             new PaidAcquisitionAgent,
             new KeywordsAgent,
