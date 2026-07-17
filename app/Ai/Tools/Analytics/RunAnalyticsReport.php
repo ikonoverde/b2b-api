@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Ai\Tools;
+namespace App\Ai\Tools\Analytics;
 
 use App\Ai\Tools\Ads\AnalyticsTool;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Ai\Tools\Request;
 use Stringable;
 
-class GetAnalyticsAccountSummaries extends AnalyticsTool
+class RunAnalyticsReport extends AnalyticsTool
 {
     public function name(): string
     {
-        return 'analytics_get_account_summaries';
+        return 'analytics_run_report';
     }
 
     public function description(): Stringable|string
     {
-        return 'List Google Analytics account summaries and available GA4 properties for account selection.';
+        return 'Run a GA4 Data API report for traffic, channel, landing page, campaign, ecommerce, and engagement analysis.';
     }
 
     public function handle(Request $request): Stringable|string
     {
-        return $this->json($this->analytics->accountSummaries());
+        return $this->json($this->analytics->runReport($request->all()));
     }
 
     public function schema(JsonSchema $schema): array
     {
-        return [];
+        return $this->reportSchema($schema);
     }
 }

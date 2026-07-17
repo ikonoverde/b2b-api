@@ -1,28 +1,28 @@
 <?php
 
-namespace App\Ai\Tools;
+namespace App\Ai\Tools\Meta;
 
 use App\Ai\Tools\Ads\MetaTool;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Ai\Tools\Request;
 use Stringable;
 
-class GetMetaPostComments extends MetaTool
+class GetInstagramPosts extends MetaTool
 {
     public function name(): string
     {
-        return 'meta_get_post_comments';
+        return 'meta_get_instagram_posts';
     }
 
     public function description(): Stringable|string
     {
-        return 'Read Facebook post comments for qualitative creative research. This tool does not reply, hide, delete, or moderate comments.';
+        return 'List recent Instagram posts with organic engagement signals for paid creative research.';
     }
 
     public function handle(Request $request): Stringable|string
     {
-        return $this->json($this->meta->postComments(
-            postId: $request->string('post_id')->toString(),
+        return $this->json($this->meta->instagramPosts(
+            instagramAccountId: $request->string('instagram_business_account_id')->toString() ?: null,
             limit: $request->integer('limit', 25),
         ));
     }
@@ -30,9 +30,7 @@ class GetMetaPostComments extends MetaTool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'post_id' => $schema->string()
-                ->description('Facebook post ID.')
-                ->required(),
+            ...$this->instagramAccountSchema($schema),
             ...$this->limitSchema($schema),
         ];
     }

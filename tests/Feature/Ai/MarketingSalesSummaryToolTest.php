@@ -1,6 +1,6 @@
 <?php
 
-use App\Ai\Tools\MarketingSalesSummary;
+use App\Ai\Tools\Marketing\MarketingSalesSummary;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\OrderItem;

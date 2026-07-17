@@ -2,12 +2,12 @@
 
 namespace App\Ai\Agents;
 
-use App\Ai\Tools\GetMarketingMetricHistory;
-use App\Ai\Tools\GetMarketingReports;
 use App\Ai\Tools\Growth\GetGrowthPlan;
 use App\Ai\Tools\Growth\SaveGrowthPlan;
-use App\Ai\Tools\MarketingProductCatalog;
-use App\Ai\Tools\MarketingSalesSummary;
+use App\Ai\Tools\Marketing\GetMarketingMetricHistory;
+use App\Ai\Tools\Marketing\GetMarketingReports;
+use App\Ai\Tools\Marketing\MarketingProductCatalog;
+use App\Ai\Tools\Marketing\MarketingSalesSummary;
 use Laravel\Ai\Attributes\MaxSteps;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Attributes\Timeout;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Ai\Tools;
+namespace App\Ai\Tools\Marketing;
 
 use App\Ai\Tools\Ads\Concerns\FormatsToolResponses;
 use App\Models\MarketingReport;

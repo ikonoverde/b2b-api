@@ -1,7 +1,7 @@
 <?php
 
-use App\Ai\Tools\GetMetaPostInsights;
-use App\Ai\Tools\RunAnalyticsReport;
+use App\Ai\Tools\Analytics\RunAnalyticsReport;
+use App\Ai\Tools\Meta\GetMetaPostInsights;
 use App\Services\Ads\GoogleAnalyticsService;
 use App\Services\Ads\MetaGraphService;
 use Laravel\Ai\Tools\Request;

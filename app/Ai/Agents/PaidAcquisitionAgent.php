@@ -2,9 +2,9 @@
 
 namespace App\Ai\Agents;
 
-use App\Ai\Tools\CreateGoogleAdProposal;
-use App\Ai\Tools\CreateMetaAdProposal;
-use App\Ai\Tools\GenerateImage;
+use App\Ai\Tools\Ads\CreateGoogleAdProposal;
+use App\Ai\Tools\Ads\CreateMetaAdProposal;
+use App\Ai\Tools\Images\GenerateImage;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Attributes\Timeout;
 use Laravel\Ai\Contracts\HasTools;

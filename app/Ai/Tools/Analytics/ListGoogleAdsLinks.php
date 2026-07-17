@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Ai\Tools;
+namespace App\Ai\Tools\Analytics;
 
 use App\Ai\Tools\Ads\AnalyticsTool;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Ai\Tools\Request;
 use Stringable;
 
-class RunAnalyticsReport extends AnalyticsTool
+class ListGoogleAdsLinks extends AnalyticsTool
 {
     public function name(): string
     {
-        return 'analytics_run_report';
+        return 'analytics_list_google_ads_links';
     }
 
     public function description(): Stringable|string
     {
-        return 'Run a GA4 Data API report for traffic, channel, landing page, campaign, ecommerce, and engagement analysis.';
+        return 'List Google Ads accounts linked to a GA4 property to verify ad attribution setup.';
     }
 
     public function handle(Request $request): Stringable|string
     {
-        return $this->json($this->analytics->runReport($request->all()));
+        return $this->json($this->analytics->googleAdsLinks($request->string('property_id')->toString() ?: null));
     }
 
     public function schema(JsonSchema $schema): array
     {
-        return $this->reportSchema($schema);
+        return $this->propertySchema($schema);
     }
 }

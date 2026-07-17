@@ -2,9 +2,9 @@
 
 namespace App\Ai\Agents;
 
-use App\Ai\Tools\GetMarketingMetricHistory;
-use App\Ai\Tools\GetMarketingReports;
-use App\Ai\Tools\SaveMarketingReport;
+use App\Ai\Tools\Marketing\GetMarketingMetricHistory;
+use App\Ai\Tools\Marketing\GetMarketingReports;
+use App\Ai\Tools\Marketing\SaveMarketingReport;
 use Laravel\Ai\Attributes\MaxSteps;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Attributes\Timeout;

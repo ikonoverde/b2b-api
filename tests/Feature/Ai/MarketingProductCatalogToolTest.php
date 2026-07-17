@@ -1,6 +1,6 @@
 <?php
 
-use App\Ai\Tools\MarketingProductCatalog;
+use App\Ai\Tools\Marketing\MarketingProductCatalog;
 use App\Models\Category;
 use App\Models\Product;
 use Laravel\Ai\Tools\Request;

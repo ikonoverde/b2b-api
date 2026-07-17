@@ -4,8 +4,8 @@ namespace App\Ai\Agents;
 
 use App\Ai\Tools\Keywords\GoogleAdsKeywordPlannerIdeas;
 use App\Ai\Tools\Keywords\GoogleSearchConsoleKeywordPerformance;
-use App\Ai\Tools\MarketingProductCatalog;
-use App\Ai\Tools\MarketingSalesSummary;
+use App\Ai\Tools\Marketing\MarketingProductCatalog;
+use App\Ai\Tools\Marketing\MarketingSalesSummary;
 use App\Ai\Tools\Reports\CreateReport;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Contracts\CanActAsTool;

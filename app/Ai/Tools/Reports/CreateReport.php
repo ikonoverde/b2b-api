@@ -3,7 +3,7 @@
 namespace App\Ai\Tools\Reports;
 
 use App\Ai\Tools\Ads\Concerns\FormatsToolResponses;
-use App\Ai\Tools\SaveMarketingReport;
+use App\Ai\Tools\Marketing\SaveMarketingReport;
 use App\Models\Report;
 use App\Services\Reports\ReportService;
 use Illuminate\Contracts\JsonSchema\JsonSchema;

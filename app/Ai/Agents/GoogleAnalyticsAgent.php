@@ -2,15 +2,15 @@
 
 namespace App\Ai\Agents;
 
-use App\Ai\Tools\GetAnalyticsAccountSummaries;
-use App\Ai\Tools\GetAnalyticsPropertyDetails;
-use App\Ai\Tools\GetCustomDimensionsAndMetrics;
-use App\Ai\Tools\ListAnalyticsPropertyAnnotations;
-use App\Ai\Tools\ListGoogleAdsLinks;
-use App\Ai\Tools\RunAnalyticsConversionsReport;
-use App\Ai\Tools\RunAnalyticsFunnelReport;
-use App\Ai\Tools\RunAnalyticsRealtimeReport;
-use App\Ai\Tools\RunAnalyticsReport;
+use App\Ai\Tools\Analytics\GetAnalyticsAccountSummaries;
+use App\Ai\Tools\Analytics\GetAnalyticsPropertyDetails;
+use App\Ai\Tools\Analytics\GetCustomDimensionsAndMetrics;
+use App\Ai\Tools\Analytics\ListAnalyticsPropertyAnnotations;
+use App\Ai\Tools\Analytics\ListGoogleAdsLinks;
+use App\Ai\Tools\Analytics\RunAnalyticsConversionsReport;
+use App\Ai\Tools\Analytics\RunAnalyticsFunnelReport;
+use App\Ai\Tools\Analytics\RunAnalyticsRealtimeReport;
+use App\Ai\Tools\Analytics\RunAnalyticsReport;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Contracts\CanActAsTool;
 use Laravel\Ai\Contracts\HasTools;

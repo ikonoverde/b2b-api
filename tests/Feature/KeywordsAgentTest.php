@@ -8,8 +8,8 @@ use App\Ai\Tools\Keywords\GoogleAdsKeywordPlannerIdeas;
 use App\Ai\Tools\Keywords\GoogleSearchConsoleKeywordPerformance;
 use App\Ai\Tools\Keywords\SemrushKeywordResearch;
 use App\Ai\Tools\Keywords\SerpApiSearchInsights;
-use App\Ai\Tools\MarketingProductCatalog;
-use App\Ai\Tools\MarketingSalesSummary;
+use App\Ai\Tools\Marketing\MarketingProductCatalog;
+use App\Ai\Tools\Marketing\MarketingSalesSummary;
 use Laravel\Ai\Tools\AgentTool;
 use Laravel\Ai\Tools\Request;
 

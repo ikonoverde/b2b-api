@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Ai\Tools;
+namespace App\Ai\Tools\Analytics;
 
 use App\Ai\Tools\Ads\AnalyticsTool;
 use Illuminate\Contracts\JsonSchema\JsonSchema;

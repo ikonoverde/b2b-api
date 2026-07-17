@@ -60,7 +60,7 @@ it('gives the keyword research report its Spanish badge', function () {
 
     expect($report->artifactLabel())->toBe('Investigación de keywords')
         ->and($report->artifactTitle())->toBe($report->title)
-        ->and($report->adminUrl())->toBeNull();
+        ->and($report->adminUrl())->toBe("/admin/reports/{$report->id}");
 });
 
 it('refuses a report kind it cannot label', function () {

@@ -1,7 +1,7 @@
 <?php
 
-use App\Ai\Tools\CreateGoogleAdProposal;
-use App\Ai\Tools\CreateMetaAdProposal;
+use App\Ai\Tools\Ads\CreateGoogleAdProposal;
+use App\Ai\Tools\Ads\CreateMetaAdProposal;
 use App\Models\AdProposal;
 use Laravel\Ai\Tools\Request;
 

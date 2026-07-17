@@ -3,8 +3,8 @@
 use App\Ai\Agents\BrandAgent;
 use App\Ai\Agents\MetaAgent;
 use App\Ai\Agents\SocialMediaAgent;
-use App\Ai\Tools\GenerateImage;
-use App\Ai\Tools\MarketingProductCatalog;
+use App\Ai\Tools\Images\GenerateImage;
+use App\Ai\Tools\Marketing\MarketingProductCatalog;
 use App\Ai\Tools\Social\CreateSocialPostDraft;
 use App\Models\SocialPostDraft;
 use Illuminate\Support\Facades\Http;

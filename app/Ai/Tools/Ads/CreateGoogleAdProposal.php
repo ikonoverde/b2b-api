@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Ai\Tools;
+namespace App\Ai\Tools\Ads;
 
 use App\Ai\Tools\Ads\AdProposalTool;
 
-class CreateMetaAdProposal extends AdProposalTool
+class CreateGoogleAdProposal extends AdProposalTool
 {
     public function name(): string
     {
-        return 'create_meta_ad_proposal';
+        return 'create_google_ad_proposal';
     }
 
     protected function platform(): string
     {
-        return 'meta';
+        return 'google';
     }
 
     protected function platformLabel(): string
     {
-        return 'Meta';
+        return 'Google Ads';
     }
 }

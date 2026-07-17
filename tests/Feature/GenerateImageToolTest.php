@@ -1,6 +1,6 @@
 <?php
 
-use App\Ai\Tools\GenerateImage;
+use App\Ai\Tools\Images\GenerateImage;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Laravel\Ai\Image;

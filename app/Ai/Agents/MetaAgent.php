@@ -2,15 +2,15 @@
 
 namespace App\Ai\Agents;
 
-use App\Ai\Tools\GetInstagramAccountInfo;
-use App\Ai\Tools\GetInstagramPostComments;
-use App\Ai\Tools\GetInstagramPostInsights;
-use App\Ai\Tools\GetInstagramPosts;
-use App\Ai\Tools\GetMetaDataset;
-use App\Ai\Tools\GetMetaPageInfo;
-use App\Ai\Tools\GetMetaPagePosts;
-use App\Ai\Tools\GetMetaPostComments;
-use App\Ai\Tools\GetMetaPostInsights;
+use App\Ai\Tools\Meta\GetInstagramAccountInfo;
+use App\Ai\Tools\Meta\GetInstagramPostComments;
+use App\Ai\Tools\Meta\GetInstagramPostInsights;
+use App\Ai\Tools\Meta\GetInstagramPosts;
+use App\Ai\Tools\Meta\GetMetaDataset;
+use App\Ai\Tools\Meta\GetMetaPageInfo;
+use App\Ai\Tools\Meta\GetMetaPagePosts;
+use App\Ai\Tools\Meta\GetMetaPostComments;
+use App\Ai\Tools\Meta\GetMetaPostInsights;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Contracts\CanActAsTool;
 use Laravel\Ai\Contracts\HasTools;

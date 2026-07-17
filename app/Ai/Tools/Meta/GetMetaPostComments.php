@@ -1,28 +1,28 @@
 <?php
 
-namespace App\Ai\Tools;
+namespace App\Ai\Tools\Meta;
 
 use App\Ai\Tools\Ads\MetaTool;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Ai\Tools\Request;
 use Stringable;
 
-class GetMetaPagePosts extends MetaTool
+class GetMetaPostComments extends MetaTool
 {
     public function name(): string
     {
-        return 'meta_get_page_posts';
+        return 'meta_get_post_comments';
     }
 
     public function description(): Stringable|string
     {
-        return 'List recent Facebook Page posts with organic engagement signals for creative research before paid promotion.';
+        return 'Read Facebook post comments for qualitative creative research. This tool does not reply, hide, delete, or moderate comments.';
     }
 
     public function handle(Request $request): Stringable|string
     {
-        return $this->json($this->meta->pagePosts(
-            pageId: $request->string('page_id')->toString() ?: null,
+        return $this->json($this->meta->postComments(
+            postId: $request->string('post_id')->toString(),
             limit: $request->integer('limit', 25),
         ));
     }
@@ -30,7 +30,9 @@ class GetMetaPagePosts extends MetaTool
     public function schema(JsonSchema $schema): array
     {
         return [
-            ...$this->pageSchema($schema),
+            'post_id' => $schema->string()
+                ->description('Facebook post ID.')
+                ->required(),
             ...$this->limitSchema($schema),
         ];
     }
