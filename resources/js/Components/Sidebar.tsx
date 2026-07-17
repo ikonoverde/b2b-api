@@ -51,7 +51,7 @@ interface NavItem {
 }
 
 const mainNav: NavItem[] = [
-    { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutGrid, id: 'dashboard' },
+    { name: 'Dashboard', href: '/admin', icon: LayoutGrid, id: 'dashboard' },
     { name: 'Analiticas', href: '/admin/analytics', icon: ChartBar, id: 'analytics' },
     { name: 'Usuarios', href: '/admin/users', icon: Users, id: 'users' },
 ];

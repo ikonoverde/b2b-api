@@ -147,7 +147,7 @@ export default function AdminChatIndex({ agents, conversations, selectedConversa
                             <div className="text-md text-foreground font-medium tracking-tight">Ikonoverde AI</div>
                         </div>
                         <Link
-                            href="/admin/dashboard"
+                            href="/admin"
                             className="text-muted-foreground hover:text-foreground flex items-center gap-2 px-2 text-xs font-medium"
                         >
                             <ArrowLeft className="size-3.5" />
