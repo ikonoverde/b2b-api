@@ -1,5 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { ChatContainerContent, ChatContainerRoot } from '@/components/ui/chat-container';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Loader } from '@/components/ui/loader';
 import { Message, MessageAction, MessageActions, MessageContent } from '@/components/ui/message';
 import { PromptInput, PromptInputAction, PromptInputActions, PromptInputTextarea } from '@/components/ui/prompt-input';
@@ -20,7 +26,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Head, Link, router } from '@inertiajs/react';
 import axios from 'axios';
-import { ArrowLeft, ArrowUp, Bot, Copy, MessageSquarePlus, Mic, Paperclip, Plus, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowUp, Bot, ChevronDown, Copy, MessageSquarePlus, Mic, Paperclip, Plus, Sparkles } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 type Agent = {
@@ -155,27 +161,6 @@ export default function AdminChatIndex({ agents, conversations, selectedConversa
                                 <span>Nueva conversacion</span>
                             </Button>
                         </div>
-
-                        <SidebarGroup>
-                            <SidebarGroupLabel className="flex items-center gap-2">
-                                <Sparkles className="size-3.5" />
-                                Agentes
-                            </SidebarGroupLabel>
-                            <SidebarMenu>
-                                {Object.entries(agents).map(([key, agent]) => (
-                                    <SidebarMenuButton
-                                        key={key}
-                                        isActive={activeAgentKey === key}
-                                        onClick={() => setActiveAgentKey(key)}
-                                    >
-                                        <span className="truncate">{agent.name}</span>
-                                        <span className="text-muted-foreground ml-auto text-[10px] tracking-wide uppercase">
-                                            {agent.status}
-                                        </span>
-                                    </SidebarMenuButton>
-                                ))}
-                            </SidebarMenu>
-                        </SidebarGroup>
 
                         {conversationGroups.length === 0 ? (
                             <SidebarGroup>
@@ -347,6 +332,38 @@ export default function AdminChatIndex({ agents, conversations, selectedConversa
                                                         <Plus size={18} />
                                                     </Button>
                                                 </PromptInputAction>
+
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger asChild>
+                                                        <Button
+                                                            variant="ghost"
+                                                            className="h-9 gap-1.5 rounded-full px-3 text-sm font-medium"
+                                                        >
+                                                            <Sparkles className="size-4" />
+                                                            <span className="max-w-[10rem] truncate">{activeAgent.name}</span>
+                                                            <ChevronDown className="text-muted-foreground size-4" />
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent align="start" side="top" className="w-72">
+                                                        {Object.entries(agents).map(([key, agent]) => (
+                                                            <DropdownMenuItem
+                                                                key={key}
+                                                                onSelect={() => setActiveAgentKey(key)}
+                                                                className="flex-col items-start gap-0.5 py-2"
+                                                            >
+                                                                <div className="flex w-full items-center gap-2">
+                                                                    <span className="font-medium">{agent.name}</span>
+                                                                    <span className="text-muted-foreground ml-auto text-[10px] tracking-wide uppercase">
+                                                                        {agent.status}
+                                                                    </span>
+                                                                </div>
+                                                                <span className="text-muted-foreground text-xs leading-5">
+                                                                    {agent.description}
+                                                                </span>
+                                                            </DropdownMenuItem>
+                                                        ))}
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
 
                                                 <PromptInputAction tooltip="Adjuntar archivos estara disponible despues">
                                                     <Button variant="outline" size="icon" disabled className="size-9 rounded-full">
