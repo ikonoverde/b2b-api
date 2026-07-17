@@ -2,6 +2,7 @@
 
 namespace App\Ai\Agents;
 
+use App\Ai\Tools\Growth\FetchGrowthTask;
 use App\Ai\Tools\Growth\GetGrowthPlan;
 use App\Ai\Tools\Growth\SaveGrowthPlan;
 use App\Ai\Tools\Marketing\GetMarketingMetricHistory;
@@ -104,6 +105,7 @@ class GrowthStrategyAgent extends BaseChatAgent implements HasTools
             app(GetMarketingMetricHistory::class),
             app(GetGrowthPlan::class),
             app(SaveGrowthPlan::class),
+            app(FetchGrowthTask::class),
             new GoogleAnalyticsAgent,
             new PaidAcquisitionAgent,
             new KeywordsAgent,
