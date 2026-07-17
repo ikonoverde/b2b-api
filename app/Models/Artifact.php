@@ -31,6 +31,7 @@ abstract class Artifact extends Model
         SocialPostDraft::class,
         Banner::class,
         StaticPage::class,
+        Report::class,
     ];
 
     protected static function booted(): void

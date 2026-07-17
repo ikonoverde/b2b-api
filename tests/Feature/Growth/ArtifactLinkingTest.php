@@ -7,6 +7,7 @@ use App\Models\AdProposal;
 use App\Models\Banner;
 use App\Models\BlogPost;
 use App\Models\GrowthTask;
+use App\Models\Report;
 use App\Models\SocialPostDraft;
 use App\Models\StaticPage;
 
@@ -78,6 +79,7 @@ it('stamps every artifact type created while a task is in context', function () 
             SocialPostDraft::factory()->create(),
             Banner::factory()->create(),
             StaticPage::factory()->create(),
+            Report::factory()->create(),
         ];
     } finally {
         growthContext()->clear();

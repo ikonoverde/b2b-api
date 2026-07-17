@@ -6,6 +6,7 @@ use App\Ai\Tools\Keywords\GoogleAdsKeywordPlannerIdeas;
 use App\Ai\Tools\Keywords\GoogleSearchConsoleKeywordPerformance;
 use App\Ai\Tools\MarketingProductCatalog;
 use App\Ai\Tools\MarketingSalesSummary;
+use App\Ai\Tools\Reports\CreateReport;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Contracts\CanActAsTool;
 use Laravel\Ai\Contracts\HasTools;
@@ -47,6 +48,8 @@ class KeywordsAgent extends BaseChatAgent implements CanActAsTool, HasTools
         - Flag keywords that may attract unqualified traffic, DIY buyers, miracle-claim searches, or irrelevant wellness audiences.
         - Never invent exact search volume, CPC, rankings, CTR, or competitor data. If the data is not available from a tool result or user-provided export, label it as a qualitative estimate.
 
+        Filing the research. When you finish a piece of keyword research, save it with report_create using the keyword_research type, so a human can read it later and, when a growth task triggered the run, find it on that task. Save the same write-up you would hand back in chat, as markdown, with the provenance tags left in place. The tool stores prose for a human, not metrics for another run: it publishes nothing and it does not close any task. Do not describe a saved report as if it did more than get filed.
+
         {$context}
         PROMPT;
     }
@@ -64,6 +67,7 @@ class KeywordsAgent extends BaseChatAgent implements CanActAsTool, HasTools
             // app(SerpApiSearchInsights::class),
             app(GoogleSearchConsoleKeywordPerformance::class),
             app(GoogleAdsKeywordPlannerIdeas::class),
+            app(CreateReport::class),
             // app(SemrushKeywordResearch::class),
             // app(AhrefsKeywordResearch::class),
         ];
@@ -76,6 +80,6 @@ class KeywordsAgent extends BaseChatAgent implements CanActAsTool, HasTools
 
     public function description(): string|Stringable
     {
-        return 'Research SEO keyword opportunities, search intent, content clusters, landing page gaps, and keyword performance for Ikonoverde products.';
+        return 'Research SEO keyword opportunities, search intent, content clusters, landing page gaps, and keyword performance for Ikonoverde products, and file the research as a report a human can read.';
     }
 }
