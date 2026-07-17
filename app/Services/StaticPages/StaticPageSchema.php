@@ -18,6 +18,24 @@ use Illuminate\JsonSchema\Types\Type;
 final class StaticPageSchema
 {
     /**
+     * A create sets the slug an edit may never change, so the slug is required here and absent there.
+     * There is no publication field: the create tool forces a draft, so a new page can never save live.
+     *
+     * @return array<string, Type>
+     */
+    public static function createFields(JsonSchema $schema): array
+    {
+        return [
+            'slug' => $schema->string()
+                ->description('Slug for the new page, such as shipping or returns. Letters, numbers, dashes, and underscores only; strip accents and spaces. Must be unique. This becomes the page identity and cannot be changed later. Omit to derive it from the title.'),
+            'title' => $schema->string()
+                ->description('Title of the new page.'),
+            'content' => $schema->string()
+                ->description('Markdown content for the new page.'),
+        ];
+    }
+
+    /**
      * @return array<string, Type>
      */
     public static function editFields(JsonSchema $schema, bool $withPublication = true): array

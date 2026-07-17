@@ -10,6 +10,7 @@ use App\Ai\Tools\GenerateImage;
 use App\Ai\Tools\Growth\FetchGrowthTask;
 use App\Ai\Tools\MarketingProductCatalog;
 use App\Ai\Tools\MarketingSalesSummary;
+use App\Ai\Tools\StaticPages\CreateStaticPage;
 use App\Ai\Tools\StaticPages\EditStaticPage;
 use App\Ai\Tools\StaticPages\GetStaticPage;
 use App\Ai\Tools\StaticPages\ListStaticPages;
@@ -35,7 +36,9 @@ blog_create_draft_post saves an unpublished draft to the storefront database. It
 
 Static pages are the exception, and the exception is dangerous. terms, privacy, about, and faq already exist and are already live, so static_page_edit writes to a page a customer can load right now. There is no draft state to catch a mistake and no publish step where a human reads your words first. Content replaces the entire page body rather than appending to it, so call static_pages_list to find the slug, call static_page_get to read the page as it stands, and rewrite from that text. Never send a fragment: a fragment is not an edit, it is a deletion of everything else on the page.
 
-You cannot create a static page, rename one, or take one down. The storefront routes name each slug, and is_published is not a draft flag there: turning it off does not hide a draft, it makes /terms return 404 on a live storefront. Treat terms and privacy as legal copy. Propose changes to the human and let them make the edit rather than rewriting the page yourself, and never invent a policy, a guarantee, a delivery window, or a return period that nobody has agreed to.
+static_page_create makes a new page, and it makes it as an unpublished draft you cannot publish, the same as a blog draft. It does not go live and it does not appear on the web storefront: the storefront routes name each slug one by one, so a slug nobody routed to has no web URL until a human adds one, though the mobile app can serve it once a human publishes it. Prefer editing an existing page to minting a near-duplicate: call static_pages_list first, and only create when no page covers the need. Use it for genuinely new copy such as a shipping or returns page, never to clone terms or privacy under a new slug.
+
+You cannot rename a static page or take one down. On the pages that are already live, is_published is not a draft flag: turning it off does not hide a draft, it makes /terms return 404 on a live storefront. Treat terms and privacy as legal copy. Propose changes to the human and let them make the edit rather than rewriting the page yourself, and never invent a policy, a guarantee, a delivery window, or a return period that nobody has agreed to.
 
 Provenance. Tag every factual claim you pass downstream:
 - OBSERVED: came from a tool result this run. Cite the source, date range, and filters.
@@ -93,6 +96,7 @@ PROMPT;
             app(EditBlogPost::class),
             app(ListStaticPages::class),
             app(GetStaticPage::class),
+            app(CreateStaticPage::class),
             app(EditStaticPage::class),
             app(GenerateImage::class),
             new BrandAgent,
@@ -106,6 +110,6 @@ PROMPT;
 
     public function description(): Stringable|string
     {
-        return 'Plan and write Mexican Spanish blog posts and storefront copy grounded in the product catalog, and rewrite the existing static pages (terms, privacy, about, FAQ). Saves posts as unpublished drafts for a human to publish; it cannot publish, unpublish, or create anything itself.';
+        return 'Plan and write Mexican Spanish blog posts and storefront copy grounded in the product catalog, rewrite the existing static pages (terms, privacy, about, FAQ), and draft new static pages. Saves posts and new pages as unpublished drafts for a human to publish; it cannot publish or unpublish anything itself.';
     }
 }

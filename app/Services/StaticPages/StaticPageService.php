@@ -5,6 +5,8 @@ namespace App\Services\StaticPages;
 use App\Http\Controllers\Web\StaticPageController;
 use App\Models\StaticPage;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class StaticPageService
 {
@@ -23,6 +25,38 @@ class StaticPageService
      * @var array<string, string>|null
      */
     private ?array $publicUrls = null;
+
+    /**
+     * A create carries the slug an edit forbids: this is the one moment a page's identity is set, and
+     * the storefront route table is keyed on that slug, so it must be unique and route-safe. `title` and
+     * `content` are required outright rather than `sometimes`, because a new page has no stored value for
+     * an omitted field to fall back to. `is_published` is absent for the same reason it is absent from
+     * the edit tool that runs unattended: the create tool drops it and forces a draft.
+     *
+     * @return array<string, list<mixed>>
+     */
+    public function createRules(): array
+    {
+        return [
+            'slug' => ['required', 'string', 'max:255', 'alpha_dash', Rule::unique('static_pages', 'slug')],
+            'title' => ['required', 'string', 'max:255'],
+            'content' => ['required', 'string'],
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function createMessages(): array
+    {
+        return [
+            'slug.required' => 'Provide a slug for the new static page, such as shipping or returns.',
+            'slug.alpha_dash' => 'The slug may only contain letters, numbers, dashes, and underscores. Strip accents and spaces.',
+            'slug.unique' => 'A static page with that slug already exists. Call the list tool to see the slugs in use, and edit that page instead of creating another.',
+            'title.required' => 'Provide a non-empty title for the new static page.',
+            'content.required' => 'Provide non-empty markdown content for the new static page.',
+        ];
+    }
 
     /**
      * @return array<string, list<mixed>>
@@ -71,6 +105,28 @@ class StaticPageService
             'id.exists' => 'No static page exists for the provided id.',
             'slug.exists' => 'No static page exists for the provided slug. Call the list tool to see which pages exist.',
         ];
+    }
+
+    /**
+     * Derive the slug from the title when the caller sends none, mirroring the blog create tool, and let
+     * an empty string fall through to validation rather than silently becoming a slug of `""`.
+     *
+     * @param  array<string, mixed>  $arguments
+     * @return array<string, mixed>
+     */
+    public function normalizeForCreate(array $arguments): array
+    {
+        foreach (['slug', 'title', 'content'] as $key) {
+            if (array_key_exists($key, $arguments) && is_string($arguments[$key])) {
+                $arguments[$key] = trim($arguments[$key]) === '' ? null : trim($arguments[$key]);
+            }
+        }
+
+        if (($arguments['slug'] ?? null) === null && is_string($arguments['title'] ?? null)) {
+            $arguments['slug'] = Str::slug($arguments['title']);
+        }
+
+        return $arguments;
     }
 
     /**
@@ -152,6 +208,24 @@ class StaticPageService
         }
 
         return $updates;
+    }
+
+    /**
+     * A page an agent creates is always a draft. The storefront web routes name their slugs one by one,
+     * so a fresh slug is unreachable on the web however published it claims to be; the mobile API serves
+     * any published slug, so leaving `is_published` on would put an unreviewed page in front of the app
+     * the moment it saves. Force the draft here rather than trusting the caller to omit the flag.
+     *
+     * @param  array<string, mixed>  $validated
+     */
+    public function create(array $validated): StaticPage
+    {
+        return StaticPage::create([
+            'slug' => $validated['slug'],
+            'title' => $validated['title'],
+            'content' => $validated['content'],
+            'is_published' => false,
+        ]);
     }
 
     /**

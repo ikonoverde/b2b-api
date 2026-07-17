@@ -1,5 +1,6 @@
 <?php
 
+use App\Ai\Tools\StaticPages\CreateStaticPage;
 use App\Ai\Tools\StaticPages\EditStaticPage;
 use App\Ai\Tools\StaticPages\GetStaticPage;
 use App\Ai\Tools\StaticPages\ListStaticPages;
@@ -56,6 +57,87 @@ it('explains itself when asked for a page that does not exist', function () {
     $payload = staticPageToolResult(app(GetStaticPage::class), ['slug' => 'devoluciones']);
 
     expect($payload['error'])->toContain('No static page exists');
+});
+
+it('creates a new page as an unpublished draft', function () {
+    $payload = staticPageToolResult(app(CreateStaticPage::class), [
+        'slug' => 'envios',
+        'title' => 'Envíos',
+        'content' => '## Política de envíos',
+    ]);
+
+    $page = StaticPage::query()->where('slug', 'envios')->firstOrFail();
+
+    expect($payload['status'])->toBe('draft')
+        ->and($payload['slug'])->toBe('envios')
+        ->and($payload['content'])->toBe('## Política de envíos')
+        ->and($payload['is_published'])->toBeFalse()
+        ->and($page->is_published)->toBeFalse();
+});
+
+/**
+ * The create tool runs unattended, so a model asking to publish must be refused the same way the edit
+ * tool refuses it: the field never reaches the model, and even a hand-forged value is dropped.
+ */
+it('forces a draft even when asked to publish a new page', function () {
+    staticPageToolResult(app(CreateStaticPage::class), [
+        'slug' => 'devoluciones',
+        'title' => 'Devoluciones',
+        'content' => '## Devoluciones',
+        'is_published' => true,
+    ]);
+
+    expect(StaticPage::query()->where('slug', 'devoluciones')->firstOrFail()->is_published)->toBeFalse();
+});
+
+it('does not offer the model any way to publish a new page', function () {
+    $fields = array_keys(app(CreateStaticPage::class)->schema(new JsonSchemaTypeFactory));
+
+    expect($fields)->not->toContain('is_published');
+});
+
+it('derives a slug from the title when none is given', function () {
+    staticPageToolResult(app(CreateStaticPage::class), [
+        'title' => 'Preguntas Frecuentes',
+        'content' => '## FAQ',
+    ]);
+
+    expect(StaticPage::query()->where('slug', 'preguntas-frecuentes')->exists())->toBeTrue();
+});
+
+it('refuses to create a page whose slug already exists', function () {
+    StaticPage::factory()->create(['slug' => 'terms']);
+
+    $payload = staticPageToolResult(app(CreateStaticPage::class), [
+        'slug' => 'terms',
+        'title' => 'Términos',
+        'content' => '## Términos',
+    ]);
+
+    expect($payload['error'])->toContain('already exists')
+        ->and(StaticPage::query()->where('slug', 'terms')->count())->toBe(1);
+});
+
+it('rejects a slug that is not route-safe', function () {
+    $payload = staticPageToolResult(app(CreateStaticPage::class), [
+        'slug' => 'Políticas de Envío',
+        'title' => 'Envíos',
+        'content' => '## Envíos',
+    ]);
+
+    expect($payload['error'])->toContain('letters, numbers, dashes')
+        ->and(StaticPage::query()->count())->toBe(0);
+});
+
+it('refuses to create a page with empty content', function () {
+    $payload = staticPageToolResult(app(CreateStaticPage::class), [
+        'slug' => 'envios',
+        'title' => 'Envíos',
+        'content' => '   ',
+    ]);
+
+    expect($payload['error'])->toContain('non-empty markdown content')
+        ->and(StaticPage::query()->count())->toBe(0);
 });
 
 it('rewrites the title and content of an existing page', function () {

@@ -10,6 +10,7 @@ class StaticPage extends Artifact
 
     protected $fillable = [
         'growth_task_id',
+        'slug',
         'title',
         'content',
         'is_published',
