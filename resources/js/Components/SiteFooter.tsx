@@ -1,5 +1,6 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import Wordmark from '@/Components/Wordmark';
+import type { PageProps } from '@/types';
 
 interface SiteFooterProps {
     className?: string;
@@ -14,6 +15,8 @@ const footerLinkClass =
     'rounded-sm text-[var(--iko-stone-whisper)] transition-colors hover:text-[var(--iko-stone-ink)] focus-visible:text-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)]';
 
 export default function SiteFooter({ className = '' }: SiteFooterProps) {
+    const { contact } = usePage<PageProps>().props;
+
     return (
         <footer className={`${className} border-t border-[var(--iko-stone-hairline)]`}>
             <div className="mx-auto max-w-[72rem] px-6 py-12 sm:px-10 sm:py-14 lg:px-16">
@@ -36,6 +39,22 @@ export default function SiteFooter({ className = '' }: SiteFooterProps) {
                         >
                             Comprar ahora
                         </Link>
+
+                        {contact.whatsappUrl && (
+                            <p className="mt-7">
+                                <span className="block font-spec text-[11px] tracking-[0.08em] text-[var(--iko-stone-whisper)] uppercase">
+                                    Escríbenos
+                                </span>
+                                <a
+                                    href={contact.whatsappUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="mt-2 inline-flex rounded-sm text-[15px] text-[var(--iko-accent)] underline decoration-[var(--iko-stone-mid)] underline-offset-4 transition-colors hover:decoration-[var(--iko-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--iko-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--iko-stone-paper)]"
+                                >
+                                    WhatsApp{contact.phone ? ` · ${contact.phone}` : ''}
+                                </a>
+                            </p>
+                        )}
                     </div>
 
                     <nav aria-label="Navegación del pie" className="flex flex-col gap-4 text-[13px]">

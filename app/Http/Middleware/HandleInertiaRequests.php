@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\AppSettings;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
@@ -67,12 +68,28 @@ class HandleInertiaRequests extends Middleware
             'visitor' => [
                 'showMeridaPromo' => fn () => $this->visitorLocationService->shouldShowMeridaPromotion($request->ip()),
             ],
+            'contact' => fn () => $this->getContact(),
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),
                 'password_status' => fn () => $request->session()->get('password_status'),
                 'reorder_warnings' => fn () => $request->session()->get('reorder_warnings'),
             ],
+        ];
+    }
+
+    /**
+     * Contact details the site footer renders on every public page.
+     *
+     * @return array{phone: ?string, whatsappUrl: ?string}
+     */
+    private function getContact(): array
+    {
+        $settings = AppSettings::current();
+
+        return [
+            'phone' => $settings->contact_phone,
+            'whatsappUrl' => $settings->whatsappUrl(),
         ];
     }
 

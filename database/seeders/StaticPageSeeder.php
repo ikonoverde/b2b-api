@@ -79,7 +79,6 @@ Los precios mostrados en la plataforma aplican por igual a todos los compradores
 
 - No requerimos cantidad mínima — puede comprar desde una unidad
 - Los pedidos están sujetos a disponibilidad de inventario
-- Los envíos gratuitos aplican a pedidos superiores al monto mínimo especificado
 - Los tiempos de entrega son estimados y pueden variar según la ubicación
 
 ## 5. Envíos y Entregas
@@ -286,7 +285,7 @@ Sí, aceptamos devoluciones dentro de los 30 días posteriores a la entrega. El 
 
 ## ¿Hay un monto mínimo de compra?
 
-No hay un monto mínimo de compra, pero los envíos gratuitos aplican a pedidos superiores a $500,000 MXN.
+No hay un monto mínimo de compra. Puedes comprar desde una unidad.
 
 ## ¿Cómo puedo contactar al soporte?
 

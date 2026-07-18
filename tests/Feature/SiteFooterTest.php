@@ -21,7 +21,13 @@ export function Link({ href, children, prefetch, ...props }) {
 }
 
 export function usePage() {
-  return { props: { auth: { user: null }, miniCart: { items: [], subtotal: 0, totalCount: 0 } } };
+  return {
+    props: {
+      auth: { user: null },
+      miniCart: { items: [], subtotal: 0, totalCount: 0 },
+      contact: { phone: '984 156 9014', whatsappUrl: 'https://wa.me/529841569014' },
+    },
+  };
 }
 
 export function useForm() {
@@ -58,7 +64,7 @@ try {
       React.createElement(mod.default, props, React.createElement('main', null, `${name} body`)),
     );
 
-    for (const expected of ['Comprar ahora', 'Sin mínimo', 'Precios visibles', 'Cuenta opcional', 'Compra como invitado']) {
+    for (const expected of ['Comprar ahora', 'Sin mínimo', 'Precios visibles', 'WhatsApp', 'Escríbenos']) {
       if (!html.includes(expected)) {
         throw new Error(`${name} rendered without footer text: ${expected}`);
       }

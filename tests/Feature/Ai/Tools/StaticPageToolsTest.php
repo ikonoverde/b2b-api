@@ -17,7 +17,7 @@ function staticPageToolResult(object $tool, array $arguments = []): array
     return json_decode((string) $tool->handle(new Request($arguments)), true);
 }
 
-it('lists every static page with its public URL', function () {
+it('lists every static page without leaking its content', function () {
     StaticPage::factory()->create(['slug' => 'terms', 'title' => 'Términos y Condiciones']);
     StaticPage::factory()->create(['slug' => 'privacy', 'title' => 'Política de Privacidad']);
 
@@ -25,19 +25,20 @@ it('lists every static page with its public URL', function () {
 
     expect($payload['pages'])->toHaveCount(2)
         ->and($payload['pages'][0]['slug'])->toBe('privacy')
-        ->and($payload['pages'][0]['url'])->toEndWith('/privacy')
-        ->and($payload['pages'][0]['is_publicly_visible'])->toBeTrue()
         ->and($payload['pages'][0])->not->toHaveKey('content');
 });
 
 /**
  * A page no route names has no URL, whatever is_published claims. Reporting one would be a lie the
  * model would happily pass on to a human.
+ *
+ * Since /terms, /privacy, /about and /faq render hardcoded components rather than database rows,
+ * no static page is routed today — so this now holds for every slug, not just unrouted ones.
  */
 it('reports no public URL for a page the storefront does not route', function () {
-    StaticPage::factory()->create(['slug' => 'shipping', 'is_published' => true]);
+    StaticPage::factory()->create(['slug' => 'terms', 'is_published' => true]);
 
-    $payload = staticPageToolResult(app(GetStaticPage::class), ['slug' => 'shipping']);
+    $payload = staticPageToolResult(app(GetStaticPage::class), ['slug' => 'terms']);
 
     expect($payload['is_published'])->toBeTrue()
         ->and($payload['url'])->toBeNull()
@@ -49,8 +50,7 @@ it('reads a page by slug, with its full content', function () {
 
     $payload = staticPageToolResult(app(GetStaticPage::class), ['slug' => 'faq']);
 
-    expect($payload['content'])->toBe('## Preguntas frecuentes')
-        ->and($payload['url'])->toEndWith('/faq');
+    expect($payload['content'])->toBe('## Preguntas frecuentes');
 });
 
 it('explains itself when asked for a page that does not exist', function () {

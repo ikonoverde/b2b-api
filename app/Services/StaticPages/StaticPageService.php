@@ -281,7 +281,10 @@ class StaticPageService
     /**
      * The storefront serves a static page only where a route carries its slug, so a page nothing
      * routes to has no public URL however published it claims to be. Read that from the route table
-     * rather than hardcoding the four slugs that happen to be routed today.
+     * rather than hardcoding slugs.
+     *
+     * Since /terms, /privacy, /about and /faq moved to hardcoded components, no route carries a
+     * slug and this returns nothing — every page correctly reports itself as not publicly visible.
      *
      * @return array<string, string>
      */

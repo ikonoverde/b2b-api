@@ -81,6 +81,10 @@ export interface PageProps {
     visitor: {
         showMeridaPromo: boolean;
     };
+    contact: {
+        phone: string | null;
+        whatsappUrl: string | null;
+    };
     flash: {
         success?: string;
         error?: string;

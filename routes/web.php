@@ -25,13 +25,16 @@ use App\Http\Controllers\Web\Checkout\ShowCheckoutThankYouController;
 use App\Http\Controllers\Web\Checkout\StoreCheckoutShippingController;
 use App\Http\Controllers\Web\CustomerDashboardController;
 use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\Legal\ShowAboutController;
+use App\Http\Controllers\Web\Legal\ShowFaqController;
+use App\Http\Controllers\Web\Legal\ShowPrivacyController;
+use App\Http\Controllers\Web\Legal\ShowTermsController;
 use App\Http\Controllers\Web\NotificationPreferencesController;
 use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\PaymentMethodController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileController;
 use App\Http\Controllers\Web\ShowMeridaSampleRequestController;
-use App\Http\Controllers\Web\StaticPageController;
 use App\Http\Controllers\Web\StoreMeridaSampleRequestController;
 use App\Http\Controllers\Web\UpdateNotificationPreferencesController;
 use App\Http\Controllers\Web\UpdateProfileController;
@@ -45,10 +48,10 @@ Route::get('/blog/{blogPost:slug}', ShowBlogPostController::class)->name('blog.s
 Route::get('/muestras-gratis-merida', ShowMeridaSampleRequestController::class)->name('merida-samples.show');
 Route::post('/muestras-gratis-merida', StoreMeridaSampleRequestController::class)->name('merida-samples.store');
 
-Route::get('/terms', [StaticPageController::class, 'show'])->defaults('slug', 'terms')->name('terms');
-Route::get('/privacy', [StaticPageController::class, 'show'])->defaults('slug', 'privacy')->name('privacy');
-Route::get('/about', [StaticPageController::class, 'show'])->defaults('slug', 'about')->name('about');
-Route::get('/faq', [StaticPageController::class, 'show'])->defaults('slug', 'faq')->name('faq');
+Route::get('/terms', ShowTermsController::class)->name('terms');
+Route::get('/privacy', ShowPrivacyController::class)->name('privacy');
+Route::get('/about', ShowAboutController::class)->name('about');
+Route::get('/faq', ShowFaqController::class)->name('faq');
 
 Route::middleware('guest')->group(function () {
     Route::get('/reset-password/{token}', ShowResetPasswordController::class)->name('password.reset');
