@@ -7,8 +7,7 @@ interface SiteFooterProps {
 
 const FOOTER_FACTS = [
     { label: 'Sin mínimo', value: 'Desde 1 unidad' },
-    { label: 'Precios visibles', value: 'Sin iniciar sesión' },
-    { label: 'Mismo precio', value: 'Para todos' },
+    { label: 'Precios visibles', value: 'Sin iniciar sesión' }
 ] as const;
 
 const footerLinkClass =
@@ -28,7 +27,7 @@ export default function SiteFooter({ className = '' }: SiteFooterProps) {
                             <Wordmark size="sm" />
                         </Link>
                         <p className="mt-5 max-w-[44ch] text-[15px] leading-[1.65] text-[var(--iko-stone-ink)]/75">
-                            Cuidado corporal profesional, precios visibles y compra sin mínimo desde el primer producto.
+                            Aceite de masaje y cuidado corporal formulado para spas, hoteles y uso profesional en cabina.
                         </p>
                         <Link
                             href="/catalog"

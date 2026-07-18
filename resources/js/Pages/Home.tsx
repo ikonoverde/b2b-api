@@ -77,7 +77,7 @@ function Hero({ originLabel }: { originLabel: string }) {
                     </h1>
 
                     <p className="mt-7 max-w-[42ch] text-[16px] leading-[1.55] text-[var(--iko-stone-ink)]/80">
-                        Formulado para spas, hoteles y uso personal. Precios públicos, sin pedido mínimo.
+                        Formulado para spas, hoteles y uso personal. Sin pedido mínimo.
                     </p>
 
                     <div className="mt-7 flex max-w-max items-center gap-3 border border-[var(--iko-accent-line)] bg-[var(--iko-accent-mist)] px-4 py-2 font-spec text-[11px] text-[var(--iko-accent-ink)] tracking-[0.04em] uppercase">

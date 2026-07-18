@@ -102,7 +102,6 @@ function ReorderBlock({ isReturning }: { isReturning: boolean }) {
                         ? 'Reordena tus productos habituales en un paso.'
                         : 'Tu primer pedido te toma menos de un minuto.'}
                 </h2>
-                <PurchaseFacts />
             </div>
             <div className="flex flex-col items-start gap-4 md:items-end">
                 <Link
@@ -122,23 +121,6 @@ function ReorderBlock({ isReturning }: { isReturning: boolean }) {
                 )}
             </div>
         </section>
-    );
-}
-
-const PURCHASE_FACTS = ['Precios visibles', 'Una unidad', 'Pago claro'] as const;
-
-function PurchaseFacts() {
-    return (
-        <ul className="mt-3 flex flex-wrap gap-2">
-            {PURCHASE_FACTS.map((fact) => (
-                <li
-                    key={fact}
-                    className="border border-[var(--iko-accent-line)] bg-[var(--iko-stone-surface)] px-3 py-1.5 font-spec text-[11px] tracking-[0.04em] text-[var(--iko-accent-ink)] uppercase"
-                >
-                    {fact}
-                </li>
-            ))}
-        </ul>
     );
 }
 
