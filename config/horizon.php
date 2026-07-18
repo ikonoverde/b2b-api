@@ -236,16 +236,24 @@ return [
         ],
     ],
 
+    /*
+     * Process caps are sized against the production host's memory, not against
+     * throughput. A worker measures ~90MB resident, and the box has 961MB total
+     * shared with php-fpm, MySQL and two other applications, so the two pools
+     * together are allowed roughly 270MB at full stretch. Raise these only
+     * alongside a host resize; `balance => 'auto'` will scale straight into the
+     * ceiling the moment the queues get busy.
+     */
     'environments' => [
         'production' => [
             'supervisor-1' => [
-                'maxProcesses' => 10,
+                'maxProcesses' => 2,
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
             ],
 
             'supervisor-agents' => [
-                'maxProcesses' => 2,
+                'maxProcesses' => 1,
             ],
         ],
 
