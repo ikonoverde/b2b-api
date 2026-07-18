@@ -82,7 +82,7 @@ it('carries the paid ads and Ikonoverde operating rules', function () {
         ->toContain('Create proposals only as internal drafts')
         ->toContain(IkonoverdeContext::prompt())
         ->toContain('brand-new company/project')
-        ->toContain('public prices, no minimum order')
+        ->toContain('Core messages: uso profesional')
         ->toContain('Use precise Mexican Spanish');
 });
 

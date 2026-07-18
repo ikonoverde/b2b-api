@@ -27,7 +27,7 @@ it('carries the marketing ideas strategy rules', function () {
         ->toContain('delegate to PaidAcquisitionAgent')
         ->toContain('Suggest the 3-5 most relevant ideas')
         ->toContain('idea name, why it fits, how to start')
-        ->toContain('public prices, no minimum order')
+        ->toContain('Core messages: uso profesional')
         ->toContain('Product catalog: active products, categories, SKUs')
         ->toContain('Sales summary: completed non-cancelled order totals by product')
         ->toContain('GA4 analytics: traffic, channels, campaigns')

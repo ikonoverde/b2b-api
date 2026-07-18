@@ -23,7 +23,7 @@ it('carries the keyword research operating rules', function () {
         ->toContain('Use external SEO provider tools when configured')
         ->toContain('If an external SEO tool returns a configuration or not-implemented placeholder response')
         ->toContain('Never invent exact search volume, CPC, rankings, CTR, or competitor data')
-        ->toContain('public prices, no minimum order')
+        ->toContain('Core messages: uso profesional')
         ->toContain('Use precise Mexican Spanish');
 });
 
