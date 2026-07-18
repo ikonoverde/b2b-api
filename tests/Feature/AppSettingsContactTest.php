@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\AppSettings;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -61,6 +62,22 @@ test('the cached row is only fetched once per request cycle', function () {
     AppSettings::current();
 
     expect(DB::getQueryLog())->toBeEmpty();
+});
+
+/**
+ * Production caches to Redis, which serializes, and `serializable_classes` is false in
+ * config/cache.php — so anything object-shaped comes back as __PHP_Incomplete_Class and
+ * fatals on every render. The array store used here does not serialize, so that failure
+ * cannot reproduce on its own; this asserts the payload survives the restriction directly.
+ */
+test('the cached payload survives a store that forbids unserializing objects', function () {
+    AppSettings::forgetCached();
+    AppSettings::current();
+
+    $cached = Cache::get('app_settings.current');
+
+    expect($cached)->toBeArray();
+    expect(unserialize(serialize($cached), ['allowed_classes' => false]))->toEqual($cached);
 });
 
 test('a blank phone shares no link for the footer to render', function () {

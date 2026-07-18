@@ -32,9 +32,21 @@ class AppSettings extends Model
         static::deleted(static fn () => static::forgetCached());
     }
 
+    /**
+     * Only the raw attributes go through the cache, never the model itself. `serializable_classes`
+     * is false in config/cache.php, so a serializing store unserializes with `allowed_classes: false`
+     * and hands back a __PHP_Incomplete_Class for any cached object — a fatal error on every page
+     * once the entry is warm. The array store used in tests does not serialize at all, so this only
+     * ever surfaces against Redis in production.
+     */
     public static function current(): self
     {
-        return Cache::rememberForever(self::CACHE_KEY, static fn () => static::firstOrCreate(['id' => 1]));
+        $attributes = Cache::rememberForever(
+            self::CACHE_KEY,
+            static fn (): array => static::firstOrCreate(['id' => 1])->getAttributes(),
+        );
+
+        return (new static)->newFromBuilder($attributes);
     }
 
     public static function forgetCached(): void
