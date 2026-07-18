@@ -7,17 +7,17 @@ export default function StatusHistoryTimeline({ order }: { order: AdminOrder }) 
     }
 
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">Historial de Estado</h2>
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div className="px-6 py-5 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">Historial de Estado</h2>
             </div>
             <div className="p-6">
                 <div className="flex flex-col gap-4">
                     {order.status_histories.map((entry) => (
                         <div key={entry.id} className="flex gap-3">
                             <div className="flex flex-col items-center">
-                                <div className="w-2.5 h-2.5 rounded-full bg-[#4A5D4A] mt-1.5" />
-                                <div className="w-px flex-1 bg-[#E5E5E5]" />
+                                <div className="w-2.5 h-2.5 rounded-full bg-primary mt-1.5" />
+                                <div className="w-px flex-1 bg-border" />
                             </div>
                             <div className="flex-1 pb-4">
                                 <div className="flex items-center gap-2 flex-wrap">
@@ -26,7 +26,7 @@ export default function StatusHistoryTimeline({ order }: { order: AdminOrder }) 
                                             <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(entry.from_status)}`}>
                                                 {statusLabels[entry.from_status] || entry.from_status}
                                             </span>
-                                            <span className="text-xs text-[#999999]">&rarr;</span>
+                                            <span className="text-xs text-muted-foreground">&rarr;</span>
                                         </>
                                     )}
                                     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(entry.to_status)}`}>
@@ -34,12 +34,12 @@ export default function StatusHistoryTimeline({ order }: { order: AdminOrder }) 
                                     </span>
                                 </div>
                                 {entry.note && (
-                                    <p className="text-sm text-[#666666] font-[Outfit] mt-1">{entry.note}</p>
+                                    <p className="text-sm text-muted-foreground mt-1">{entry.note}</p>
                                 )}
                                 <div className="flex items-center gap-2 mt-1">
-                                    <span className="text-xs text-[#999999] font-[Outfit]">{formatDate(entry.created_at)}</span>
+                                    <span className="text-xs text-muted-foreground">{formatDate(entry.created_at)}</span>
                                     {entry.admin_name && (
-                                        <span className="text-xs text-[#999999] font-[Outfit]">por {entry.admin_name}</span>
+                                        <span className="text-xs text-muted-foreground">por {entry.admin_name}</span>
                                     )}
                                 </div>
                             </div>

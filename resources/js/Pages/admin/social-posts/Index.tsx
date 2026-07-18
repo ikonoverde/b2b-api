@@ -47,25 +47,25 @@ function buildUrl(status: string, page?: number): string {
 
 function DraftRow({ draft }: { draft: SocialPostDraftListItem }) {
     return (
-        <tr className="border-b border-[#E5E5E5] last:border-b-0 hover:bg-gray-50">
+        <tr className="border-b border-border last:border-b-0 hover:bg-muted">
             <td className="px-6 py-4">
                 <Link href={`/admin/social-posts/${draft.id}`} className="flex items-start gap-3">
                     {draft.image_url ? (
                         <img
                             src={draft.image_url}
                             alt=""
-                            className="h-12 w-12 shrink-0 rounded-lg border border-[#E5E5E5] object-cover"
+                            className="h-12 w-12 shrink-0 rounded-lg border border-border object-cover"
                         />
                     ) : (
-                        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-dashed border-[#E5E5E5] font-[Outfit] text-[10px] text-[#999999]">
+                        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-dashed border-border text-[10px] text-muted-foreground">
                             Sin imagen
                         </span>
                     )}
                     <span className="flex flex-col gap-1">
-                        <span className="font-[Outfit] text-sm text-[#1A1A1A] hover:underline">
+                        <span className="text-sm text-foreground hover:underline">
                             {truncate(draft.caption)}
                         </span>
-                        <span className="font-[Outfit] text-xs text-[#999999]">
+                        <span className="text-xs text-muted-foreground">
                             {platformLabels[draft.platform]}
                         </span>
                     </span>
@@ -75,10 +75,10 @@ function DraftRow({ draft }: { draft: SocialPostDraftListItem }) {
                 <StatusPill status={draft.status} />
             </td>
             <td className="px-6 py-4">
-                <span className="font-[Outfit] text-sm text-[#666666]">{draft.reviewer ?? ''}</span>
+                <span className="text-sm text-muted-foreground">{draft.reviewer ?? ''}</span>
             </td>
             <td className="px-6 py-4">
-                <span className="font-[Outfit] text-sm text-[#666666]">
+                <span className="text-sm text-muted-foreground">
                     {formatDateTime(draft.created_at)}
                 </span>
             </td>
@@ -88,13 +88,13 @@ function DraftRow({ draft }: { draft: SocialPostDraftListItem }) {
                         href={draft.remote_permalink}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 font-[Outfit] text-sm text-[#4A5D4A] hover:underline"
+                        className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
                     >
                         Ver publicación
                         <ExternalLink className="h-3.5 w-3.5" />
                     </a>
                 ) : (
-                    <span className="font-[Outfit] text-sm text-[#999999]">—</span>
+                    <span className="text-sm text-muted-foreground">—</span>
                 )}
             </td>
         </tr>
@@ -108,11 +108,11 @@ function DraftRow({ draft }: { draft: SocialPostDraftListItem }) {
 function EmptyState({ filtered }: { filtered: boolean }) {
     return (
         <div className="flex flex-col items-center justify-center gap-2 px-6 py-16 text-center">
-            <Send className="h-6 w-6 text-[#C9C5C0]" />
-            <p className="font-[Outfit] text-sm font-medium text-[#1A1A1A]">
+            <Send className="h-6 w-6 text-border" />
+            <p className="text-sm font-medium text-foreground">
                 {filtered ? 'Ningún borrador en este estado.' : 'Todavía no hay borradores.'}
             </p>
-            <p className="max-w-md font-[Outfit] text-sm text-[#666666]">
+            <p className="max-w-md text-sm text-muted-foreground">
                 El agente de redes propone publicaciones aquí. Nada llega a Facebook o Instagram hasta
                 que una persona lo aprueba en esta pantalla.
             </p>
@@ -122,37 +122,37 @@ function EmptyState({ filtered }: { filtered: boolean }) {
 
 function Pagination({ drafts, status }: { drafts: PaginatedDrafts; status: string }) {
     return (
-        <div className="flex items-center justify-between border-t border-[#E5E5E5] px-6 py-4">
-            <span className="font-[Outfit] text-sm text-[#666666]">
+        <div className="flex items-center justify-between border-t border-border px-6 py-4">
+            <span className="text-sm text-muted-foreground">
                 Mostrando {drafts.from} a {drafts.to} de {drafts.total} borradores
             </span>
             <div className="flex items-center gap-2">
                 <Link
                     href={buildUrl(status, drafts.current_page - 1)}
                     aria-label="Página anterior"
-                    className={`rounded-lg border border-[#E5E5E5] p-2 ${
+                    className={`rounded-lg border border-border p-2 ${
                         drafts.current_page === 1
                             ? 'pointer-events-none cursor-not-allowed opacity-50'
-                            : 'hover:bg-gray-50'
+                            : 'hover:bg-muted'
                     }`}
                     preserveScroll
                 >
-                    <ChevronLeft className="h-4 w-4 text-[#666666]" />
+                    <ChevronLeft className="h-4 w-4 text-muted-foreground" />
                 </Link>
-                <span className="font-mono text-sm tabular-nums text-[#1A1A1A]">
+                <span className="font-mono text-sm tabular-nums text-foreground">
                     {drafts.current_page} / {drafts.last_page}
                 </span>
                 <Link
                     href={buildUrl(status, drafts.current_page + 1)}
                     aria-label="Página siguiente"
-                    className={`rounded-lg border border-[#E5E5E5] p-2 ${
+                    className={`rounded-lg border border-border p-2 ${
                         drafts.current_page === drafts.last_page
                             ? 'pointer-events-none cursor-not-allowed opacity-50'
-                            : 'hover:bg-gray-50'
+                            : 'hover:bg-muted'
                     }`}
                     preserveScroll
                 >
-                    <ChevronRight className="h-4 w-4 text-[#666666]" />
+                    <ChevronRight className="h-4 w-4 text-muted-foreground" />
                 </Link>
             </div>
         </div>
@@ -166,10 +166,10 @@ export default function SocialPostsIndex() {
         <AppLayout title="Publicaciones sociales" active="social-posts">
             <div className="flex flex-col gap-6 p-10 pr-12">
                 <div className="flex flex-col gap-1">
-                    <h1 className="font-[Outfit] text-[28px] font-semibold text-[#1A1A1A]">
+                    <h1 className="text-[28px] font-semibold text-foreground">
                         Publicaciones sociales
                     </h1>
-                    <p className="max-w-2xl font-[Outfit] text-sm text-[#666666]">
+                    <p className="max-w-2xl text-sm text-muted-foreground">
                         Lo que el agente propone publicar en Facebook e Instagram. Nada se publica solo:
                         Meta no tiene borradores ni deshacer, así que el borrador vive aquí y una persona
                         decide.
@@ -182,10 +182,10 @@ export default function SocialPostsIndex() {
                         <Link
                             key={filter.value || 'all'}
                             href={buildUrl(filter.value)}
-                            className={`h-9 rounded-lg border px-4 font-[Outfit] text-sm leading-[2rem] transition-colors ${
+                            className={`h-9 rounded-lg border px-4 text-sm leading-[2rem] transition-colors ${
                                 active.status === filter.value
-                                    ? 'border-[#4A5D4A] bg-[#4A5D4A] font-medium text-white'
-                                    : 'border-[#E5E5E5] text-[#666666] hover:bg-gray-50'
+                                    ? 'border-primary bg-primary font-medium text-white'
+                                    : 'border-border text-muted-foreground hover:bg-muted'
                             }`}
                             preserveScroll
                         >
@@ -194,17 +194,17 @@ export default function SocialPostsIndex() {
                     ))}
                 </div>
 
-                <div className="overflow-hidden rounded-xl border border-[#E5E5E5] bg-white">
+                <div className="overflow-hidden rounded-xl border border-border bg-card">
                     {drafts.data.length === 0 ? (
                         <EmptyState filtered={active.status !== ''} />
                     ) : (
                         <div className="overflow-x-auto">
                             <table className="w-full min-w-[900px]">
                                 <thead>
-                                    <tr className="border-b border-[#E5E5E5]">
+                                    <tr className="border-b border-border">
                                         {['Borrador', 'Estado', 'Revisó', 'Creado', 'Meta'].map((label) => (
                                             <th key={label} className="px-6 py-4 text-left">
-                                                <span className="font-[Outfit] text-sm font-medium text-[#666666]">
+                                                <span className="text-sm font-medium text-muted-foreground">
                                                     {label}
                                                 </span>
                                             </th>

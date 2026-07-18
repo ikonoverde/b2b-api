@@ -15,7 +15,7 @@ export default function AppLayout({ children, title, active }: AppLayoutProps) {
             <Head title={title} />
             <SidebarProvider style={{ '--sidebar-width': '280px' } as CSSProperties}>
                 <AdminSidebar active={active} />
-                <SidebarInset className="bg-[#FBF9F7]">
+                <SidebarInset className="bg-background">
                     <header className="flex h-12 items-center gap-2 px-4 md:hidden">
                         <SidebarTrigger />
                     </header>

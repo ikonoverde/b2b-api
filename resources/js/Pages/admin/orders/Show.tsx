@@ -33,42 +33,42 @@ interface Props extends PageProps {
 
 function OrderInfoCard({ order }: { order: AdminOrder }) {
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div className="px-6 py-5 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">
                     Pedido #{order.id}
                 </h2>
             </div>
             <div className="p-6 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
-                    <span className="text-sm text-[#999999] font-[Outfit]">Estado</span>
+                    <span className="text-sm text-muted-foreground">Estado</span>
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
                         {statusLabels[order.status] || order.status}
                     </span>
                 </div>
                 <div className="flex items-center justify-between">
-                    <span className="text-sm text-[#999999] font-[Outfit]">Pago</span>
+                    <span className="text-sm text-muted-foreground">Pago</span>
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPaymentStatusColor(order.payment_status)}`}>
                         {paymentStatusLabels[order.payment_status] || order.payment_status}
                     </span>
                 </div>
                 <div className="flex items-center justify-between">
-                    <span className="text-sm text-[#999999] font-[Outfit]">Total</span>
-                    <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                    <span className="text-sm text-muted-foreground">Total</span>
+                    <span className="text-sm font-medium text-foreground">
                         {formatCurrency(order.total_amount)}
                     </span>
                 </div>
                 {order.refunded_amount > 0 && (
                     <div className="flex items-center justify-between">
-                        <span className="text-sm text-[#999999] font-[Outfit]">Reembolsado</span>
-                        <span className="text-sm font-medium text-red-600 font-[Outfit]">
+                        <span className="text-sm text-muted-foreground">Reembolsado</span>
+                        <span className="text-sm font-medium text-destructive">
                             {formatCurrency(order.refunded_amount)}
                         </span>
                     </div>
                 )}
                 <div className="flex items-center justify-between">
-                    <span className="text-sm text-[#999999] font-[Outfit]">Fecha</span>
-                    <span className="text-sm text-[#1A1A1A] font-[Outfit]">
+                    <span className="text-sm text-muted-foreground">Fecha</span>
+                    <span className="text-sm text-foreground">
                         {formatDate(order.created_at)}
                     </span>
                 </div>
@@ -83,23 +83,23 @@ function CustomerCard({ order }: { order: AdminOrder }) {
     }
 
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">Cliente</h2>
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div className="px-6 py-5 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">Cliente</h2>
             </div>
             <div className="p-6 flex flex-col gap-3">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-[#E8EDE8] rounded-full flex items-center justify-center">
-                        <User className="w-5 h-5 text-[#4A5D4A]" />
+                    <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
+                        <User className="w-5 h-5 text-primary" />
                     </div>
                     <div>
                         <Link
                             href={`/admin/users/${order.customer.id}`}
-                            className="text-sm font-medium text-[#1A1A1A] hover:underline font-[Outfit]"
+                            className="text-sm font-medium text-foreground hover:underline"
                         >
                             {order.customer.name}
                         </Link>
-                        <p className="text-xs text-[#999999] font-[Outfit]">{order.customer.email}</p>
+                        <p className="text-xs text-muted-foreground">{order.customer.email}</p>
                     </div>
                 </div>
             </div>
@@ -109,33 +109,33 @@ function CustomerCard({ order }: { order: AdminOrder }) {
 
 function ShippingCard({ order }: { order: AdminOrder }) {
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">Envio</h2>
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div className="px-6 py-5 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">Envio</h2>
             </div>
             <div className="p-6 flex flex-col gap-4">
                 {order.shipping_method && (
                     <div className="flex items-center gap-3">
-                        <Truck className="w-5 h-5 text-[#999999]" />
+                        <Truck className="w-5 h-5 text-muted-foreground" />
                         <div className="flex flex-col">
-                            <span className="text-xs text-[#999999] font-[Outfit]">Metodo</span>
-                            <span className="text-sm text-[#1A1A1A] font-[Outfit]">{order.shipping_method.name}</span>
+                            <span className="text-xs text-muted-foreground">Metodo</span>
+                            <span className="text-sm text-foreground">{order.shipping_method.name}</span>
                         </div>
                     </div>
                 )}
                 <div className="flex items-center gap-3">
-                    <DollarSign className="w-5 h-5 text-[#999999]" />
+                    <DollarSign className="w-5 h-5 text-muted-foreground" />
                     <div className="flex flex-col">
-                        <span className="text-xs text-[#999999] font-[Outfit]">Costo de Envio</span>
-                        <span className="text-sm text-[#1A1A1A] font-[Outfit]">{formatCurrency(order.shipping_cost)}</span>
+                        <span className="text-xs text-muted-foreground">Costo de Envio</span>
+                        <span className="text-sm text-foreground">{formatCurrency(order.shipping_cost)}</span>
                     </div>
                 </div>
                 {order.shipping_address && (
                     <div className="flex items-center gap-3">
-                        <MapPin className="w-5 h-5 text-[#999999]" />
+                        <MapPin className="w-5 h-5 text-muted-foreground" />
                         <div className="flex flex-col">
-                            <span className="text-xs text-[#999999] font-[Outfit]">Direccion</span>
-                            <span className="text-sm text-[#1A1A1A] font-[Outfit]">
+                            <span className="text-xs text-muted-foreground">Direccion</span>
+                            <span className="text-sm text-foreground">
                                 {order.shipping_address.street}, {order.shipping_address.city}, {order.shipping_address.state} {order.shipping_address.zip}
                             </span>
                         </div>
@@ -143,10 +143,10 @@ function ShippingCard({ order }: { order: AdminOrder }) {
                 )}
                 {order.tracking_number && (
                     <div className="flex items-center gap-3">
-                        <Package className="w-5 h-5 text-[#999999]" />
+                        <Package className="w-5 h-5 text-muted-foreground" />
                         <div className="flex flex-col">
-                            <span className="text-xs text-[#999999] font-[Outfit]">Rastreo</span>
-                            <span className="text-sm text-[#1A1A1A] font-[Outfit]">
+                            <span className="text-xs text-muted-foreground">Rastreo</span>
+                            <span className="text-sm text-foreground">
                                 {order.shipping_carrier} - {order.tracking_number}
                             </span>
                         </div>
@@ -165,14 +165,14 @@ function StatusManagementCard({ order, onOpenStatusModal }: { order: AdminOrder;
     }
 
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">Gestion de Estado</h2>
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div className="px-6 py-5 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">Gestion de Estado</h2>
             </div>
             <div className="p-6">
                 <button
                     onClick={onOpenStatusModal}
-                    className="w-full px-4 py-2.5 bg-[#4A5D4A] rounded-lg text-sm font-medium text-white font-[Outfit] hover:bg-[#3d4d3d] transition-colors"
+                    className="w-full px-4 py-2.5 bg-primary rounded-lg text-sm font-medium text-white hover:bg-primary transition-colors"
                 >
                     Cambiar Estado
                 </button>
@@ -197,19 +197,19 @@ function ShippingLabelCard({ order }: { order: AdminOrder }) {
     };
 
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">Guía de Envío</h2>
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div className="px-6 py-5 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">Guía de Envío</h2>
             </div>
             <div className="p-6 flex flex-col gap-4">
                 {order.label_url ? (
                     <>
                         <div className="flex items-center gap-3">
-                            <Printer className="w-5 h-5 text-green-600" />
-                            <span className="text-sm text-green-700 font-medium font-[Outfit]">Guía generada</span>
+                            <Printer className="w-5 h-5 text-primary" />
+                            <span className="text-sm text-primary font-medium">Guía generada</span>
                         </div>
                         {order.skydropx_shipment_id && (
-                            <div className="text-xs text-[#999999] font-[Outfit]">
+                            <div className="text-xs text-muted-foreground">
                                 ID Envío: {order.skydropx_shipment_id}
                             </div>
                         )}
@@ -217,7 +217,7 @@ function ShippingLabelCard({ order }: { order: AdminOrder }) {
                             href={order.label_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-full px-4 py-2.5 bg-[#4A5D4A] rounded-lg text-sm font-medium text-white font-[Outfit] hover:bg-[#3d4d3d] transition-colors text-center flex items-center justify-center gap-2"
+                            className="w-full px-4 py-2.5 bg-primary rounded-lg text-sm font-medium text-white hover:bg-primary transition-colors text-center flex items-center justify-center gap-2"
                         >
                             <Printer className="w-4 h-4" />
                             Imprimir Guía
@@ -226,21 +226,21 @@ function ShippingLabelCard({ order }: { order: AdminOrder }) {
                 ) : order.label_error ? (
                     <>
                         <div className="flex items-start gap-3">
-                            <AlertTriangle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-                            <p className="text-sm text-red-600 font-[Outfit]">{order.label_error}</p>
+                            <AlertTriangle className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
+                            <p className="text-sm text-destructive">{order.label_error}</p>
                         </div>
                         <button
                             onClick={handleRetry}
                             disabled={retrying}
-                            className="w-full px-4 py-2.5 bg-orange-600 rounded-lg text-sm font-medium text-white font-[Outfit] hover:bg-orange-700 transition-colors disabled:opacity-50"
+                            className="w-full px-4 py-2.5 bg-muted-foreground rounded-lg text-sm font-medium text-white hover:bg-muted-foreground/90 transition-colors disabled:opacity-50"
                         >
                             {retrying ? 'Reintentando...' : 'Reintentar Generación'}
                         </button>
                     </>
                 ) : (
                     <div className="flex items-center gap-3">
-                        <Loader2 className="w-5 h-5 text-[#999999] animate-spin" />
-                        <span className="text-sm text-[#999999] font-[Outfit]">Generando guía de envío...</span>
+                        <Loader2 className="w-5 h-5 text-muted-foreground animate-spin" />
+                        <span className="text-sm text-muted-foreground">Generando guía de envío...</span>
                     </div>
                 )}
             </div>
@@ -264,41 +264,41 @@ function TrackingForm({ order }: { order: AdminOrder }) {
     };
 
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">Rastreo de Envio</h2>
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div className="px-6 py-5 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">Rastreo de Envio</h2>
             </div>
             <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-4">
                 <div className="flex flex-col gap-1.5">
-                    <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">Paqueteria</label>
+                    <label className="text-sm font-medium text-foreground">Paqueteria</label>
                     <input
                         type="text"
                         value={data.shipping_carrier}
                         onChange={(e) => setData('shipping_carrier', e.target.value)}
                         placeholder="DHL, FedEx, Estafeta..."
-                        className="h-10 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
+                        className="h-10 px-4 bg-background rounded-lg border border-border text-sm outline-none focus:border-primary transition-colors"
                     />
                     {errors.shipping_carrier && (
-                        <span className="text-xs text-red-500 font-[Outfit]">{errors.shipping_carrier}</span>
+                        <span className="text-xs text-destructive">{errors.shipping_carrier}</span>
                     )}
                 </div>
                 <div className="flex flex-col gap-1.5">
-                    <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">Numero de Rastreo</label>
+                    <label className="text-sm font-medium text-foreground">Numero de Rastreo</label>
                     <input
                         type="text"
                         value={data.tracking_number}
                         onChange={(e) => setData('tracking_number', e.target.value)}
                         placeholder="Ingresa el numero de rastreo"
-                        className="h-10 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
+                        className="h-10 px-4 bg-background rounded-lg border border-border text-sm outline-none focus:border-primary transition-colors"
                     />
                     {errors.tracking_number && (
-                        <span className="text-xs text-red-500 font-[Outfit]">{errors.tracking_number}</span>
+                        <span className="text-xs text-destructive">{errors.tracking_number}</span>
                     )}
                 </div>
                 <button
                     type="submit"
                     disabled={processing}
-                    className="w-full px-4 py-2.5 bg-indigo-600 rounded-lg text-sm font-medium text-white font-[Outfit] hover:bg-indigo-700 transition-colors disabled:opacity-50"
+                    className="w-full px-4 py-2.5 bg-accent-foreground rounded-lg text-sm font-medium text-white hover:bg-accent-foreground/90 transition-colors disabled:opacity-50"
                 >
                     {processing ? 'Enviando...' : 'Marcar como Enviado'}
                 </button>
@@ -318,18 +318,18 @@ function RefundSection({ order, onOpenRefundModal }: { order: AdminOrder; onOpen
     }
 
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">Reembolso</h2>
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div className="px-6 py-5 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">Reembolso</h2>
             </div>
             <div className="p-6 flex flex-col gap-3">
-                <div className="flex items-center justify-between text-sm font-[Outfit]">
-                    <span className="text-[#999999]">Disponible para reembolso</span>
-                    <span className="font-medium text-[#1A1A1A]">{formatCurrency(remaining)}</span>
+                <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Disponible para reembolso</span>
+                    <span className="font-medium text-foreground">{formatCurrency(remaining)}</span>
                 </div>
                 <button
                     onClick={onOpenRefundModal}
-                    className="w-full px-4 py-2.5 bg-red-600 rounded-lg text-sm font-medium text-white font-[Outfit] hover:bg-red-700 transition-colors"
+                    className="w-full px-4 py-2.5 bg-destructive rounded-lg text-sm font-medium text-white hover:bg-destructive/90 transition-colors"
                 >
                     Procesar Reembolso
                 </button>
@@ -348,17 +348,17 @@ export default function OrderShow() {
             <div className="flex flex-col gap-6 p-10 pr-12">
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-1">
-                        <div className="flex items-center gap-2 text-sm font-[Outfit]">
+                        <div className="flex items-center gap-2 text-sm">
                             <Link
                                 href="/admin/orders"
-                                className="text-[#999999] hover:text-[#666666] transition-colors"
+                                className="text-muted-foreground hover:text-muted-foreground transition-colors"
                             >
                                 Pedidos
                             </Link>
-                            <span className="text-[#999999]">/</span>
-                            <span className="text-[#666666]">Pedido #{order.id}</span>
+                            <span className="text-muted-foreground">/</span>
+                            <span className="text-muted-foreground">Pedido #{order.id}</span>
                         </div>
-                        <h1 className="text-[28px] font-semibold text-[#1A1A1A] font-[Outfit]">
+                        <h1 className="text-[28px] font-semibold text-foreground">
                             Pedido #{order.id}
                         </h1>
                     </div>

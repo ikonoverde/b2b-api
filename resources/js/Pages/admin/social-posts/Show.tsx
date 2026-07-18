@@ -24,12 +24,12 @@ function Flash({ flash }: { flash: NonNullable<PageProps['flash']> }) {
         <div
             className={`flex items-start gap-3 rounded-xl border px-5 py-4 ${
                 isSuccess
-                    ? 'border-[#C8D3C8] bg-[#EEF2EE] text-[#3D4D3D]'
-                    : 'border-[#E8C4C4] bg-[#FBEFEF] text-[#8B4444]'
+                    ? 'border-muted bg-muted text-primary'
+                    : 'border-destructive/20 bg-destructive/10 text-destructive'
             }`}
         >
             <Icon className="mt-0.5 h-4 w-4 shrink-0" />
-            <p className="font-[Outfit] text-sm">{message}</p>
+            <p className="text-sm">{message}</p>
         </div>
     );
 }
@@ -44,19 +44,19 @@ function Flash({ flash }: { flash: NonNullable<PageProps['flash']> }) {
 function PostPreview({ draft }: { draft: SocialPostDraftDetail }) {
     return (
         <section className="flex flex-col gap-3">
-            <h2 className="font-[Outfit] text-sm font-semibold text-[#1A1A1A]">
+            <h2 className="text-sm font-semibold text-foreground">
                 La publicación, tal como saldría
             </h2>
-            <div className="overflow-hidden rounded-xl border border-[#E5E5E5] bg-white">
+            <div className="overflow-hidden rounded-xl border border-border bg-card">
                 {draft.image_url && (
                     <img
                         src={draft.image_url}
                         alt=""
-                        className="max-h-[420px] w-full border-b border-[#E5E5E5] object-cover"
+                        className="max-h-[420px] w-full border-b border-border object-cover"
                     />
                 )}
                 <div className="flex flex-col gap-4 px-8 py-7">
-                    <p className="max-w-[65ch] whitespace-pre-wrap font-[Outfit] text-[15px] leading-relaxed text-[#1A1A1A]">
+                    <p className="max-w-[65ch] whitespace-pre-wrap text-[15px] leading-relaxed text-foreground">
                         {draft.caption}
                     </p>
                     {draft.link && (
@@ -64,7 +64,7 @@ function PostPreview({ draft }: { draft: SocialPostDraftDetail }) {
                             href={draft.link}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex w-fit items-center gap-1.5 font-[Outfit] text-sm text-[#4A5D4A] hover:underline"
+                            className="inline-flex w-fit items-center gap-1.5 text-sm text-primary hover:underline"
                         >
                             {draft.link}
                             <ExternalLink className="h-3.5 w-3.5" />
@@ -73,7 +73,7 @@ function PostPreview({ draft }: { draft: SocialPostDraftDetail }) {
                 </div>
             </div>
             {draft.requires_image && draft.image_url === null && (
-                <p className="font-[Outfit] text-xs text-[#8B4444]">
+                <p className="text-xs text-destructive">
                     Instagram no acepta publicaciones sin imagen. Este borrador no se puede publicar
                     hasta que tenga una.
                 </p>
@@ -88,23 +88,23 @@ function Notes({ draft }: { draft: SocialPostDraftDetail }) {
     }
 
     return (
-        <section className="flex flex-col gap-4 rounded-xl border border-[#E5E5E5] bg-white px-8 py-7">
+        <section className="flex flex-col gap-4 rounded-xl border border-border bg-card px-8 py-7">
             {draft.rationale && (
                 <div className="flex flex-col gap-1.5">
-                    <h3 className="font-[Outfit] text-[11px] font-medium uppercase tracking-wide text-[#999999]">
+                    <h3 className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
                         Por qué esta publicación
                     </h3>
-                    <p className="max-w-[70ch] whitespace-pre-wrap font-[Outfit] text-sm leading-relaxed text-[#444444]">
+                    <p className="max-w-[70ch] whitespace-pre-wrap text-sm leading-relaxed text-muted-foreground">
                         {draft.rationale}
                     </p>
                 </div>
             )}
             {draft.brand_review && (
                 <div className="flex flex-col gap-1.5">
-                    <h3 className="font-[Outfit] text-[11px] font-medium uppercase tracking-wide text-[#999999]">
+                    <h3 className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
                         Revisión de marca
                     </h3>
-                    <p className="max-w-[70ch] whitespace-pre-wrap font-[Outfit] text-sm leading-relaxed text-[#444444]">
+                    <p className="max-w-[70ch] whitespace-pre-wrap text-sm leading-relaxed text-muted-foreground">
                         {draft.brand_review}
                     </p>
                 </div>
@@ -127,7 +127,7 @@ function PublishActions({ draft }: { draft: SocialPostDraftDetail }) {
 
     if (!draft.is_publishable && draft.status === 'pending') {
         return (
-            <p className="font-[Outfit] text-sm text-[#666666]">
+            <p className="text-sm text-muted-foreground">
                 Este borrador todavía no se puede publicar.
             </p>
         );
@@ -140,7 +140,7 @@ function PublishActions({ draft }: { draft: SocialPostDraftDetail }) {
                     <button
                         type="button"
                         onClick={() => setConfirming(true)}
-                        className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[#4A5D4A] px-4 font-[Outfit] text-sm font-medium text-white transition-colors hover:bg-[#3D4D3D]"
+                        className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors hover:bg-primary"
                     >
                         <Send className="h-4 w-4" />
                         Publicar en {platformLabels[draft.platform]}
@@ -148,7 +148,7 @@ function PublishActions({ draft }: { draft: SocialPostDraftDetail }) {
                     <button
                         type="button"
                         onClick={() => setRejecting(true)}
-                        className="inline-flex h-10 items-center justify-center rounded-lg border border-[#E5E5E5] px-4 font-[Outfit] text-sm text-[#666666] transition-colors hover:bg-gray-50"
+                        className="inline-flex h-10 items-center justify-center rounded-lg border border-border px-4 text-sm text-muted-foreground transition-colors hover:bg-muted"
                     >
                         Descartar
                     </button>
@@ -156,8 +156,8 @@ function PublishActions({ draft }: { draft: SocialPostDraftDetail }) {
             )}
 
             {confirming && (
-                <div className="flex flex-col gap-3 rounded-lg border border-[#E4D3B4] bg-[#FAF3E6] p-4">
-                    <p className="font-[Outfit] text-sm text-[#7A6234]">
+                <div className="flex flex-col gap-3 rounded-lg border border-border bg-muted p-4">
+                    <p className="text-sm text-muted-foreground">
                         Esto se publica de inmediato en {platformLabels[draft.platform]} y queda a la
                         vista de cualquiera. Meta no tiene deshacer: para bajarlo tendrás que entrar a
                         la cuenta.
@@ -172,7 +172,7 @@ function PublishActions({ draft }: { draft: SocialPostDraftDetail }) {
                                     onFinish: () => setConfirming(false),
                                 })
                             }
-                            className="inline-flex h-10 items-center gap-2 rounded-lg bg-[#4A5D4A] px-4 font-[Outfit] text-sm font-medium text-white transition-colors hover:bg-[#3D4D3D] disabled:opacity-60"
+                            className="inline-flex h-10 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors hover:bg-primary disabled:opacity-60"
                         >
                             <Send className="h-4 w-4" />
                             {publish.processing ? 'Publicando...' : 'Sí, publicar ahora'}
@@ -181,7 +181,7 @@ function PublishActions({ draft }: { draft: SocialPostDraftDetail }) {
                             type="button"
                             onClick={() => setConfirming(false)}
                             disabled={publish.processing}
-                            className="inline-flex h-10 items-center rounded-lg border border-[#E5E5E5] bg-white px-4 font-[Outfit] text-sm text-[#666666] transition-colors hover:bg-gray-50"
+                            className="inline-flex h-10 items-center rounded-lg border border-border bg-card px-4 text-sm text-muted-foreground transition-colors hover:bg-muted"
                         >
                             Cancelar
                         </button>
@@ -198,11 +198,11 @@ function PublishActions({ draft }: { draft: SocialPostDraftDetail }) {
                             onSuccess: () => setRejecting(false),
                         });
                     }}
-                    className="flex flex-col gap-3 rounded-lg border border-[#E5E5E5] bg-[#FBFAF9] p-4"
+                    className="flex flex-col gap-3 rounded-lg border border-border bg-background p-4"
                 >
                     <label
                         htmlFor="rejection_reason"
-                        className="font-[Outfit] text-sm font-medium text-[#1A1A1A]"
+                        className="text-sm font-medium text-foreground"
                     >
                         ¿Por qué se descarta?
                     </label>
@@ -211,11 +211,11 @@ function PublishActions({ draft }: { draft: SocialPostDraftDetail }) {
                         value={reject.data.rejection_reason}
                         onChange={(event) => reject.setData('rejection_reason', event.target.value)}
                         rows={3}
-                        className="rounded-lg border border-[#E5E5E5] bg-white px-3 py-2 font-[Outfit] text-sm text-[#1A1A1A] outline-none focus:border-[#4A5D4A]"
+                        className="rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground outline-none focus:border-primary"
                         placeholder="Lo que escribas aquí es lo único que le dice al siguiente borrador qué evitar."
                     />
                     {reject.errors.rejection_reason && (
-                        <p className="font-[Outfit] text-xs text-[#8B4444]">
+                        <p className="text-xs text-destructive">
                             {reject.errors.rejection_reason}
                         </p>
                     )}
@@ -223,7 +223,7 @@ function PublishActions({ draft }: { draft: SocialPostDraftDetail }) {
                         <button
                             type="submit"
                             disabled={reject.processing}
-                            className="inline-flex h-10 items-center rounded-lg bg-[#1A1A1A] px-4 font-[Outfit] text-sm font-medium text-white transition-colors hover:bg-[#333333] disabled:opacity-60"
+                            className="inline-flex h-10 items-center rounded-lg bg-foreground px-4 text-sm font-medium text-white transition-colors hover:bg-foreground disabled:opacity-60"
                         >
                             {reject.processing ? 'Descartando...' : 'Descartar borrador'}
                         </button>
@@ -231,7 +231,7 @@ function PublishActions({ draft }: { draft: SocialPostDraftDetail }) {
                             type="button"
                             onClick={() => setRejecting(false)}
                             disabled={reject.processing}
-                            className="inline-flex h-10 items-center rounded-lg border border-[#E5E5E5] bg-white px-4 font-[Outfit] text-sm text-[#666666] transition-colors hover:bg-gray-50"
+                            className="inline-flex h-10 items-center rounded-lg border border-border bg-card px-4 text-sm text-muted-foreground transition-colors hover:bg-muted"
                         >
                             Cancelar
                         </button>
@@ -276,10 +276,10 @@ function Record({ draft }: { draft: SocialPostDraftDetail }) {
             <dl className="flex flex-col gap-3">
                 {rows.map((row) => (
                     <div key={row.label} className="flex flex-col gap-0.5">
-                        <dt className="font-[Outfit] text-[11px] font-medium uppercase tracking-wide text-[#999999]">
+                        <dt className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
                             {row.label}
                         </dt>
-                        <dd className="font-[Outfit] text-sm text-[#1A1A1A]">{row.value}</dd>
+                        <dd className="text-sm text-foreground">{row.value}</dd>
                     </div>
                 ))}
             </dl>
@@ -289,7 +289,7 @@ function Record({ draft }: { draft: SocialPostDraftDetail }) {
                     href={draft.remote_permalink}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex w-fit items-center gap-1.5 font-[Outfit] text-sm text-[#4A5D4A] hover:underline"
+                    className="inline-flex w-fit items-center gap-1.5 text-sm text-primary hover:underline"
                 >
                     Ver en {platformLabels[draft.platform]}
                     <ExternalLink className="h-3.5 w-3.5" />
@@ -307,19 +307,19 @@ export default function SocialPostShow() {
             <div className="flex flex-col gap-6 p-10 pr-12">
                 <Link
                     href="/admin/social-posts"
-                    className="flex w-fit items-center gap-2 font-[Outfit] text-sm text-[#666666] hover:text-[#1A1A1A]"
+                    className="flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
                 >
                     <ArrowLeft className="h-4 w-4" />
                     Publicaciones sociales
                 </Link>
 
                 <div className="flex flex-col gap-2">
-                    <h1 className="font-[Outfit] text-[28px] font-semibold text-[#1A1A1A]">
+                    <h1 className="text-[28px] font-semibold text-foreground">
                         Borrador para {platformLabels[draft.platform]}
                     </h1>
                     <div className="flex flex-wrap items-center gap-3">
                         <StatusPill status={draft.status} />
-                        <span className="max-w-2xl font-[Outfit] text-sm text-[#666666]">
+                        <span className="max-w-2xl text-sm text-muted-foreground">
                             {statusDescriptions[draft.status]}
                         </span>
                     </div>
@@ -328,13 +328,13 @@ export default function SocialPostShow() {
                 {flash && <Flash flash={flash} />}
 
                 {draft.publish_error && (
-                    <div className="flex items-start gap-3 rounded-xl border border-[#E8C4C4] bg-[#FBEFEF] px-5 py-4">
-                        <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-[#8B4444]" />
+                    <div className="flex items-start gap-3 rounded-xl border border-destructive/20 bg-destructive/10 px-5 py-4">
+                        <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
                         <div className="flex flex-col gap-1">
-                            <p className="font-[Outfit] text-sm font-medium text-[#8B4444]">
+                            <p className="text-sm font-medium text-destructive">
                                 Meta rechazó la publicación. No hay nada público.
                             </p>
-                            <p className="font-mono text-xs leading-relaxed text-[#8B4444]/85">
+                            <p className="font-mono text-xs leading-relaxed text-destructive/85">
                                 {draft.publish_error}
                             </p>
                         </div>
@@ -342,11 +342,11 @@ export default function SocialPostShow() {
                 )}
 
                 {draft.rejection_reason && (
-                    <div className="flex flex-col gap-1 rounded-xl border border-[#E5E5E5] bg-[#F5F3F0] px-5 py-4">
-                        <p className="font-[Outfit] text-sm font-medium text-[#1A1A1A]">
+                    <div className="flex flex-col gap-1 rounded-xl border border-border bg-muted px-5 py-4">
+                        <p className="text-sm font-medium text-foreground">
                             Descartado
                         </p>
-                        <p className="font-[Outfit] text-sm text-[#666666]">{draft.rejection_reason}</p>
+                        <p className="text-sm text-muted-foreground">{draft.rejection_reason}</p>
                     </div>
                 )}
 
@@ -356,7 +356,7 @@ export default function SocialPostShow() {
                         <Notes draft={draft} />
                     </div>
 
-                    <aside className="flex flex-col gap-6 self-start rounded-xl border border-[#E5E5E5] bg-white p-6">
+                    <aside className="flex flex-col gap-6 self-start rounded-xl border border-border bg-card p-6">
                         {draft.status === 'pending' && <PublishActions draft={draft} />}
                         <Record draft={draft} />
                     </aside>

@@ -3,7 +3,7 @@ function humanize(key: string): string {
 }
 
 function ScalarValue({ value }: { value: string | number | boolean }) {
-    return <span className="font-[Outfit] text-sm text-[#1A1A1A]">{String(value)}</span>;
+    return <span className="text-sm text-foreground">{String(value)}</span>;
 }
 
 /**
@@ -12,7 +12,7 @@ function ScalarValue({ value }: { value: string | number | boolean }) {
  */
 export function JsonValue({ value, depth = 0 }: { value: unknown; depth?: number }) {
     if (value === null || value === undefined || value === '') {
-        return <span className="font-[Outfit] text-sm text-[#999999]">—</span>;
+        return <span className="text-sm text-muted-foreground">—</span>;
     }
 
     if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
@@ -26,7 +26,7 @@ export function JsonValue({ value, depth = 0 }: { value: unknown; depth?: number
                     {value.map((item, index) => (
                         <span
                             key={index}
-                            className="rounded-full border border-[#E5E5E5] bg-[#FBF9F7] px-2.5 py-1 font-[Outfit] text-xs text-[#666666]"
+                            className="rounded-full border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground"
                         >
                             {String(item)}
                         </span>
@@ -38,7 +38,7 @@ export function JsonValue({ value, depth = 0 }: { value: unknown; depth?: number
         return (
             <div className="flex flex-col gap-3">
                 {value.map((item, index) => (
-                    <div key={index} className="rounded-lg border border-[#E5E5E5] bg-[#FBF9F7] p-3">
+                    <div key={index} className="rounded-lg border border-border bg-background p-3">
                         <JsonValue value={item} depth={depth + 1} />
                     </div>
                 ))}
@@ -51,7 +51,7 @@ export function JsonValue({ value, depth = 0 }: { value: unknown; depth?: number
             <dl className="flex flex-col gap-2.5">
                 {Object.entries(value as Record<string, unknown>).map(([key, nested]) => (
                     <div key={key} className="flex flex-col gap-1">
-                        <dt className="font-[Outfit] text-[11px] font-medium uppercase tracking-wide text-[#999999]">
+                        <dt className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
                             {humanize(key)}
                         </dt>
                         <dd>
@@ -88,8 +88,8 @@ export function DetailCard({
     }
 
     return (
-        <section className="flex flex-col gap-3 rounded-xl border border-[#E5E5E5] bg-white p-6">
-            <h2 className="font-[Outfit] text-sm font-semibold text-[#1A1A1A]">{title}</h2>
+        <section className="flex flex-col gap-3 rounded-xl border border-border bg-card p-6">
+            <h2 className="text-sm font-semibold text-foreground">{title}</h2>
             {children ?? <JsonValue value={value} />}
         </section>
     );

@@ -12,9 +12,9 @@ export default function StatusCard({
     onToggleFeatured: () => void;
 }) {
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div className="px-6 py-5 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">
                     Estado del Producto
                 </h2>
             </div>

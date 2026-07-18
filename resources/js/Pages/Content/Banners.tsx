@@ -27,10 +27,10 @@ interface Props extends PageProps {
 }
 
 const statusConfig: Record<string, { label: string; bg: string; text: string }> = {
-    active: { label: 'Activo', bg: 'bg-green-50', text: 'text-green-700' },
-    inactive: { label: 'Inactivo', bg: 'bg-gray-100', text: 'text-gray-600' },
-    scheduled: { label: 'Programado', bg: 'bg-blue-50', text: 'text-blue-700' },
-    expired: { label: 'Expirado', bg: 'bg-red-50', text: 'text-red-700' },
+    active: { label: 'Activo', bg: 'bg-primary/10', text: 'text-primary' },
+    inactive: { label: 'Inactivo', bg: 'bg-muted', text: 'text-muted-foreground' },
+    scheduled: { label: 'Programado', bg: 'bg-accent', text: 'text-accent-foreground' },
+    expired: { label: 'Expirado', bg: 'bg-destructive/10', text: 'text-destructive' },
 };
 
 const linkTypeLabels: Record<string, string> = {
@@ -68,41 +68,41 @@ function BannerFormModal({
 }) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="bg-white rounded-2xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
-                <div className="p-6 border-b border-[#E5E5E5]">
-                    <h2 className="font-[Outfit] font-semibold text-lg text-[#1A1A1A]">
+            <div className="bg-card rounded-2xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+                <div className="p-6 border-b border-border">
+                    <h2 className="font-semibold text-lg text-foreground">
                         {editingBanner ? 'Editar Banner' : 'Nuevo Banner'}
                     </h2>
                 </div>
                 <form onSubmit={onSubmit} className="p-6 flex flex-col gap-4">
                     <div>
-                        <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                        <label className="block text-sm font-medium text-foreground mb-1">
                             Título *
                         </label>
                         <input
                             type="text"
                             value={form.data.title}
                             onChange={(e) => form.setData('title', e.target.value)}
-                            className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                            className="w-full border border-border rounded-lg px-3 py-2 text-sm"
                             required
                         />
                         {form.errors.title && (
-                            <p className="text-red-500 text-xs mt-1">{form.errors.title}</p>
+                            <p className="text-destructive text-xs mt-1">{form.errors.title}</p>
                         )}
                     </div>
                     <div>
-                        <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                        <label className="block text-sm font-medium text-foreground mb-1">
                             Subtítulo
                         </label>
                         <input
                             type="text"
                             value={form.data.subtitle}
                             onChange={(e) => form.setData('subtitle', e.target.value)}
-                            className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                            className="w-full border border-border rounded-lg px-3 py-2 text-sm"
                         />
                     </div>
                     <div>
-                        <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                        <label className="block text-sm font-medium text-foreground mb-1">
                             Imagen {editingBanner ? '' : '*'}
                         </label>
                         <input
@@ -111,15 +111,15 @@ function BannerFormModal({
                             onChange={(e) =>
                                 form.setData('image', e.target.files?.[0] || null)
                             }
-                            className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                            className="w-full border border-border rounded-lg px-3 py-2 text-sm"
                             required={!editingBanner}
                         />
                         {form.errors.image && (
-                            <p className="text-red-500 text-xs mt-1">{form.errors.image}</p>
+                            <p className="text-destructive text-xs mt-1">{form.errors.image}</p>
                         )}
                     </div>
                     <div>
-                        <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                        <label className="block text-sm font-medium text-foreground mb-1">
                             Tipo de enlace
                         </label>
                         <select
@@ -132,7 +132,7 @@ function BannerFormModal({
                                     link_value: value ? form.data.link_value : '',
                                 });
                             }}
-                            className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                            className="w-full border border-border rounded-lg px-3 py-2 text-sm"
                         >
                             <option value="">Ninguno</option>
                             <option value="product">Producto</option>
@@ -140,13 +140,13 @@ function BannerFormModal({
                             <option value="url">URL externa</option>
                         </select>
                         {form.errors.link_type && (
-                            <p className="text-red-500 text-xs mt-1">{form.errors.link_type}</p>
+                            <p className="text-destructive text-xs mt-1">{form.errors.link_type}</p>
                         )}
                     </div>
                     {form.data.link_type && (
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                                <label className="block text-sm font-medium text-foreground mb-1">
                                     {linkTypeLabels[form.data.link_type]} *
                                 </label>
                                 <input
@@ -154,47 +154,47 @@ function BannerFormModal({
                                     placeholder={linkValuePlaceholder()}
                                     value={form.data.link_value}
                                     onChange={(e) => form.setData('link_value', e.target.value)}
-                                    className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                                    className="w-full border border-border rounded-lg px-3 py-2 text-sm"
                                     required
                                 />
                                 {form.errors.link_value && (
-                                    <p className="text-red-500 text-xs mt-1">{form.errors.link_value}</p>
+                                    <p className="text-destructive text-xs mt-1">{form.errors.link_value}</p>
                                 )}
                             </div>
                             <div>
-                                <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                                <label className="block text-sm font-medium text-foreground mb-1">
                                     Texto del enlace
                                 </label>
                                 <input
                                     type="text"
                                     value={form.data.link_text}
                                     onChange={(e) => form.setData('link_text', e.target.value)}
-                                    className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                                    className="w-full border border-border rounded-lg px-3 py-2 text-sm"
                                 />
                             </div>
                         </div>
                     )}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                            <label className="block text-sm font-medium text-foreground mb-1">
                                 Inicio
                             </label>
                             <input
                                 type="datetime-local"
                                 value={form.data.starts_at}
                                 onChange={(e) => form.setData('starts_at', e.target.value)}
-                                className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                                className="w-full border border-border rounded-lg px-3 py-2 text-sm"
                             />
                         </div>
                         <div>
-                            <label className="block font-[Outfit] text-sm font-medium text-[#1A1A1A] mb-1">
+                            <label className="block text-sm font-medium text-foreground mb-1">
                                 Fin
                             </label>
                             <input
                                 type="datetime-local"
                                 value={form.data.ends_at}
                                 onChange={(e) => form.setData('ends_at', e.target.value)}
-                                className="w-full border border-[#E5E5E5] rounded-lg px-3 py-2 font-[Outfit] text-sm"
+                                className="w-full border border-border rounded-lg px-3 py-2 text-sm"
                             />
                         </div>
                     </div>
@@ -203,9 +203,9 @@ function BannerFormModal({
                             type="checkbox"
                             checked={form.data.is_active}
                             onChange={(e) => form.setData('is_active', e.target.checked)}
-                            className="rounded border-[#E5E5E5]"
+                            className="rounded border-border"
                         />
-                        <span className="font-[Outfit] text-sm text-[#1A1A1A]">
+                        <span className="text-sm text-foreground">
                             Activo
                         </span>
                     </label>
@@ -213,14 +213,14 @@ function BannerFormModal({
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 text-sm font-[Outfit] font-medium text-[#666666] hover:text-[#1A1A1A] cursor-pointer"
+                            className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground cursor-pointer"
                         >
                             Cancelar
                         </button>
                         <button
                             type="submit"
                             disabled={form.processing}
-                            className="bg-[#4A5D4A] text-white px-6 py-2 rounded-lg font-[Outfit] font-medium text-sm hover:bg-[#3d4e3d] disabled:opacity-50 cursor-pointer"
+                            className="bg-primary text-white px-6 py-2 rounded-lg font-medium text-sm hover:bg-primary disabled:opacity-50 cursor-pointer"
                         >
                             {form.processing
                                 ? 'Guardando...'
@@ -246,24 +246,24 @@ function DeleteConfirmModal({
 }) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="bg-white rounded-2xl w-full max-w-sm mx-4 p-6">
-                <h3 className="font-[Outfit] font-semibold text-lg text-[#1A1A1A] mb-2">
+            <div className="bg-card rounded-2xl w-full max-w-sm mx-4 p-6">
+                <h3 className="font-semibold text-lg text-foreground mb-2">
                     Eliminar Banner
                 </h3>
-                <p className="font-[Outfit] text-sm text-[#666666] mb-6">
+                <p className="text-sm text-muted-foreground mb-6">
                     ¿Estás seguro de que deseas eliminar este banner? Esta acción no se
                     puede deshacer.
                 </p>
                 <div className="flex justify-end gap-3">
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 text-sm font-[Outfit] font-medium text-[#666666] hover:text-[#1A1A1A] cursor-pointer"
+                        className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground cursor-pointer"
                     >
                         Cancelar
                     </button>
                     <button
                         onClick={() => onDelete(deleteConfirm)}
-                        className="bg-red-500 text-white px-6 py-2 rounded-lg font-[Outfit] font-medium text-sm hover:bg-red-600 cursor-pointer"
+                        className="bg-destructive text-white px-6 py-2 rounded-lg font-medium text-sm hover:bg-destructive/90 cursor-pointer"
                     >
                         Eliminar
                     </button>
@@ -407,16 +407,16 @@ export default function Banners({ banners }: Props) {
                     {/* Header */}
                     <div className="flex items-center justify-between mb-8">
                         <div>
-                            <h1 className="text-2xl font-bold text-[#1A1A1A] font-[Outfit]">
+                            <h1 className="text-2xl font-bold text-foreground">
                                 Banners
                             </h1>
-                            <p className="text-sm text-[#666666] font-[Outfit] mt-1">
+                            <p className="text-sm text-muted-foreground mt-1">
                                 Administra los banners promocionales de la página principal
                             </p>
                         </div>
                         <button
                             onClick={formActions.openCreate}
-                            className="flex items-center gap-2 bg-[#4A5D4A] text-white px-5 py-2.5 rounded-lg font-[Outfit] font-medium text-sm hover:bg-[#3d4e3d] transition-colors cursor-pointer"
+                            className="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg font-medium text-sm hover:bg-primary transition-colors cursor-pointer"
                         >
                             <Plus className="w-4 h-4" />
                             Nuevo Banner
@@ -424,38 +424,38 @@ export default function Banners({ banners }: Props) {
                     </div>
 
                     {flash?.success && (
-                        <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg font-[Outfit] text-sm">
+                        <div className="mb-6 bg-primary/10 border border-primary/20 text-primary px-4 py-3 rounded-lg text-sm">
                             {flash.success}
                         </div>
                     )}
 
                     {/* Banners Table */}
-                    <div className="bg-white rounded-xl border border-[#E5E5E5] overflow-hidden">
+                    <div className="bg-card rounded-xl border border-border overflow-hidden">
                         {banners.length === 0 ? (
                             <div className="p-8 text-center">
-                                <p className="text-[#999999] font-[Outfit] text-sm">
+                                <p className="text-muted-foreground text-sm">
                                     No hay banners. Crea el primero.
                                 </p>
                             </div>
                         ) : (
                             <table className="w-full">
                                 <thead>
-                                    <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA]">
-                                        <th className="text-left px-4 py-3 font-[Outfit] text-xs font-medium text-[#999999] uppercase tracking-wider">
+                                    <tr className="border-b border-border bg-background">
+                                        <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                             Banner
                                         </th>
-                                        <th className="text-left px-4 py-3 font-[Outfit] text-xs font-medium text-[#999999] uppercase tracking-wider">
+                                        <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                             Estado
                                         </th>
-                                        <th className="text-left px-4 py-3 font-[Outfit] text-xs font-medium text-[#999999] uppercase tracking-wider">
+                                        <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                             Programación
                                         </th>
-                                        <th className="text-right px-4 py-3 font-[Outfit] text-xs font-medium text-[#999999] uppercase tracking-wider">
+                                        <th className="text-right px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                             Acciones
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-[#E5E5E5]">
+                                <tbody className="divide-y divide-border">
                                     {banners.map((banner, index) => (
                                         <BannerRow
                                             key={banner.id}
@@ -525,11 +525,11 @@ function BannerRow({
                         className="w-16 h-10 object-cover rounded-lg"
                     />
                     <div>
-                        <p className="font-[Outfit] text-sm font-medium text-[#1A1A1A]">
+                        <p className="text-sm font-medium text-foreground">
                             {banner.title}
                         </p>
                         {banner.link_type && (
-                            <p className="font-[Outfit] text-xs text-[#999999]">
+                            <p className="text-xs text-muted-foreground">
                                 {linkTypeLabels[banner.link_type]}: {banner.link_value}
                             </p>
                         )}
@@ -538,13 +538,13 @@ function BannerRow({
             </td>
             <td className="px-4 py-3">
                 <span
-                    className={`inline-flex px-2 py-1 rounded-full text-xs font-medium font-[Outfit] ${status.bg} ${status.text}`}
+                    className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${status.bg} ${status.text}`}
                 >
                     {status.label}
                 </span>
             </td>
             <td className="px-4 py-3">
-                <span className="font-[Outfit] text-xs text-[#666666]">
+                <span className="text-xs text-muted-foreground">
                     {banner.starts_at || banner.ends_at
                         ? `${formatDateShort(banner.starts_at)} → ${formatDateShort(banner.ends_at)}`
                         : 'Siempre'}
@@ -555,39 +555,39 @@ function BannerRow({
                     <button
                         onClick={() => onReorder('up')}
                         disabled={index === 0}
-                        className="p-1.5 rounded hover:bg-[#F5F3F0] disabled:opacity-30 cursor-pointer"
+                        className="p-1.5 rounded hover:bg-muted disabled:opacity-30 cursor-pointer"
                     >
-                        <ArrowUp className="w-3.5 h-3.5 text-[#666666]" />
+                        <ArrowUp className="w-3.5 h-3.5 text-muted-foreground" />
                     </button>
                     <button
                         onClick={() => onReorder('down')}
                         disabled={index === total - 1}
-                        className="p-1.5 rounded hover:bg-[#F5F3F0] disabled:opacity-30 cursor-pointer"
+                        className="p-1.5 rounded hover:bg-muted disabled:opacity-30 cursor-pointer"
                     >
-                        <ArrowDown className="w-3.5 h-3.5 text-[#666666]" />
+                        <ArrowDown className="w-3.5 h-3.5 text-muted-foreground" />
                     </button>
                     <button
                         onClick={onToggle}
-                        className="p-1.5 rounded hover:bg-[#F5F3F0] cursor-pointer"
+                        className="p-1.5 rounded hover:bg-muted cursor-pointer"
                         title={banner.is_active ? 'Desactivar' : 'Activar'}
                     >
                         {banner.is_active ? (
-                            <Eye className="w-3.5 h-3.5 text-[#4A5D4A]" />
+                            <Eye className="w-3.5 h-3.5 text-primary" />
                         ) : (
-                            <EyeOff className="w-3.5 h-3.5 text-[#999999]" />
+                            <EyeOff className="w-3.5 h-3.5 text-muted-foreground" />
                         )}
                     </button>
                     <button
                         onClick={onEdit}
-                        className="p-1.5 rounded hover:bg-[#F5F3F0] cursor-pointer"
+                        className="p-1.5 rounded hover:bg-muted cursor-pointer"
                     >
-                        <Pencil className="w-3.5 h-3.5 text-[#666666]" />
+                        <Pencil className="w-3.5 h-3.5 text-muted-foreground" />
                     </button>
                     <button
                         onClick={onDelete}
-                        className="p-1.5 rounded hover:bg-red-50 cursor-pointer"
+                        className="p-1.5 rounded hover:bg-destructive/10 cursor-pointer"
                     >
-                        <Trash2 className="w-3.5 h-3.5 text-red-400" />
+                        <Trash2 className="w-3.5 h-3.5 text-destructive" />
                     </button>
                 </div>
             </td>

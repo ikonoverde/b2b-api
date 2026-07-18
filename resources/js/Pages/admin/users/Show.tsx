@@ -95,23 +95,23 @@ const formatCurrency = (amount: number): string => {
 
 const getStatusColor = (status: string): string => {
     const colors: Record<string, string> = {
-        pending: 'bg-yellow-100 text-yellow-800',
-        processing: 'bg-blue-100 text-blue-800',
-        shipped: 'bg-indigo-100 text-indigo-800',
-        delivered: 'bg-green-100 text-green-800',
-        cancelled: 'bg-red-100 text-red-800',
+        pending: 'bg-muted text-muted-foreground',
+        processing: 'bg-accent text-accent-foreground',
+        shipped: 'bg-accent text-accent-foreground',
+        delivered: 'bg-primary/10 text-primary',
+        cancelled: 'bg-destructive/10 text-destructive',
     };
-    return colors[status] || 'bg-gray-100 text-gray-800';
+    return colors[status] || 'bg-muted text-foreground';
 };
 
 const getPaymentStatusColor = (status: string): string => {
     const colors: Record<string, string> = {
-        pending: 'bg-yellow-100 text-yellow-800',
-        paid: 'bg-green-100 text-green-800',
-        failed: 'bg-red-100 text-red-800',
-        refunded: 'bg-purple-100 text-purple-800',
+        pending: 'bg-muted text-muted-foreground',
+        paid: 'bg-primary/10 text-primary',
+        failed: 'bg-destructive/10 text-destructive',
+        refunded: 'bg-accent text-accent-foreground',
     };
-    return colors[status] || 'bg-gray-100 text-gray-800';
+    return colors[status] || 'bg-muted text-foreground';
 };
 
 function PasswordResetCard({
@@ -122,22 +122,22 @@ function PasswordResetCard({
     onOpenPasswordResetModal: () => void;
 }) {
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div className="px-6 py-5 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">
                     Restablecer Contraseña
                 </h2>
             </div>
             <div className="p-6 flex flex-col gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
-                        <Key className="w-5 h-5 text-amber-600" />
+                    <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                        <Key className="w-5 h-5 text-muted-foreground" />
                     </div>
                     <div className="flex-1">
-                        <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                        <span className="text-sm font-medium text-foreground">
                             Enviar Email de Restablecimiento
                         </span>
-                        <p className="text-xs text-[#666666] font-[Outfit]">
+                        <p className="text-xs text-muted-foreground">
                             El usuario recibirá un email con un enlace para crear una nueva contraseña.
                         </p>
                     </div>
@@ -145,7 +145,7 @@ function PasswordResetCard({
 
                 <button
                     onClick={onOpenPasswordResetModal}
-                    className="w-full px-4 py-2.5 bg-amber-600 rounded-lg text-sm font-medium text-white font-[Outfit] hover:bg-amber-700 transition-colors"
+                    className="w-full px-4 py-2.5 bg-muted-foreground rounded-lg text-sm font-medium text-white hover:bg-muted-foreground/90 transition-colors"
                 >
                     Enviar Email de Restablecimiento
                 </button>
@@ -156,32 +156,32 @@ function PasswordResetCard({
 
 function PersonalInfoCard({ user }: { user: DetailedUser }) {
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div className="px-6 py-5 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">
                     Información Personal
                 </h2>
             </div>
             <div className="p-6 flex flex-col gap-5">
                 <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-[#E8EDE8] rounded-full flex items-center justify-center">
-                        <span className="text-lg font-semibold text-[#4A5D4A] font-[Outfit]">
+                    <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center">
+                        <span className="text-lg font-semibold text-primary">
                             {user.name.charAt(0).toUpperCase()}
                         </span>
                     </div>
                     <div>
-                        <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                        <span className="text-sm font-medium text-foreground">
                             {user.name}
                         </span>
                         <div className="flex items-center gap-2 mt-0.5">
                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                                 user.is_active
-                                    ? 'bg-green-100 text-green-800'
-                                    : 'bg-red-100 text-red-800'
+                                    ? 'bg-primary/10 text-primary'
+                                    : 'bg-destructive/10 text-destructive'
                             }`}>
                                 {user.is_active ? 'Activo' : 'Inactivo'}
                             </span>
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-foreground">
                                 {roleLabels[user.role] || user.role}
                             </span>
                         </div>
@@ -190,38 +190,38 @@ function PersonalInfoCard({ user }: { user: DetailedUser }) {
 
                 <div className="flex flex-col gap-4">
                     <div className="flex items-center gap-3">
-                        <Mail className="w-5 h-5 text-[#999999]" />
+                        <Mail className="w-5 h-5 text-muted-foreground" />
                         <div className="flex flex-col">
-                            <span className="text-xs text-[#999999] font-[Outfit]">Email</span>
-                            <span className="text-sm text-[#1A1A1A] font-[Outfit]">{user.email}</span>
+                            <span className="text-xs text-muted-foreground">Email</span>
+                            <span className="text-sm text-foreground">{user.email}</span>
                         </div>
                     </div>
 
                     {user.phone && (
                         <div className="flex items-center gap-3">
-                            <Phone className="w-5 h-5 text-[#999999]" />
+                            <Phone className="w-5 h-5 text-muted-foreground" />
                             <div className="flex flex-col">
-                                <span className="text-xs text-[#999999] font-[Outfit]">Teléfono</span>
-                                <span className="text-sm text-[#1A1A1A] font-[Outfit]">{user.phone}</span>
+                                <span className="text-xs text-muted-foreground">Teléfono</span>
+                                <span className="text-sm text-foreground">{user.phone}</span>
                             </div>
                         </div>
                     )}
 
                     {user.rfc && (
                         <div className="flex items-center gap-3">
-                            <FileText className="w-5 h-5 text-[#999999]" />
+                            <FileText className="w-5 h-5 text-muted-foreground" />
                             <div className="flex flex-col">
-                                <span className="text-xs text-[#999999] font-[Outfit]">RFC</span>
-                                <span className="text-sm text-[#1A1A1A] font-[Outfit]">{user.rfc}</span>
+                                <span className="text-xs text-muted-foreground">RFC</span>
+                                <span className="text-sm text-foreground">{user.rfc}</span>
                             </div>
                         </div>
                     )}
 
                     <div className="flex items-center gap-3">
-                        <Calendar className="w-5 h-5 text-[#999999]" />
+                        <Calendar className="w-5 h-5 text-muted-foreground" />
                         <div className="flex flex-col">
-                            <span className="text-xs text-[#999999] font-[Outfit]">Fecha de Registro</span>
-                            <span className="text-sm text-[#1A1A1A] font-[Outfit]">
+                            <span className="text-xs text-muted-foreground">Fecha de Registro</span>
+                            <span className="text-sm text-foreground">
                                 {formatDate(user.created_at)}
                             </span>
                         </div>
@@ -229,10 +229,10 @@ function PersonalInfoCard({ user }: { user: DetailedUser }) {
 
                     {user.email_verified_at && (
                         <div className="flex items-center gap-3">
-                            <Calendar className="w-5 h-5 text-green-500" />
+                            <Calendar className="w-5 h-5 text-primary" />
                             <div className="flex flex-col">
-                                <span className="text-xs text-[#999999] font-[Outfit]">Email Verificado</span>
-                                <span className="text-sm text-[#1A1A1A] font-[Outfit]">
+                                <span className="text-xs text-muted-foreground">Email Verificado</span>
+                                <span className="text-sm text-foreground">
                                     {formatDate(user.email_verified_at)}
                                 </span>
                             </div>
@@ -254,22 +254,22 @@ function RoleManagementCard({
     onOpenRoleModal: () => void;
 }) {
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div className="px-6 py-5 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">
                     Gestión de Rol
                 </h2>
             </div>
             <div className="p-6 flex flex-col gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
-                        <UserCog className="w-5 h-5 text-indigo-600" />
+                    <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
+                        <UserCog className="w-5 h-5 text-accent-foreground" />
                     </div>
                     <div className="flex-1">
-                        <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                        <span className="text-sm font-medium text-foreground">
                             Rol Actual
                         </span>
-                        <p className="text-xs text-[#666666] font-[Outfit]">
+                        <p className="text-xs text-muted-foreground">
                             {roleLabels[user.role] || user.role}
                         </p>
                     </div>
@@ -278,13 +278,13 @@ function RoleManagementCard({
                 <button
                     onClick={onOpenRoleModal}
                     disabled={!canAssignAdminRoles && (user.role === 'admin' || user.role === 'super_admin')}
-                    className="w-full px-4 py-2.5 bg-[#4A5D4A] rounded-lg text-sm font-medium text-white font-[Outfit] hover:bg-[#3d4d3d] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full px-4 py-2.5 bg-primary rounded-lg text-sm font-medium text-white hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     Cambiar Rol
                 </button>
 
                 {!canAssignAdminRoles && (user.role === 'admin' || user.role === 'super_admin') && (
-                    <p className="text-xs text-[#999999] font-[Outfit]">
+                    <p className="text-xs text-muted-foreground">
                         Solo los Super Admin pueden cambiar roles de administradores.
                     </p>
                 )}
@@ -301,26 +301,26 @@ function AccountStatusCard({
     onOpenStatusModal: (newStatus: boolean) => void;
 }) {
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div className="px-6 py-5 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">
                     Estado de la Cuenta
                 </h2>
             </div>
             <div className="p-6 flex flex-col gap-4">
                 <div className="flex items-center gap-3">
                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                        user.is_active ? 'bg-green-100' : 'bg-red-100'
+                        user.is_active ? 'bg-primary/10' : 'bg-destructive/10'
                     }`}>
                         <Power className={`w-5 h-5 ${
-                            user.is_active ? 'text-green-600' : 'text-red-600'
+                            user.is_active ? 'text-primary' : 'text-destructive'
                         }`} />
                     </div>
                     <div className="flex-1">
-                        <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                        <span className="text-sm font-medium text-foreground">
                             Cuenta {user.is_active ? 'Activa' : 'Inactiva'}
                         </span>
-                        <p className="text-xs text-[#666666] font-[Outfit]">
+                        <p className="text-xs text-muted-foreground">
                             {user.is_active
                                 ? 'El usuario puede iniciar sesión y acceder al sistema.'
                                 : 'El usuario no puede iniciar sesión ni acceder al sistema.'
@@ -331,10 +331,10 @@ function AccountStatusCard({
 
                 <button
                     onClick={() => onOpenStatusModal(!user.is_active)}
-                    className={`w-full px-4 py-2.5 rounded-lg text-sm font-medium font-[Outfit] transition-colors ${
+                    className={`w-full px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                         user.is_active
-                            ? 'bg-red-600 text-white hover:bg-red-700'
-                            : 'bg-green-600 text-white hover:bg-green-700'
+                            ? 'bg-destructive text-white hover:bg-destructive/90'
+                            : 'bg-primary text-white hover:bg-primary/90'
                     }`}
                 >
                     {user.is_active ? 'Desactivar Cuenta' : 'Activar Cuenta'}
@@ -346,21 +346,21 @@ function AccountStatusCard({
 
 function PaymentMethodCard({ user }: { user: DetailedUser }) {
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div className="px-6 py-5 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">
                     Método de Pago
                 </h2>
             </div>
             <div className="p-6">
                 <div className="flex items-center gap-3">
-                    <CreditCard className="w-5 h-5 text-[#999999]" />
+                    <CreditCard className="w-5 h-5 text-muted-foreground" />
                     <div className="flex flex-col">
-                        <span className="text-sm text-[#1A1A1A] font-[Outfit]">
+                        <span className="text-sm text-foreground">
                             {paymentMethodLabels[user.pm_type || ''] || user.pm_type || 'Método de Pago'}
                         </span>
                         {user.pm_last_four && (
-                            <span className="text-xs text-[#999999] font-[Outfit]">
+                            <span className="text-xs text-muted-foreground">
                                 •••• {user.pm_last_four}
                             </span>
                         )}
@@ -374,58 +374,58 @@ function PaymentMethodCard({ user }: { user: DetailedUser }) {
 function ActivitySummaryGrid({ activity }: { activity: UserActivity }) {
     return (
         <div className="grid grid-cols-4 gap-4">
-            <div className="bg-white rounded-xl border border-[#E5E5E5] p-5">
+            <div className="bg-card rounded-xl border border-border p-5">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <Package className="w-5 h-5 text-blue-600" />
+                    <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
+                        <Package className="w-5 h-5 text-accent-foreground" />
                     </div>
                     <div>
-                        <span className="text-2xl font-semibold text-[#1A1A1A] font-[Outfit]">
+                        <span className="text-2xl font-semibold text-foreground">
                             {activity.total_orders}
                         </span>
-                        <p className="text-xs text-[#999999] font-[Outfit]">Pedidos</p>
+                        <p className="text-xs text-muted-foreground">Pedidos</p>
                     </div>
                 </div>
             </div>
 
-            <div className="bg-white rounded-xl border border-[#E5E5E5] p-5">
+            <div className="bg-card rounded-xl border border-border p-5">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                        <TrendingUp className="w-5 h-5 text-green-600" />
+                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <TrendingUp className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                        <span className="text-2xl font-semibold text-[#1A1A1A] font-[Outfit]">
+                        <span className="text-2xl font-semibold text-foreground">
                             {formatCurrency(activity.total_spent)}
                         </span>
-                        <p className="text-xs text-[#999999] font-[Outfit]">Total Gastado</p>
+                        <p className="text-xs text-muted-foreground">Total Gastado</p>
                     </div>
                 </div>
             </div>
 
-            <div className="bg-white rounded-xl border border-[#E5E5E5] p-5">
+            <div className="bg-card rounded-xl border border-border p-5">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                        <Clock className="w-5 h-5 text-purple-600" />
+                    <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
+                        <Clock className="w-5 h-5 text-accent-foreground" />
                     </div>
                     <div>
-                        <span className="text-2xl font-semibold text-[#1A1A1A] font-[Outfit]">
+                        <span className="text-2xl font-semibold text-foreground">
                             {activity.account_age_days}
                         </span>
-                        <p className="text-xs text-[#999999] font-[Outfit]">Días como Cliente</p>
+                        <p className="text-xs text-muted-foreground">Días como Cliente</p>
                     </div>
                 </div>
             </div>
 
-            <div className="bg-white rounded-xl border border-[#E5E5E5] p-5">
+            <div className="bg-card rounded-xl border border-border p-5">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                        <Calendar className="w-5 h-5 text-orange-600" />
+                    <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                        <Calendar className="w-5 h-5 text-muted-foreground" />
                     </div>
                     <div>
-                        <span className="text-2xl font-semibold text-[#1A1A1A] font-[Outfit]">
+                        <span className="text-2xl font-semibold text-foreground">
                             {activity.last_order_date ? formatDate(activity.last_order_date) : 'N/A'}
                         </span>
-                        <p className="text-xs text-[#999999] font-[Outfit]">Último Pedido</p>
+                        <p className="text-xs text-muted-foreground">Último Pedido</p>
                     </div>
                 </div>
             </div>
@@ -435,37 +435,37 @@ function ActivitySummaryGrid({ activity }: { activity: UserActivity }) {
 
 function OrdersTable({ orders }: { orders: OrderData }) {
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div className="px-6 py-5 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">
                     Historial de Pedidos
                 </h2>
             </div>
 
             {orders.data.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-12">
-                    <Package className="w-12 h-12 text-[#E5E5E5] mb-3" />
-                    <p className="text-sm text-[#666666] font-[Outfit]">No hay pedidos registrados</p>
+                    <Package className="w-12 h-12 text-border mb-3" />
+                    <p className="text-sm text-muted-foreground">No hay pedidos registrados</p>
                 </div>
             ) : (
                 <>
                     <table className="w-full">
                         <thead>
-                            <tr className="border-b border-[#E5E5E5]">
+                            <tr className="border-b border-border">
                                 <th className="text-left px-6 py-4">
-                                    <span className="text-sm font-medium text-[#666666]">Pedido</span>
+                                    <span className="text-sm font-medium text-muted-foreground">Pedido</span>
                                 </th>
                                 <th className="text-left px-6 py-4">
-                                    <span className="text-sm font-medium text-[#666666]">Estado</span>
+                                    <span className="text-sm font-medium text-muted-foreground">Estado</span>
                                 </th>
                                 <th className="text-left px-6 py-4">
-                                    <span className="text-sm font-medium text-[#666666]">Pago</span>
+                                    <span className="text-sm font-medium text-muted-foreground">Pago</span>
                                 </th>
                                 <th className="text-left px-6 py-4">
-                                    <span className="text-sm font-medium text-[#666666]">Total</span>
+                                    <span className="text-sm font-medium text-muted-foreground">Total</span>
                                 </th>
                                 <th className="text-left px-6 py-4">
-                                    <span className="text-sm font-medium text-[#666666]">Fecha</span>
+                                    <span className="text-sm font-medium text-muted-foreground">Fecha</span>
                                 </th>
                             </tr>
                         </thead>
@@ -473,12 +473,12 @@ function OrdersTable({ orders }: { orders: OrderData }) {
                             {orders.data.map((order) => (
                                 <tr
                                     key={order.id}
-                                    className="border-b border-[#E5E5E5] hover:bg-gray-50"
+                                    className="border-b border-border hover:bg-muted"
                                 >
                                     <td className="px-6 py-4">
                                         <Link
                                             href={`/admin/orders/${order.id}`}
-                                            className="text-sm text-[#1A1A1A] hover:underline font-medium font-[Outfit]"
+                                            className="text-sm text-foreground hover:underline font-medium"
                                         >
                                             #{order.id}
                                         </Link>
@@ -494,12 +494,12 @@ function OrdersTable({ orders }: { orders: OrderData }) {
                                         </span>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <span className="text-sm text-[#1A1A1A] font-medium font-[Outfit]">
+                                        <span className="text-sm text-foreground font-medium">
                                             {formatCurrency(order.total_amount)}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <span className="text-sm text-[#666666] font-[Outfit]">
+                                        <span className="text-sm text-muted-foreground">
                                             {formatDate(order.created_at)}
                                         </span>
                                     </td>
@@ -509,35 +509,35 @@ function OrdersTable({ orders }: { orders: OrderData }) {
                     </table>
 
                     {orders.last_page > 1 && (
-                        <div className="flex items-center justify-between px-6 py-4 border-t border-[#E5E5E5]">
-                            <span className="text-sm text-[#666666] font-[Outfit]">
+                        <div className="flex items-center justify-between px-6 py-4 border-t border-border">
+                            <span className="text-sm text-muted-foreground">
                                 Mostrando {orders.from} a {orders.to} de {orders.total} pedidos
                             </span>
                             <div className="flex items-center gap-2">
                                 <Link
                                     href={`?page=${orders.current_page - 1}`}
-                                    className={`p-2 rounded-lg border border-[#E5E5E5] ${
+                                    className={`p-2 rounded-lg border border-border ${
                                         orders.current_page === 1
                                             ? 'opacity-50 cursor-not-allowed pointer-events-none'
-                                            : 'hover:bg-gray-50'
+                                            : 'hover:bg-muted'
                                     }`}
                                     preserveScroll
                                 >
-                                    <ChevronLeft className="w-4 h-4 text-[#666666]" />
+                                    <ChevronLeft className="w-4 h-4 text-muted-foreground" />
                                 </Link>
-                                <span className="text-sm text-[#1A1A1A] font-[Outfit]">
+                                <span className="text-sm text-foreground">
                                     {orders.current_page} / {orders.last_page}
                                 </span>
                                 <Link
                                     href={`?page=${orders.current_page + 1}`}
-                                    className={`p-2 rounded-lg border border-[#E5E5E5] ${
+                                    className={`p-2 rounded-lg border border-border ${
                                         orders.current_page === orders.last_page
                                             ? 'opacity-50 cursor-not-allowed pointer-events-none'
-                                            : 'hover:bg-gray-50'
+                                            : 'hover:bg-muted'
                                     }`}
                                     preserveScroll
                                 >
-                                    <ChevronRight className="w-4 h-4 text-[#666666]" />
+                                    <ChevronRight className="w-4 h-4 text-muted-foreground" />
                                 </Link>
                             </div>
                         </div>
@@ -566,20 +566,20 @@ function RoleOption({
             disabled={isDisabled}
             className={`w-full px-4 py-3 text-left transition-colors ${
                 isDisabled
-                    ? 'opacity-50 cursor-not-allowed bg-gray-50'
-                    : 'hover:bg-[#F5F3F0]'
+                    ? 'opacity-50 cursor-not-allowed bg-muted'
+                    : 'hover:bg-muted'
             }`}
         >
             <div className="flex flex-col gap-0.5">
-                <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                <span className="text-sm font-medium text-foreground">
                     {role.label}
                     {isDisabled && (
-                        <span className="ml-2 text-xs text-[#999999]">
+                        <span className="ml-2 text-xs text-muted-foreground">
                             (Requiere Super Admin)
                         </span>
                     )}
                 </span>
-                <span className="text-xs text-[#666666] font-[Outfit]">
+                <span className="text-xs text-muted-foreground">
                     {role.description}
                 </span>
             </div>
@@ -612,45 +612,45 @@ function RoleChangeModal({
 }) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-            <div className="bg-white rounded-2xl shadow-xl w-full max-w-md max-h-[500px] flex flex-col">
-                <div className="px-6 py-5 border-b border-[#E5E5E5] flex items-center justify-between flex-shrink-0">
-                    <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+            <div className="bg-card rounded-2xl shadow-xl w-full max-w-md max-h-[500px] flex flex-col">
+                <div className="px-6 py-5 border-b border-border flex items-center justify-between flex-shrink-0">
+                    <h2 className="text-lg font-semibold text-foreground">
                         Cambiar Rol de Usuario
                     </h2>
                     <button
                         onClick={onClose}
-                        className="p-1.5 text-[#999999] hover:text-[#666666] hover:bg-gray-100 rounded-lg transition-colors"
+                        className="p-1.5 text-muted-foreground hover:text-muted-foreground hover:bg-muted rounded-lg transition-colors"
                     >
                         <X className="w-5 h-5" />
                     </button>
                 </div>
 
                 <form onSubmit={onSubmit} className="p-6 flex flex-col gap-5">
-                    <div className="flex items-start gap-3 p-4 bg-amber-50 rounded-xl border border-amber-200">
-                        <Shield className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
-                        <p className="text-sm text-amber-800 font-[Outfit]">
+                    <div className="flex items-start gap-3 p-4 bg-muted rounded-xl border border-border">
+                        <Shield className="w-5 h-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                        <p className="text-sm text-muted-foreground">
                             El cambio de rol tomará efecto en el próximo inicio de sesión del usuario.
                         </p>
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                        <label className="text-sm font-medium text-foreground">
                             Seleccionar Nuevo Rol
                         </label>
                         <div className="relative">
                             <button
                                 type="button"
                                 onClick={() => onSetRoleDropdownOpen(!roleDropdownOpen)}
-                                className="w-full h-11 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors flex items-center justify-between"
+                                className="w-full h-11 px-4 bg-background rounded-lg border border-border text-sm outline-none focus:border-primary transition-colors flex items-center justify-between"
                             >
-                                <span className={data.role ? 'text-[#1A1A1A]' : 'text-[#999999]'}>
+                                <span className={data.role ? 'text-foreground' : 'text-muted-foreground'}>
                                     {availableRoles.find(r => r.value === data.role)?.label || 'Seleccionar rol'}
                                 </span>
-                                <ChevronLeft className={`w-4 h-4 text-[#999999] transition-transform ${roleDropdownOpen ? 'rotate-90' : '-rotate-90'}`} />
+                                <ChevronLeft className={`w-4 h-4 text-muted-foreground transition-transform ${roleDropdownOpen ? 'rotate-90' : '-rotate-90'}`} />
                             </button>
 
                             {roleDropdownOpen && (
-                                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg border border-[#E5E5E5] shadow-lg z-10 max-h-64 overflow-y-auto">
+                                <div className="absolute top-full left-0 right-0 mt-1 bg-card rounded-lg border border-border shadow-lg z-10 max-h-64 overflow-y-auto">
                                     {availableRoles.map((role) => (
                                         <RoleOption
                                             key={role.value}
@@ -666,7 +666,7 @@ function RoleChangeModal({
                             )}
                         </div>
                         {errors.role && (
-                            <span className="text-xs text-red-500 font-[Outfit]">{errors.role}</span>
+                            <span className="text-xs text-destructive">{errors.role}</span>
                         )}
                     </div>
 
@@ -674,14 +674,14 @@ function RoleChangeModal({
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-5 py-2.5 rounded-lg border border-[#E5E5E5] text-sm font-medium text-[#1A1A1A] font-[Outfit] hover:bg-gray-50 transition-colors"
+                            className="px-5 py-2.5 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors"
                         >
                             Cancelar
                         </button>
                         <button
                             type="submit"
                             disabled={processing || data.role === user.role}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-[#4A5D4A] rounded-lg text-sm font-medium text-white font-[Outfit] hover:bg-[#3d4d3d] transition-colors disabled:opacity-50"
+                            className="flex items-center gap-2 px-5 py-2.5 bg-primary rounded-lg text-sm font-medium text-white hover:bg-primary transition-colors disabled:opacity-50"
                         >
                             {processing ? (
                                 <span>Actualizando...</span>
@@ -714,14 +714,14 @@ function StatusChangeModal({
 }) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-            <div className="bg-white rounded-2xl shadow-xl w-full max-w-md">
-                <div className="px-6 py-5 border-b border-[#E5E5E5] flex items-center justify-between">
-                    <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+            <div className="bg-card rounded-2xl shadow-xl w-full max-w-md">
+                <div className="px-6 py-5 border-b border-border flex items-center justify-between">
+                    <h2 className="text-lg font-semibold text-foreground">
                         {pendingStatus ? 'Activar Cuenta' : 'Desactivar Cuenta'}
                     </h2>
                     <button
                         onClick={onClose}
-                        className="p-1.5 text-[#999999] hover:text-[#666666] hover:bg-gray-100 rounded-lg transition-colors"
+                        className="p-1.5 text-muted-foreground hover:text-muted-foreground hover:bg-muted rounded-lg transition-colors"
                     >
                         <X className="w-5 h-5" />
                     </button>
@@ -730,14 +730,14 @@ function StatusChangeModal({
                 <form onSubmit={onSubmit} className="p-6 flex flex-col gap-5">
                     <div className={`flex items-start gap-3 p-4 rounded-xl border ${
                         pendingStatus
-                            ? 'bg-green-50 border-green-200'
-                            : 'bg-red-50 border-red-200'
+                            ? 'bg-primary/10 border-primary/20'
+                            : 'bg-destructive/10 border-destructive/20'
                     }`}>
                         <AlertTriangle className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
-                            pendingStatus ? 'text-green-600' : 'text-red-600'
+                            pendingStatus ? 'text-primary' : 'text-destructive'
                         }`} />
-                        <p className={`text-sm font-[Outfit] ${
-                            pendingStatus ? 'text-green-800' : 'text-red-800'
+                        <p className={`text-sm ${
+                            pendingStatus ? 'text-primary' : 'text-destructive'
                         }`}>
                             {pendingStatus
                                 ? `¿Estás seguro de que deseas activar la cuenta de ${user.name}? El usuario podrá iniciar sesión y acceder al sistema inmediatamente.`
@@ -750,17 +750,17 @@ function StatusChangeModal({
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-5 py-2.5 rounded-lg border border-[#E5E5E5] text-sm font-medium text-[#1A1A1A] font-[Outfit] hover:bg-gray-50 transition-colors"
+                            className="px-5 py-2.5 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors"
                         >
                             Cancelar
                         </button>
                         <button
                             type="submit"
                             disabled={statusProcessing}
-                            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium text-white font-[Outfit] transition-colors disabled:opacity-50 ${
+                            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium text-white transition-colors disabled:opacity-50 ${
                                 pendingStatus
-                                    ? 'bg-green-600 hover:bg-green-700'
-                                    : 'bg-red-600 hover:bg-red-700'
+                                    ? 'bg-primary hover:bg-primary/90'
+                                    : 'bg-destructive hover:bg-destructive/90'
                             }`}
                         >
                             {statusProcessing ? (
@@ -792,23 +792,23 @@ function PasswordResetModal({
 }) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-            <div className="bg-white rounded-2xl shadow-xl w-full max-w-md">
-                <div className="px-6 py-5 border-b border-[#E5E5E5] flex items-center justify-between">
-                    <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+            <div className="bg-card rounded-2xl shadow-xl w-full max-w-md">
+                <div className="px-6 py-5 border-b border-border flex items-center justify-between">
+                    <h2 className="text-lg font-semibold text-foreground">
                         Enviar Email de Restablecimiento
                     </h2>
                     <button
                         onClick={onClose}
-                        className="p-1.5 text-[#999999] hover:text-[#666666] hover:bg-gray-100 rounded-lg transition-colors"
+                        className="p-1.5 text-muted-foreground hover:text-muted-foreground hover:bg-muted rounded-lg transition-colors"
                     >
                         <X className="w-5 h-5" />
                     </button>
                 </div>
 
                 <form onSubmit={onSubmit} className="p-6 flex flex-col gap-5">
-                    <div className="flex items-start gap-3 p-4 bg-amber-50 rounded-xl border border-amber-200">
-                        <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
-                        <p className="text-sm text-amber-800 font-[Outfit]">
+                    <div className="flex items-start gap-3 p-4 bg-muted rounded-xl border border-border">
+                        <AlertTriangle className="w-5 h-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                        <p className="text-sm text-muted-foreground">
                             ¿Estás seguro de que deseas enviar un email de restablecimiento de contraseña a {user.name}? El usuario recibirá un enlace para crear una nueva contraseña.
                         </p>
                     </div>
@@ -817,14 +817,14 @@ function PasswordResetModal({
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-5 py-2.5 rounded-lg border border-[#E5E5E5] text-sm font-medium text-[#1A1A1A] font-[Outfit] hover:bg-gray-50 transition-colors"
+                            className="px-5 py-2.5 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors"
                         >
                             Cancelar
                         </button>
                         <button
                             type="submit"
                             disabled={processing}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-amber-600 rounded-lg text-sm font-medium text-white font-[Outfit] hover:bg-amber-700 transition-colors disabled:opacity-50"
+                            className="flex items-center gap-2 px-5 py-2.5 bg-muted-foreground rounded-lg text-sm font-medium text-white hover:bg-muted-foreground/90 transition-colors disabled:opacity-50"
                         >
                             {processing ? (
                                 <span>Enviando...</span>
@@ -915,17 +915,17 @@ export default function UserShow() {
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-1">
-                        <div className="flex items-center gap-2 text-sm font-[Outfit]">
+                        <div className="flex items-center gap-2 text-sm">
                             <Link
                                 href="/admin/users"
-                                className="text-[#999999] hover:text-[#666666] transition-colors"
+                                className="text-muted-foreground hover:text-muted-foreground transition-colors"
                             >
                                 Usuarios
                             </Link>
-                            <span className="text-[#999999]">/</span>
-                            <span className="text-[#666666]">Detalles del Usuario</span>
+                            <span className="text-muted-foreground">/</span>
+                            <span className="text-muted-foreground">Detalles del Usuario</span>
                         </div>
-                        <h1 className="text-[28px] font-semibold text-[#1A1A1A] font-[Outfit]">
+                        <h1 className="text-[28px] font-semibold text-foreground">
                             {user.name}
                         </h1>
                     </div>

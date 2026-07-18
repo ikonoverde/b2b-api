@@ -52,8 +52,8 @@ function formatDateTime(value: string | null): string {
 function MetaRow({ label, children }: { label: string; children: React.ReactNode }) {
     return (
         <div className="flex flex-col gap-0.5">
-            <dt className="font-[Outfit] text-xs tracking-wide text-[#999999] uppercase">{label}</dt>
-            <dd className="font-[Outfit] text-sm text-[#1A1A1A]">{children}</dd>
+            <dt className="text-xs tracking-wide text-muted-foreground uppercase">{label}</dt>
+            <dd className="text-sm text-foreground">{children}</dd>
         </div>
     );
 }
@@ -63,17 +63,17 @@ function ClosureProposal({ task }: { task: GrowthTaskDetail }) {
     const reject = useForm({});
 
     return (
-        <Card className="border-[#E4D3B4] bg-[#FAF3E6] shadow-none">
+        <Card className="border-border bg-muted shadow-none">
             <CardHeader className="gap-1.5">
-                <CardTitle className="font-[Outfit] text-sm font-medium text-[#7A6234]">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
                     El agente cree que esta tarea ya está hecha, y no pudo probarlo.
                 </CardTitle>
                 {task.closure_proposal_reason !== null && (
-                    <CardDescription className="font-[Outfit] text-sm whitespace-pre-line text-[#7A6234]">
+                    <CardDescription className="text-sm whitespace-pre-line text-muted-foreground">
                         {task.closure_proposal_reason}
                     </CardDescription>
                 )}
-                <p className="font-[Outfit] text-xs text-[#7A6234]">
+                <p className="text-xs text-muted-foreground">
                     La tarea sigue abierta. Solo una persona puede cerrarla desde aquí.
                 </p>
             </CardHeader>
@@ -86,7 +86,7 @@ function ClosureProposal({ task }: { task: GrowthTaskDetail }) {
                             preserveScroll: true,
                         })
                     }
-                    className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-[#4A5D4A] px-4 font-[Outfit] text-sm font-medium text-white transition-colors hover:bg-[#3D4D3D] disabled:opacity-50"
+                    className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors hover:bg-primary disabled:opacity-50"
                 >
                     <CheckCircle2 className="h-4 w-4" />
                     Sí, ya se hizo
@@ -99,7 +99,7 @@ function ClosureProposal({ task }: { task: GrowthTaskDetail }) {
                             preserveScroll: true,
                         })
                     }
-                    className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-[#E5E5E5] bg-white px-4 font-[Outfit] text-sm text-[#666666] transition-colors hover:bg-gray-50 disabled:opacity-50"
+                    className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border bg-card px-4 text-sm text-muted-foreground transition-colors hover:bg-muted disabled:opacity-50"
                 >
                     <CircleSlash className="h-4 w-4" />
                     No, sigue pendiente
@@ -118,13 +118,13 @@ function ClosedNote({ task }: { task: GrowthTaskDetail }) {
             : (task.close_evidence ?? 'Sin evidencia registrada.');
 
     return (
-        <Card className="border-[#E5E5E5] bg-[#F9F8F6] shadow-none">
+        <Card className="border-border bg-background shadow-none">
             <CardContent className="flex flex-wrap items-start justify-between gap-3">
                 <div className="flex flex-col gap-1">
                     {task.closed_by !== null && (
                         <span
                             title={closedByDescriptions[task.closed_by]}
-                            className="inline-flex w-fit items-center gap-1.5 font-[Outfit] text-xs font-medium text-[#666666]"
+                            className="inline-flex w-fit items-center gap-1.5 text-xs font-medium text-muted-foreground"
                         >
                             {task.closed_by === 'human' ? (
                                 <User className="h-3.5 w-3.5" />
@@ -134,7 +134,7 @@ function ClosedNote({ task }: { task: GrowthTaskDetail }) {
                             {closedByLabels[task.closed_by]}
                         </span>
                     )}
-                    <p className="font-[Outfit] text-sm text-[#666666]">{evidence}</p>
+                    <p className="text-sm text-muted-foreground">{evidence}</p>
                 </div>
                 <button
                     type="button"
@@ -144,7 +144,7 @@ function ClosedNote({ task }: { task: GrowthTaskDetail }) {
                             preserveScroll: true,
                         })
                     }
-                    className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-[#E5E5E5] bg-white px-4 font-[Outfit] text-sm text-[#666666] transition-colors hover:bg-gray-50 disabled:opacity-50"
+                    className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-border bg-card px-4 text-sm text-muted-foreground transition-colors hover:bg-muted disabled:opacity-50"
                 >
                     <RotateCcw className="h-4 w-4" />
                     Reabrir
@@ -158,20 +158,20 @@ function ArtifactRow({ artifact }: { artifact: GrowthTaskArtifact }) {
     const content = (
         <>
             <div className="flex flex-col gap-0.5">
-                <span className="font-[Outfit] text-sm text-[#1A1A1A]">{artifact.title}</span>
-                <span className="font-[Outfit] text-xs text-[#999999]">
+                <span className="text-sm text-foreground">{artifact.title}</span>
+                <span className="text-xs text-muted-foreground">
                     {formatDateTime(artifact.created_at)}
                 </span>
             </div>
             <div className="flex shrink-0 items-center gap-2">
                 <Badge
                     variant="outline"
-                    className="font-[Outfit] border-[#C8D3C8] bg-[#EEF2EE] text-[#3D4D3D]"
+                    className="border-muted bg-muted text-primary"
                 >
                     {artifact.label}
                 </Badge>
                 {artifact.url !== null && (
-                    <ExternalLink className="h-3.5 w-3.5 text-[#999999]" />
+                    <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
                 )}
             </div>
         </>
@@ -181,7 +181,7 @@ function ArtifactRow({ artifact }: { artifact: GrowthTaskArtifact }) {
         return (
             <Link
                 href={artifact.url}
-                className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[#E5E5E5] bg-white px-4 py-3 transition-colors hover:bg-[#F9F8F6]"
+                className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3 transition-colors hover:bg-background"
             >
                 {content}
             </Link>
@@ -189,7 +189,7 @@ function ArtifactRow({ artifact }: { artifact: GrowthTaskArtifact }) {
     }
 
     return (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[#E5E5E5] bg-white px-4 py-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3">
             {content}
         </div>
     );
@@ -197,22 +197,22 @@ function ArtifactRow({ artifact }: { artifact: GrowthTaskArtifact }) {
 
 function ArtifactsCard({ artifacts }: { artifacts: GrowthTaskArtifact[] }) {
     return (
-        <Card className="border-[#E5E5E5] bg-white shadow-none">
+        <Card className="border-border bg-card shadow-none">
             <CardHeader className="gap-2">
                 <div className="flex items-center gap-2">
-                    <Package className="h-4 w-4 text-[#999999]" />
-                    <CardTitle className="font-[Outfit] text-sm font-medium text-[#666666]">
+                    <Package className="h-4 w-4 text-muted-foreground" />
+                    <CardTitle className="text-sm font-medium text-muted-foreground">
                         Artefactos generados
                     </CardTitle>
                 </div>
-                <CardDescription className="font-[Outfit] text-xs text-[#999999]">
+                <CardDescription className="text-xs text-muted-foreground">
                     Lo que el agente filó al ejecutar esta tarea. Cada uno sigue siendo un borrador o
                     propuesta hasta que una persona lo apruebe.
                 </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-2">
                 {artifacts.length === 0 ? (
-                    <p className="font-[Outfit] text-sm text-[#999999]">
+                    <p className="text-sm text-muted-foreground">
                         Este run todavía no ha generado nada.
                     </p>
                 ) : (
@@ -234,7 +234,7 @@ export default function GrowthTaskShow() {
                 <div className="flex flex-col gap-3">
                     <Link
                         href="/admin/growth-plan/board"
-                        className="inline-flex w-fit items-center gap-1.5 font-[Outfit] text-sm text-[#666666] hover:text-[#1A1A1A]"
+                        className="inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
                     >
                         <ArrowLeft className="h-4 w-4" />
                         Tablero de tareas
@@ -242,21 +242,21 @@ export default function GrowthTaskShow() {
 
                     <div className="flex flex-wrap items-start justify-between gap-3">
                         <div className="flex flex-col gap-1">
-                            <h1 className="font-[Outfit] text-[28px] font-semibold text-[#1A1A1A]">
+                            <h1 className="text-[28px] font-semibold text-foreground">
                                 {task.name}
                             </h1>
-                            <p className="font-[Outfit] text-sm text-[#666666]">{task.action}</p>
+                            <p className="text-sm text-muted-foreground">{task.action}</p>
                         </div>
                         <div className="flex shrink-0 flex-wrap items-center gap-2">
                             <Badge
                                 variant="outline"
                                 title={agentDescriptions[task.agent]}
-                                className={`font-[Outfit] ${agentChipClasses[task.agent]}`}
+                                className={`${agentChipClasses[task.agent]}`}
                             >
                                 {agentLabels[task.agent]}
                             </Badge>
                             <span
-                                className={`inline-flex items-center rounded-full border px-2.5 py-1 font-[Outfit] text-xs font-medium ${statusPillClasses[task.status]}`}
+                                className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium ${statusPillClasses[task.status]}`}
                             >
                                 {statusLabels[task.status]}
                             </span>
@@ -264,11 +264,11 @@ export default function GrowthTaskShow() {
                     </div>
                 </div>
 
-                <Card className="border-[#E5E5E5] bg-white shadow-none">
+                <Card className="border-border bg-card shadow-none">
                     <CardHeader className="gap-2">
                         <div className="flex items-center gap-2">
-                            <FileText className="h-4 w-4 text-[#999999]" />
-                            <CardTitle className="font-[Outfit] text-sm font-medium text-[#666666]">
+                            <FileText className="h-4 w-4 text-muted-foreground" />
+                            <CardTitle className="text-sm font-medium text-muted-foreground">
                                 La tarea, como la escribió el agente
                             </CardTitle>
                         </div>
@@ -278,11 +278,11 @@ export default function GrowthTaskShow() {
                          * Rendered whole and unwrapped, with the tagged facts that justify it left in.
                          * Nobody should pick up work they have not read.
                          */}
-                        <p className="max-w-[80ch] font-[Outfit] text-sm leading-relaxed whitespace-pre-line text-[#1A1A1A]">
+                        <p className="max-w-[80ch] text-sm leading-relaxed whitespace-pre-line text-foreground">
                             {task.body}
                         </p>
 
-                        <Separator className="bg-[#E5E5E5]" />
+                        <Separator className="bg-border" />
 
                         <dl className="grid grid-cols-2 gap-x-8 gap-y-4 sm:grid-cols-3">
                             <MetaRow label="Columna">

@@ -24,9 +24,9 @@ export const provenanceDescriptions: Record<MetricProvenance, string> = {
  * an observation would act on a number nobody measured.
  */
 export const provenancePillClasses: Record<MetricProvenance, string> = {
-    observed: 'border-[#C8D3C8] bg-[#EEF2EE] text-[#3D4D3D]',
-    estimated: 'border-[#E4D3B4] bg-[#FAF3E6] text-[#7A6234]',
-    unknown: 'border-[#E5E5E5] bg-[#F5F3F0] text-[#8A8A8A]',
+    observed: 'border-muted bg-muted text-primary',
+    estimated: 'border-border bg-muted text-muted-foreground',
+    unknown: 'border-border bg-muted text-muted-foreground',
 };
 
 /**

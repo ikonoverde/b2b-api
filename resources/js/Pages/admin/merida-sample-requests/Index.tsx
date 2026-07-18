@@ -79,19 +79,19 @@ function SearchAndFilters({ filters }: { filters: Props['filters'] }) {
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-3 lg:flex-row lg:items-center">
             <div className="relative w-full lg:max-w-sm">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#999999]" />
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <input
                     type="text"
                     placeholder="Buscar negocio, contacto, correo o telefono..."
                     value={search}
                     onChange={(event) => setSearch(event.target.value)}
-                    className="h-10 w-full rounded-lg border border-[#E5E5E5] bg-[#FBF9F7] pl-10 pr-4 font-[Outfit] text-sm outline-none transition-colors focus:border-[#4A5D4A]"
+                    className="h-10 w-full rounded-lg border border-border bg-background pl-10 pr-4 text-sm outline-none transition-colors focus:border-primary"
                 />
             </div>
             <select
                 value={status}
                 onChange={(event) => setStatus(event.target.value)}
-                className="h-10 rounded-lg border border-[#E5E5E5] bg-[#FBF9F7] px-3 font-[Outfit] text-sm text-[#1A1A1A] outline-none transition-colors focus:border-[#4A5D4A]"
+                className="h-10 rounded-lg border border-border bg-background px-3 text-sm text-foreground outline-none transition-colors focus:border-primary"
             >
                 <option value="">Todos los estados</option>
                 {Object.entries(statusLabels).map(([value, label]) => (
@@ -100,7 +100,7 @@ function SearchAndFilters({ filters }: { filters: Props['filters'] }) {
             </select>
             <button
                 type="submit"
-                className="h-10 rounded-lg bg-[#4A5D4A] px-5 font-[Outfit] text-sm font-medium text-white transition-colors hover:bg-[#3d4d3d]"
+                className="h-10 rounded-lg bg-primary px-5 text-sm font-medium text-white transition-colors hover:bg-primary"
             >
                 Filtrar
             </button>
@@ -111,12 +111,12 @@ function SearchAndFilters({ filters }: { filters: Props['filters'] }) {
 function DetailList({ title, items }: { title: string; items: string[] }) {
     return (
         <div className="flex flex-col gap-1">
-            <span className="font-[Outfit] text-[11px] font-medium text-[#999999]">{title}</span>
+            <span className="text-[11px] font-medium text-muted-foreground">{title}</span>
             <div className="flex flex-wrap gap-1.5">
                 {items.map((item) => (
                     <span
                         key={item}
-                        className="rounded-full border border-[#E5E5E5] bg-[#FBF9F7] px-2 py-1 font-[Outfit] text-xs text-[#666666]"
+                        className="rounded-full border border-border bg-background px-2 py-1 text-xs text-muted-foreground"
                     >
                         {item}
                     </span>
@@ -128,13 +128,13 @@ function DetailList({ title, items }: { title: string; items: string[] }) {
 
 function SampleRequestRow({ sampleRequest }: { sampleRequest: MeridaSampleRequestItem }) {
     return (
-        <tr className="border-b border-[#E5E5E5] align-top hover:bg-gray-50">
+        <tr className="border-b border-border align-top hover:bg-muted">
             <td className="px-6 py-4">
                 <div className="flex flex-col gap-1">
-                    <span className="font-[Outfit] text-sm font-medium text-[#1A1A1A]">
+                    <span className="text-sm font-medium text-foreground">
                         {sampleRequest.business_name}
                     </span>
-                    <span className="font-[Outfit] text-xs text-[#666666]">
+                    <span className="text-xs text-muted-foreground">
                         {sampleRequest.business_type} · {sampleRequest.client_volume}
                     </span>
                     {sampleRequest.social_url && (
@@ -142,7 +142,7 @@ function SampleRequestRow({ sampleRequest }: { sampleRequest: MeridaSampleReques
                             href={sampleRequest.social_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 font-[Outfit] text-xs text-[#4A5D4A] hover:underline"
+                            className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
                         >
                             <ExternalLink className="h-3 w-3" />
                             Perfil social
@@ -152,12 +152,12 @@ function SampleRequestRow({ sampleRequest }: { sampleRequest: MeridaSampleReques
             </td>
             <td className="px-6 py-4">
                 <div className="flex flex-col gap-1.5">
-                    <span className="font-[Outfit] text-sm font-medium text-[#1A1A1A]">
+                    <span className="text-sm font-medium text-foreground">
                         {sampleRequest.contact_name}
                     </span>
                     <a
                         href={`mailto:${sampleRequest.email}`}
-                        className="inline-flex items-center gap-1 font-[Outfit] text-xs text-[#666666] hover:text-[#1A1A1A]"
+                        className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
                     >
                         <Mail className="h-3 w-3" />
                         {sampleRequest.email}
@@ -165,7 +165,7 @@ function SampleRequestRow({ sampleRequest }: { sampleRequest: MeridaSampleReques
                     {sampleRequest.phone && (
                         <a
                             href={`tel:${sampleRequest.phone}`}
-                            className="inline-flex items-center gap-1 font-[Outfit] text-xs text-[#666666] hover:text-[#1A1A1A]"
+                            className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
                         >
                             <Phone className="h-3 w-3" />
                             {sampleRequest.phone}
@@ -180,17 +180,17 @@ function SampleRequestRow({ sampleRequest }: { sampleRequest: MeridaSampleReques
                 </div>
             </td>
             <td className="px-6 py-4">
-                <span className="inline-flex rounded-full bg-[#F5F3F0] px-2.5 py-1 font-[Outfit] text-xs font-medium text-[#666666]">
+                <span className="inline-flex rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
                     {statusLabels[sampleRequest.status] || sampleRequest.status}
                 </span>
             </td>
             <td className="px-6 py-4">
                 <div className="flex flex-col gap-1">
-                    <span className="font-[Outfit] text-sm text-[#666666]">
+                    <span className="text-sm text-muted-foreground">
                         {formatDate(sampleRequest.created_at)}
                     </span>
                     {sampleRequest.user && (
-                        <span className="font-[Outfit] text-xs text-[#999999]">
+                        <span className="text-xs text-muted-foreground">
                             Usuario: {sampleRequest.user.name}
                         </span>
                     )}
@@ -202,35 +202,35 @@ function SampleRequestRow({ sampleRequest }: { sampleRequest: MeridaSampleReques
 
 function Pagination({ sampleRequests, filters }: { sampleRequests: PaginatedSampleRequests; filters: Props['filters'] }) {
     return (
-        <div className="flex items-center justify-between border-t border-[#E5E5E5] px-6 py-4">
-            <span className="font-[Outfit] text-sm text-[#666666]">
+        <div className="flex items-center justify-between border-t border-border px-6 py-4">
+            <span className="text-sm text-muted-foreground">
                 Mostrando {sampleRequests.from} a {sampleRequests.to} de {sampleRequests.total} solicitudes
             </span>
             <div className="flex items-center gap-2">
                 <Link
                     href={buildPageUrl(sampleRequests.current_page - 1, filters)}
-                    className={`rounded-lg border border-[#E5E5E5] p-2 ${
+                    className={`rounded-lg border border-border p-2 ${
                         sampleRequests.current_page === 1
                             ? 'pointer-events-none cursor-not-allowed opacity-50'
-                            : 'hover:bg-gray-50'
+                            : 'hover:bg-muted'
                     }`}
                     preserveScroll
                 >
-                    <ChevronLeft className="h-4 w-4 text-[#666666]" />
+                    <ChevronLeft className="h-4 w-4 text-muted-foreground" />
                 </Link>
-                <span className="font-[Outfit] text-sm text-[#1A1A1A]">
+                <span className="text-sm text-foreground">
                     {sampleRequests.current_page} / {sampleRequests.last_page}
                 </span>
                 <Link
                     href={buildPageUrl(sampleRequests.current_page + 1, filters)}
-                    className={`rounded-lg border border-[#E5E5E5] p-2 ${
+                    className={`rounded-lg border border-border p-2 ${
                         sampleRequests.current_page === sampleRequests.last_page
                             ? 'pointer-events-none cursor-not-allowed opacity-50'
-                            : 'hover:bg-gray-50'
+                            : 'hover:bg-muted'
                     }`}
                     preserveScroll
                 >
-                    <ChevronRight className="h-4 w-4 text-[#666666]" />
+                    <ChevronRight className="h-4 w-4 text-muted-foreground" />
                 </Link>
             </div>
         </div>
@@ -244,35 +244,35 @@ export default function MeridaSampleRequestsIndex() {
         <AppLayout title="Muestras gratis" active="sample-requests">
             <div className="flex flex-col gap-6 p-10 pr-12">
                 <div className="flex flex-col gap-1">
-                    <h1 className="font-[Outfit] text-[28px] font-semibold text-[#1A1A1A]">
+                    <h1 className="text-[28px] font-semibold text-foreground">
                         Muestras gratis
                     </h1>
-                    <p className="font-[Outfit] text-sm text-[#666666]">
+                    <p className="text-sm text-muted-foreground">
                         Negocios que solicitaron muestras gratuitas en Merida.
                     </p>
                 </div>
 
                 <SearchAndFilters filters={filters} />
 
-                <div className="overflow-hidden rounded-xl border border-[#E5E5E5] bg-white">
+                <div className="overflow-hidden rounded-xl border border-border bg-card">
                     <div className="overflow-x-auto">
                         <table className="w-full min-w-[1100px]">
                             <thead>
-                                <tr className="border-b border-[#E5E5E5]">
+                                <tr className="border-b border-border">
                                     <th className="px-6 py-4 text-left">
-                                        <span className="text-sm font-medium text-[#666666]">Negocio</span>
+                                        <span className="text-sm font-medium text-muted-foreground">Negocio</span>
                                     </th>
                                     <th className="px-6 py-4 text-left">
-                                        <span className="text-sm font-medium text-[#666666]">Contacto</span>
+                                        <span className="text-sm font-medium text-muted-foreground">Contacto</span>
                                     </th>
                                     <th className="px-6 py-4 text-left">
-                                        <span className="text-sm font-medium text-[#666666]">Interes</span>
+                                        <span className="text-sm font-medium text-muted-foreground">Interes</span>
                                     </th>
                                     <th className="px-6 py-4 text-left">
-                                        <span className="text-sm font-medium text-[#666666]">Estado</span>
+                                        <span className="text-sm font-medium text-muted-foreground">Estado</span>
                                     </th>
                                     <th className="px-6 py-4 text-left">
-                                        <span className="text-sm font-medium text-[#666666]">Solicitado</span>
+                                        <span className="text-sm font-medium text-muted-foreground">Solicitado</span>
                                     </th>
                                 </tr>
                             </thead>
@@ -286,7 +286,7 @@ export default function MeridaSampleRequestsIndex() {
 
                     {sampleRequests.data.length === 0 && (
                         <div className="flex flex-col items-center justify-center py-12">
-                            <p className="font-[Outfit] text-sm text-[#666666]">
+                            <p className="text-sm text-muted-foreground">
                                 No hay solicitudes de muestras con estos filtros.
                             </p>
                         </div>

@@ -119,24 +119,24 @@ export default function FeaturedProducts({ featuredProducts, availableProducts }
                     {/* Header */}
                     <div className="flex items-center justify-between mb-8">
                         <div>
-                            <h1 className="text-2xl font-bold text-[#1A1A1A] font-[Outfit]">
+                            <h1 className="text-2xl font-bold text-foreground">
                                 Productos Destacados
                             </h1>
-                            <p className="text-sm text-[#666666] font-[Outfit] mt-1">
+                            <p className="text-sm text-muted-foreground mt-1">
                                 Administra los productos destacados en la página principal
                             </p>
                         </div>
                         <button
                             onClick={manager.save}
                             disabled={manager.saving}
-                            className="bg-[#4A5D4A] text-white px-6 py-2.5 rounded-lg font-[Outfit] font-medium text-sm hover:bg-[#3d4e3d] transition-colors disabled:opacity-50 cursor-pointer"
+                            className="bg-primary text-white px-6 py-2.5 rounded-lg font-medium text-sm hover:bg-primary transition-colors disabled:opacity-50 cursor-pointer"
                         >
                             {manager.saving ? 'Guardando...' : 'Guardar Cambios'}
                         </button>
                     </div>
 
                     {flash?.success && (
-                        <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg font-[Outfit] text-sm">
+                        <div className="mb-6 bg-primary/10 border border-primary/20 text-primary px-4 py-3 rounded-lg text-sm">
                             {flash.success}
                         </div>
                     )}
@@ -153,10 +153,10 @@ export default function FeaturedProducts({ featuredProducts, availableProducts }
                         onAddProduct={manager.addProduct}
                     />
 
-                    <div className="bg-white rounded-xl border border-[#E5E5E5] divide-y divide-[#E5E5E5]">
+                    <div className="bg-card rounded-xl border border-border divide-y divide-border">
                         {manager.products.length === 0 ? (
                             <div className="p-8 text-center">
-                                <p className="text-[#999999] font-[Outfit] text-sm">
+                                <p className="text-muted-foreground text-sm">
                                     No hay productos destacados. Usa la búsqueda para agregar productos.
                                 </p>
                             </div>
@@ -175,7 +175,7 @@ export default function FeaturedProducts({ featuredProducts, availableProducts }
                         )}
                     </div>
 
-                    <p className="mt-3 text-xs text-[#999999] font-[Outfit]">
+                    <p className="mt-3 text-xs text-muted-foreground">
                         Máximo 20 productos. Arrastra para reordenar.
                     </p>
                 </div>
@@ -201,30 +201,30 @@ function ProductSearchDropdown({
 }) {
     return (
         <div className="mb-6 relative">
-            <div className="flex items-center gap-2 bg-white border border-[#E5E5E5] rounded-lg px-4 py-3">
-                <Search className="w-4 h-4 text-[#999999]" />
+            <div className="flex items-center gap-2 bg-card border border-border rounded-lg px-4 py-3">
+                <Search className="w-4 h-4 text-muted-foreground" />
                 <input
                     type="text"
                     placeholder="Buscar producto para agregar..."
                     value={search}
                     onChange={(e) => onSearchChange(e.target.value)}
                     onFocus={onFocus}
-                    className="flex-1 bg-transparent outline-none font-[Outfit] text-sm text-[#1A1A1A] placeholder:text-[#999999]"
+                    className="flex-1 bg-transparent outline-none text-sm text-foreground placeholder:text-muted-foreground"
                 />
             </div>
             {showDropdown && search && filteredAvailable.length > 0 && (
-                <div className="absolute z-10 top-full mt-1 w-full bg-white border border-[#E5E5E5] rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                <div className="absolute z-10 top-full mt-1 w-full bg-card border border-border rounded-lg shadow-lg max-h-60 overflow-y-auto">
                     {filteredAvailable.slice(0, 10).map((product) => (
                         <button
                             key={product.id}
                             onClick={() => onAddProduct(product)}
-                            className="w-full px-4 py-3 text-left hover:bg-[#F5F3F0] flex items-center justify-between cursor-pointer"
+                            className="w-full px-4 py-3 text-left hover:bg-muted flex items-center justify-between cursor-pointer"
                         >
                             <div>
-                                <span className="font-[Outfit] text-sm text-[#1A1A1A]">{product.name}</span>
-                                <span className="font-[Outfit] text-xs text-[#999999] ml-2">{product.sku}</span>
+                                <span className="text-sm text-foreground">{product.name}</span>
+                                <span className="text-xs text-muted-foreground ml-2">{product.sku}</span>
                             </div>
-                            <Plus className="w-4 h-4 text-[#4A5D4A]" />
+                            <Plus className="w-4 h-4 text-primary" />
                         </button>
                     ))}
                 </div>
@@ -250,34 +250,34 @@ function FeaturedProductItem({
 }) {
     return (
         <div className="flex items-center gap-4 px-4 py-3">
-            <span className="w-6 text-center text-sm font-medium text-[#999999] font-[Outfit]">
+            <span className="w-6 text-center text-sm font-medium text-muted-foreground">
                 {index + 1}
             </span>
-            <div className="w-10 h-10 bg-[#F5F3F0] rounded-lg overflow-hidden shrink-0">
+            <div className="w-10 h-10 bg-muted rounded-lg overflow-hidden shrink-0">
                 {product.image_url ? (
                     <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                        <div className="w-5 h-5 bg-[#E8E8E8] rounded-full" />
+                        <div className="w-5 h-5 bg-border rounded-full" />
                     </div>
                 )}
             </div>
             <div className="flex-1 min-w-0">
-                <p className="font-[Outfit] text-sm font-medium text-[#1A1A1A] truncate">{product.name}</p>
-                <p className="font-[Outfit] text-xs text-[#999999]">
+                <p className="text-sm font-medium text-foreground truncate">{product.name}</p>
+                <p className="text-xs text-muted-foreground">
                     {product.sku}
                     {product.category && ` · ${product.category}`}
                 </p>
             </div>
             <div className="flex items-center gap-1">
-                <button onClick={onMoveUp} disabled={index === 0} className="p-1.5 rounded hover:bg-[#F5F3F0] disabled:opacity-30 cursor-pointer">
-                    <ArrowUp className="w-4 h-4 text-[#666666]" />
+                <button onClick={onMoveUp} disabled={index === 0} className="p-1.5 rounded hover:bg-muted disabled:opacity-30 cursor-pointer">
+                    <ArrowUp className="w-4 h-4 text-muted-foreground" />
                 </button>
-                <button onClick={onMoveDown} disabled={index === total - 1} className="p-1.5 rounded hover:bg-[#F5F3F0] disabled:opacity-30 cursor-pointer">
-                    <ArrowDown className="w-4 h-4 text-[#666666]" />
+                <button onClick={onMoveDown} disabled={index === total - 1} className="p-1.5 rounded hover:bg-muted disabled:opacity-30 cursor-pointer">
+                    <ArrowDown className="w-4 h-4 text-muted-foreground" />
                 </button>
-                <button onClick={onRemove} className="p-1.5 rounded hover:bg-red-50 cursor-pointer">
-                    <X className="w-4 h-4 text-red-400" />
+                <button onClick={onRemove} className="p-1.5 rounded hover:bg-destructive/10 cursor-pointer">
+                    <X className="w-4 h-4 text-destructive" />
                 </button>
             </div>
         </div>

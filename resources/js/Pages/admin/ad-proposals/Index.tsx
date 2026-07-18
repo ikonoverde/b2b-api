@@ -57,19 +57,19 @@ function SearchAndFilters({ filters }: { filters: Props['filters'] }) {
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-3 lg:flex-row lg:items-center">
             <div className="relative w-full lg:max-w-sm">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#999999]" />
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <input
                     type="text"
                     placeholder="Buscar nombre, objetivo u oferta..."
                     value={search}
                     onChange={(event) => setSearch(event.target.value)}
-                    className="h-10 w-full rounded-lg border border-[#E5E5E5] bg-[#FBF9F7] pl-10 pr-4 font-[Outfit] text-sm outline-none transition-colors focus:border-[#4A5D4A]"
+                    className="h-10 w-full rounded-lg border border-border bg-background pl-10 pr-4 text-sm outline-none transition-colors focus:border-primary"
                 />
             </div>
             <select
                 value={platform}
                 onChange={(event) => setPlatform(event.target.value)}
-                className="h-10 rounded-lg border border-[#E5E5E5] bg-[#FBF9F7] px-3 font-[Outfit] text-sm text-[#1A1A1A] outline-none transition-colors focus:border-[#4A5D4A]"
+                className="h-10 rounded-lg border border-border bg-background px-3 text-sm text-foreground outline-none transition-colors focus:border-primary"
             >
                 <option value="">Todas las plataformas</option>
                 {Object.entries(platformLabels).map(([value, label]) => (
@@ -79,7 +79,7 @@ function SearchAndFilters({ filters }: { filters: Props['filters'] }) {
             <select
                 value={status}
                 onChange={(event) => setStatus(event.target.value)}
-                className="h-10 rounded-lg border border-[#E5E5E5] bg-[#FBF9F7] px-3 font-[Outfit] text-sm text-[#1A1A1A] outline-none transition-colors focus:border-[#4A5D4A]"
+                className="h-10 rounded-lg border border-border bg-background px-3 text-sm text-foreground outline-none transition-colors focus:border-primary"
             >
                 <option value="">Todos los estados</option>
                 {Object.entries(statusLabels).map(([value, label]) => (
@@ -88,7 +88,7 @@ function SearchAndFilters({ filters }: { filters: Props['filters'] }) {
             </select>
             <button
                 type="submit"
-                className="h-10 rounded-lg bg-[#4A5D4A] px-5 font-[Outfit] text-sm font-medium text-white transition-colors hover:bg-[#3d4d3d]"
+                className="h-10 rounded-lg bg-primary px-5 text-sm font-medium text-white transition-colors hover:bg-primary"
             >
                 Filtrar
             </button>
@@ -98,17 +98,17 @@ function SearchAndFilters({ filters }: { filters: Props['filters'] }) {
 
 function ProposalRow({ proposal }: { proposal: AdProposalListItem }) {
     return (
-        <tr className="border-b border-[#E5E5E5] hover:bg-gray-50">
+        <tr className="border-b border-border hover:bg-muted">
             <td className="px-6 py-4">
                 <Link
                     href={`/admin/ad-proposals/${proposal.id}`}
                     className="flex flex-col gap-1"
                 >
-                    <span className="font-[Outfit] text-sm font-medium text-[#1A1A1A] hover:underline">
+                    <span className="text-sm font-medium text-foreground hover:underline">
                         {proposal.name}
                     </span>
                     {proposal.created_by_agent && (
-                        <span className="inline-flex items-center gap-1 font-[Outfit] text-xs text-[#999999]">
+                        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
                             <Sparkles className="h-3 w-3" />
                             Generado por agente
                         </span>
@@ -119,20 +119,20 @@ function ProposalRow({ proposal }: { proposal: AdProposalListItem }) {
                 <PlatformBadge platform={proposal.platform} />
             </td>
             <td className="px-6 py-4">
-                <span className="font-[Outfit] text-sm text-[#666666]">{proposal.objective}</span>
+                <span className="text-sm text-muted-foreground">{proposal.objective}</span>
             </td>
             <td className="px-6 py-4">
-                <span className="font-[Outfit] text-sm text-[#1A1A1A]">
+                <span className="text-sm text-foreground">
                     {formatBudget(proposal.budget_amount, proposal.currency, proposal.budget_period)}
                 </span>
             </td>
             <td className="px-6 py-4">
-                <span className="inline-flex rounded-full bg-[#F5F3F0] px-2.5 py-1 font-[Outfit] text-xs font-medium text-[#666666]">
+                <span className="inline-flex rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
                     {statusLabels[proposal.status] ?? proposal.status}
                 </span>
             </td>
             <td className="px-6 py-4">
-                <span className="font-[Outfit] text-sm text-[#666666]">{formatDate(proposal.created_at)}</span>
+                <span className="text-sm text-muted-foreground">{formatDate(proposal.created_at)}</span>
             </td>
         </tr>
     );
@@ -140,35 +140,35 @@ function ProposalRow({ proposal }: { proposal: AdProposalListItem }) {
 
 function Pagination({ proposals, filters }: { proposals: PaginatedProposals; filters: Props['filters'] }) {
     return (
-        <div className="flex items-center justify-between border-t border-[#E5E5E5] px-6 py-4">
-            <span className="font-[Outfit] text-sm text-[#666666]">
+        <div className="flex items-center justify-between border-t border-border px-6 py-4">
+            <span className="text-sm text-muted-foreground">
                 Mostrando {proposals.from} a {proposals.to} de {proposals.total} propuestas
             </span>
             <div className="flex items-center gap-2">
                 <Link
                     href={buildPageUrl(proposals.current_page - 1, filters)}
-                    className={`rounded-lg border border-[#E5E5E5] p-2 ${
+                    className={`rounded-lg border border-border p-2 ${
                         proposals.current_page === 1
                             ? 'pointer-events-none cursor-not-allowed opacity-50'
-                            : 'hover:bg-gray-50'
+                            : 'hover:bg-muted'
                     }`}
                     preserveScroll
                 >
-                    <ChevronLeft className="h-4 w-4 text-[#666666]" />
+                    <ChevronLeft className="h-4 w-4 text-muted-foreground" />
                 </Link>
-                <span className="font-[Outfit] text-sm text-[#1A1A1A]">
+                <span className="text-sm text-foreground">
                     {proposals.current_page} / {proposals.last_page}
                 </span>
                 <Link
                     href={buildPageUrl(proposals.current_page + 1, filters)}
-                    className={`rounded-lg border border-[#E5E5E5] p-2 ${
+                    className={`rounded-lg border border-border p-2 ${
                         proposals.current_page === proposals.last_page
                             ? 'pointer-events-none cursor-not-allowed opacity-50'
-                            : 'hover:bg-gray-50'
+                            : 'hover:bg-muted'
                     }`}
                     preserveScroll
                 >
-                    <ChevronRight className="h-4 w-4 text-[#666666]" />
+                    <ChevronRight className="h-4 w-4 text-muted-foreground" />
                 </Link>
             </div>
         </div>
@@ -182,25 +182,25 @@ export default function AdProposalsIndex() {
         <AppLayout title="Propuestas de anuncios" active="ad-proposals">
             <div className="flex flex-col gap-6 p-10 pr-12">
                 <div className="flex flex-col gap-1">
-                    <h1 className="font-[Outfit] text-[28px] font-semibold text-[#1A1A1A]">
+                    <h1 className="text-[28px] font-semibold text-foreground">
                         Propuestas de anuncios
                     </h1>
-                    <p className="font-[Outfit] text-sm text-[#666666]">
+                    <p className="text-sm text-muted-foreground">
                         Borradores internos para Google Ads y Meta Ads. Nada se publica en las plataformas.
                     </p>
                 </div>
 
                 <SearchAndFilters filters={filters} />
 
-                <div className="overflow-hidden rounded-xl border border-[#E5E5E5] bg-white">
+                <div className="overflow-hidden rounded-xl border border-border bg-card">
                     <div className="overflow-x-auto">
                         <table className="w-full min-w-[900px]">
                             <thead>
-                                <tr className="border-b border-[#E5E5E5]">
+                                <tr className="border-b border-border">
                                     {['Propuesta', 'Plataforma', 'Objetivo', 'Presupuesto', 'Estado', 'Creada'].map(
                                         (heading) => (
                                             <th key={heading} className="px-6 py-4 text-left">
-                                                <span className="text-sm font-medium text-[#666666]">{heading}</span>
+                                                <span className="text-sm font-medium text-muted-foreground">{heading}</span>
                                             </th>
                                         ),
                                     )}
@@ -216,7 +216,7 @@ export default function AdProposalsIndex() {
 
                     {proposals.data.length === 0 && (
                         <div className="flex flex-col items-center justify-center py-12">
-                            <p className="font-[Outfit] text-sm text-[#666666]">
+                            <p className="text-sm text-muted-foreground">
                                 No hay propuestas de anuncios con estos filtros.
                             </p>
                         </div>

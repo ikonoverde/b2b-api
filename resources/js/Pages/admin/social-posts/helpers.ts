@@ -31,11 +31,11 @@ export const statusDescriptions: Record<SocialPostStatus, string> = {
 };
 
 export const statusPillClasses: Record<SocialPostStatus, string> = {
-    pending: 'border-[#C8D3C8] bg-[#EEF2EE] text-[#3D4D3D]',
-    publishing: 'border-[#E4D3B4] bg-[#FAF3E6] text-[#7A6234]',
-    published: 'border-[#C8D3C8] bg-[#4A5D4A] text-white',
-    rejected: 'border-[#E5E5E5] bg-[#F5F3F0] text-[#8A8A8A]',
-    failed: 'border-[#E8C4C4] bg-[#FBEFEF] text-[#8B4444]',
+    pending: 'border-muted bg-muted text-primary',
+    publishing: 'border-border bg-muted text-muted-foreground',
+    published: 'border-muted bg-primary text-white',
+    rejected: 'border-border bg-muted text-muted-foreground',
+    failed: 'border-destructive/20 bg-destructive/10 text-destructive',
 };
 
 export function formatDateTime(value: string | null): string {

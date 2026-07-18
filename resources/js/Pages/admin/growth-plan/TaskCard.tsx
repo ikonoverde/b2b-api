@@ -16,15 +16,15 @@ function ClosureProposal({ task }: { task: GrowthTaskItem }) {
     const reject = useForm({});
 
     return (
-        <div className="flex flex-col gap-3 rounded-lg border border-[#E4D3B4] bg-[#FAF3E6] p-4">
+        <div className="flex flex-col gap-3 rounded-lg border border-border bg-muted p-4">
             <div className="flex flex-col gap-1">
-                <p className="font-[Outfit] text-sm font-medium text-[#7A6234]">
+                <p className="text-sm font-medium text-muted-foreground">
                     El agente cree que esta tarea ya está hecha, y no pudo probarlo.
                 </p>
-                <p className="font-[Outfit] text-sm whitespace-pre-line text-[#7A6234]">
+                <p className="text-sm whitespace-pre-line text-muted-foreground">
                     {task.closure_proposal_reason}
                 </p>
-                <p className="font-[Outfit] text-xs text-[#7A6234]">
+                <p className="text-xs text-muted-foreground">
                     La tarea sigue abierta. Solo una persona puede cerrarla desde aquí.
                 </p>
             </div>
@@ -37,7 +37,7 @@ function ClosureProposal({ task }: { task: GrowthTaskItem }) {
                             preserveScroll: true,
                         })
                     }
-                    className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-[#4A5D4A] px-4 font-[Outfit] text-sm font-medium text-white transition-colors hover:bg-[#3D4D3D] disabled:opacity-50"
+                    className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors hover:bg-primary disabled:opacity-50"
                 >
                     <CheckCircle2 className="h-4 w-4" />
                     Sí, ya se hizo
@@ -50,7 +50,7 @@ function ClosureProposal({ task }: { task: GrowthTaskItem }) {
                             preserveScroll: true,
                         })
                     }
-                    className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-[#E5E5E5] bg-white px-4 font-[Outfit] text-sm text-[#666666] transition-colors hover:bg-gray-50 disabled:opacity-50"
+                    className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border bg-card px-4 text-sm text-muted-foreground transition-colors hover:bg-muted disabled:opacity-50"
                 >
                     <CircleSlash className="h-4 w-4" />
                     No, sigue pendiente
@@ -69,12 +69,12 @@ function ClosedNote({ task }: { task: GrowthTaskItem }) {
             : (task.close_evidence ?? 'Sin evidencia registrada.');
 
     return (
-        <div className="flex flex-wrap items-start justify-between gap-3 rounded-lg border border-[#E5E5E5] bg-[#F9F8F6] p-4">
+        <div className="flex flex-wrap items-start justify-between gap-3 rounded-lg border border-border bg-background p-4">
             <div className="flex flex-col gap-1">
                 {task.closed_by !== null && (
                     <span
                         title={closedByDescriptions[task.closed_by]}
-                        className="inline-flex w-fit items-center gap-1.5 font-[Outfit] text-xs font-medium text-[#666666]"
+                        className="inline-flex w-fit items-center gap-1.5 text-xs font-medium text-muted-foreground"
                     >
                         {task.closed_by === 'human' ? (
                             <User className="h-3.5 w-3.5" />
@@ -84,7 +84,7 @@ function ClosedNote({ task }: { task: GrowthTaskItem }) {
                         {closedByLabels[task.closed_by]}
                     </span>
                 )}
-                <p className="font-[Outfit] text-sm text-[#666666]">{evidence}</p>
+                <p className="text-sm text-muted-foreground">{evidence}</p>
             </div>
             <button
                 type="button"
@@ -92,7 +92,7 @@ function ClosedNote({ task }: { task: GrowthTaskItem }) {
                 onClick={() =>
                     reopen.post(`/admin/growth-plan/tasks/${task.id}/reopen`, { preserveScroll: true })
                 }
-                className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-[#E5E5E5] bg-white px-4 font-[Outfit] text-sm text-[#666666] transition-colors hover:bg-gray-50 disabled:opacity-50"
+                className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-border bg-card px-4 text-sm text-muted-foreground transition-colors hover:bg-muted disabled:opacity-50"
             >
                 <RotateCcw className="h-4 w-4" />
                 Reabrir
@@ -103,11 +103,11 @@ function ClosedNote({ task }: { task: GrowthTaskItem }) {
 
 export function TaskCard({ task }: { task: GrowthTaskItem }) {
     return (
-        <div className="flex flex-col gap-3 border-b border-[#E5E5E5] px-6 py-5 last:border-b-0">
+        <div className="flex flex-col gap-3 border-b border-border px-6 py-5 last:border-b-0">
             <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="flex flex-col gap-1">
-                    <h3 className="font-[Outfit] text-base font-medium text-[#1A1A1A]">{task.name}</h3>
-                    <span className="font-[Outfit] text-xs text-[#999999]">
+                    <h3 className="text-base font-medium text-foreground">{task.name}</h3>
+                    <span className="text-xs text-muted-foreground">
                         {task.source_report
                             ? `Razonada desde el reporte del ${task.source_report}`
                             : 'Sin reporte de origen'}
@@ -116,12 +116,12 @@ export function TaskCard({ task }: { task: GrowthTaskItem }) {
                 <div className="flex shrink-0 items-center gap-2">
                     <span
                         title={agentDescriptions[task.agent]}
-                        className={`inline-flex items-center rounded-full border px-2.5 py-1 font-[Outfit] text-xs font-medium ${agentChipClasses[task.agent]}`}
+                        className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium ${agentChipClasses[task.agent]}`}
                     >
                         {agentLabels[task.agent]}
                     </span>
                     <span
-                        className={`inline-flex items-center rounded-full border px-2.5 py-1 font-[Outfit] text-xs font-medium ${statusPillClasses[task.status]}`}
+                        className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium ${statusPillClasses[task.status]}`}
                     >
                         {statusLabels[task.status]}
                     </span>
@@ -132,7 +132,7 @@ export function TaskCard({ task }: { task: GrowthTaskItem }) {
              * The body is rendered whole and unwrapped. Nobody should pick up work they have not read,
              * and the tagged facts that justify it are in here.
              */}
-            <p className="max-w-[75ch] font-[Outfit] text-sm leading-relaxed whitespace-pre-line text-[#666666]">
+            <p className="max-w-[75ch] text-sm leading-relaxed whitespace-pre-line text-muted-foreground">
                 {task.body}
             </p>
 

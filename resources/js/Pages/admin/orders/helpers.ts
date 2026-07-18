@@ -11,17 +11,17 @@ export const paymentStatusLabels: Record<string, string> = {
 };
 
 export const getStatusColor = (status: string): string => {
-    return statusColors[status] || 'bg-gray-100 text-gray-800';
+    return statusColors[status] || 'bg-muted text-foreground';
 };
 
 export const getPaymentStatusColor = (status: string): string => {
     const colors: Record<string, string> = {
-        pending: 'bg-yellow-100 text-yellow-800',
-        completed: 'bg-green-100 text-green-800',
-        failed: 'bg-red-100 text-red-800',
-        refunded: 'bg-purple-100 text-purple-800',
+        pending: 'bg-muted text-muted-foreground',
+        completed: 'bg-primary/10 text-primary',
+        failed: 'bg-destructive/10 text-destructive',
+        refunded: 'bg-accent text-accent-foreground',
     };
-    return colors[status] || 'bg-gray-100 text-gray-800';
+    return colors[status] || 'bg-muted text-foreground';
 };
 
 export const allowedTransitions: Record<string, string[]> = {

@@ -25,13 +25,13 @@ export const agentDescriptions: Record<GrowthTaskAgent, string> = {
 };
 
 export const agentChipClasses: Record<GrowthTaskAgent, string> = {
-    content: 'border-[#C8D3C8] bg-[#EEF2EE] text-[#3D4D3D]',
-    keywords: 'border-[#C8D3C8] bg-[#EEF2EE] text-[#3D4D3D]',
-    'paid-acquisition': 'border-[#C8D3C8] bg-[#EEF2EE] text-[#3D4D3D]',
-    'social-media': 'border-[#C8D3C8] bg-[#EEF2EE] text-[#3D4D3D]',
-    generic: 'border-[#E5E5E5] bg-[#F5F3F0] text-[#666666]',
+    content: 'border-muted bg-muted text-primary',
+    keywords: 'border-muted bg-muted text-primary',
+    'paid-acquisition': 'border-muted bg-muted text-primary',
+    'social-media': 'border-muted bg-muted text-primary',
+    generic: 'border-border bg-muted text-muted-foreground',
     // A person has to pick this one up. It should not look like the ones that run themselves.
-    human: 'border-[#E4D3B4] bg-[#FAF3E6] text-[#7A6234]',
+    human: 'border-border bg-muted text-muted-foreground',
 };
 
 export const statusLabels: Record<GrowthStatus, string> = {
@@ -41,9 +41,9 @@ export const statusLabels: Record<GrowthStatus, string> = {
 };
 
 export const statusPillClasses: Record<GrowthStatus, string> = {
-    open: 'border-[#E5E5E5] bg-white text-[#666666]',
-    done: 'border-[#C8D3C8] bg-[#4A5D4A] text-white',
-    dropped: 'border-[#E5E5E5] bg-[#F5F3F0] text-[#8A8A8A]',
+    open: 'border-border bg-card text-muted-foreground',
+    done: 'border-muted bg-primary text-white',
+    dropped: 'border-border bg-muted text-muted-foreground',
 };
 
 /**

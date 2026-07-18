@@ -24,25 +24,25 @@ export default function FormulaDropdown({
 
     return (
         <div className="flex flex-col gap-2 relative">
-            <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+            <label className="text-sm font-medium text-foreground">
                 F&oacute;rmula
             </label>
             <button
                 type="button"
                 onClick={onToggle}
-                className="h-11 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors flex items-center justify-between"
+                className="h-11 px-4 bg-background rounded-lg border border-border text-sm outline-none focus:border-primary transition-colors flex items-center justify-between"
             >
-                <span className={formulaId ? 'text-[#1A1A1A]' : 'text-[#999999]'}>
+                <span className={formulaId ? 'text-foreground' : 'text-muted-foreground'}>
                     {selectedFormula?.name || 'Sin f\u00f3rmula'}
                 </span>
-                <ChevronDown className="w-[18px] h-[18px] text-[#999999]" />
+                <ChevronDown className="w-[18px] h-[18px] text-muted-foreground" />
             </button>
             {isOpen && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg border border-[#E5E5E5] shadow-lg z-10 max-h-48 overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 mt-1 bg-card rounded-lg border border-border shadow-lg z-10 max-h-48 overflow-y-auto">
                     <button
                         type="button"
                         onClick={() => onSelect('')}
-                        className="w-full px-4 py-2.5 text-left text-sm text-[#999999] font-[Outfit] hover:bg-[#F5F3F0] transition-colors"
+                        className="w-full px-4 py-2.5 text-left text-sm text-muted-foreground hover:bg-muted transition-colors"
                     >
                         Sin f&oacute;rmula
                     </button>
@@ -51,7 +51,7 @@ export default function FormulaDropdown({
                             key={formula.id}
                             type="button"
                             onClick={() => onSelect(String(formula.id))}
-                            className="w-full px-4 py-2.5 text-left text-sm text-[#1A1A1A] font-[Outfit] hover:bg-[#F5F3F0] transition-colors"
+                            className="w-full px-4 py-2.5 text-left text-sm text-foreground hover:bg-muted transition-colors"
                         >
                             {formula.name}
                         </button>
@@ -59,7 +59,7 @@ export default function FormulaDropdown({
                 </div>
             )}
             {error && (
-                <span className="text-xs text-red-500 font-[Outfit]">{error}</span>
+                <span className="text-xs text-destructive">{error}</span>
             )}
         </div>
     );

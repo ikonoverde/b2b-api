@@ -20,27 +20,27 @@ export default function CategoryDropdown({
 
     return (
         <div className="flex-1 flex flex-col gap-2 relative">
-            <label className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+            <label className="text-sm font-medium text-foreground">
                 Categor&iacute;a
             </label>
             <button
                 type="button"
                 onClick={onToggle}
-                className="h-11 px-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors flex items-center justify-between"
+                className="h-11 px-4 bg-background rounded-lg border border-border text-sm outline-none focus:border-primary transition-colors flex items-center justify-between"
             >
-                <span className={categoryId ? 'text-[#1A1A1A]' : 'text-[#999999]'}>
+                <span className={categoryId ? 'text-foreground' : 'text-muted-foreground'}>
                     {selectedCategory?.name || 'Seleccionar categor\u00eda'}
                 </span>
-                <ChevronDown className="w-[18px] h-[18px] text-[#999999]" />
+                <ChevronDown className="w-[18px] h-[18px] text-muted-foreground" />
             </button>
             {isOpen && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg border border-[#E5E5E5] shadow-lg z-10 max-h-48 overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 mt-1 bg-card rounded-lg border border-border shadow-lg z-10 max-h-48 overflow-y-auto">
                     {categories.map((cat) => (
                         <button
                             key={cat.id}
                             type="button"
                             onClick={() => onSelect(String(cat.id))}
-                            className="w-full px-4 py-2.5 text-left text-sm text-[#1A1A1A] font-[Outfit] hover:bg-[#F5F3F0] transition-colors"
+                            className="w-full px-4 py-2.5 text-left text-sm text-foreground hover:bg-muted transition-colors"
                         >
                             {cat.name}
                         </button>
@@ -48,7 +48,7 @@ export default function CategoryDropdown({
                 </div>
             )}
             {error && (
-                <span className="text-xs text-red-500 font-[Outfit]">{error}</span>
+                <span className="text-xs text-destructive">{error}</span>
             )}
         </div>
     );

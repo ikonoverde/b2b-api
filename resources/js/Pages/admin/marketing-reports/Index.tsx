@@ -47,26 +47,26 @@ function ReportRow({ report }: { report: MarketingReportListItem }) {
     const isSuperseded = report.superseded_at !== null;
 
     return (
-        <tr className={`border-b border-[#E5E5E5] hover:bg-gray-50 ${isSuperseded ? 'bg-[#FBFAF9]' : ''}`}>
+        <tr className={`border-b border-border hover:bg-muted ${isSuperseded ? 'bg-background' : ''}`}>
             <td className="px-6 py-4">
                 <Link href={`/admin/marketing-reports/${report.id}`} className="flex flex-col gap-1">
                     <span className="flex items-center gap-2">
                         <span
                             className={`font-mono text-sm tabular-nums hover:underline ${
-                                isSuperseded ? 'text-[#8A8A8A] line-through' : 'font-medium text-[#1A1A1A]'
+                                isSuperseded ? 'text-muted-foreground line-through' : 'font-medium text-foreground'
                             }`}
                         >
                             {formatDate(report.reported_on)}
                         </span>
                         {isSuperseded && (
-                            <span className="inline-flex items-center gap-1 rounded-full border border-[#E5E5E5] bg-[#F5F3F0] px-2 py-0.5 font-[Outfit] text-[11px] font-medium text-[#8A8A8A]">
+                            <span className="inline-flex items-center gap-1 rounded-full border border-border bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
                                 <History className="h-3 w-3" />
                                 Reemplazado
                             </span>
                         )}
                     </span>
                     {window && (
-                        <span className="font-[Outfit] text-xs text-[#999999]">Ventana: {window}</span>
+                        <span className="text-xs text-muted-foreground">Ventana: {window}</span>
                     )}
                 </Link>
             </td>
@@ -83,7 +83,7 @@ function ReportRow({ report }: { report: MarketingReportListItem }) {
                 <HeadlineValue value={report.ig_followers} />
             </td>
             <td className="px-6 py-4">
-                <span className="font-[Outfit] text-sm text-[#666666]">
+                <span className="text-sm text-muted-foreground">
                     {formatDateTime(report.created_at)}
                 </span>
             </td>
@@ -99,11 +99,11 @@ function ReportRow({ report }: { report: MarketingReportListItem }) {
 function EmptyState({ filtered }: { filtered: boolean }) {
     return (
         <div className="flex flex-col items-center justify-center gap-2 px-6 py-16 text-center">
-            <ClipboardList className="h-6 w-6 text-[#C9C5C0]" />
-            <p className="font-[Outfit] text-sm font-medium text-[#1A1A1A]">
+            <ClipboardList className="h-6 w-6 text-border" />
+            <p className="text-sm font-medium text-foreground">
                 {filtered ? 'Ningún reporte fue reemplazado.' : 'Todavía no hay reportes.'}
             </p>
-            <p className="max-w-md font-[Outfit] text-sm text-[#666666]">
+            <p className="max-w-md text-sm text-muted-foreground">
                 {filtered
                     ? 'Cuando una corrida vuelva a escribir un día ya reportado, el reporte anterior se conserva aquí.'
                     : 'El agente de marketing escribe uno cada día a las 07:00, hora de la tienda. Un reporte vacío no significa que algo falle: significa que no hubo nada que observar.'}
@@ -114,37 +114,37 @@ function EmptyState({ filtered }: { filtered: boolean }) {
 
 function Pagination({ reports, filters }: { reports: PaginatedReports; filters: Props['filters'] }) {
     return (
-        <div className="flex items-center justify-between border-t border-[#E5E5E5] px-6 py-4">
-            <span className="font-[Outfit] text-sm text-[#666666]">
+        <div className="flex items-center justify-between border-t border-border px-6 py-4">
+            <span className="text-sm text-muted-foreground">
                 Mostrando {reports.from} a {reports.to} de {reports.total} reportes
             </span>
             <div className="flex items-center gap-2">
                 <Link
                     href={buildPageUrl(reports.current_page - 1, filters)}
                     aria-label="Página anterior"
-                    className={`rounded-lg border border-[#E5E5E5] p-2 ${
+                    className={`rounded-lg border border-border p-2 ${
                         reports.current_page === 1
                             ? 'pointer-events-none cursor-not-allowed opacity-50'
-                            : 'hover:bg-gray-50'
+                            : 'hover:bg-muted'
                     }`}
                     preserveScroll
                 >
-                    <ChevronLeft className="h-4 w-4 text-[#666666]" />
+                    <ChevronLeft className="h-4 w-4 text-muted-foreground" />
                 </Link>
-                <span className="font-mono text-sm tabular-nums text-[#1A1A1A]">
+                <span className="font-mono text-sm tabular-nums text-foreground">
                     {reports.current_page} / {reports.last_page}
                 </span>
                 <Link
                     href={buildPageUrl(reports.current_page + 1, filters)}
                     aria-label="Página siguiente"
-                    className={`rounded-lg border border-[#E5E5E5] p-2 ${
+                    className={`rounded-lg border border-border p-2 ${
                         reports.current_page === reports.last_page
                             ? 'pointer-events-none cursor-not-allowed opacity-50'
-                            : 'hover:bg-gray-50'
+                            : 'hover:bg-muted'
                     }`}
                     preserveScroll
                 >
-                    <ChevronRight className="h-4 w-4 text-[#666666]" />
+                    <ChevronRight className="h-4 w-4 text-muted-foreground" />
                 </Link>
             </div>
         </div>
@@ -158,10 +158,10 @@ export default function MarketingReportsIndex() {
         <AppLayout title="Reportes de marketing" active="marketing-reports">
             <div className="flex flex-col gap-6 p-10 pr-12">
                 <div className="flex flex-col gap-1">
-                    <h1 className="font-[Outfit] text-[28px] font-semibold text-[#1A1A1A]">
+                    <h1 className="text-[28px] font-semibold text-foreground">
                         Reportes de marketing
                     </h1>
-                    <p className="max-w-2xl font-[Outfit] text-sm text-[#666666]">
+                    <p className="max-w-2xl text-sm text-muted-foreground">
                         Lo que el agente observó cada día en GA4, Meta e Instagram. Un cero es una medición;
                         «sin dato» significa que nadie pudo verlo.
                     </p>
@@ -170,10 +170,10 @@ export default function MarketingReportsIndex() {
                 <div className="flex items-center gap-3">
                     <Link
                         href="/admin/marketing-reports"
-                        className={`h-9 rounded-lg border px-4 font-[Outfit] text-sm leading-[2rem] transition-colors ${
+                        className={`h-9 rounded-lg border px-4 text-sm leading-[2rem] transition-colors ${
                             filters.superseded
-                                ? 'border-[#E5E5E5] text-[#666666] hover:bg-gray-50'
-                                : 'border-[#4A5D4A] bg-[#4A5D4A] font-medium text-white'
+                                ? 'border-border text-muted-foreground hover:bg-muted'
+                                : 'border-primary bg-primary font-medium text-white'
                         }`}
                         preserveScroll
                     >
@@ -181,10 +181,10 @@ export default function MarketingReportsIndex() {
                     </Link>
                     <Link
                         href="/admin/marketing-reports?superseded=1"
-                        className={`h-9 rounded-lg border px-4 font-[Outfit] text-sm leading-[2rem] transition-colors ${
+                        className={`h-9 rounded-lg border px-4 text-sm leading-[2rem] transition-colors ${
                             filters.superseded
-                                ? 'border-[#4A5D4A] bg-[#4A5D4A] font-medium text-white'
-                                : 'border-[#E5E5E5] text-[#666666] hover:bg-gray-50'
+                                ? 'border-primary bg-primary font-medium text-white'
+                                : 'border-border text-muted-foreground hover:bg-muted'
                         }`}
                         preserveScroll
                     >
@@ -195,17 +195,17 @@ export default function MarketingReportsIndex() {
                     </Link>
                 </div>
 
-                <div className="overflow-hidden rounded-xl border border-[#E5E5E5] bg-white">
+                <div className="overflow-hidden rounded-xl border border-border bg-card">
                     {reports.data.length === 0 ? (
                         <EmptyState filtered={filters.superseded} />
                     ) : (
                         <div className="overflow-x-auto">
                             <table className="w-full min-w-[900px]">
                                 <thead>
-                                    <tr className="border-b border-[#E5E5E5]">
+                                    <tr className="border-b border-border">
                                         {columns.map((column) => (
                                             <th key={column.key} className={`px-6 py-4 ${column.align}`}>
-                                                <span className="font-[Outfit] text-sm font-medium text-[#666666]">
+                                                <span className="text-sm font-medium text-muted-foreground">
                                                     {column.label}
                                                 </span>
                                             </th>

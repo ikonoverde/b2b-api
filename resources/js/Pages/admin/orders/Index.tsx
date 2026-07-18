@@ -48,12 +48,12 @@ function SortableHeader({ field, label, currentFilters }: { field: string; label
 
     return (
         <th
-            className="text-left px-6 py-4 cursor-pointer hover:bg-gray-50"
+            className="text-left px-6 py-4 cursor-pointer hover:bg-muted"
             onClick={handleSort}
         >
             <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-[#666666]">{label}</span>
-                <ArrowUpDown className={`w-4 h-4 ${isActive ? 'text-[#1A1A1A]' : 'text-gray-400'}`} />
+                <span className="text-sm font-medium text-muted-foreground">{label}</span>
+                <ArrowUpDown className={`w-4 h-4 ${isActive ? 'text-foreground' : 'text-muted-foreground'}`} />
             </div>
         </th>
     );
@@ -91,22 +91,22 @@ function FilterBar({ filters }: { filters: OrderFilters }) {
     };
 
     return (
-        <div className="bg-white rounded-xl border border-[#E5E5E5] overflow-hidden">
+        <div className="bg-card rounded-xl border border-border overflow-hidden">
             <div className="flex items-center justify-between px-6 py-4">
                 <form onSubmit={applyFilters} className="flex items-center gap-3 flex-1">
                     <div className="relative flex-1 max-w-sm">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#999999]" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                         <input
                             type="text"
                             placeholder="Buscar por cliente..."
                             value={localFilters.customer}
                             onChange={(e) => setLocalFilters({ ...localFilters, customer: e.target.value })}
-                            className="w-full h-10 pl-10 pr-4 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
+                            className="w-full h-10 pl-10 pr-4 bg-background rounded-lg border border-border text-sm outline-none focus:border-primary transition-colors"
                         />
                     </div>
                     <button
                         type="submit"
-                        className="h-10 px-4 bg-[#4A5D4A] rounded-lg text-sm font-medium text-white font-[Outfit] hover:bg-[#3d4d3d] transition-colors"
+                        className="h-10 px-4 bg-primary rounded-lg text-sm font-medium text-white hover:bg-primary transition-colors"
                     >
                         Buscar
                     </button>
@@ -114,22 +114,22 @@ function FilterBar({ filters }: { filters: OrderFilters }) {
                 <div className="flex items-center gap-2">
                     <button
                         onClick={() => setShowFilters(!showFilters)}
-                        className={`flex items-center gap-2 h-10 px-4 rounded-lg border text-sm font-medium font-[Outfit] transition-colors ${
+                        className={`flex items-center gap-2 h-10 px-4 rounded-lg border text-sm font-medium transition-colors ${
                             hasActiveFilters
-                                ? 'border-[#4A5D4A] text-[#4A5D4A] bg-[#4A5D4A]/5'
-                                : 'border-[#E5E5E5] text-[#666666] hover:bg-gray-50'
+                                ? 'border-primary text-primary bg-primary/5'
+                                : 'border-border text-muted-foreground hover:bg-muted'
                         }`}
                     >
                         <Filter className="w-4 h-4" />
                         Filtros
                         {hasActiveFilters && (
-                            <span className="w-2 h-2 rounded-full bg-[#4A5D4A]" />
+                            <span className="w-2 h-2 rounded-full bg-primary" />
                         )}
                     </button>
                     {hasActiveFilters && (
                         <button
                             onClick={clearFilters}
-                            className="flex items-center gap-1 h-10 px-3 rounded-lg border border-[#E5E5E5] text-sm text-[#666666] font-[Outfit] hover:bg-gray-50 transition-colors"
+                            className="flex items-center gap-1 h-10 px-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors"
                         >
                             <X className="w-4 h-4" />
                             Limpiar
@@ -139,13 +139,13 @@ function FilterBar({ filters }: { filters: OrderFilters }) {
             </div>
 
             {showFilters && (
-                <form onSubmit={applyFilters} className="px-6 pb-4 flex flex-wrap gap-4 border-t border-[#E5E5E5] pt-4">
+                <form onSubmit={applyFilters} className="px-6 pb-4 flex flex-wrap gap-4 border-t border-border pt-4">
                     <div className="flex flex-col gap-1">
-                        <label className="text-xs text-[#999999] font-[Outfit]">Estado</label>
+                        <label className="text-xs text-muted-foreground">Estado</label>
                         <select
                             value={localFilters.status}
                             onChange={(e) => setLocalFilters({ ...localFilters, status: e.target.value })}
-                            className="h-9 px-3 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A]"
+                            className="h-9 px-3 bg-background rounded-lg border border-border text-sm outline-none focus:border-primary"
                         >
                             <option value="">Todos</option>
                             {Object.entries(statusLabels).map(([value, label]) => (
@@ -154,11 +154,11 @@ function FilterBar({ filters }: { filters: OrderFilters }) {
                         </select>
                     </div>
                     <div className="flex flex-col gap-1">
-                        <label className="text-xs text-[#999999] font-[Outfit]">Pago</label>
+                        <label className="text-xs text-muted-foreground">Pago</label>
                         <select
                             value={localFilters.payment_status}
                             onChange={(e) => setLocalFilters({ ...localFilters, payment_status: e.target.value })}
-                            className="h-9 px-3 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A]"
+                            className="h-9 px-3 bg-background rounded-lg border border-border text-sm outline-none focus:border-primary"
                         >
                             <option value="">Todos</option>
                             {Object.entries(paymentStatusLabels).map(([value, label]) => (
@@ -167,49 +167,49 @@ function FilterBar({ filters }: { filters: OrderFilters }) {
                         </select>
                     </div>
                     <div className="flex flex-col gap-1">
-                        <label className="text-xs text-[#999999] font-[Outfit]">Desde</label>
+                        <label className="text-xs text-muted-foreground">Desde</label>
                         <input
                             type="date"
                             value={localFilters.date_from}
                             onChange={(e) => setLocalFilters({ ...localFilters, date_from: e.target.value })}
-                            className="h-9 px-3 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A]"
+                            className="h-9 px-3 bg-background rounded-lg border border-border text-sm outline-none focus:border-primary"
                         />
                     </div>
                     <div className="flex flex-col gap-1">
-                        <label className="text-xs text-[#999999] font-[Outfit]">Hasta</label>
+                        <label className="text-xs text-muted-foreground">Hasta</label>
                         <input
                             type="date"
                             value={localFilters.date_to}
                             onChange={(e) => setLocalFilters({ ...localFilters, date_to: e.target.value })}
-                            className="h-9 px-3 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A]"
+                            className="h-9 px-3 bg-background rounded-lg border border-border text-sm outline-none focus:border-primary"
                         />
                     </div>
                     <div className="flex flex-col gap-1">
-                        <label className="text-xs text-[#999999] font-[Outfit]">Monto Mín</label>
+                        <label className="text-xs text-muted-foreground">Monto Mín</label>
                         <input
                             type="number"
                             step="0.01"
                             value={localFilters.amount_min}
                             onChange={(e) => setLocalFilters({ ...localFilters, amount_min: e.target.value })}
-                            className="h-9 w-28 px-3 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A]"
+                            className="h-9 w-28 px-3 bg-background rounded-lg border border-border text-sm outline-none focus:border-primary"
                             placeholder="$0.00"
                         />
                     </div>
                     <div className="flex flex-col gap-1">
-                        <label className="text-xs text-[#999999] font-[Outfit]">Monto Máx</label>
+                        <label className="text-xs text-muted-foreground">Monto Máx</label>
                         <input
                             type="number"
                             step="0.01"
                             value={localFilters.amount_max}
                             onChange={(e) => setLocalFilters({ ...localFilters, amount_max: e.target.value })}
-                            className="h-9 w-28 px-3 bg-[#FBF9F7] rounded-lg border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A]"
+                            className="h-9 w-28 px-3 bg-background rounded-lg border border-border text-sm outline-none focus:border-primary"
                             placeholder="$0.00"
                         />
                     </div>
                     <div className="flex items-end">
                         <button
                             type="submit"
-                            className="h-9 px-4 bg-[#4A5D4A] rounded-lg text-sm font-medium text-white font-[Outfit] hover:bg-[#3d4d3d] transition-colors"
+                            className="h-9 px-4 bg-primary rounded-lg text-sm font-medium text-white hover:bg-primary transition-colors"
                         >
                             Aplicar
                         </button>
@@ -222,23 +222,23 @@ function FilterBar({ filters }: { filters: OrderFilters }) {
 
 function OrderRow({ order }: { order: AdminOrderListItem }) {
     return (
-        <tr className="border-b border-[#E5E5E5] hover:bg-gray-50">
+        <tr className="border-b border-border hover:bg-muted">
             <td className="px-6 py-4">
                 <Link
                     href={`/admin/orders/${order.id}`}
-                    className="text-sm text-[#1A1A1A] hover:underline font-medium font-[Outfit]"
+                    className="text-sm text-foreground hover:underline font-medium"
                 >
                     #{order.id}
                 </Link>
             </td>
             <td className="px-6 py-4">
                 <div className="flex flex-col">
-                    <span className="text-sm text-[#1A1A1A] font-[Outfit]">{order.user?.name}</span>
-                    <span className="text-xs text-[#999999] font-[Outfit]">{order.user?.email}</span>
+                    <span className="text-sm text-foreground">{order.user?.name}</span>
+                    <span className="text-xs text-muted-foreground">{order.user?.email}</span>
                 </div>
             </td>
             <td className="px-6 py-4">
-                <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                <span className="text-sm font-medium text-foreground">
                     {formatCurrency(order.total_amount)}
                 </span>
             </td>
@@ -253,7 +253,7 @@ function OrderRow({ order }: { order: AdminOrderListItem }) {
                 </span>
             </td>
             <td className="px-6 py-4">
-                <span className="text-sm text-[#666666] font-[Outfit]">
+                <span className="text-sm text-muted-foreground">
                     {formatDateShort(order.created_at)}
                 </span>
             </td>
@@ -263,35 +263,35 @@ function OrderRow({ order }: { order: AdminOrderListItem }) {
 
 function Pagination({ orders }: { orders: OrdersData }) {
     return (
-        <div className="flex items-center justify-between px-6 py-4 border-t border-[#E5E5E5]">
-            <span className="text-sm text-[#666666] font-[Outfit]">
+        <div className="flex items-center justify-between px-6 py-4 border-t border-border">
+            <span className="text-sm text-muted-foreground">
                 Mostrando {orders.from} a {orders.to} de {orders.total} pedidos
             </span>
             <div className="flex items-center gap-2">
                 <Link
                     href={`?page=${orders.current_page - 1}`}
-                    className={`p-2 rounded-lg border border-[#E5E5E5] ${
+                    className={`p-2 rounded-lg border border-border ${
                         orders.current_page === 1
                             ? 'opacity-50 cursor-not-allowed pointer-events-none'
-                            : 'hover:bg-gray-50'
+                            : 'hover:bg-muted'
                     }`}
                     preserveScroll
                 >
-                    <ChevronLeft className="w-4 h-4 text-[#666666]" />
+                    <ChevronLeft className="w-4 h-4 text-muted-foreground" />
                 </Link>
-                <span className="text-sm text-[#1A1A1A] font-[Outfit]">
+                <span className="text-sm text-foreground">
                     {orders.current_page} / {orders.last_page}
                 </span>
                 <Link
                     href={`?page=${orders.current_page + 1}`}
-                    className={`p-2 rounded-lg border border-[#E5E5E5] ${
+                    className={`p-2 rounded-lg border border-border ${
                         orders.current_page === orders.last_page
                             ? 'opacity-50 cursor-not-allowed pointer-events-none'
-                            : 'hover:bg-gray-50'
+                            : 'hover:bg-muted'
                     }`}
                     preserveScroll
                 >
-                    <ChevronRight className="w-4 h-4 text-[#666666]" />
+                    <ChevronRight className="w-4 h-4 text-muted-foreground" />
                 </Link>
             </div>
         </div>
@@ -306,10 +306,10 @@ export default function OrdersIndex() {
             <div className="flex flex-col gap-6 p-10 pr-12">
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-1">
-                        <h1 className="text-[28px] font-semibold text-[#1A1A1A] font-[Outfit]">
+                        <h1 className="text-[28px] font-semibold text-foreground">
                             Pedidos
                         </h1>
-                        <p className="text-sm text-[#666666] font-[Outfit]">
+                        <p className="text-sm text-muted-foreground">
                             Gestiona los pedidos del sistema
                         </p>
                     </div>
@@ -317,19 +317,19 @@ export default function OrdersIndex() {
 
                 <FilterBar filters={filters} />
 
-                <div className="bg-white rounded-xl border border-[#E5E5E5] overflow-hidden">
+                <div className="bg-card rounded-xl border border-border overflow-hidden">
                     <table className="w-full">
                         <thead>
-                            <tr className="border-b border-[#E5E5E5]">
+                            <tr className="border-b border-border">
                                 <SortableHeader field="created_at" label="ID" currentFilters={filters} />
                                 <th className="text-left px-6 py-4">
-                                    <span className="text-sm font-medium text-[#666666]">Cliente</span>
+                                    <span className="text-sm font-medium text-muted-foreground">Cliente</span>
                                 </th>
                                 <SortableHeader field="total_amount" label="Total" currentFilters={filters} />
                                 <SortableHeader field="status" label="Estado" currentFilters={filters} />
                                 <SortableHeader field="payment_status" label="Pago" currentFilters={filters} />
                                 <th className="text-left px-6 py-4">
-                                    <span className="text-sm font-medium text-[#666666]">Fecha</span>
+                                    <span className="text-sm font-medium text-muted-foreground">Fecha</span>
                                 </th>
                             </tr>
                         </thead>
@@ -342,7 +342,7 @@ export default function OrdersIndex() {
 
                     {orders.data.length === 0 && (
                         <div className="flex flex-col items-center justify-center py-12">
-                            <p className="text-sm text-[#666666] font-[Outfit]">No hay pedidos registrados</p>
+                            <p className="text-sm text-muted-foreground">No hay pedidos registrados</p>
                         </div>
                     )}
 

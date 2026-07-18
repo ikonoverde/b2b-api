@@ -13,7 +13,7 @@ function ImagePreview({
     onRemove: () => void;
 }) {
     return (
-        <div className="relative h-[120px] bg-[#FBF9F7] rounded-xl border-2 border-[#E5E5E5] overflow-hidden">
+        <div className="relative h-[120px] bg-background rounded-xl border-2 border-border overflow-hidden">
             <img
                 src={src}
                 alt={alt}
@@ -22,9 +22,9 @@ function ImagePreview({
             <button
                 type="button"
                 onClick={onRemove}
-                className="absolute top-1 right-1 w-6 h-6 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
+                className="absolute top-1 right-1 w-6 h-6 bg-card rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors"
             >
-                <X className="w-3 h-3 text-[#666666]" />
+                <X className="w-3 h-3 text-muted-foreground" />
             </button>
         </div>
     );
@@ -50,12 +50,12 @@ function ImageDropZone({
             onDragOver={onDragOver}
             onDragLeave={onDragLeave}
             onDrop={onDrop}
-            className={`flex flex-col items-center justify-center gap-2 h-[120px] w-full bg-[#FBF9F7] rounded-xl border-2 border-dashed ${
-                isDragging ? 'border-[#4A5D4A] bg-[#E8EDE8]' : 'border-[#E5E5E5]'
-            } hover:border-[#4A5D4A] transition-colors`}
+            className={`flex flex-col items-center justify-center gap-2 h-[120px] w-full bg-background rounded-xl border-2 border-dashed ${
+                isDragging ? 'border-primary bg-muted' : 'border-border'
+            } hover:border-primary transition-colors`}
         >
-            <ImagePlus className="w-6 h-6 text-[#4A5D4A]" />
-            <span className="text-xs text-[#999999] font-[Outfit]">
+            <ImagePlus className="w-6 h-6 text-primary" />
+            <span className="text-xs text-muted-foreground">
                 Agregar
             </span>
         </button>
@@ -96,9 +96,9 @@ export default function ImageSection({
     };
 
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E5E5E5]">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div className="px-6 py-5 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">
                     Im&aacute;genes del Producto
                 </h2>
             </div>
@@ -138,7 +138,7 @@ export default function ImageSection({
                         />
                     )}
                 </div>
-                <span className="text-xs text-[#999999] font-[Outfit]">
+                <span className="text-xs text-muted-foreground">
                     PNG, JPG o WEBP. M&aacute;ximo 5MB por imagen. Hasta 4 im&aacute;genes.
                 </span>
             </div>

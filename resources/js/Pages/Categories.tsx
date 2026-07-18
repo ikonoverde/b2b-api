@@ -63,57 +63,57 @@ function CategoryFormModal({
 }: CategoryFormModalProps) {
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-xl w-full max-w-lg max-h-[90vh] overflow-auto">
-                <div className="p-6 border-b border-[#E5E5E5] flex items-center justify-between">
-                    <h2 className="text-xl font-semibold text-[#1A1A1A] font-[Outfit]">
+            <div className="bg-card rounded-xl w-full max-w-lg max-h-[90vh] overflow-auto">
+                <div className="p-6 border-b border-border flex items-center justify-between">
+                    <h2 className="text-xl font-semibold text-foreground">
                         {modalMode === 'create' ? 'Nueva Categoría' : 'Editar Categoría'}
                     </h2>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                        className="p-2 hover:bg-muted rounded-lg transition-colors"
                     >
-                        <X className="w-5 h-5 text-[#666666]" />
+                        <X className="w-5 h-5 text-muted-foreground" />
                     </button>
                 </div>
 
                 <form onSubmit={onSubmit} className="p-6 space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-[#1A1A1A] mb-2 font-[Outfit]">
-                            Nombre <span className="text-red-500">*</span>
+                        <label className="block text-sm font-medium text-foreground mb-2">
+                            Nombre <span className="text-destructive">*</span>
                         </label>
                         <input
                             type="text"
                             value={formData.name}
                             onChange={(e) => setFormData('name', e.target.value)}
-                            className="w-full h-11 px-4 border border-[#E5E5E5] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4A5D4A]/20 font-[Outfit]"
+                            className="w-full h-11 px-4 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                             placeholder="Ej: Electrónicos"
                         />
                         {errors.name && (
-                            <p className="mt-1 text-sm text-red-600 font-[Outfit]">{errors.name}</p>
+                            <p className="mt-1 text-sm text-destructive">{errors.name}</p>
                         )}
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-[#1A1A1A] mb-2 font-[Outfit]">
+                        <label className="block text-sm font-medium text-foreground mb-2">
                             Descripción
                         </label>
                         <textarea
                             value={formData.description}
                             onChange={(e) => setFormData('description', e.target.value)}
                             rows={3}
-                            className="w-full px-4 py-3 border border-[#E5E5E5] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4A5D4A]/20 font-[Outfit] resize-none"
+                            className="w-full px-4 py-3 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
                             placeholder="Descripción opcional de la categoría"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-[#1A1A1A] mb-2 font-[Outfit]">
+                        <label className="block text-sm font-medium text-foreground mb-2">
                             Categoría Padre
                         </label>
                         <select
                             value={formData.parent_id ?? ''}
                             onChange={(e) => setFormData('parent_id', e.target.value ? parseInt(e.target.value) : null)}
-                            className="w-full h-11 px-4 border border-[#E5E5E5] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4A5D4A]/20 font-[Outfit] bg-white"
+                            className="w-full h-11 px-4 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 bg-card"
                         >
                             <option value="">Sin categoría padre (nivel raíz)</option>
                             {parentOptions.map(cat => (
@@ -130,9 +130,9 @@ function CategoryFormModal({
                             id="is_active"
                             checked={formData.is_active}
                             onChange={(e) => setFormData('is_active', e.target.checked)}
-                            className="w-5 h-5 rounded border-[#E5E5E5] text-[#4A5D4A] focus:ring-[#4A5D4A]"
+                            className="w-5 h-5 rounded border-border text-primary focus:ring-primary"
                         />
-                        <label htmlFor="is_active" className="text-sm text-[#1A1A1A] font-[Outfit]">
+                        <label htmlFor="is_active" className="text-sm text-foreground">
                             Categoría activa (visible en la tienda)
                         </label>
                     </div>
@@ -141,14 +141,14 @@ function CategoryFormModal({
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex-1 h-11 border border-[#E5E5E5] rounded-lg text-[#666666] font-medium text-sm font-[Outfit] hover:bg-gray-50 transition-colors"
+                            className="flex-1 h-11 border border-border rounded-lg text-muted-foreground font-medium text-sm hover:bg-muted transition-colors"
                         >
                             Cancelar
                         </button>
                         <button
                             type="submit"
                             disabled={processing}
-                            className="flex-1 h-11 bg-[#4A5D4A] rounded-lg text-white font-medium text-sm font-[Outfit] hover:bg-[#3d4d3d] transition-colors disabled:opacity-50"
+                            className="flex-1 h-11 bg-primary rounded-lg text-white font-medium text-sm hover:bg-primary transition-colors disabled:opacity-50"
                         >
                             {processing ? 'Guardando...' : (modalMode === 'create' ? 'Crear' : 'Guardar')}
                         </button>
@@ -176,31 +176,31 @@ function DeleteConfirmationModal({ deleteModal, onDelete, onClose }: DeleteConfi
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-xl w-full max-w-md">
-                <div className="p-6 border-b border-[#E5E5E5] flex items-center gap-3">
-                    <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                        <AlertTriangle className="w-5 h-5 text-red-600" />
+            <div className="bg-card rounded-xl w-full max-w-md">
+                <div className="p-6 border-b border-border flex items-center gap-3">
+                    <div className="w-10 h-10 bg-destructive/10 rounded-full flex items-center justify-center">
+                        <AlertTriangle className="w-5 h-5 text-destructive" />
                     </div>
-                    <h2 className="text-xl font-semibold text-[#1A1A1A] font-[Outfit]">
+                    <h2 className="text-xl font-semibold text-foreground">
                         Eliminar Categoría
                     </h2>
                 </div>
 
                 <div className="p-6">
-                    <p className="text-[#666666] mb-4 font-[Outfit]">
+                    <p className="text-muted-foreground mb-4">
                         ¿Estás seguro de que quieres eliminar la categoría <strong>{deleteModal.category.name}</strong>?
                     </p>
 
                     {(deleteModal.stats.products_count > 0 || deleteModal.stats.children_count > 0) && (
-                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-                            <p className="text-sm text-red-700 font-medium mb-2 font-[Outfit]">No se puede eliminar:</p>
+                        <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4 mb-4">
+                            <p className="text-sm text-destructive font-medium mb-2">No se puede eliminar:</p>
                             {deleteModal.stats.children_count > 0 && (
-                                <p className="text-sm text-red-600 font-[Outfit]">
+                                <p className="text-sm text-destructive">
                                     • Esta categoría tiene {deleteModal.stats.children_count} subcategoría(s)
                                 </p>
                             )}
                             {deleteModal.stats.products_count > 0 && (
-                                <p className="text-sm text-red-600 font-[Outfit]">
+                                <p className="text-sm text-destructive">
                                     • Esta categoría tiene {deleteModal.stats.products_count} producto(s)
                                 </p>
                             )}
@@ -210,14 +210,14 @@ function DeleteConfirmationModal({ deleteModal, onDelete, onClose }: DeleteConfi
                     <div className="flex gap-3">
                         <button
                             onClick={onClose}
-                            className="flex-1 h-11 border border-[#E5E5E5] rounded-lg text-[#666666] font-medium text-sm font-[Outfit] hover:bg-gray-50 transition-colors"
+                            className="flex-1 h-11 border border-border rounded-lg text-muted-foreground font-medium text-sm hover:bg-muted transition-colors"
                         >
                             Cancelar
                         </button>
                         <button
                             onClick={onDelete}
                             disabled={deleteModal.stats.products_count > 0 || deleteModal.stats.children_count > 0}
-                            className="flex-1 h-11 bg-red-600 rounded-lg text-white font-medium text-sm font-[Outfit] hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex-1 h-11 bg-destructive rounded-lg text-white font-medium text-sm hover:bg-destructive/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Eliminar
                         </button>
@@ -239,27 +239,27 @@ function CategoryActions({ category, onAddSubcategory, onEdit, onDelete }: Categ
     return (
         <div className="w-12">
             <div className="relative group/menu">
-                <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#E5E5E5] transition-colors">
-                    <MoreHorizontal className="w-5 h-5 text-[#666666]" />
+                <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-border transition-colors">
+                    <MoreHorizontal className="w-5 h-5 text-muted-foreground" />
                 </button>
-                <div className="absolute right-0 top-full z-10 mt-1 hidden w-44 overflow-hidden rounded-lg border border-[#E5E5E5] bg-white py-1 shadow-lg group-hover/menu:block">
+                <div className="absolute right-0 top-full z-10 mt-1 hidden w-44 overflow-hidden rounded-lg border border-border bg-card py-1 shadow-lg group-hover/menu:block">
                     <button
                         onClick={() => onAddSubcategory(category.id)}
-                        className="w-full px-4 py-2 text-left text-sm text-[#1A1A1A] hover:bg-[#F9F9F9] font-[Outfit] flex items-center gap-2"
+                        className="w-full px-4 py-2 text-left text-sm text-foreground hover:bg-background flex items-center gap-2"
                     >
                         <Plus className="w-4 h-4" />
                         Agregar subcategoría
                     </button>
                     <button
                         onClick={() => onEdit(category)}
-                        className="w-full px-4 py-2 text-left text-sm text-[#1A1A1A] hover:bg-[#F9F9F9] font-[Outfit] flex items-center gap-2"
+                        className="w-full px-4 py-2 text-left text-sm text-foreground hover:bg-background flex items-center gap-2"
                     >
                         <Pencil className="w-4 h-4" />
                         Editar
                     </button>
                     <button
                         onClick={() => onDelete(category)}
-                        className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 font-[Outfit] flex items-center gap-2"
+                        className="w-full px-4 py-2 text-left text-sm text-destructive hover:bg-destructive/10 flex items-center gap-2"
                     >
                         <Trash2 className="w-4 h-4" />
                         Eliminar
@@ -400,47 +400,47 @@ function CategoriesHeader({ searchQuery, setSearchQuery, totalCount, onCreateCli
     userInitials: string | undefined;
 }) {
     return (
-        <header className="px-8 py-6 border-b border-[#E5E5E5]">
+        <header className="px-8 py-6 border-b border-border">
             <div className="flex items-center justify-between mb-6">
-                <h1 className="text-2xl font-semibold text-[#1A1A1A] font-[Outfit]">
+                <h1 className="text-2xl font-semibold text-foreground">
                     Categorías
                 </h1>
                 <div className="flex items-center gap-4">
                     <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#999999]" />
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                         <input
                             type="text"
                             placeholder="Buscar categorías..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-[320px] h-11 pl-10 pr-4 bg-white border border-[#E5E5E5] rounded-lg text-sm text-[#1A1A1A] placeholder-[#999999] focus:outline-none focus:ring-2 focus:ring-[#4A5D4A]/20 font-[Outfit]"
+                            className="w-[320px] h-11 pl-10 pr-4 bg-card border border-border rounded-lg text-sm text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                         />
                     </div>
-                    <button className="p-2 rounded-lg hover:bg-white transition-colors relative">
-                        <Bell className="w-6 h-6 text-[#666666]" />
-                        <span className="absolute top-1 right-1 w-2 h-2 bg-[#D4A853] rounded-full"></span>
+                    <button className="p-2 rounded-lg hover:bg-card transition-colors relative">
+                        <Bell className="w-6 h-6 text-muted-foreground" />
+                        <span className="absolute top-1 right-1 w-2 h-2 bg-muted-foreground rounded-full"></span>
                     </button>
-                    <button className="p-2 rounded-lg hover:bg-white transition-colors">
-                        <Settings className="w-6 h-6 text-[#666666]" />
+                    <button className="p-2 rounded-lg hover:bg-card transition-colors">
+                        <Settings className="w-6 h-6 text-muted-foreground" />
                     </button>
-                    <div className="flex items-center gap-2 pl-4 border-l border-[#E5E5E5]">
-                        <div className="w-10 h-10 bg-[#4A5D4A] rounded-full flex items-center justify-center">
-                            <span className="text-sm font-medium text-white font-[Outfit]">
+                    <div className="flex items-center gap-2 pl-4 border-l border-border">
+                        <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                            <span className="text-sm font-medium text-white">
                                 {userInitials}
                             </span>
                         </div>
-                        <ChevronDown className="w-5 h-5 text-[#666666]" />
+                        <ChevronDown className="w-5 h-5 text-muted-foreground" />
                     </div>
                 </div>
             </div>
 
             <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-sm text-[#666666] font-[Outfit]">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <span>Total: {totalCount} categorías</span>
                 </div>
                 <button
                     onClick={onCreateClick}
-                    className="flex items-center gap-2 h-11 px-5 bg-[#4A5D4A] rounded-lg text-white font-medium text-sm font-[Outfit] hover:bg-[#3d4d3d] transition-colors"
+                    className="flex items-center gap-2 h-11 px-5 bg-primary rounded-lg text-white font-medium text-sm hover:bg-primary transition-colors"
                 >
                     <Plus className="w-5 h-5" />
                     Nueva Categoría
@@ -478,7 +478,7 @@ export default function Categories({ categories, flatCategories }: CategoriesPro
 
     return (
         <AppLayout title="Categorías" active="categories">
-            <div className="min-h-screen bg-[#FBF9F7]">
+            <div className="min-h-screen bg-background">
                 <CategoriesHeader
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
@@ -489,20 +489,20 @@ export default function Categories({ categories, flatCategories }: CategoriesPro
 
                 {/* Flash Messages */}
                 {flash?.success && (
-                    <div className="mx-8 mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-                        <p className="text-sm text-green-700 font-[Outfit]">{flash.success}</p>
+                    <div className="mx-8 mt-4 p-4 bg-primary/10 border border-primary/20 rounded-lg">
+                        <p className="text-sm text-primary">{flash.success}</p>
                     </div>
                 )}
                 {flash?.error && (
-                    <div className="mx-8 mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-                        <p className="text-sm text-red-700 font-[Outfit]">{flash.error}</p>
+                    <div className="mx-8 mt-4 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
+                        <p className="text-sm text-destructive">{flash.error}</p>
                     </div>
                 )}
 
                 {/* Main Content */}
                 <main className="px-8 py-6">
-                    <div className="bg-white rounded-xl border border-[#E5E5E5] overflow-visible">
-                        <div className="flex items-center gap-4 rounded-t-xl border-b border-[#E5E5E5] bg-[#F9F9F9] p-4 text-sm text-[#666666] font-[Outfit]">
+                    <div className="bg-card rounded-xl border border-border overflow-visible">
+                        <div className="flex items-center gap-4 rounded-t-xl border-b border-border bg-background p-4 text-sm text-muted-foreground">
                             <span className="w-12"></span>
                             <span className="w-12"></span>
                             <span className="flex-1">Nombre</span>
@@ -511,11 +511,11 @@ export default function Categories({ categories, flatCategories }: CategoriesPro
                             <span className="w-12"></span>
                         </div>
 
-                        <div className="divide-y divide-[#E5E5E5]">
+                        <div className="divide-y divide-border">
                             {filteredCategories.length === 0 ? (
                                 <div className="p-12 text-center">
-                                    <Folder className="w-12 h-12 text-[#CCCCCC] mx-auto mb-4" />
-                                    <p className="text-[#666666] font-[Outfit]">
+                                    <Folder className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                                    <p className="text-muted-foreground">
                                         {searchQuery ? 'No se encontraron categorías' : 'No hay categorías. Crea la primera.'}
                                     </p>
                                 </div>
@@ -579,10 +579,10 @@ function CategoryStatusBadge({ category, onToggleVisibility }: { category: Categ
         <div className="w-24">
             <button
                 onClick={() => onToggleVisibility(category)}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium font-[Outfit] transition-colors ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                     category.is_active
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-gray-100 text-gray-500'
+                        ? 'bg-primary/10 text-primary'
+                        : 'bg-muted text-muted-foreground'
                 }`}
             >
                 {category.is_active ? (
@@ -599,16 +599,16 @@ function CategoryInfo({ category, hasChildren }: { category: Category; hasChildr
     return (
         <div className="flex-1 flex items-center gap-3">
             {hasChildren ? (
-                <FolderOpen className="w-5 h-5 text-[#4A5D4A]" />
+                <FolderOpen className="w-5 h-5 text-primary" />
             ) : (
-                <Folder className="w-5 h-5 text-[#999999]" />
+                <Folder className="w-5 h-5 text-muted-foreground" />
             )}
             <div>
-                <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                <span className="text-sm font-medium text-foreground">
                     {category.name}
                 </span>
                 {category.description && (
-                    <p className="text-xs text-[#999999] font-[Outfit] truncate max-w-xs">
+                    <p className="text-xs text-muted-foreground truncate max-w-xs">
                         {category.description}
                     </p>
                 )}
@@ -625,31 +625,31 @@ function CategoryRow({ category, depth, expandedIds, onToggleExpand, onEdit, onD
     return (
         <>
             <div
-                className="flex items-center gap-4 p-4 hover:bg-[#F9F9F9] transition-colors group"
+                className="flex items-center gap-4 p-4 hover:bg-background transition-colors group"
                 style={{ paddingLeft }}
             >
                 {/* Expand Toggle */}
                 <button
                     onClick={() => hasChildren && onToggleExpand(category.id)}
-                    className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors ${hasChildren ? 'hover:bg-[#E5E5E5] cursor-pointer' : 'cursor-default'}`}
+                    className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors ${hasChildren ? 'hover:bg-border cursor-pointer' : 'cursor-default'}`}
                     disabled={!hasChildren}
                 >
                     {hasChildren && (
                         isExpanded ?
-                            <ChevronDownIcon className="w-4 h-4 text-[#666666]" /> :
-                            <ChevronRight className="w-4 h-4 text-[#666666]" />
+                            <ChevronDownIcon className="w-4 h-4 text-muted-foreground" /> :
+                            <ChevronRight className="w-4 h-4 text-muted-foreground" />
                     )}
                 </button>
 
                 {/* Drag Handle */}
-                <div className="w-8 h-8 flex items-center justify-center cursor-move text-[#CCCCCC]">
+                <div className="w-8 h-8 flex items-center justify-center cursor-move text-muted-foreground">
                     <GripVertical className="w-4 h-4" />
                 </div>
 
                 <CategoryInfo category={category} hasChildren={!!hasChildren} />
 
                 {/* Products Count */}
-                <div className="w-48 flex items-center gap-2 text-sm text-[#666666] font-[Outfit]">
+                <div className="w-48 flex items-center gap-2 text-sm text-muted-foreground">
                     <Package className="w-4 h-4" />
                     <span>{category.products_count ?? 0} productos</span>
                 </div>

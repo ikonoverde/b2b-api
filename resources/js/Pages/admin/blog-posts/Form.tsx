@@ -61,7 +61,7 @@ export default function BlogPostForm({ post }: Props) {
                 <div className="max-w-4xl">
                     <Link
                         href="/admin/blog-posts"
-                        className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-[#4A5D4A] hover:underline font-[Outfit]"
+                        className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
                     >
                         <ArrowLeft className="h-4 w-4" />
                         Volver al Blog
@@ -69,10 +69,10 @@ export default function BlogPostForm({ post }: Props) {
 
                     <div className="mb-8 flex items-start justify-between">
                         <div>
-                            <h1 className="font-[Outfit] text-2xl font-bold text-[#1A1A1A]">
+                            <h1 className="text-2xl font-bold text-foreground">
                                 {isEditing ? 'Editar Entrada' : 'Nueva Entrada'}
                             </h1>
-                            <p className="mt-1 font-[Outfit] text-sm text-[#666666]">
+                            <p className="mt-1 text-sm text-muted-foreground">
                                 Administra el contenido, portada y publicación de la entrada.
                             </p>
                         </div>
@@ -81,7 +81,7 @@ export default function BlogPostForm({ post }: Props) {
                                 href={`/admin/blog-posts/${post.id}/preview`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 rounded-lg border border-[#E5E5E5] bg-white px-4 py-2.5 font-[Outfit] text-sm font-medium text-[#4A5D4A] hover:bg-gray-50"
+                                className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-medium text-primary hover:bg-muted"
                             >
                                 <Eye className="h-4 w-4" />
                                 Vista previa
@@ -96,7 +96,7 @@ export default function BlogPostForm({ post }: Props) {
                                     type="text"
                                     value={form.data.title}
                                     onChange={(e) => form.setData('title', e.target.value)}
-                                    className="w-full rounded-lg border border-[#E5E5E5] px-4 py-2.5 font-[Outfit] text-sm"
+                                    className="w-full rounded-lg border border-border px-4 py-2.5 text-sm"
                                     required
                                 />
                             </Field>
@@ -107,7 +107,7 @@ export default function BlogPostForm({ post }: Props) {
                                     value={form.data.slug}
                                     onChange={(e) => form.setData('slug', e.target.value)}
                                     placeholder="se-genera-si-lo-dejas-vacio"
-                                    className="w-full rounded-lg border border-[#E5E5E5] px-4 py-2.5 font-[Outfit] text-sm"
+                                    className="w-full rounded-lg border border-border px-4 py-2.5 text-sm"
                                 />
                             </Field>
                         </div>
@@ -118,7 +118,7 @@ export default function BlogPostForm({ post }: Props) {
                                 onChange={(e) => form.setData('excerpt', e.target.value)}
                                 rows={3}
                                 maxLength={500}
-                                className="w-full rounded-lg border border-[#E5E5E5] px-4 py-2.5 font-[Outfit] text-sm"
+                                className="w-full rounded-lg border border-border px-4 py-2.5 text-sm"
                             />
                         </Field>
 
@@ -134,12 +134,12 @@ export default function BlogPostForm({ post }: Props) {
                                 type="file"
                                 accept="image/png,image/jpeg,image/webp"
                                 onChange={(e) => form.setData('cover_image', e.target.files?.[0] ?? null)}
-                                className="w-full rounded-lg border border-[#E5E5E5] px-4 py-2.5 font-[Outfit] text-sm"
+                                className="w-full rounded-lg border border-border px-4 py-2.5 text-sm"
                             />
                         </Field>
 
                         <Field label="Contenido (Markdown)" error={form.errors.content}>
-                            <Suspense fallback={<div className="h-96 animate-pulse rounded-lg bg-[#F5F3F0]" />}>
+                            <Suspense fallback={<div className="h-96 animate-pulse rounded-lg bg-muted" />}>
                                 <div data-color-mode="light">
                                     <MDEditor
                                         value={form.data.content}
@@ -150,15 +150,15 @@ export default function BlogPostForm({ post }: Props) {
                             </Suspense>
                         </Field>
 
-                        <div className="grid gap-5 rounded-xl border border-[#E5E5E5] bg-white p-5 md:grid-cols-2">
+                        <div className="grid gap-5 rounded-xl border border-border bg-card p-5 md:grid-cols-2">
                             <label className="flex cursor-pointer items-center gap-2">
                                 <input
                                     type="checkbox"
                                     checked={form.data.is_published}
                                     onChange={(e) => form.setData('is_published', e.target.checked)}
-                                    className="rounded border-[#E5E5E5]"
+                                    className="rounded border-border"
                                 />
-                                <span className="font-[Outfit] text-sm text-[#1A1A1A]">Publicada</span>
+                                <span className="text-sm text-foreground">Publicada</span>
                             </label>
 
                             <Field label="Fecha de publicación" error={form.errors.published_at} compact>
@@ -166,7 +166,7 @@ export default function BlogPostForm({ post }: Props) {
                                     type="datetime-local"
                                     value={form.data.published_at}
                                     onChange={(e) => form.setData('published_at', e.target.value)}
-                                    className="w-full rounded-lg border border-[#E5E5E5] px-4 py-2.5 font-[Outfit] text-sm"
+                                    className="w-full rounded-lg border border-border px-4 py-2.5 text-sm"
                                 />
                             </Field>
                         </div>
@@ -174,14 +174,14 @@ export default function BlogPostForm({ post }: Props) {
                         <div className="flex justify-end gap-3">
                             <Link
                                 href="/admin/blog-posts"
-                                className="px-4 py-2.5 font-[Outfit] text-sm font-medium text-[#666666] hover:text-[#1A1A1A]"
+                                className="px-4 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground"
                             >
                                 Cancelar
                             </Link>
                             <button
                                 type="submit"
                                 disabled={form.processing}
-                                className="cursor-pointer rounded-lg bg-[#4A5D4A] px-8 py-2.5 font-[Outfit] text-sm font-medium text-white hover:bg-[#3d4e3d] disabled:opacity-50"
+                                className="cursor-pointer rounded-lg bg-primary px-8 py-2.5 text-sm font-medium text-white hover:bg-primary disabled:opacity-50"
                             >
                                 {form.processing ? 'Guardando...' : isEditing ? 'Actualizar' : 'Crear'}
                             </button>
@@ -206,11 +206,11 @@ function Field({
 }) {
     return (
         <div>
-            <label className={`block font-[Outfit] text-sm font-medium text-[#1A1A1A] ${compact ? 'mb-1' : 'mb-2'}`}>
+            <label className={`block text-sm font-medium text-foreground ${compact ? 'mb-1' : 'mb-2'}`}>
                 {label}
             </label>
             {children}
-            {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+            {error && <p className="mt-1 text-xs text-destructive">{error}</p>}
         </div>
     );
 }

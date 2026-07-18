@@ -36,7 +36,7 @@ export default function ReportShow() {
             <div className="flex flex-col gap-6 p-10 pr-12">
                 <Link
                     href={backHref}
-                    className="inline-flex w-fit items-center gap-1.5 font-[Outfit] text-sm text-[#666666] hover:text-[#1A1A1A]"
+                    className="inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                     <ArrowLeft className="h-4 w-4" />
                     {backLabel}
@@ -44,34 +44,34 @@ export default function ReportShow() {
 
                 <div className="flex flex-col gap-3">
                     <div className="flex flex-wrap items-start justify-between gap-3">
-                        <h1 className="max-w-[70ch] font-[Outfit] text-[28px] font-semibold text-[#1A1A1A]">
+                        <h1 className="max-w-[70ch] text-[28px] font-semibold text-foreground">
                             {report.title}
                         </h1>
                         <Badge
                             variant="outline"
-                            className="font-[Outfit] shrink-0 border-[#C8D3C8] bg-[#EEF2EE] text-[#3D4D3D]"
+                            className="shrink-0 border-muted bg-muted text-primary"
                         >
                             {report.type_label}
                         </Badge>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 font-[Outfit] text-sm text-[#666666]">
+                    <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-muted-foreground">
                         {report.agent !== null && (
                             <span className="inline-flex items-center gap-1.5">
-                                <User className="h-3.5 w-3.5 text-[#999999]" />
+                                <User className="h-3.5 w-3.5 text-muted-foreground" />
                                 {report.agent}
                             </span>
                         )}
                         <span className="inline-flex items-center gap-1.5">
-                            <Calendar className="h-3.5 w-3.5 text-[#999999]" />
+                            <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
                             {formatDateTime(report.created_at)}
                         </span>
                     </div>
                 </div>
 
                 {report.summary !== null && (
-                    <div className="rounded-xl border border-[#E5E5E5] bg-[#F9F8F6] px-6 py-4">
-                        <p className="max-w-[80ch] font-[Outfit] text-sm leading-relaxed text-[#444444]">
+                    <div className="rounded-xl border border-border bg-background px-6 py-4">
+                        <p className="max-w-[80ch] text-sm leading-relaxed text-muted-foreground">
                             {report.summary}
                         </p>
                     </div>
@@ -79,11 +79,11 @@ export default function ReportShow() {
 
                 <section className="flex flex-col gap-3">
                     <div className="flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-[#999999]" />
-                        <h2 className="font-[Outfit] text-sm font-semibold text-[#1A1A1A]">El reporte</h2>
+                        <FileText className="h-4 w-4 text-muted-foreground" />
+                        <h2 className="text-sm font-semibold text-foreground">El reporte</h2>
                     </div>
-                    <div className="rounded-xl border border-[#E5E5E5] bg-white px-8 py-7">
-                        <div className="prose prose-sm max-w-[70ch] font-[Outfit] prose-headings:font-[Outfit] prose-headings:text-[#1A1A1A] prose-p:text-[#444444] prose-li:text-[#444444] prose-strong:text-[#1A1A1A] prose-code:font-mono prose-code:text-[#4A5D4A] prose-a:text-[#4A5D4A]">
+                    <div className="rounded-xl border border-border bg-card px-8 py-7">
+                        <div className="prose prose-sm max-w-[70ch] prose-headings:prose-headings:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground prose-code:font-mono prose-code:text-primary prose-a:text-primary">
                             <Markdown remarkPlugins={[remarkGfm]}>{report.body}</Markdown>
                         </div>
                     </div>

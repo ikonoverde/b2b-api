@@ -23,7 +23,7 @@ export function ProvenancePill({ provenance }: { provenance: MetricProvenance })
     return (
         <span
             title={provenanceDescriptions[provenance]}
-            className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-[Outfit] text-xs font-medium ${
+            className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium ${
                 provenancePillClasses[provenance] ?? provenancePillClasses.unknown
             }`}
         >
@@ -44,7 +44,7 @@ export function ProvenancePill({ provenance }: { provenance: MetricProvenance })
 export function HeadlineValue({ value }: { value: number | null }) {
     if (value === null) {
         return (
-            <span className="inline-flex items-center gap-1.5 font-[Outfit] text-xs text-[#999999]">
+            <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
                 <CircleSlash className="h-3 w-3" />
                 Sin dato
             </span>
@@ -52,7 +52,7 @@ export function HeadlineValue({ value }: { value: number | null }) {
     }
 
     return (
-        <span className="font-mono text-sm tabular-nums text-[#1A1A1A]">
+        <span className="font-mono text-sm tabular-nums text-foreground">
             {formatNumber(value)}
         </span>
     );

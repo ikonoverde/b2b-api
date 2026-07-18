@@ -51,12 +51,12 @@ function getSortIcon(field: string): React.ReactNode {
     const currentSortOrder = new URLSearchParams(window.location.search).get('sort_order') || 'desc';
 
     if (currentSortBy !== field) {
-        return <ArrowUpDown className="w-4 h-4 text-gray-400" />;
+        return <ArrowUpDown className="w-4 h-4 text-muted-foreground" />;
     }
 
     return currentSortOrder === 'asc'
-        ? <ArrowUpDown className="w-4 h-4 text-[#1A1A1A]" />
-        : <ArrowUpDown className="w-4 h-4 text-[#1A1A1A] rotate-180" />;
+        ? <ArrowUpDown className="w-4 h-4 text-foreground" />
+        : <ArrowUpDown className="w-4 h-4 text-foreground rotate-180" />;
 }
 
 function handleSort(field: string): void {
@@ -82,11 +82,11 @@ function handleSort(field: string): void {
 function SortableHeader({ field, label }: { field: string; label: string }) {
     return (
         <th
-            className="text-left px-6 py-4 cursor-pointer hover:bg-gray-50"
+            className="text-left px-6 py-4 cursor-pointer hover:bg-muted"
             onClick={() => handleSort(field)}
         >
             <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-[#666666]">{label}</span>
+                <span className="text-sm font-medium text-muted-foreground">{label}</span>
                 {getSortIcon(field)}
             </div>
         </th>
@@ -96,35 +96,35 @@ function SortableHeader({ field, label }: { field: string; label: string }) {
 function UserRow({ user }: { user: User }) {
     return (
         <tr
-            className="border-b border-[#E5E5E5] hover:bg-gray-50"
+            className="border-b border-border hover:bg-muted"
         >
             <td className="px-6 py-4">
                 <Link
                     href={`/admin/users/${user.id}`}
-                    className="text-sm text-[#1A1A1A] hover:underline"
+                    className="text-sm text-foreground hover:underline"
                 >
                     {user.name}
                 </Link>
             </td>
             <td className="px-6 py-4">
-                <span className="text-sm text-[#1A1A1A]">{user.email}</span>
+                <span className="text-sm text-foreground">{user.email}</span>
             </td>
             <td className="px-6 py-4">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-foreground">
                     {roleLabels[user.role] || user.role}
                 </span>
             </td>
             <td className="px-6 py-4">
                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                     user.is_active
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
+                        ? 'bg-primary/10 text-primary'
+                        : 'bg-destructive/10 text-destructive'
                 }`}>
                     {user.is_active ? 'Activo' : 'Inactivo'}
                 </span>
             </td>
             <td className="px-6 py-4">
-                <span className="text-sm text-[#666666]">
+                <span className="text-sm text-muted-foreground">
                     {formatDate(user.created_at)}
                 </span>
             </td>
@@ -134,35 +134,35 @@ function UserRow({ user }: { user: User }) {
 
 function Pagination({ users }: { users: UsersData }) {
     return (
-        <div className="flex items-center justify-between px-6 py-4 border-t border-[#E5E5E5]">
-            <span className="text-sm text-[#666666]">
+        <div className="flex items-center justify-between px-6 py-4 border-t border-border">
+            <span className="text-sm text-muted-foreground">
                 Mostrando {users.from} a {users.to} de {users.total} usuarios
             </span>
             <div className="flex items-center gap-2">
                 <Link
                     href={`?page=${users.current_page - 1}`}
-                    className={`p-2 rounded-lg border border-[#E5E5E5] ${
+                    className={`p-2 rounded-lg border border-border ${
                         users.current_page === 1
                             ? 'opacity-50 cursor-not-allowed pointer-events-none'
-                            : 'hover:bg-gray-50'
+                            : 'hover:bg-muted'
                     }`}
                     preserveScroll
                 >
-                    <ChevronLeft className="w-4 h-4 text-[#666666]" />
+                    <ChevronLeft className="w-4 h-4 text-muted-foreground" />
                 </Link>
-                <span className="text-sm text-[#1A1A1A]">
+                <span className="text-sm text-foreground">
                     {users.current_page} / {users.last_page}
                 </span>
                 <Link
                     href={`?page=${users.current_page + 1}`}
-                    className={`p-2 rounded-lg border border-[#E5E5E5] ${
+                    className={`p-2 rounded-lg border border-border ${
                         users.current_page === users.last_page
                             ? 'opacity-50 cursor-not-allowed pointer-events-none'
-                            : 'hover:bg-gray-50'
+                            : 'hover:bg-muted'
                     }`}
                     preserveScroll
                 >
-                    <ChevronRight className="w-4 h-4 text-[#666666]" />
+                    <ChevronRight className="w-4 h-4 text-muted-foreground" />
                 </Link>
             </div>
         </div>
@@ -196,10 +196,10 @@ export default function UsersIndex() {
             <div className="flex flex-col gap-6 p-10 pr-12">
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-1">
-                        <h1 className="text-[28px] font-semibold text-[#1A1A1A] font-[Outfit]">
+                        <h1 className="text-[28px] font-semibold text-foreground">
                             Usuarios
                         </h1>
-                        <p className="text-sm text-[#666666] font-[Outfit]">
+                        <p className="text-sm text-muted-foreground">
                             Gestiona los usuarios del sistema
                         </p>
                     </div>
@@ -207,40 +207,40 @@ export default function UsersIndex() {
 
                 <form onSubmit={handleSearch} className="flex gap-3">
                     <div className="relative flex-1 max-w-md">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#999999]" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                         <input
                             type="text"
                             placeholder="Buscar por nombre o email..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full h-11 pl-10 pr-4 bg-white rounded-xl border border-[#E5E5E5] text-sm font-[Outfit] outline-none focus:border-[#4A5D4A] transition-colors"
+                            className="w-full h-11 pl-10 pr-4 bg-card rounded-xl border border-border text-sm outline-none focus:border-primary transition-colors"
                         />
                     </div>
                     <button
                         type="submit"
-                        className="px-5 py-2.5 bg-[#4A5D4A] rounded-xl text-sm font-medium text-white font-[Outfit] hover:bg-[#3d4d3d] transition-colors"
+                        className="px-5 py-2.5 bg-primary rounded-xl text-sm font-medium text-white hover:bg-primary transition-colors"
                     >
                         Buscar
                     </button>
                     {searchQuery && (
                         <Link
                             href="/admin/users"
-                            className="px-5 py-2.5 rounded-xl border border-[#E5E5E5] text-sm font-medium text-[#1A1A1A] font-[Outfit] hover:bg-gray-50 transition-colors"
+                            className="px-5 py-2.5 rounded-xl border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors"
                         >
                             Limpiar
                         </Link>
                     )}
                 </form>
 
-                <div className="bg-white rounded-xl border border-[#E5E5E5] overflow-hidden">
+                <div className="bg-card rounded-xl border border-border overflow-hidden">
                     <table className="w-full">
                         <thead>
-                            <tr className="border-b border-[#E5E5E5]">
+                            <tr className="border-b border-border">
                                 <SortableHeader field="name" label="Nombre" />
                                 <SortableHeader field="email" label="Email" />
                                 <SortableHeader field="role" label="Rol" />
                                 <th className="text-left px-6 py-4">
-                                    <span className="text-sm font-medium text-[#666666]">Estado</span>
+                                    <span className="text-sm font-medium text-muted-foreground">Estado</span>
                                 </th>
                                 <SortableHeader field="created_at" label="Registrado" />
                             </tr>
@@ -254,7 +254,7 @@ export default function UsersIndex() {
 
                     {users.data.length === 0 && (
                         <div className="flex flex-col items-center justify-center py-12">
-                            <p className="text-sm text-[#666666]">
+                            <p className="text-sm text-muted-foreground">
                                 {searchQuery ? 'No se encontraron usuarios que coincidan con la búsqueda' : 'No hay usuarios registrados'}
                             </p>
                         </div>

@@ -85,12 +85,12 @@ interface DashboardProps extends PageProps {
 type SalesPeriod = 'daily' | 'weekly' | 'monthly';
 
 const statusColorMap: Record<string, string> = {
-    delivered: 'bg-[#4CAF50]',
-    shipped: 'bg-[#2196F3]',
-    processing: 'bg-[#9C27B0]',
-    pending: 'bg-[#FFC107]',
-    payment_pending: 'bg-[#FF9800]',
-    cancelled: 'bg-[#F44336]',
+    delivered: 'bg-primary',
+    shipped: 'bg-accent-foreground',
+    processing: 'bg-accent-foreground',
+    pending: 'bg-muted-foreground',
+    payment_pending: 'bg-muted-foreground',
+    cancelled: 'bg-destructive',
 };
 
 const periodLabels: Record<SalesPeriod, { current: string; previous: string }> = {
@@ -112,29 +112,29 @@ function SalesStatsCard({ currentSales, salesPeriod }: {
     const TrendIcon = isPositive ? TrendingUp : TrendingDown;
 
     return (
-        <div className="h-[200px] rounded-2xl p-6 flex flex-col gap-4 bg-[#4A5D4A]">
+        <div className="h-[200px] rounded-2xl p-6 flex flex-col gap-4 bg-primary">
             <div className="flex items-center justify-between">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-white">
-                    <span className="text-2xl font-semibold font-[Outfit] text-[#4A5D4A]">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-card">
+                    <span className="text-2xl font-semibold text-primary">
                         $
                     </span>
                 </div>
-                <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-white/20`}>
+                <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-card/20`}>
                     <TrendIcon className="w-3.5 h-3.5 text-white" />
-                    <span className="text-xs font-medium font-[Outfit] text-white">
+                    <span className="text-xs font-medium text-white">
                         {isPositive ? '+' : ''}{currentSales.change}%
                     </span>
                 </div>
             </div>
             <div className="flex flex-col gap-1">
-                <span className="text-sm font-[Outfit] text-white/70">
+                <span className="text-sm text-white/70">
                     Ingresos {labels.current}
                 </span>
-                <span className="text-[40px] font-semibold font-[Inter] leading-tight text-white">
+                <span className="text-[40px] font-semibold leading-tight text-white">
                     ${formatCurrency(currentSales.total)}
                 </span>
             </div>
-            <span className="text-xs font-[Outfit] text-white/50">
+            <span className="text-xs text-white/50">
                 vs ${formatCurrency(currentSales.previous)} {labels.previous}
             </span>
         </div>
@@ -150,7 +150,7 @@ function StatsCard({ icon, iconBg, badge, title, value, subtitle }: {
     subtitle: string;
 }) {
     return (
-        <div className="h-[200px] rounded-2xl p-6 flex flex-col gap-4 bg-white border border-[#E5E5E5]">
+        <div className="h-[200px] rounded-2xl p-6 flex flex-col gap-4 bg-card border border-border">
             <div className="flex items-center justify-between">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${iconBg}`}>
                     {icon}
@@ -158,14 +158,14 @@ function StatsCard({ icon, iconBg, badge, title, value, subtitle }: {
                 {badge}
             </div>
             <div className="flex flex-col gap-1">
-                <span className="text-sm font-[Outfit] text-[#666666]">
+                <span className="text-sm text-muted-foreground">
                     {title}
                 </span>
-                <span className="text-[40px] font-semibold font-[Inter] leading-tight text-[#1A1A1A]">
+                <span className="text-[40px] font-semibold leading-tight text-foreground">
                     {value}
                 </span>
             </div>
-            <span className="text-xs font-[Outfit] text-[#999999]">
+            <span className="text-xs text-muted-foreground">
                 {subtitle}
             </span>
         </div>
@@ -177,9 +177,9 @@ function TrendBadge({ change }: { change: number }) {
     const TrendIcon = isPositive ? TrendingUp : TrendingDown;
 
     return (
-        <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[#E8F5E9]`}>
-            <TrendIcon className={`w-3.5 h-3.5 ${isPositive ? 'text-[#4CAF50]' : 'text-[#F44336]'}`} />
-            <span className={`text-xs font-medium font-[Outfit] ${isPositive ? 'text-[#4CAF50]' : 'text-[#F44336]'}`}>
+        <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-primary/10`}>
+            <TrendIcon className={`w-3.5 h-3.5 ${isPositive ? 'text-primary' : 'text-destructive'}`} />
+            <span className={`text-xs font-medium ${isPositive ? 'text-primary' : 'text-destructive'}`}>
                 {isPositive ? '+' : ''}{change}%
             </span>
         </div>
@@ -197,15 +197,15 @@ function PeriodTabs({ salesPeriod, onChangePeriod }: {
     ];
 
     return (
-        <div className="flex items-center bg-[#F5F5F5] rounded-lg p-1">
+        <div className="flex items-center bg-muted rounded-lg p-1">
             {tabs.map(({ key, label }) => (
                 <button
                     key={key}
                     onClick={() => onChangePeriod(key)}
-                    className={`px-4 py-2 rounded-md text-[13px] font-medium font-[Outfit] transition-colors ${
+                    className={`px-4 py-2 rounded-md text-[13px] font-medium transition-colors ${
                         salesPeriod === key
-                            ? 'bg-[#4A5D4A] text-white'
-                            : 'text-[#666666] hover:bg-white/50'
+                            ? 'bg-primary text-white'
+                            : 'text-muted-foreground hover:bg-card/50'
                     }`}
                 >
                     {label}
@@ -224,13 +224,13 @@ function SalesTrendSection({ currentSales, salesPeriod, onChangePeriod }: {
     const TrendIcon = isPositive ? TrendingUp : TrendingDown;
 
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 flex flex-col gap-6">
+        <div className="bg-card rounded-2xl border border-border p-6 flex flex-col gap-6">
             <div className="flex items-center justify-between">
                 <div className="flex flex-col gap-1">
-                    <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+                    <h2 className="text-lg font-semibold text-foreground">
                         Tendencia de Ventas
                     </h2>
-                    <p className="text-[13px] text-[#999999] font-[Outfit]">
+                    <p className="text-[13px] text-muted-foreground">
                         Comparacion de periodos
                     </p>
                 </div>
@@ -239,23 +239,23 @@ function SalesTrendSection({ currentSales, salesPeriod, onChangePeriod }: {
 
             {/* Sales Metrics Display */}
             <div className="grid grid-cols-3 gap-4">
-                <div className="bg-[#FAFAFA] rounded-xl p-4 flex flex-col gap-2">
-                    <span className="text-xs text-[#999999] font-[Outfit]">Periodo Actual</span>
-                    <span className="text-2xl font-semibold text-[#1A1A1A] font-[Inter]">
+                <div className="bg-background rounded-xl p-4 flex flex-col gap-2">
+                    <span className="text-xs text-muted-foreground">Periodo Actual</span>
+                    <span className="text-2xl font-semibold text-foreground">
                         ${formatCurrency(currentSales.total)}
                     </span>
                 </div>
-                <div className="bg-[#FAFAFA] rounded-xl p-4 flex flex-col gap-2">
-                    <span className="text-xs text-[#999999] font-[Outfit]">Periodo Anterior</span>
-                    <span className="text-2xl font-semibold text-[#666666] font-[Inter]">
+                <div className="bg-background rounded-xl p-4 flex flex-col gap-2">
+                    <span className="text-xs text-muted-foreground">Periodo Anterior</span>
+                    <span className="text-2xl font-semibold text-muted-foreground">
                         ${formatCurrency(currentSales.previous)}
                     </span>
                 </div>
-                <div className="bg-[#FAFAFA] rounded-xl p-4 flex flex-col gap-2">
-                    <span className="text-xs text-[#999999] font-[Outfit]">Cambio</span>
+                <div className="bg-background rounded-xl p-4 flex flex-col gap-2">
+                    <span className="text-xs text-muted-foreground">Cambio</span>
                     <div className="flex items-center gap-2">
-                        <TrendIcon className={`w-5 h-5 ${isPositive ? 'text-[#4CAF50]' : 'text-[#F44336]'}`} />
-                        <span className={`text-2xl font-semibold font-[Inter] ${isPositive ? 'text-[#4CAF50]' : 'text-[#F44336]'}`}>
+                        <TrendIcon className={`w-5 h-5 ${isPositive ? 'text-primary' : 'text-destructive'}`} />
+                        <span className={`text-2xl font-semibold ${isPositive ? 'text-primary' : 'text-destructive'}`}>
                             {isPositive ? '+' : ''}{currentSales.change}%
                         </span>
                     </div>
@@ -267,35 +267,35 @@ function SalesTrendSection({ currentSales, salesPeriod, onChangePeriod }: {
 
 function TopProductsList({ topProducts }: { topProducts: TopProduct[] }) {
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 flex flex-col gap-4">
+        <div className="bg-card rounded-2xl border border-border p-6 flex flex-col gap-4">
             <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+                <h2 className="text-lg font-semibold text-foreground">
                     Top 10 Productos
                 </h2>
-                <Package className="w-5 h-5 text-[#999999]" />
+                <Package className="w-5 h-5 text-muted-foreground" />
             </div>
             <div className="flex flex-col gap-3">
                 {topProducts.length > 0 ? (
                     topProducts.map((product, index) => (
-                        <div key={product.id} className="flex items-center gap-3 p-2 hover:bg-[#FAFAFA] rounded-lg transition-colors">
-                            <span className="w-6 h-6 rounded-full bg-[#4A5D4A] text-white text-xs font-medium flex items-center justify-center font-[Outfit]">
+                        <div key={product.id} className="flex items-center gap-3 p-2 hover:bg-background rounded-lg transition-colors">
+                            <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-medium flex items-center justify-center">
                                 {index + 1}
                             </span>
                             <div className="flex-1 flex flex-col gap-0.5">
-                                <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit] truncate">
+                                <span className="text-sm font-medium text-foreground truncate">
                                     {product.name}
                                 </span>
-                                <span className="text-xs text-[#999999] font-[Outfit]">
+                                <span className="text-xs text-muted-foreground">
                                     {product.units_sold} vendidos
                                 </span>
                             </div>
-                            <span className="text-sm font-semibold text-[#4A5D4A] font-[Outfit]">
+                            <span className="text-sm font-semibold text-primary">
                                 ${formatCurrency(product.revenue)}
                             </span>
                         </div>
                     ))
                 ) : (
-                    <div className="text-center py-8 text-[#999999] font-[Outfit]">
+                    <div className="text-center py-8 text-muted-foreground">
                         No hay datos de ventas aun
                     </div>
                 )}
@@ -306,23 +306,23 @@ function TopProductsList({ topProducts }: { topProducts: TopProduct[] }) {
 
 function OrderStatusList({ ordersByStatus }: { ordersByStatus: OrderStatus[] }) {
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 flex flex-col gap-4">
+        <div className="bg-card rounded-2xl border border-border p-6 flex flex-col gap-4">
             <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+                <h2 className="text-lg font-semibold text-foreground">
                     Pedidos por Estado
                 </h2>
-                <ShoppingCart className="w-5 h-5 text-[#999999]" />
+                <ShoppingCart className="w-5 h-5 text-muted-foreground" />
             </div>
             <div className="flex flex-col gap-3">
                 {ordersByStatus.map((status) => (
-                    <div key={status.status} className="flex items-center justify-between p-2 hover:bg-[#FAFAFA] rounded-lg transition-colors">
+                    <div key={status.status} className="flex items-center justify-between p-2 hover:bg-background rounded-lg transition-colors">
                         <div className="flex items-center gap-3">
-                            <div className={`w-3 h-3 rounded-full ${statusColorMap[status.status] || 'bg-[#999999]'}`} />
-                            <span className="text-sm text-[#1A1A1A] font-[Outfit]">
+                            <div className={`w-3 h-3 rounded-full ${statusColorMap[status.status] || 'bg-muted-foreground'}`} />
+                            <span className="text-sm text-foreground">
                                 {status.label}
                             </span>
                         </div>
-                        <span className="text-sm font-semibold text-[#1A1A1A] font-[Outfit]">
+                        <span className="text-sm font-semibold text-foreground">
                             {status.count}
                         </span>
                     </div>
@@ -338,29 +338,29 @@ function LowStockAlerts({ lowStockAlerts }: { lowStockAlerts: LowStockAlert[] })
     }
 
     return (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 flex flex-col gap-4">
+        <div className="bg-card rounded-2xl border border-border p-6 flex flex-col gap-4">
             <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+                <h2 className="text-lg font-semibold text-foreground">
                     Alertas de Stock
                 </h2>
-                <AlertTriangle className="w-5 h-5 text-[#FFC107]" />
+                <AlertTriangle className="w-5 h-5 text-muted-foreground" />
             </div>
             <div className="flex flex-col gap-3">
                 {lowStockAlerts.slice(0, 5).map((product) => (
-                    <div key={product.id} className="flex items-center gap-3 p-2 bg-[#FFF8E1] rounded-lg">
-                        <AlertTriangle className="w-4 h-4 text-[#FFC107]" />
+                    <div key={product.id} className="flex items-center gap-3 p-2 bg-muted rounded-lg">
+                        <AlertTriangle className="w-4 h-4 text-muted-foreground" />
                         <div className="flex-1 flex flex-col gap-0.5">
-                            <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit] truncate">
+                            <span className="text-sm font-medium text-foreground truncate">
                                 {product.name}
                             </span>
-                            <span className="text-xs text-[#666666] font-[Outfit]">
+                            <span className="text-xs text-muted-foreground">
                                 SKU: {product.sku} | Stock: {product.stock}/{product.min_stock}
                             </span>
                         </div>
                     </div>
                 ))}
                 {lowStockAlerts.length > 5 && (
-                    <span className="text-xs text-[#999999] font-[Outfit] text-center">
+                    <span className="text-xs text-muted-foreground text-center">
                         +{lowStockAlerts.length - 5} mas alertas
                     </span>
                 )}
@@ -369,30 +369,25 @@ function LowStockAlerts({ lowStockAlerts }: { lowStockAlerts: LowStockAlert[] })
     );
 }
 
-const iconConfig: Record<string, { bg: string; color: string; Icon: React.ComponentType<{ className?: string }> }> = {
+const iconConfig: Record<string, { className: string; Icon: React.ComponentType<{ className?: string }> }> = {
     success: {
-        bg: '#E8F5E9',
-        color: '#4CAF50',
+        className: 'bg-primary/10 text-primary',
         Icon: Check,
     },
     info: {
-        bg: '#E3F2FD',
-        color: '#2196F3',
+        className: 'bg-accent text-accent-foreground',
         Icon: UserPlus,
     },
     warning: {
-        bg: '#FFF8E1',
-        color: '#FFC107',
+        className: 'bg-muted text-muted-foreground',
         Icon: AlertTriangle,
     },
     review: {
-        bg: '#F3E5F5',
-        color: '#9C27B0',
+        className: 'bg-accent text-accent-foreground',
         Icon: Star,
     },
     error: {
-        bg: '#FFEBEE',
-        color: '#F44336',
+        className: 'bg-destructive/10 text-destructive',
         Icon: X,
     },
 };
@@ -404,18 +399,15 @@ function ActivityItem({ activity }: { activity: Activity }) {
     return (
         <div className="flex items-center gap-3">
             <div
-                className="w-10 h-10 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: config.bg }}
+                className={`w-10 h-10 rounded-full flex items-center justify-center ${config.className}`}
             >
-                <span style={{ color: config.color }}>
-                    <Icon className="w-5 h-5" />
-                </span>
+                <Icon className="w-5 h-5" />
             </div>
             <div className="flex-1 flex flex-col gap-0.5">
-                <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                <span className="text-sm font-medium text-foreground">
                     {activity.title}
                 </span>
-                <span className="text-xs text-[#999999] font-[Outfit]">
+                <span className="text-xs text-muted-foreground">
                     {activity.time} • {activity.customer}
                 </span>
             </div>
@@ -431,49 +423,49 @@ function DashboardHeader({ userName, userInitials, alertCount }: {
     return (
         <div className="flex items-center justify-between">
             <div className="flex flex-col gap-1">
-                <h1 className="text-[28px] font-semibold text-[#1A1A1A] font-[Outfit]">
+                <h1 className="text-[28px] font-semibold text-foreground">
                     Dashboard
                 </h1>
-                <p className="text-sm text-[#666666] font-[Outfit]">
+                <p className="text-sm text-muted-foreground">
                     Bienvenido de nuevo, {userName}
                 </p>
             </div>
 
             <div className="flex items-center gap-4">
                 {/* Search */}
-                <div className="flex items-center gap-3 w-60 h-11 px-4 bg-white rounded-lg border border-[#E5E5E5]">
-                    <Search className="w-[18px] h-[18px] text-[#999999]" />
-                    <span className="text-sm text-[#999999] font-[Outfit]">
+                <div className="flex items-center gap-3 w-60 h-11 px-4 bg-card rounded-lg border border-border">
+                    <Search className="w-[18px] h-[18px] text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">
                         Buscar...
                     </span>
                 </div>
 
                 {/* Bell */}
-                <button className="w-11 h-11 bg-white rounded-full border border-[#E5E5E5] flex items-center justify-center hover:bg-gray-50 transition-colors relative">
-                    <Bell className="w-5 h-5 text-[#666666]" />
+                <button className="w-11 h-11 bg-card rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors relative">
+                    <Bell className="w-5 h-5 text-muted-foreground" />
                     {alertCount > 0 && (
-                        <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs text-white flex items-center justify-center font-medium">
+                        <span className="absolute -top-1 -right-1 w-5 h-5 bg-destructive rounded-full text-xs text-white flex items-center justify-center font-medium">
                             {alertCount}
                         </span>
                     )}
                 </button>
 
                 {/* Settings */}
-                <button className="w-11 h-11 bg-white rounded-full border border-[#E5E5E5] flex items-center justify-center hover:bg-gray-50 transition-colors">
-                    <Settings className="w-5 h-5 text-[#666666]" />
+                <button className="w-11 h-11 bg-card rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
+                    <Settings className="w-5 h-5 text-muted-foreground" />
                 </button>
 
                 {/* User Profile */}
-                <button className="flex items-center gap-3 pl-1.5 pr-3 py-1.5 bg-white rounded-full border border-[#E5E5E5] hover:bg-gray-50 transition-colors">
-                    <div className="w-9 h-9 bg-[#4A5D4A] rounded-full flex items-center justify-center">
-                        <span className="text-sm font-medium text-white font-[Outfit]">
+                <button className="flex items-center gap-3 pl-1.5 pr-3 py-1.5 bg-card rounded-full border border-border hover:bg-muted transition-colors">
+                    <div className="w-9 h-9 bg-primary rounded-full flex items-center justify-center">
+                        <span className="text-sm font-medium text-white">
                             {userInitials}
                         </span>
                     </div>
-                    <span className="text-sm font-medium text-[#1A1A1A] font-[Outfit]">
+                    <span className="text-sm font-medium text-foreground">
                         {userName}
                     </span>
-                    <ChevronDown className="w-4 h-4 text-[#999999]" />
+                    <ChevronDown className="w-4 h-4 text-muted-foreground" />
                 </button>
             </div>
         </div>
@@ -511,11 +503,11 @@ export default function Dashboard({
                     <SalesStatsCard currentSales={currentSales} salesPeriod={salesPeriod} />
 
                     <StatsCard
-                        icon={<ShoppingCart className="w-6 h-6 text-[#D4A853]" />}
-                        iconBg="bg-[#FEF3E2]"
+                        icon={<ShoppingCart className="w-6 h-6 text-muted-foreground" />}
+                        iconBg="bg-muted"
                         badge={
-                            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[#E8F5E9]">
-                                <span className="text-xs font-medium font-[Outfit] text-[#4CAF50]">
+                            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-primary/10">
+                                <span className="text-xs font-medium text-primary">
                                     {totalOrders} total
                                 </span>
                             </div>
@@ -526,8 +518,8 @@ export default function Dashboard({
                     />
 
                     <StatsCard
-                        icon={<Users className="w-6 h-6 text-[#4CAF50]" />}
-                        iconBg="bg-[#E8F5E9]"
+                        icon={<Users className="w-6 h-6 text-primary" />}
+                        iconBg="bg-primary/10"
                         badge={<TrendBadge change={newUsersCount.change} />}
                         title="Nuevos Clientes"
                         value={newUsersCount.this_month}
@@ -535,11 +527,11 @@ export default function Dashboard({
                     />
 
                     <StatsCard
-                        icon={<AlertTriangle className="w-6 h-6 text-[#FFC107]" />}
-                        iconBg="bg-[#FFF8E1]"
+                        icon={<AlertTriangle className="w-6 h-6 text-muted-foreground" />}
+                        iconBg="bg-muted"
                         badge={
-                            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[#FFF8E1]">
-                                <span className="text-xs font-medium font-[Outfit] text-[#FFC107]">
+                            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-muted">
+                                <span className="text-xs font-medium text-muted-foreground">
                                     Alertas
                                 </span>
                             </div>
@@ -570,12 +562,12 @@ export default function Dashboard({
                     {/* Right Sidebar - 1/3 width */}
                     <div className="flex-1 flex flex-col gap-6">
                         {/* Activity Panel */}
-                        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 flex flex-col gap-5">
+                        <div className="bg-card rounded-2xl border border-border p-6 flex flex-col gap-5">
                             <div className="flex items-center justify-between">
-                                <h2 className="text-lg font-semibold text-[#1A1A1A] font-[Outfit]">
+                                <h2 className="text-lg font-semibold text-foreground">
                                     Actividad Reciente
                                 </h2>
-                                <button className="text-[13px] text-[#999999] font-[Outfit] hover:text-[#666666] transition-colors">
+                                <button className="text-[13px] text-muted-foreground hover:text-muted-foreground transition-colors">
                                     Ver todo
                                 </button>
                             </div>
@@ -589,7 +581,7 @@ export default function Dashboard({
                                         />
                                     ))
                                 ) : (
-                                    <div className="text-center py-8 text-[#999999] font-[Outfit]">
+                                    <div className="text-center py-8 text-muted-foreground">
                                         No hay actividad reciente
                                     </div>
                                 )}

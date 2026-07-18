@@ -22,7 +22,7 @@ export function StatusPill({ status }: { status: SocialPostStatus }) {
     return (
         <span
             title={statusDescriptions[status]}
-            className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-[Outfit] text-xs font-medium ${statusPillClasses[status]}`}
+            className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium ${statusPillClasses[status]}`}
         >
             <Icon className="h-3 w-3" />
             {statusLabels[status]}

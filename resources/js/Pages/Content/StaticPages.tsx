@@ -25,75 +25,75 @@ export default function StaticPages({ pages }: Props) {
                 <div className="max-w-4xl">
                     {/* Header */}
                     <div className="mb-8">
-                        <h1 className="text-2xl font-bold text-[#1A1A1A] font-[Outfit]">
+                        <h1 className="text-2xl font-bold text-foreground">
                             Páginas Estáticas
                         </h1>
-                        <p className="text-sm text-[#666666] font-[Outfit] mt-1">
+                        <p className="text-sm text-muted-foreground mt-1">
                             Administra el contenido de las páginas del sitio
                         </p>
                     </div>
 
                     {flash?.success && (
-                        <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg font-[Outfit] text-sm">
+                        <div className="mb-6 bg-primary/10 border border-primary/20 text-primary px-4 py-3 rounded-lg text-sm">
                             {flash.success}
                         </div>
                     )}
 
                     {/* Pages Table */}
-                    <div className="bg-white rounded-xl border border-[#E5E5E5] overflow-hidden">
+                    <div className="bg-card rounded-xl border border-border overflow-hidden">
                         <table className="w-full">
                             <thead>
-                                <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA]">
-                                    <th className="text-left px-4 py-3 font-[Outfit] text-xs font-medium text-[#999999] uppercase tracking-wider">
+                                <tr className="border-b border-border bg-background">
+                                    <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                         Título
                                     </th>
-                                    <th className="text-left px-4 py-3 font-[Outfit] text-xs font-medium text-[#999999] uppercase tracking-wider">
+                                    <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                         Slug
                                     </th>
-                                    <th className="text-left px-4 py-3 font-[Outfit] text-xs font-medium text-[#999999] uppercase tracking-wider">
+                                    <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                         Estado
                                     </th>
-                                    <th className="text-left px-4 py-3 font-[Outfit] text-xs font-medium text-[#999999] uppercase tracking-wider">
+                                    <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                         Actualizado
                                     </th>
-                                    <th className="text-right px-4 py-3 font-[Outfit] text-xs font-medium text-[#999999] uppercase tracking-wider">
+                                    <th className="text-right px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                         Acciones
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-[#E5E5E5]">
+                            <tbody className="divide-y divide-border">
                                 {pages.map((page) => (
                                     <tr key={page.id}>
                                         <td className="px-4 py-3">
-                                            <span className="font-[Outfit] text-sm font-medium text-[#1A1A1A]">
+                                            <span className="text-sm font-medium text-foreground">
                                                 {page.title}
                                             </span>
                                         </td>
                                         <td className="px-4 py-3">
-                                            <code className="text-xs text-[#666666] bg-[#F5F3F0] px-2 py-1 rounded">
+                                            <code className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
                                                 /{page.slug}
                                             </code>
                                         </td>
                                         <td className="px-4 py-3">
                                             <span
-                                                className={`inline-flex px-2 py-1 rounded-full text-xs font-medium font-[Outfit] ${
+                                                className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
                                                     page.is_published
-                                                        ? 'bg-green-50 text-green-700'
-                                                        : 'bg-gray-100 text-gray-600'
+                                                        ? 'bg-primary/10 text-primary'
+                                                        : 'bg-muted text-muted-foreground'
                                                 }`}
                                             >
                                                 {page.is_published ? 'Publicada' : 'Borrador'}
                                             </span>
                                         </td>
                                         <td className="px-4 py-3">
-                                            <span className="font-[Outfit] text-xs text-[#999999]">
+                                            <span className="text-xs text-muted-foreground">
                                                 {page.updated_at ? formatDate(page.updated_at) : '—'}
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-right">
                                             <Link
                                                 href={`/admin/static-pages/${page.id}/edit`}
-                                                className="inline-flex items-center gap-1.5 text-[#4A5D4A] font-[Outfit] text-sm font-medium hover:underline"
+                                                className="inline-flex items-center gap-1.5 text-primary text-sm font-medium hover:underline"
                                             >
                                                 <Pencil className="w-3.5 h-3.5" />
                                                 Editar
