@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Actions\ReorderAction;
 use App\Http\Controllers\Controller;
+use App\Models\AppSettings;
 use App\Models\Order;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response as HttpResponse;
@@ -110,12 +111,7 @@ class OrderController extends Controller
 
         $html = view('orders.invoice', [
             'order' => $order,
-            'company' => [
-                'name' => config('app.name'),
-                'address' => 'Dirección de la empresa',
-                'phone' => 'Teléfono de contacto',
-                'email' => 'contacto@empresa.com',
-            ],
+            'company' => AppSettings::current()->invoiceCompany(),
         ])->render();
 
         return response($html)

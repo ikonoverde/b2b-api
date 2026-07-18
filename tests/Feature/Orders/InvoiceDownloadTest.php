@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\AppSettings;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -85,6 +86,25 @@ it('returns HTML invoice for user\'s order', function () {
         ->assertSee('$25.00')
         ->assertSee('123 Main St')
         ->assertSee('Entregado');
+});
+
+it('renders saved contact settings in the invoice', function () {
+    AppSettings::current()->update([
+        'contact_email' => 'ventas@ikonoverde.com',
+        'contact_phone' => '+52 999 123 4567',
+        'contact_address' => 'Calle 60 #123, Mérida, Yucatán',
+    ]);
+
+    $user = User::factory()->create();
+    $order = Order::factory()->create(['user_id' => $user->id]);
+    OrderItem::factory()->create(['order_id' => $order->id]);
+
+    $this->actingAs($user, 'sanctum')
+        ->get("/api/orders/{$order->id}/invoice")
+        ->assertSuccessful()
+        ->assertSee('ventas@ikonoverde.com')
+        ->assertSee('+52 999 123 4567')
+        ->assertSee('Calle 60 #123, Mérida, Yucatán');
 });
 
 it('includes tracking information in invoice when available', function () {

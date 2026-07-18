@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Orders;
 
 use App\Http\Controllers\Controller;
+use App\Models\AppSettings;
 use App\Models\Order;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -41,12 +42,7 @@ class DownloadInvoiceController extends Controller
 
         $html = view('orders.invoice', [
             'order' => $order,
-            'company' => [
-                'name' => config('app.name'),
-                'address' => 'Dirección de la empresa',
-                'phone' => 'Teléfono de contacto',
-                'email' => 'contacto@empresa.com',
-            ],
+            'company' => AppSettings::current()->invoiceCompany(),
         ])->render();
 
         return response($html)
